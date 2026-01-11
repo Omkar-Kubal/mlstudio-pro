@@ -1,0 +1,351 @@
+MLStudio Pro – Product Requirements Document (PRD)
+
+Product: MLStudio Pro
+Version: v1.0
+Type: Greenfield Product (EdTech + 3D Platform)
+Owner: MLStudio Pro
+Status: Definition Complete
+
+1. Executive Summary
+
+MLStudio Pro is a fully immersive 3D Data Science learning platform where users navigate a galaxy-style universe to learn Statistics, Python, Machine Learning, Deep Learning, NLP, Computer Vision, and Big Data through interactive 3D visualizations, live coding, projects, and AI mentorship.
+
+The product merges:
+
+3D navigation
+
+Browser-based execution
+
+Structured curriculum
+
+Gamification
+
+AI tutoring
+
+into a single unified learning universe.
+
+2. Problem Statement
+
+Current data science learning platforms suffer from:
+
+Passive video consumption
+
+Poor intuition for abstract concepts
+
+Disconnected tools (videos, IDEs, notebooks, docs)
+
+Low engagement and completion rates
+
+There is no platform that:
+
+Teaches data science spatially
+
+Visualizes algorithms in 3D
+
+Allows live execution inside learning context
+
+Combines learning + portfolio creation seamlessly
+
+3. Product Vision
+
+“Learn Data Science in a 3D Universe — Code, Visualize, Build, Conquer.”
+
+MLStudio Pro aims to:
+
+Replace flat course platforms with an explorable universe
+
+Make abstract math and ML concepts visually intuitive
+
+Turn learning into an interactive, game-like experience
+
+Produce job-ready portfolios directly from learning
+
+4. Target Users
+Primary
+
+University students (3rd–4th year)
+
+Bootcamp participants
+
+Self-taught learners
+
+Secondary
+
+Working professionals upskilling
+
+Corporate training programs
+
+5. Success Metrics (KPIs)
+Metric	Target
+Course completion rate	≥ 60%
+Avg session duration	≥ 25 min
+Monthly active users	10,000
+Conversion to Pro	≥ 5%
+Portfolio exports	≥ 30% of users
+Retention (30-day)	≥ 40%
+6. Monetization Model
+Tier	Price	Features
+Free	$0	Limited planets, basic modules
+Pro	$9.99/month	Full galaxy, projects, AI tutor
+Enterprise	$99/user	Team dashboards, analytics, SSO
+7. Core Product Architecture
+7.1 Frontend (3D + 2D Hybrid)
+
+Requirements
+
+React 18 + TypeScript
+
+WebGL-based 3D rendering
+
+Seamless 3D → 2D transitions
+
+Browser-based Python execution
+
+Realtime UI updates
+
+Key Modules
+
+Galaxy Renderer
+
+Planet Interaction Engine
+
+Portal Navigation System
+
+Live Code Editor (3D)
+
+Performance-adaptive rendering (LOD)
+
+7.2 Backend
+
+Responsibilities
+
+Authentication & authorization
+
+User progress tracking
+
+Project metadata storage
+
+AI tutor orchestration
+
+Realtime collaboration
+
+Requirements
+
+FastAPI
+
+PostgreSQL
+
+Realtime subscriptions
+
+Async task execution
+
+Caching layer
+
+7.3 Mobile Layer
+
+Requirements
+
+Native performance
+
+Simplified 3D assets
+
+Gesture + gyroscope controls
+
+Optional AR mode
+
+8. Core Functional Requirements
+8.1 3D Galaxy Navigation
+
+Central hub with 8 planets
+
+Smooth camera transitions
+
+Fly-to-planet animations
+
+Raycasting for interaction
+
+Performance adaptive LOD
+
+Acceptance Criteria
+
+60 FPS on desktop
+
+<2s scene transitions
+
+Touch + mouse parity
+
+8.2 Planet Interior System
+
+Each planet must include:
+
+Landing animation
+
+Portal-based entry
+
+Context-aware content loading
+
+Return-to-galaxy exit
+
+8.3 Live Coding Engine
+
+Requirements
+
+Monaco Editor embedded in 3D space
+
+Pyodide runtime
+
+<2s execution latency
+
+Visual error feedback
+
+Output rendered as 3D objects
+
+8.4 Curriculum Planets
+Planet	Core Features
+Statistics	Distributions, hypothesis tests, regression
+Python	Syntax trees, Pandas 3D tables
+ML	Algorithm visualizers, CV folds
+Deep Learning	NN graphs, backprop tracing
+NLP	Embeddings, attention maps
+Computer Vision	Feature maps, detection
+Big Data	Pipelines, streaming
+Projects	Milestone builds
+8.5 Projects Galaxy
+
+50+ milestone projects
+
+Difficulty-based unlocking
+
+Real-time collaboration rooms
+
+Peer review system
+
+Exportable outputs
+
+8.6 Portfolio System
+
+Auto-generated portfolio galaxy
+
+Shareable 3D links
+
+PDF + video export
+
+Resume-ready artifacts
+
+8.7 AI Tutor
+
+Capabilities
+
+Context-aware explanations
+
+Code debugging help
+
+Concept explanations
+
+Voice interaction
+
+Constraints
+
+No autonomous code execution
+
+User-initiated interactions only
+
+8.8 Gamification
+
+XP system
+
+Achievement orbs
+
+Daily challenges
+
+Streak multipliers
+
+Leaderboards
+
+9. Non-Functional Requirements
+Category	Requirement
+Performance	60 FPS desktop, 45 FPS mobile
+Latency	<200ms UI response
+Security	JWT, role-based access
+Scalability	10k concurrent users
+Availability	99.5% uptime
+Accessibility	Keyboard + screen reader support
+10. UI / UX Requirements
+Visual Style
+
+Dark cosmic theme
+
+Emissive planets
+
+Holographic UI cards
+
+Smooth shader-based transitions
+
+Interaction
+
+Mouse, touch, voice
+
+Context menus
+
+Gesture-based navigation
+
+11. Content Requirements
+Category	Quantity
+Learning Modules	150+
+Videos	50+ hours
+3D Visualizations	200+
+Projects	50
+Assessments	Embedded per module
+12. Implementation Roadmap
+
+Total Duration: 12 Weeks
+
+Weeks 1–2: Galaxy + core navigation
+
+Weeks 3–4: Live coding + ML content
+
+Weeks 5–6: Auth, projects, AI tutor
+
+Weeks 7–8: Performance + content scale
+
+Weeks 9–10: Mobile apps
+
+Weeks 11–12: Launch & QA
+
+13. Budget Constraints
+
+Monthly Infrastructure: ~$140
+Development Cost: $0 (in-house)
+3D Assets: Open-source + custom
+
+14. Launch Criteria (Go/No-Go)
+
+All planets functional
+
+Live coding stable
+
+AI tutor operational
+
+PWA installable
+
+≥ 100 beta testers onboarded
+
+No P0 / P1 bugs
+
+15. Risks & Mitigations
+Risk	Mitigation
+WebGL performance	LOD + compression
+AI cost overruns	Rate limiting
+User overwhelm	Progressive unlocks
+Mobile constraints	Simplified assets
+16. Final Outcome
+
+MLStudio Pro delivers:
+
+A semester-winning academic project
+
+A startup-ready MVP
+
+A category-defining EdTech product
+
+A portfolio unmatched by traditional platforms
