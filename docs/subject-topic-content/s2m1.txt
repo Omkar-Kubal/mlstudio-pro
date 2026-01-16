@@ -1,0 +1,1647 @@
+Subject
+
+Programming for Data Science
+
+Module
+
+Python Basics
+
+Topic
+
+Python Syntax for Data Science
+
+1. Why Python for Data Science (Context First)
+
+Python is not chosen because it is “easy”.
+
+Python is chosen because:
+
+It maps closely to mathematical thinking
+
+It reads like pseudocode
+
+It integrates deeply with scientific libraries
+
+It lets you express ideas faster than syntax
+
+In data science, clarity > cleverness.
+
+2. Python as an Executable Notebook of Thought
+
+Unlike traditional programming languages:
+
+Python code is often written linearly
+
+Results are inspected interactively
+
+Code is exploratory, not just functional
+
+This matches how data science works:
+
+Observe → Modify → Test → Reason → Repeat
+
+3. Core Syntax Philosophy
+
+Python syntax follows three principles:
+
+1. Readability over brevity
+2. Explicit over implicit
+3. Indentation defines logic
+
+This is critical when:
+
+Revisiting experiments
+
+Collaborating
+
+Debugging models
+
+4. Variables (More Than Storage)
+What a Variable Really Is
+
+A variable is a name bound to an object, not a box.
+
+x = 10
+
+
+Means:
+
+“The name x refers to the object 10”
+
+This matters because:
+
+Objects are mutable or immutable
+
+Memory references affect behavior
+
+Why This Matters in Data Science
+
+When working with:
+
+Arrays
+
+DataFrames
+
+Models
+
+You must know whether:
+
+You’re copying data
+
+Or modifying it in place
+
+5. Expressions vs Statements
+Expression
+
+Produces a value:
+
+3 + 5
+x * y
+
+Statement
+
+Performs an action:
+
+x = 5
+import numpy as np
+
+
+Data science code is expression-heavy:
+
+Feature creation
+
+Transformations
+
+Filters
+
+Understanding this helps you chain operations cleanly later.
+
+6. Indentation = Logic (Critical)
+
+Python uses indentation instead of braces.
+
+if score > 0.8:
+    label = "High"
+else:
+    label = "Low"
+
+
+Indentation defines:
+
+Scope
+
+Control flow
+
+Meaning
+
+In ML pipelines, a wrong indent can silently:
+
+Skip training
+
+Break evaluation
+
+Leak data
+
+7. Comments & Intent
+Why Comments Matter in DS
+
+Data science code often answers:
+
+Why this transformation?
+
+Why this threshold?
+
+# Normalize to avoid scale dominance
+X = X / X.max()
+
+
+Comments capture intent, not syntax.
+
+8. Python Is Dynamically Typed (Implications)
+
+Python does not require type declarations:
+
+x = 10
+x = "data"
+
+
+This gives flexibility but adds responsibility:
+
+Bugs appear at runtime
+
+Type discipline must be mental
+
+In ML:
+
+Wrong types → silent failures
+
+Shape mismatches → runtime crashes
+
+9. REPL & Notebooks (Mental Model)
+
+Python shines in:
+
+Jupyter notebooks
+
+Interactive shells
+
+The workflow is:
+
+Run small blocks
+
+Inspect output
+
+Adjust logic
+
+Iterate
+
+This tight feedback loop is core to data science productivity.
+
+10. Minimal Code Examples (Conceptual)
+# Variable binding
+n_samples = 100
+
+# Expression
+mean = total / n_samples
+
+# Control block
+if mean > 0:
+    status = "positive"
+
+
+Notice:
+
+Reads like English
+
+No syntactic noise
+
+Intent is obvious
+
+11. Common Beginner Mistakes (Theory-Level)
+
+❌ Writing long scripts without inspection
+❌ Ignoring indentation meaning
+❌ Overusing clever one-liners
+❌ Treating Python like C/Java
+
+Data science Python should be:
+
+Calm, readable, deliberate
+
+12. Concept Outcomes
+
+After this topic, the learner should:
+
+Understand Python’s mental model
+
+Read Python fluently
+
+Write exploratory code confidently
+
+Avoid syntax-level confusion later
+
+13. References
+
+Official Python Docs – Language Reference
+https://docs.python.org/3/reference/
+
+PEP 20 – The Zen of Python
+https://peps.python.org/pep-0020/
+
+
+Module
+
+Python Basics
+
+Topic
+
+Data Types and Data Structures
+
+1. Why Data Types Matter in Data Science
+
+In data science, most bugs are data bugs, not algorithm bugs.
+
+Understanding data types answers:
+
+What operations are valid?
+
+What is mutable?
+
+What gets copied vs referenced?
+
+What will scale and what will break?
+
+Before models, you must understand what your data actually is.
+
+2. Python’s Object Model (Core Theory)
+
+Everything in Python is an object:
+
+Numbers
+
+Strings
+
+Lists
+
+Functions
+
+DataFrames
+
+Each object has:
+
+Type
+
+Identity
+
+Value
+
+This directly affects:
+
+Memory usage
+
+Performance
+
+Side effects
+
+3. Primitive (Scalar) Data Types
+Integers (int)
+n = 42
+
+
+Arbitrary precision
+
+Used for counts, indices, iterations
+
+In DS:
+
+Loop counters
+
+Dataset sizes
+
+Class labels (sometimes)
+
+Floating Point (float)
+x = 3.14
+
+
+Approximate representation
+
+Subject to precision errors
+
+Why this matters:
+
+Comparisons can fail
+
+Accumulated error affects optimization
+
+Example:
+
+0.1 + 0.2 != 0.3
+
+Boolean (bool)
+is_valid = True
+
+
+Used heavily in:
+
+Filtering
+
+Masking
+
+Conditional logic
+
+In ML:
+
+Train/test splits
+
+Thresholding predictions
+
+Strings (str)
+label = "spam"
+
+
+Strings represent:
+
+Categories
+
+Column names
+
+Paths
+
+Text data (NLP later)
+
+Important:
+
+Strings are immutable
+
+Operations create new objects
+
+4. Core Data Structures (Where DS Lives)
+Lists (list)
+values = [1, 2, 3]
+
+
+Characteristics:
+
+Ordered
+
+Mutable
+
+Can contain mixed types
+
+Used for:
+
+Small collections
+
+Temporary storage
+
+Iterative construction
+
+Not ideal for large numerical data.
+
+Tuples (tuple)
+point = (x, y)
+
+
+Characteristics:
+
+Ordered
+
+Immutable
+
+Hashable (can be keys)
+
+Used for:
+
+Fixed structure data
+
+Coordinates
+
+Configuration
+
+Dictionaries (dict)
+record = {"age": 25, "score": 0.82}
+
+
+Characteristics:
+
+Key–value mapping
+
+Unordered conceptually
+
+Fast lookup
+
+In data science:
+
+Metadata
+
+JSON-like data
+
+Configs
+
+Feature mappings
+
+Sets (set)
+unique_ids = set(ids)
+
+
+Characteristics:
+
+Unordered
+
+Unique elements only
+
+Fast membership testing
+
+Used for:
+
+Deduplication
+
+Category tracking
+
+Feature selection logic
+
+5. Mutability (Critical Concept)
+Type	Mutable
+int, float, str, tuple	❌
+list, dict, set	✅
+
+Why this matters:
+
+Passing data to functions
+
+Side effects
+
+Debugging unexpected changes
+
+Example:
+
+def add_item(lst):
+    lst.append(1)
+
+my_list = []
+add_item(my_list)
+# my_list is now changed
+
+6. Copy vs Reference (Common Pitfall)
+a = [1, 2, 3]
+b = a
+b.append(4)
+
+
+Both a and b change.
+
+Correct way:
+
+b = a.copy()
+
+
+In DS pipelines, this mistake can:
+
+Corrupt datasets
+
+Leak test data
+
+Break reproducibility
+
+7. Nested Structures (Real Data)
+
+Real data is often:
+
+data = [
+  {"name": "A", "scores": [80, 90]},
+  {"name": "B", "scores": [70, 85]}
+]
+
+
+Understanding nesting prepares you for:
+
+JSON
+
+APIs
+
+Semi-structured data
+
+Pandas normalization later
+
+8. Type Inspection & Safety
+type(x)
+isinstance(x, list)
+
+
+In DS code:
+
+Validate inputs
+
+Guard against bad data
+
+Ensure assumptions hold
+
+9. When Python Types Stop Being Enough
+
+Python built-ins are great for:
+
+Small data
+
+Control logic
+
+They are not efficient for:
+
+Large numerical arrays
+
+Vectorized computation
+
+This is why:
+
+NumPy and Pandas exist
+
+10. Concept Outcomes
+
+After this topic, learners should:
+
+Choose correct data structures
+
+Understand mutability risks
+
+Read nested data confidently
+
+Avoid reference-related bugs
+
+11. References
+
+Python Docs – Built-in Types
+https://docs.python.org/3/library/stdtypes.html
+
+Real Python – Mutability Explained
+https://realpython.com/python-mutable-vs-immutable-types/
+
+
+Module
+
+Python Basics
+
+Topic
+
+Control Flow
+
+1. Why Control Flow Matters in Data Science
+
+Data science is not just computing values — it is making decisions based on data.
+
+Control flow answers:
+
+Which rows do we keep?
+
+Which branch of logic applies?
+
+How do we process datasets step by step?
+
+When do we stop iterating?
+
+Without control flow:
+
+No data cleaning
+
+No feature engineering
+
+No evaluation logic
+
+2. Conditional Logic: if, elif, else
+Conceptual Role
+
+Conditionals express rules.
+
+In data science, rules are everywhere:
+
+Filtering data
+
+Handling edge cases
+
+Applying thresholds
+
+Categorizing values
+
+Basic Structure
+if condition:
+    action
+elif another_condition:
+    action
+else:
+    fallback
+
+Theory: Boolean Evaluation
+
+Every condition resolves to a boolean:
+
+True
+
+False
+
+Common sources:
+
+Comparisons (>, <, ==)
+
+Logical operators (and, or, not)
+
+Membership checks (in)
+
+Null checks
+
+DS Example (Interpretive)
+if accuracy >= 0.9:
+    status = "excellent"
+elif accuracy >= 0.8:
+    status = "acceptable"
+else:
+    status = "needs improvement"
+
+
+This mirrors evaluation logic, not just syntax.
+
+3. Truthiness & Falsiness (Subtle but Critical)
+
+Python allows objects to be evaluated as True or False.
+
+Falsy values include:
+
+0
+
+0.0
+
+""
+
+[], {}, set()
+
+None
+
+Example:
+
+if data:
+    process(data)
+
+
+In data pipelines:
+
+Empty datasets must be handled explicitly
+
+Silent failures can occur if misunderstood
+
+4. Loops: Iterative Thinking
+for Loops
+
+Used when:
+
+Iterating over collections
+
+Processing rows
+
+Applying transformations sequentially
+
+for value in values:
+    transformed.append(value * 2)
+
+Theory: Iteration vs Vectorization
+
+Loops are:
+
+Clear
+
+Flexible
+
+Slower for large data
+
+Later, NumPy/Pandas replace many loops with vectorized operations.
+
+But conceptually:
+
+Loops define the logic; vectorization optimizes it.
+
+5. range() and Index-Based Logic
+for i in range(len(data)):
+    process(data[i])
+
+
+Useful when:
+
+Index matters
+
+Pairwise comparisons
+
+Sliding windows
+
+But:
+
+Less readable
+
+More error-prone
+
+Preferred in DS only when necessary.
+
+6. while Loops (Rare but Important)
+
+Used when:
+
+Condition-based stopping
+
+Convergence logic
+
+Iterative optimization
+
+Example:
+
+while loss > threshold:
+    update_model()
+
+
+This directly mirrors training loops.
+
+7. Loop Control Statements
+break
+
+Stops the loop entirely.
+
+continue
+
+Skips current iteration.
+
+pass
+
+Placeholder for future logic.
+
+In DS:
+
+Early stopping
+
+Skipping invalid rows
+
+Prototyping pipelines
+
+8. Nested Control Flow (Realistic Pipelines)
+
+Real data logic often looks like:
+
+for row in dataset:
+    if row["age"] is None:
+        continue
+    if row["age"] > 60:
+        group = "senior"
+    else:
+        group = "adult"
+
+
+Understanding nesting is critical for:
+
+Feature generation
+
+Labeling logic
+
+Preprocessing steps
+
+9. Control Flow as Data Filters
+
+Conceptually:
+
+if = condition
+
+loop = traversal
+
+combined = filtering engine
+
+Later:
+
+Pandas replaces this with boolean masks
+
+But logic remains identical
+
+10. Common Mistakes (Theory-Level)
+
+❌ Deeply nested logic → unreadable
+❌ Mixing data logic with display logic
+❌ Silent fallthroughs
+❌ Using loops when vectorization is required (later)
+
+11. Concept Outcomes
+
+After this topic, learners should:
+
+Express data-driven rules
+
+Understand filtering logic
+
+Read preprocessing pipelines
+
+Prepare for Pandas operations
+
+12. References
+
+Python Docs – Control Flow
+https://docs.python.org/3/tutorial/controlflow.html
+
+Real Python – Conditional Logic
+https://realpython.com/python-conditional-statements/
+
+
+Module
+
+Python Basics
+
+Topic
+
+Functions and Modules
+
+1. Why Functions Matter in Data Science
+
+Data science code is rarely written once.
+
+You:
+
+Clean data repeatedly
+
+Re-run experiments
+
+Tune parameters
+
+Compare results
+
+Functions allow you to:
+
+Encapsulate logic, not repeat it
+
+Without functions:
+
+Pipelines become fragile
+
+Experiments become irreproducible
+
+Bugs multiply silently
+
+2. What a Function Really Is (Conceptual)
+
+A function is:
+
+A named transformation
+
+That maps inputs → outputs
+
+With isolated logic
+
+Mathematically:
+
+𝑓
+(
+𝑥
+)
+→
+𝑦
+f(x)→y
+
+In data science:
+
+Feature generators
+
+Metrics
+
+Preprocessing steps
+
+Evaluation logic
+
+3. Function Definition (Syntax Second)
+def normalize(values):
+    return values / max(values)
+
+
+Key ideas:
+
+def binds a name to logic
+
+Parameters define the input contract
+
+return defines the output
+
+4. Input, Output, and Side Effects
+Pure Functions (Ideal)
+def square(x):
+    return x * x
+
+
+No external state
+
+Predictable
+
+Easy to test
+
+Impure Functions (Common but Risky)
+total = 0
+def add(x):
+    global total
+    total += x
+
+
+In data science:
+
+Hidden state causes bugs
+
+Results become non-reproducible
+
+Best practice:
+
+Prefer pure functions for transformations
+
+5. Parameters vs Arguments (Clarity)
+
+Parameters: variables in definition
+
+Arguments: values passed at call time
+
+def scale(x, factor):
+    return x * factor
+
+scale(10, 0.5)
+
+
+This distinction matters when:
+
+Designing APIs
+
+Reading others’ code
+
+Debugging pipelines
+
+6. Default Arguments (Controlled Flexibility)
+def train_model(epochs=100, lr=0.01):
+    ...
+
+
+Use cases:
+
+Sensible defaults
+
+Hyperparameter tuning
+
+Experiment iteration
+
+Danger:
+
+Mutable defaults (lists, dicts)
+
+def bad(x, cache=[]):  # ❌
+
+7. Functions as Building Blocks of Pipelines
+
+Real pipelines look like:
+
+data = load_data()
+data = clean(data)
+features = engineer(data)
+model = train(features)
+evaluate(model)
+
+
+Each step:
+
+Independent
+
+Testable
+
+Replaceable
+
+This is modular thinking, not scripting.
+
+8. Modules: Organizing Knowledge
+
+A module is:
+
+A file containing functions
+
+A logical unit of responsibility
+
+Example:
+
+preprocessing.py
+metrics.py
+models.py
+
+
+Why this matters:
+
+Large projects
+
+Reusability
+
+Team collaboration
+
+9. Importing Modules (Mental Model)
+import numpy as np
+from sklearn.metrics import accuracy_score
+
+
+Imports:
+
+Bind names
+
+Control namespace
+
+Define dependencies
+
+In ML projects:
+
+Imports define your stack
+
+They also define reproducibility
+
+10. Script vs Module Thinking
+Script Thinking ❌
+
+Linear execution
+
+One-time runs
+
+Hard to reuse
+
+Module Thinking ✅
+
+Functions as units
+
+Composable logic
+
+Test-friendly
+
+Data science should evolve from scripts → systems.
+
+11. Docstrings (Underrated but Critical)
+def normalize(x):
+    """
+    Scales input array to [0,1].
+    """
+    return x / x.max()
+
+
+Docstrings explain:
+
+Intent
+
+Assumptions
+
+Output meaning
+
+This is essential for:
+
+Future you
+
+Collaborators
+
+AI-assisted tools
+
+12. Concept Outcomes
+
+After this topic, learners should:
+
+Write reusable logic
+
+Think in pipelines
+
+Avoid hidden state
+
+Structure experiments cleanly
+
+13. References
+
+Python Docs – Functions
+https://docs.python.org/3/tutorial/controlflow.html#defining-functions
+
+Real Python – Functions & Modules
+https://realpython.com/defining-your-own-python-function/
+
+
+Module
+
+Python Basics
+
+Topic
+
+Error Handling
+
+1. Why Error Handling Is Critical in Data Science
+
+In data science, errors are expected, not exceptional.
+
+Data is often:
+
+Incomplete
+
+Messy
+
+Inconsistent
+
+Unexpected
+
+Error handling answers:
+
+What happens when assumptions break?
+
+How do we fail safely instead of silently?
+
+How do we debug data pipelines?
+
+Poor error handling leads to:
+
+Silent data corruption
+
+Misleading results
+
+Broken models with “successful” runs
+
+2. Errors vs Bugs (Conceptual Distinction)
+
+Bug: Logical mistake in your code
+
+Error: Code encounters invalid state or input
+
+In DS:
+
+Errors often come from data
+
+Bugs often come from assumptions
+
+Handling errors well makes bugs visible.
+
+3. Types of Errors in Python (Mental Model)
+Syntax Errors
+
+Code cannot run at all.
+
+if x > 5
+    print(x)
+
+
+These are caught early and are usually easy to fix.
+
+Runtime Errors (Exceptions)
+
+Occur during execution.
+
+Examples:
+
+TypeError
+
+ValueError
+
+KeyError
+
+IndexError
+
+In data science, runtime errors are common due to:
+
+Unexpected data types
+
+Missing values
+
+Shape mismatches
+
+4. Exceptions as Signals (Important Reframe)
+
+Exceptions are signals, not failures.
+
+They indicate:
+
+Broken assumptions
+
+Invalid data
+
+Incorrect logic paths
+
+Good DS code:
+
+Interprets exceptions and responds intentionally
+
+5. try / except (Controlled Failure)
+try:
+    value = int(x)
+except ValueError:
+    value = None
+
+
+This means:
+
+Attempt a risky operation
+
+Handle known failure modes
+
+Keep pipeline alive
+
+6. Avoiding Over-Broad Exception Handling
+
+❌ Bad practice:
+
+try:
+    process(data)
+except:
+    pass
+
+
+Why this is dangerous:
+
+Hides bugs
+
+Masks data issues
+
+Produces false confidence
+
+✅ Better:
+
+except ValueError:
+    handle_invalid_data()
+
+
+Be specific and intentional.
+
+7. Error Handling in Data Pipelines
+
+Common DS scenarios:
+
+Missing columns
+
+Invalid types
+
+Division by zero
+
+Empty datasets
+
+Example:
+
+if df.empty:
+    raise ValueError("Dataset is empty")
+
+
+Fail early, fail loudly.
+
+8. Raising Custom Errors (Design Choice)
+
+Sometimes you should create your own errors.
+
+if age < 0:
+    raise ValueError("Age cannot be negative")
+
+
+Why this matters:
+
+Makes assumptions explicit
+
+Improves debuggability
+
+Protects downstream logic
+
+9. Assertions (Development-Time Guarantees)
+assert X.shape[0] == y.shape[0]
+
+
+Assertions:
+
+Validate invariants
+
+Catch logic errors early
+
+Are removed in optimized runs
+
+Use them to:
+
+Verify shapes
+
+Validate ranges
+
+Confirm expectations
+
+10. Logging vs Printing (Conceptual)
+
+print() → exploration
+
+logging → pipelines & production
+
+In DS experiments:
+
+Logging preserves context
+
+Enables traceability
+
+Helps reproduce failures
+
+(Error handling and logging usually evolve together.)
+
+11. Error Handling Philosophy for DS
+
+Best practices:
+
+Handle expected data issues
+
+Let unexpected errors crash
+
+Never hide failures silently
+
+Prefer clarity over continuity
+
+A broken pipeline is better than a wrong result.
+
+12. Concept Outcomes
+
+After this topic, learners should:
+
+Anticipate data-related errors
+
+Use exceptions intentionally
+
+Debug pipelines faster
+
+Trust their results more
+
+13. References
+
+Python Docs – Errors & Exceptions
+https://docs.python.org/3/tutorial/errors.html
+
+Real Python – Exception Handling
+https://realpython.com/python-exceptions/
+
+
+Module
+
+Python Basics
+
+Topic
+
+Writing Clean, Maintainable Data Science Code
+
+1. Why Clean Code Matters More in Data Science
+
+Data science code is:
+
+Iterative
+
+Experimental
+
+Revisited months later
+
+Read by others (or future you)
+
+Clean code is not about style points.
+It is about trust.
+
+If you can’t trust the code, you can’t trust the results.
+
+2. Clean Code vs “Working Code”
+
+Working code answers one question once
+
+Clean code answers many questions repeatedly
+
+In DS, models evolve:
+
+New data
+
+New features
+
+New metrics
+
+New assumptions
+
+Messy code collapses under iteration.
+
+3. Readability Is the Primary Metric
+
+Python is a communication language, not just an execution language.
+
+Prefer:
+
+average_age = total_age / num_people
+
+
+Over:
+
+a = t / n
+
+
+In data science:
+
+Variables encode meaning
+
+Meaning encodes assumptions
+
+4. Naming Things Properly (Hard but Critical)
+Good Names Communicate:
+
+What the data represents
+
+Units (if applicable)
+
+Stage in the pipeline
+
+Examples:
+
+raw_df
+clean_df
+feature_matrix
+target_vector
+train_accuracy
+
+
+Bad names:
+
+x, y, temp, data1, df2
+
+
+Bad names hide logic.
+
+5. One Function = One Responsibility
+
+Each function should do one thing well.
+
+❌ Bad:
+
+def load_and_clean_and_train():
+    ...
+
+
+✅ Good:
+
+load_data()
+clean_data()
+train_model()
+
+
+This enables:
+
+Testing
+
+Debugging
+
+Replacement
+
+Reuse
+
+6. Keep Functions Small
+
+A good rule:
+
+If you can’t explain the function in one sentence, it’s too big.
+
+Smaller functions:
+
+Are easier to test
+
+Fail more clearly
+
+Encourage modular thinking
+
+7. Avoid Magic Numbers & Hardcoded Logic
+
+❌ Bad:
+
+if score > 0.73:
+    label = 1
+
+
+✅ Good:
+
+THRESHOLD = 0.73
+
+if score > THRESHOLD:
+    label = 1
+
+
+This makes:
+
+Assumptions explicit
+
+Experiments reproducible
+
+Tuning systematic
+
+8. Structure Code Like a Pipeline
+
+Data science workflows are pipelines.
+
+Preferred structure:
+
+def main():
+    data = load_data()
+    data = clean(data)
+    features, target = prepare(data)
+    model = train(features, target)
+    evaluate(model, features, target)
+
+
+This mirrors mental flow, not execution tricks.
+
+9. Comments vs Docstrings (Clear Distinction)
+Comments
+
+Explain why, not what.
+
+# Normalize to avoid feature dominance
+
+Docstrings
+
+Explain:
+
+Purpose
+
+Inputs
+
+Outputs
+
+Assumptions
+
+def normalize(x):
+    """
+    Scales numeric array to [0, 1].
+    Assumes x contains non-negative values.
+    """
+
+10. Avoid Clever Code
+
+Clever code:
+
+Is short
+
+Is dense
+
+Is hard to read
+
+Readable code:
+
+Is explicit
+
+Is longer
+
+Is trustworthy
+
+In DS:
+
+Clarity beats cleverness every time.
+
+11. Reproducibility as a Clean Code Goal
+
+Clean code supports reproducibility by:
+
+Fixed random seeds
+
+Explicit parameters
+
+Deterministic pipelines
+
+Example:
+
+np.random.seed(42)
+
+
+Reproducibility is a scientific requirement, not a luxury.
+
+12. Formatting & Style (Minimal but Consistent)
+
+Follow:
+
+Consistent indentation
+
+Logical spacing
+
+Clear section separation
+
+You don’t need perfection — you need consistency.
+
+13. Clean Code Prevents Silent Failure
+
+Messy code often:
+
+Runs without errors
+
+Produces incorrect results
+
+Goes unnoticed
+
+Clean code:
+
+Exposes assumptions
+
+Fails loudly
+
+Builds confidence
+
+14. Concept Outcomes
+
+After this topic, learners should:
+
+Write readable DS code
+
+Structure pipelines cleanly
+
+Trust experimental results
+
+Scale projects safely
+
+15. References
+
+PEP 8 – Python Style Guide
+https://peps.python.org/pep-0008/
+
+Clean Code (Robert C. Martin) – principles
+
+Real Python – Writing Clean Python Code

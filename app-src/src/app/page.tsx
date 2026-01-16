@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import SystemScrollCanvas from "@/components/SystemScrollCanvas";
 import SectionTextOverlay from "@/components/SectionTextOverlay";
@@ -45,26 +46,28 @@ export default function Home() {
               viewport={{ once: true }}
               className="pt-8"
             >
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-foreground text-background font-medium rounded-full text-lg transition-all duration-300 hover:bg-muted hover:text-foreground border border-transparent hover:border-border"
-              >
-                Start Exploring
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <Link href="/explore">
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-foreground text-background font-medium rounded-full text-lg transition-all duration-300 hover:bg-muted hover:text-foreground border border-transparent hover:border-border"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </motion.button>
+                  Start Exploring
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </motion.button>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
@@ -80,3 +83,4 @@ export default function Home() {
     </main>
   );
 }
+

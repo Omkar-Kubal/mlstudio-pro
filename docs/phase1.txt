@@ -1,0 +1,277 @@
+# MLStudio Pro — Phase 1 PRD
+## Phase 1: Application Shell & Workspace Foundation
+
+---
+
+## 1. Phase Overview
+
+**Phase Name:** Application Shell  
+**Phase Goal:** Build a stable, professional learning workspace that feels like a serious tool (IDE-like), without implementing any learning logic yet.
+
+This phase creates the **empty machine** that all future learning experiences will plug into.
+
+---
+
+## 2. Objectives
+
+### Primary Objective
+Create a **single, persistent learning workspace UI** that supports:
+- Theory reading
+- Visual explanations
+- Parameter controls
+- Code viewing/editing
+- Output and error feedback
+
+All in one screen.
+
+### Secondary Objectives
+- Establish layout conventions that will never need redesign
+- Ensure scalability for future concepts
+- Make the product feel calm, stable, and trustworthy
+
+---
+
+## 3. Out of Scope (Explicit)
+
+The following must **NOT** be implemented in Phase 1:
+
+- Machine learning logic
+- Data science calculations
+- Real visualizations
+- Code execution
+- User authentication
+- Progress tracking
+- Saving experiments
+- Multiple concepts
+- Mobile optimization (desktop-first only)
+
+If any of these appear, Phase 1 has failed.
+
+---
+
+## 4. User Flow (Phase 1 Only)
+
+1. User visits `/`
+2. User clicks “Start Learning” (or equivalent)
+3. User enters `/learn`
+4. User sees the **learning workspace shell**
+5. User can navigate the layout, but cannot “learn” yet
+
+No deeper interaction required.
+
+---
+
+## 5. Route Structure
+
+### Required Routes
+
+- `/`  
+  Landing page (already handled separately)
+
+- `/learn`  
+  Main learning workspace (Phase 1 focus)
+
+No other routes should exist.
+
+---
+
+## 6. Workspace Layout Specification
+
+### Layout Philosophy
+- Single-screen application
+- No tab switching
+- No page reloads
+- Panels remain visible at all times
+
+Think **IDE**, not website.
+
+---
+
+### 6.1 Top Bar (Global Header)
+
+**Purpose**
+- Orient the user
+- Provide context
+- Act as application chrome
+
+**Contents**
+- Product name: `MLStudio Pro`
+- Current concept placeholder: `Regression (Coming Soon)`
+- Concept map placeholder icon (disabled)
+- Subtle progress indicator (static)
+
+**Behavior**
+- Fixed position
+- No dropdowns
+- No navigation links
+- No hover theatrics
+
+---
+
+### 6.2 Left Panel — Theory Panel (Static)
+
+**Purpose**
+- Display written theory content
+
+**Phase 1 Behavior**
+- Static placeholder text
+- Scrollable
+- No dynamic content
+
+**Design Requirements**
+- Clean reading typography
+- Narrow width (documentation-style)
+- Clear hierarchy:
+  - Title
+  - Paragraphs
+  - Inline highlights
+
+---
+
+### 6.3 Center Panel — Visual System Canvas (Placeholder)
+
+**Purpose**
+- Reserve space for future interactive visuals
+
+**Phase 1 Behavior**
+- Static placeholder graphic or empty canvas
+- Label: “Visual System (Coming Soon)”
+
+**Design Requirements**
+- Largest panel on screen
+- Neutral background
+- No animation
+
+---
+
+### 6.4 Controls Panel — Parameters (Disabled)
+
+**Purpose**
+- Show where interaction controls will live
+
+**Phase 1 Behavior**
+- Disabled sliders / toggles
+- Greyed-out labels:
+  - Slope
+  - Intercept
+  - Noise
+- Tooltip or text: “Available in Interact mode”
+
+**Design Requirements**
+- Feels like a control console
+- Clearly inactive
+
+---
+
+### 6.5 Right Panel — Code Editor (Read-Only Placeholder)
+
+**Purpose**
+- Reserve space for code learning
+
+**Phase 1 Behavior**
+- Static code snippet (example)
+- Read-only
+- No execution
+
+**Design Requirements**
+- Monospace font
+- Syntax highlighting (static)
+- Clearly marked as locked
+
+---
+
+### 6.6 Bottom Panel — Output / Logs (Empty)
+
+**Purpose**
+- Reserve space for results and error explanations
+
+**Phase 1 Behavior**
+- Empty state
+- Text: “Program output will appear here”
+
+**Design Requirements**
+- Console-like appearance
+- Calm, non-intrusive
+
+---
+
+## 7. Interaction Rules (Phase 1)
+
+- Panels can be resized (optional but recommended)
+- No buttons perform real actions
+- No keyboard shortcuts required
+- No state persistence
+
+All interactions are **visual only**.
+
+---
+
+## 8. Visual Design Requirements
+
+### Theme
+- Dark neutral background
+- No gradients
+- No illustrations
+- No marketing visuals
+
+### Typography
+- Professional sans-serif
+- Clear hierarchy
+- Comfortable reading sizes
+
+### Motion
+- Minimal or none
+- No animations beyond basic hover feedback
+
+---
+
+## 9. Accessibility & Usability
+
+- Text contrast must be readable
+- Scrollbars visible but minimal
+- Layout must not feel cramped
+- Desktop-first (≥1280px width)
+
+---
+
+## 10. Success Criteria (Exit Conditions)
+
+Phase 1 is complete when:
+
+- The `/learn` route loads a stable workspace
+- All panels are visible and correctly placed
+- The UI feels like a **serious learning tool**
+- No redesign feels necessary to proceed
+- You feel confident plugging logic into it
+
+If the workspace feels like a website instead of a tool, Phase 1 is not done.
+
+---
+
+## 11. Known Risks
+
+- Over-polishing visuals too early
+- Adding “just one feature”
+- Drifting into course-style UI
+- Breaking the single-workspace principle
+
+---
+
+## 12. Handoff to Phase 2
+
+Phase 2 will:
+- Populate the visual system (Regression)
+- Activate Observe mode
+- Introduce real theory content
+
+Phase 1 must remain untouched structurally once Phase 2 begins.
+
+---
+
+## Phase 1 Mantra
+
+> Build the machine before teaching it anything.
+
+---
+
+END OF DOCUMENT

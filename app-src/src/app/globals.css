@@ -50,6 +50,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Enhanced smooth scrolling with momentum */
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -59,6 +61,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  /* GPU acceleration for smoother rendering */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Smooth scroll container optimization */
+.scroll-container {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
 }
 
 /* Utility classes for typography */

@@ -1,0 +1,296 @@
+# MLStudio Pro — Learning Levels & Concept Experience Spec
+
+## Core Philosophy
+
+MLStudio Pro teaches **how AI systems behave**, not how to memorize syntax.
+
+Learning is:
+- Visual-first
+- Interaction-driven
+- System-based
+- Practical, but not rushed
+
+Users should *see*, *test*, and *predict* behavior before touching code.
+
+---
+
+## LEARNING LEVELS & SUBJECT STRUCTURE
+
+Subjects are grouped by **mental models**, not academic categories.
+
+---
+
+## LEVEL 0 — FOUNDATIONS (Required for All Users)
+
+### Goal
+Build intuition about **data, uncertainty, and optimization**.
+
+### Subjects
+- Distributions & data shapes
+- Mean, variance, skew
+- Noise vs signal
+- Loss functions (intuition, not math)
+- Bias vs variance
+- Why models fail
+
+### User Outcome
+User understands **why learning is hard** and why models behave inconsistently.
+
+---
+
+## LEVEL 1 — CORE MACHINE LEARNING (Primary Track)
+
+### Goal
+Understand **decision-making systems**.
+
+### Subjects
+- Linear Regression
+- Logistic Regression
+- k-Nearest Neighbors
+- Decision Trees
+- Random Forests
+- Gradient Boosting (conceptual)
+
+### User Outcome
+User can *predict* how changing data or parameters will affect a model.
+
+---
+
+## LEVEL 2 — UNSUPERVISED & STRUCTURE DISCOVERY
+
+### Goal
+Understand how systems **find structure without labels**.
+
+### Subjects
+- k-Means
+- Hierarchical Clustering
+- PCA (intuition-first)
+- Anomaly Detection
+
+### User Outcome
+User understands grouping, compression, and outliers visually.
+
+---
+
+## LEVEL 3 — DEEP LEARNING SYSTEMS
+
+### Goal
+Understand **layered transformations**.
+
+### Subjects
+- Neural networks (from scratch intuition)
+- Activations
+- Backpropagation (visual flow)
+- Vanishing / exploding gradients
+
+### User Outcome
+User understands why deep models are powerful and fragile.
+
+---
+
+## LEVEL 4 — SPECIALIZED SYSTEMS
+
+### Computer Vision
+- Convolutions
+- Feature maps
+- Pooling
+- Transfer learning
+
+### NLP
+- Tokens
+- Embeddings
+- Attention
+- Transformers (high-level)
+
+### User Outcome
+User understands modern AI architectures conceptually.
+
+---
+
+## LEVEL 5 — SYSTEM BEHAVIOR & PRACTICE
+
+### Goal
+Understand **real-world failure modes**.
+
+### Subjects
+- Overfitting vs generalization
+- Evaluation metrics
+- Dataset shift
+- Pipeline thinking
+
+---
+
+## WHAT IS EXPLICITLY EXCLUDED (FOR NOW)
+
+- Reinforcement Learning
+- LLM training
+- Cloud infrastructure
+- Heavy MLOps
+- Mathematical proofs
+
+---
+
+# DEEP DIVE: FIRST CONCEPT — REGRESSION
+
+This is the **first concept to build**.
+
+---
+
+## Concept Name
+**Regression — Learning Relationships**
+
+---
+
+## ENTRY STATE (What the user sees first)
+
+### Visual System (Center)
+- A 2D plane with scattered data points
+- One adjustable line (the model)
+- Axes labeled intuitively (input → output)
+
+No formulas.  
+No code.  
+Just data and a line.
+
+---
+
+## STEP 1 — OBSERVE
+
+### UI
+- Static dataset shown
+- Model line initially random
+
+### Prompt to user
+> “This line is trying to explain the data.  
+What do you think it should do?”
+
+User cannot interact yet.
+
+---
+
+## STEP 2 — INTERACT
+
+### Controls (Side Panel)
+- Slope slider
+- Intercept slider
+- Noise toggle
+
+### Visual Feedback
+- Line moves immediately
+- Error distances appear as faint vertical lines
+- Overall error shown visually (e.g., shaded region)
+
+### Prompt
+> “Adjust the line to reduce error.”
+
+User *feels* optimization.
+
+---
+
+## STEP 3 — SYSTEM BEHAVIOR
+
+### New Control
+- “Optimize” button
+
+When pressed:
+- Line moves gradually
+- Error decreases step by step
+- Path of adjustment is shown
+
+### Key Insight
+User sees:
+- Why convergence happens
+- Why bad learning rates overshoot
+
+---
+
+## STEP 4 — FAILURE MODES
+
+### Toggles
+- Increase noise
+- Add outliers
+- Reduce data points
+
+### Visual Outcome
+- Line becomes unstable
+- Error regions widen
+- Overfitting becomes visible
+
+### Prompt
+> “Why does this break?”
+
+No explanation yet.
+
+---
+
+## STEP 5 — UNDERSTANDING CHECK (Not a Quiz)
+
+### Interaction
+User is asked to:
+- Predict what happens if noise increases
+- Predict what happens if data shrinks
+
+Then system reveals outcome.
+
+---
+
+## STEP 6 — CODE REVEAL (LAST)
+
+Only now:
+- Minimal Python code appears
+- Code mirrors what user already saw
+- Sliders map to parameters
+
+User reaction should be:
+> “Oh — that’s all it is.”
+
+---
+
+## STEP 7 — SANDBOX MODE
+
+User can:
+- Load different datasets
+- Save experiments
+- Compare runs visually
+
+No grading.  
+No completion badge.
+
+---
+
+## WHY REGRESSION FIRST?
+
+Because it:
+- Is simple
+- Scales to all ML
+- Teaches optimization
+- Makes intuition visible
+- Transfers to every other model
+
+---
+
+## KEY UX RULE (NON-NEGOTIABLE)
+
+> **Never show code before behavior.**
+
+If the user understands the system, the code becomes obvious.
+
+---
+
+## NEXT LOGICAL CONCEPT AFTER REGRESSION
+
+- Classification (logistic regression)
+- Decision boundaries
+- Trees vs lines
+
+---
+
+## PRODUCT NORTH STAR
+
+MLStudio Pro should feel like:
+
+> *A machine you experiment with to understand AI — not a course you finish.*
+
+---
+
+END OF SPEC

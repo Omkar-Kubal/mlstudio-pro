@@ -1,0 +1,335 @@
+1️⃣ ONE-SHOT PROMPT — /learn SYSTEM (END-TO-END)
+One-Shot Prompt: “MLStudio Pro — Interactive Learning System”
+Role
+
+You are a world-class Frontend Architect and Learning-System Designer specializing in interactive educational platforms that combine theory, visualization, and live experimentation.
+
+Objective
+
+Build the complete /learn experience for MLStudio Pro, an educational platform where users learn Data Science by seeing theory, manipulating visuals, and experimenting with real code in one unified interface.
+
+This system must eliminate the need for external tutorials, videos, or reference sites.
+
+Core Philosophy
+
+Theory → Visual intuition → Code → Experimentation
+All four must stay synchronized.
+
+The user should never switch tabs, tools, or websites to understand a concept.
+
+High-Level Structure
+URL Hierarchy (MUST MATCH)
+/learn
+/learn/{subject}
+/learn/{subject}/{module}
+/learn/{subject}/{module}/{topic}
+
+
+Example:
+
+/learn/machine-learning/regression/linear-regression
+
+Learning Unit Model (STRICT)
+
+Each Topic is the atomic unit and MUST support:
+
+Theory | Visuals | Code | Playground
+
+
+No exceptions.
+
+Page Layout — /learn/{topic}
+Overall Layout
+
+Full-screen workspace
+
+Three-panel layout
+
+┌───────────────────────────────┐
+│ Subject / Module / Topic Nav  │
+├───────────────┬───────────────┤
+│ Theory Panel  │ Visual Panel  │
+│ (scrollable) │ (interactive) │
+├───────────────┴───────────────┤
+│ Code + Playground Panel       │
+└───────────────────────────────┘
+
+Panel Responsibilities
+1️⃣ Theory Panel (Left)
+
+Structured paragraphs (not markdown dumps)
+
+Mathematical intuition (plain language first)
+
+Inline references to visuals (“Notice the slope change on the right”)
+
+Scroll-synced highlighting (as visuals change)
+
+NO:
+
+Long lectures
+
+Copy-paste textbook blocks
+
+2️⃣ Visual Panel (Center / Right)
+
+Interactive graphs, animations, and diagrams
+
+Sliders, toggles, and parameter controls
+
+Immediate feedback to parameter changes
+
+Examples:
+
+Regression line updates when slope changes
+
+Loss surface reshapes live
+
+Decision boundary morphs dynamically
+
+NO:
+
+Static images
+
+Decorative animations
+
+3️⃣ Code + Playground Panel (Bottom)
+
+Live Python code (sklearn-based)
+
+Pre-written canonical code
+
+Editable parameters
+
+Run / Reset buttons
+
+Output plots rendered inline
+
+Datasets:
+
+sklearn.datasets only (initially)
+
+Subject → Module → Topic Data Model
+Subject
+Subject {
+  id: string
+  slug: string
+  title: string
+  description: string
+  order: number
+}
+
+Module
+Module {
+  id: string
+  slug: string
+  subject: string
+  title: string
+  order: number
+}
+
+Topic
+Topic {
+  id: string
+  slug: string
+  subject: string
+  module: string
+  title: string
+  order: number
+  prerequisites: string[]
+  outcomes: string[]
+}
+
+Backend API CONTRACT (MANDATORY)
+Subjects
+GET /api/subjects
+GET /api/subjects/{subject_slug}
+
+Modules
+GET /api/modules?subject=machine-learning
+GET /api/modules/{module_slug}
+
+Topics
+GET /api/topics?module=regression
+GET /api/topics/{topic_slug}
+
+Topic Content
+GET /api/topics/{topic_slug}/content
+
+Topic Content Response Shape
+{
+  "theory": [
+    { "id": "t1", "type": "paragraph", "content": "..." }
+  ],
+  "visuals": {
+    "type": "regression-line",
+    "parameters": {
+      "slope": 1,
+      "intercept": 0
+    }
+  },
+  "code": {
+    "language": "python",
+    "template": "..."
+  },
+  "playground": {
+    "dataset": "sklearn.datasets.make_regression",
+    "controls": ["noise", "samples"]
+  }
+}
+
+Navigation Rules
+
+Breadcrumb navigation always visible
+
+Topic completion tracked locally
+
+Previous / Next topic buttons
+
+No free-jump until prerequisites met (optional later)
+
+Non-Negotiables
+
+No videos initially
+
+No PDFs
+
+No external links
+
+Everything is explorable, not watchable
+
+Final CTA Logic
+
+/explore → conceptual understanding
+
+/learn → deep interaction
+
+Projects come later
+
+2️⃣ DETAILED IMPLEMENTATION PLAN (SLOW & SAFE)
+Phase 1 — Learning Backbone (NOW)
+
+Goal: Lock structure so nothing breaks later
+
+Define subjects, modules, topics (DONE)
+
+Create static JSON / TS files
+
+Create API contracts (mocked)
+
+Create routing skeleton
+
+No visuals yet
+
+Phase 2 — /learn UI Skeleton
+
+Goal: Build the shell
+
+Three-panel layout
+
+Tabs: Theory | Visuals | Code | Playground
+
+Empty state handling
+
+Navigation & breadcrumbs
+
+Phase 3 — First Topic (Regression)
+
+Goal: Prove the system
+
+Implement:
+
+Linear Regression
+
+One dataset
+
+One visual
+
+One code playground
+
+Ensure all panels sync
+
+Phase 4 — Scale Topics
+
+Goal: Repeat safely
+
+Clone topic template
+
+Add new visuals & code
+
+Keep UI identical
+
+Only content changes
+
+Phase 5 — Progress & UX
+
+Topic completion
+
+Resume learning
+
+Lock/unlock logic
+
+3️⃣ PHASE-1 PRD (FOUNDATIONAL)
+Product: MLStudio Pro
+Phase: 1 — Learning Backbone
+Objective
+
+Create a stable, extensible learning architecture that supports a full Data Science curriculum without future refactors.
+
+In Scope
+
+Subject → Module → Topic hierarchy
+
+Routing system
+
+API contracts
+
+Topic capability contract
+
+Out of Scope
+
+Theory writing
+
+Visual design polish
+
+Projects
+
+Assessments
+
+Success Criteria
+
+All topics are addressable via URL
+
+No hard-coded pages
+
+One topic can be rendered dynamically
+
+Future topics require zero new UI work
+
+Risks & Mitigation
+Risk	Mitigation
+Scope creep	Strict topic contracts
+UI inconsistency	Single topic template
+Content chaos	Locked hierarchy
+Definition of Done
+
+/learn/{topic} renders with mock data
+
+API returns structured topic content
+
+UI supports all four panels
+
+Final Words (Important)
+
+You are not building a course.
+You are building a learning instrument.
+
+This architecture is solid enough to support:
+
+Years of content
+
+Advanced visuals
+
+Projects
+
+AI tutors later

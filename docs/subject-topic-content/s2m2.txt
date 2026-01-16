@@ -1,0 +1,1352 @@
+Module
+
+NumPy
+
+Topic
+
+NumPy Arrays
+
+1. Why NumPy Exists (Foundational Theory)
+
+Python lists are:
+
+Flexible
+
+Easy to use
+
+General purpose
+
+But they are not designed for numerical computing.
+
+Problems with Python lists in data science:
+
+Slow for large data
+
+High memory overhead
+
+No built-in mathematical semantics
+
+Require explicit loops
+
+NumPy exists to make numerical computation fast, expressive, and mathematically aligned.
+
+2. What a NumPy Array Really Is
+
+A NumPy array (ndarray) is:
+
+A homogeneous collection of elements
+
+Stored in contiguous memory
+
+Interpreted as an n-dimensional mathematical object
+
+This design enables:
+
+Fast vectorized operations
+
+Efficient memory usage
+
+Direct mapping to linear algebra concepts
+
+3. Homogeneity (Why It Matters)
+
+All elements in a NumPy array share the same data type.
+
+import numpy as np
+
+arr = np.array([1, 2, 3])
+arr.dtype
+
+
+This allows:
+
+Predictable memory layout
+
+SIMD optimizations
+
+Fast computation at scale
+
+In contrast, Python lists store references to arbitrary objects.
+
+4. Array Creation (Conceptual View)
+From Python Objects
+np.array([1, 2, 3])
+
+
+This converts Python data into a numerical structure.
+
+Shape-Defined Arrays
+np.zeros((3, 4))
+np.ones((2, 2))
+np.eye(3)
+
+
+These are not “containers” — they represent mathematical entities:
+
+Zero vectors
+
+Identity matrices
+
+Initial parameter tensors
+
+Range-Based Arrays
+np.arange(0, 10, 0.5)
+np.linspace(0, 1, 100)
+
+
+Used for:
+
+Sampling
+
+Grids
+
+Numerical experiments
+
+5. Shape, Dimension, and Rank (Mental Model)
+
+Every NumPy array has:
+
+ndim → number of axes
+
+shape → size along each axis
+
+size → total elements
+
+X = np.array([[1, 2, 3],
+              [4, 5, 6]])
+
+X.ndim    # 2
+X.shape   # (2, 3)
+X.size    # 6
+
+
+In ML:
+
+Rows → samples
+
+Columns → features
+
+Shape errors are among the most common ML bugs.
+
+6. Indexing as Coordinate Access
+
+NumPy indexing is positional and mathematical.
+
+X[0, 1]   # row 0, column 1
+
+
+This is not list access — it is matrix coordinate access.
+
+Understanding this prepares users for:
+
+Tensor indexing
+
+Slicing
+
+Masking
+
+7. Views vs Copies (Critical Theory)
+
+NumPy slicing returns a view, not a copy.
+
+sub = X[:, 0]
+sub[0] = 100
+
+
+This modifies the original array.
+
+Why this matters:
+
+Memory efficiency
+
+Side effects
+
+Debugging numerical pipelines
+
+Use .copy() when isolation is required.
+
+8. Vectorization (Why NumPy Is Fast)
+
+Instead of:
+
+for i in range(len(a)):
+    c[i] = a[i] + b[i]
+
+
+NumPy allows:
+
+c = a + b
+
+
+This is:
+
+Faster
+
+Clearer
+
+More mathematically expressive
+
+Under the hood:
+
+Operations run in optimized C
+
+Loops are eliminated at Python level
+
+9. Broadcasting (Concept Preview)
+
+NumPy can operate on arrays of different shapes by aligning dimensions.
+
+Example:
+
+X + 1
+
+
+This applies a scalar across all elements.
+
+Broadcasting enables:
+
+Feature scaling
+
+Bias addition
+
+Efficient parameter updates
+
+(Full theory comes in the next topic.)
+
+10. NumPy as Mathematical Language
+
+NumPy arrays map directly to:
+
+Vectors
+
+Matrices
+
+Tensors
+
+Operations map to:
+
+Elementwise math
+
+Linear algebra
+
+Statistical computation
+
+This alignment is why NumPy underpins:
+
+Pandas
+
+Scikit-learn
+
+PyTorch
+
+TensorFlow
+
+11. Common Beginner Misconceptions
+
+❌ NumPy arrays are like lists
+❌ Indexing is always copying
+❌ Shape doesn’t matter
+❌ Loops are fine for performance
+
+Correct mental model:
+
+NumPy arrays are mathematical objects, not containers.
+
+12. Concept Outcomes
+
+After this topic, learners should:
+
+Understand why NumPy exists
+
+Read array shapes confidently
+
+Avoid common memory pitfalls
+
+Think in vectors and matrices
+
+13. References
+
+NumPy Official Docs – ndarray
+https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html
+
+SciPy Lectures – NumPy Basics
+https://scipy-lectures.org
+
+
+Module
+
+NumPy
+
+Topic
+
+NumPy Arrays
+
+1. Why NumPy Exists (Foundational Theory)
+
+Python lists are:
+
+Flexible
+
+Easy to use
+
+General purpose
+
+But they are not designed for numerical computing.
+
+Problems with Python lists in data science:
+
+Slow for large data
+
+High memory overhead
+
+No built-in mathematical semantics
+
+Require explicit loops
+
+NumPy exists to make numerical computation fast, expressive, and mathematically aligned.
+
+2. What a NumPy Array Really Is
+
+A NumPy array (ndarray) is:
+
+A homogeneous collection of elements
+
+Stored in contiguous memory
+
+Interpreted as an n-dimensional mathematical object
+
+This design enables:
+
+Fast vectorized operations
+
+Efficient memory usage
+
+Direct mapping to linear algebra concepts
+
+3. Homogeneity (Why It Matters)
+
+All elements in a NumPy array share the same data type.
+
+import numpy as np
+
+arr = np.array([1, 2, 3])
+arr.dtype
+
+
+This allows:
+
+Predictable memory layout
+
+SIMD optimizations
+
+Fast computation at scale
+
+In contrast, Python lists store references to arbitrary objects.
+
+4. Array Creation (Conceptual View)
+From Python Objects
+np.array([1, 2, 3])
+
+
+This converts Python data into a numerical structure.
+
+Shape-Defined Arrays
+np.zeros((3, 4))
+np.ones((2, 2))
+np.eye(3)
+
+
+These are not “containers” — they represent mathematical entities:
+
+Zero vectors
+
+Identity matrices
+
+Initial parameter tensors
+
+Range-Based Arrays
+np.arange(0, 10, 0.5)
+np.linspace(0, 1, 100)
+
+
+Used for:
+
+Sampling
+
+Grids
+
+Numerical experiments
+
+5. Shape, Dimension, and Rank (Mental Model)
+
+Every NumPy array has:
+
+ndim → number of axes
+
+shape → size along each axis
+
+size → total elements
+
+X = np.array([[1, 2, 3],
+              [4, 5, 6]])
+
+X.ndim    # 2
+X.shape   # (2, 3)
+X.size    # 6
+
+
+In ML:
+
+Rows → samples
+
+Columns → features
+
+Shape errors are among the most common ML bugs.
+
+6. Indexing as Coordinate Access
+
+NumPy indexing is positional and mathematical.
+
+X[0, 1]   # row 0, column 1
+
+
+This is not list access — it is matrix coordinate access.
+
+Understanding this prepares users for:
+
+Tensor indexing
+
+Slicing
+
+Masking
+
+7. Views vs Copies (Critical Theory)
+
+NumPy slicing returns a view, not a copy.
+
+sub = X[:, 0]
+sub[0] = 100
+
+
+This modifies the original array.
+
+Why this matters:
+
+Memory efficiency
+
+Side effects
+
+Debugging numerical pipelines
+
+Use .copy() when isolation is required.
+
+8. Vectorization (Why NumPy Is Fast)
+
+Instead of:
+
+for i in range(len(a)):
+    c[i] = a[i] + b[i]
+
+
+NumPy allows:
+
+c = a + b
+
+
+This is:
+
+Faster
+
+Clearer
+
+More mathematically expressive
+
+Under the hood:
+
+Operations run in optimized C
+
+Loops are eliminated at Python level
+
+9. Broadcasting (Concept Preview)
+
+NumPy can operate on arrays of different shapes by aligning dimensions.
+
+Example:
+
+X + 1
+
+
+This applies a scalar across all elements.
+
+Broadcasting enables:
+
+Feature scaling
+
+Bias addition
+
+Efficient parameter updates
+
+(Full theory comes in the next topic.)
+
+10. NumPy as Mathematical Language
+
+NumPy arrays map directly to:
+
+Vectors
+
+Matrices
+
+Tensors
+
+Operations map to:
+
+Elementwise math
+
+Linear algebra
+
+Statistical computation
+
+This alignment is why NumPy underpins:
+
+Pandas
+
+Scikit-learn
+
+PyTorch
+
+TensorFlow
+
+11. Common Beginner Misconceptions
+
+❌ NumPy arrays are like lists
+❌ Indexing is always copying
+❌ Shape doesn’t matter
+❌ Loops are fine for performance
+
+Correct mental model:
+
+NumPy arrays are mathematical objects, not containers.
+
+12. Concept Outcomes
+
+After this topic, learners should:
+
+Understand why NumPy exists
+
+Read array shapes confidently
+
+Avoid common memory pitfalls
+
+Think in vectors and matrices
+
+13. References
+
+NumPy Official Docs – ndarray
+https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html
+
+SciPy Lectures – NumPy Basics
+https://scipy-lectures.org
+
+
+Module
+
+NumPy
+
+Topic
+
+Array Shapes and Broadcasting
+
+1. Why Shape Is the #1 Source of Bugs in ML
+
+In data science, most runtime errors are shape errors.
+
+Models don’t fail because formulas are wrong —
+they fail because arrays don’t align.
+
+Understanding shapes answers:
+
+What does this operation actually mean?
+
+Why does this multiplication fail?
+
+Why did this silently work but give wrong results?
+
+2. Shape Is Semantics, Not Metadata
+
+An array’s shape defines its meaning.
+
+X.shape = (n_samples, n_features)
+
+
+Change the shape → change the interpretation.
+
+Example:
+
+(100, 3) → 100 samples, 3 features
+
+(3, 100) → 3 samples, 100 features
+
+Same numbers. Completely different meaning.
+
+3. Dimensionality: Axes Have Meaning
+
+Each axis corresponds to a logical dimension.
+
+X = np.zeros((5, 4, 3))
+
+
+Interpretation:
+
+Axis 0 → samples
+
+Axis 1 → timesteps / rows
+
+Axis 2 → features
+
+NumPy does not assign meaning — you must.
+
+4. Shape Compatibility (Why Operations Fail)
+
+Elementwise operations require compatible shapes.
+
+A.shape == B.shape
+
+
+Or they must be broadcastable.
+
+Otherwise:
+
+ValueError: operands could not be broadcast together
+
+
+This error is a signal, not a nuisance.
+
+5. Broadcasting: The Core Idea
+
+Broadcasting allows NumPy to:
+
+Operate on arrays of different shapes without copying data
+
+Rule:
+
+Compare shapes from right to left
+
+Dimensions must be equal or one must be 1
+
+Missing dimensions are treated as 1
+
+6. Simple Broadcasting Example
+X = np.array([[1, 2, 3],
+              [4, 5, 6]])
+
+X + 10
+
+
+Interpretation:
+
+Scalar 10 is treated as (1, 1)
+
+Expanded to (2, 3)
+
+Applied elementwise
+
+This is why bias terms work efficiently.
+
+7. Row-wise vs Column-wise Broadcasting
+Row-wise
+bias = np.array([1, 2, 3])
+X + bias
+
+
+Shape:
+
+X: (n, 3)
+
+bias: (3,) → treated as (1, 3)
+
+Applies per feature.
+
+Column-wise (Requires Reshaping)
+bias = np.array([1, 2]).reshape(-1, 1)
+X + bias
+
+
+Shape becomes (2, 1) → applies per row.
+
+Reshaping controls semantics.
+
+8. Reshaping (Critical Skill)
+x.reshape(1, -1)   # row vector
+x.reshape(-1, 1)   # column vector
+
+
+Reshape does not change data, only interpretation.
+
+In ML:
+
+Feature vectors vs batch vectors
+
+Dot products vs elementwise ops
+
+Correct gradient shapes
+
+9. Broadcasting in Linear Models
+
+Linear regression:
+
+𝑦
+=
+𝑋
+𝑊
++
+𝑏
+y=XW+b
+
+Shapes:
+
+X: (n, d)
+
+W: (d, 1)
+
+b: (1,) → broadcast across samples
+
+This works because of broadcasting.
+
+10. Silent Broadcasting (Danger Zone)
+
+Some broadcasts succeed but are conceptually wrong.
+
+Example:
+
+X + y
+
+
+If shapes align accidentally, NumPy won’t warn you.
+
+This can:
+
+Corrupt training
+
+Produce wrong gradients
+
+Go unnoticed
+
+Best practice:
+
+Always inspect shapes explicitly.
+
+11. Broadcasting vs Loops (Conceptual)
+
+Broadcasting replaces loops by:
+
+Aligning dimensions
+
+Applying operations in bulk
+
+Eliminating Python-level iteration
+
+This leads to:
+
+Faster code
+
+Cleaner logic
+
+Fewer bugs (when understood)
+
+12. Mental Model Summary
+
+Think in terms of:
+
+Axes
+
+Alignment
+
+Expansion
+
+Semantics
+
+Not:
+
+Lists
+
+Index tricks
+
+Trial-and-error reshaping
+
+13. Concept Outcomes
+
+After this topic, learners should:
+
+Read and reason about shapes
+
+Predict broadcasting behavior
+
+Control operations via reshaping
+
+Avoid silent logical bugs
+
+14. References
+
+NumPy Docs – Broadcasting
+https://numpy.org/doc/stable/user/basics.broadcasting.html
+
+SciPy Lectures – Array Shapes
+https://scipy-lectures.org/intro/numpy/array_object.html
+
+
+Module
+
+NumPy
+
+Topic
+
+Numerical Stability
+
+1. Why Numerical Stability Deserves Its Own Topic
+
+In data science and ML, it is possible for:
+
+Correct formulas
+
+Correct code
+
+Correct logic
+
+to still produce wrong results.
+
+The reason is finite-precision arithmetic.
+
+Numerical stability answers:
+
+Why do losses become NaN?
+
+Why does training suddenly explode?
+
+Why do probabilities become zero?
+
+Why do small errors grow uncontrollably?
+
+2. Finite Precision (Root Cause)
+
+Computers do not store real numbers exactly.
+
+Floating-point numbers:
+
+Are approximations
+
+Have limited precision
+
+Obey hardware rules, not math rules
+
+Example:
+
+0.1 + 0.2 != 0.3
+
+
+This is not a bug — it is a fundamental limitation.
+
+3. Floating-Point Representation (Conceptual)
+
+A float stores:
+
+Sign
+
+Mantissa (significant digits)
+
+Exponent
+
+This creates:
+
+Rounding errors
+
+Underflow (too small → 0)
+
+Overflow (too large → inf)
+
+In ML, these issues accumulate across:
+
+Iterations
+
+Layers
+
+Matrix multiplications
+
+4. Error Accumulation (Why Iteration Is Dangerous)
+
+Repeated operations amplify small errors.
+
+Example:
+
+x = 1e-10
+for _ in range(1000000):
+    x += 1e-10
+
+
+The result is not exact, even though math says it should be.
+
+In ML:
+
+Gradient descent
+
+Backpropagation
+
+Recurrent models
+
+all involve long chains of operations.
+
+5. Subtraction of Similar Numbers (Catastrophic Cancellation)
+a = 1.0000001
+b = 1.0000000
+a - b
+
+
+Most significant digits cancel out, leaving:
+
+Large relative error
+
+Loss of precision
+
+This appears in:
+
+Variance calculations
+
+Distance metrics
+
+Likelihoods
+
+6. Overflow and Underflow (Extremely Common)
+Overflow
+np.exp(1000)  # inf
+
+Underflow
+np.exp(-1000)  # 0.0
+
+
+In ML:
+
+Softmax
+
+Sigmoid
+
+Log-likelihoods
+
+are especially vulnerable.
+
+7. Logarithms as a Stability Tool
+
+Log transforms convert:
+
+Multiplication → addition
+
+Very small numbers → manageable values
+
+Example:
+
+log(a * b) = log(a) + log(b)
+
+
+This is why:
+
+Loss functions use log-probabilities
+
+Cross-entropy is stable
+
+Likelihoods are computed in log-space
+
+8. Stable Softmax (Canonical Example)
+
+❌ Unstable:
+
+exp_x = np.exp(x)
+softmax = exp_x / exp_x.sum()
+
+
+✅ Stable:
+
+exp_x = np.exp(x - np.max(x))
+softmax = exp_x / exp_x.sum()
+
+
+Subtracting the max:
+
+Prevents overflow
+
+Preserves relative differences
+
+This pattern appears everywhere in ML libraries.
+
+9. Normalization & Scaling (Preventative Stability)
+
+Large-scale differences in features cause:
+
+Gradient explosion
+
+Slow convergence
+
+Numerical instability
+
+Scaling helps:
+
+X = (X - X.mean(axis=0)) / X.std(axis=0)
+
+
+This is not cosmetic — it is numerical protection.
+
+10. Conditioning & Matrix Stability
+
+Ill-conditioned matrices:
+
+Have large condition numbers
+
+Amplify numerical errors
+
+This affects:
+
+Matrix inversion
+
+Linear regression
+
+Optimization steps
+
+SVD and regularization exist partly to stabilize computation.
+
+11. Regularization as Stability Control
+
+Adding small penalties:
+
+Prevents coefficients from exploding
+
+Improves conditioning
+
+Stabilizes optimization
+
+Example:
+
+(XᵀX + λI)⁻¹Xᵀy
+
+
+This is numerical safety, not just overfitting control.
+
+12. Practical Stability Rules (Mental Checklist)
+
+Avoid explicit matrix inversion
+
+Prefer log-space computations
+
+Normalize inputs
+
+Clip extreme values
+
+Monitor NaNs and infs early
+
+Use library implementations (they encode stability tricks)
+
+13. Common Beginner Mistakes
+
+❌ Trusting math blindly
+❌ Ignoring scale differences
+❌ Implementing formulas directly from textbooks
+❌ Debugging NaNs too late
+
+Numerical stability must be designed in, not patched later.
+
+14. Concept Outcomes
+
+After this topic, learners should:
+
+Understand why numbers fail
+
+Recognize instability patterns
+
+Read ML code with new insight
+
+Respect numerical constraints
+
+15. References
+
+NumPy Docs – Floating Point Errors
+https://numpy.org/doc/stable/user/basics.types.html
+
+Stanford CS231n – Numerical Stability
+https://cs231n.github.io/linear-classify/#numerical-stability
+
+Higham – Accuracy and Stability of Numerical Algorithms
+
+
+Module
+
+NumPy
+
+Topic
+
+Numerical Stability
+
+1. Why Numerical Stability Deserves Its Own Topic
+
+In data science and ML, it is possible for:
+
+Correct formulas
+
+Correct code
+
+Correct logic
+
+to still produce wrong results.
+
+The reason is finite-precision arithmetic.
+
+Numerical stability answers:
+
+Why do losses become NaN?
+
+Why does training suddenly explode?
+
+Why do probabilities become zero?
+
+Why do small errors grow uncontrollably?
+
+2. Finite Precision (Root Cause)
+
+Computers do not store real numbers exactly.
+
+Floating-point numbers:
+
+Are approximations
+
+Have limited precision
+
+Obey hardware rules, not math rules
+
+Example:
+
+0.1 + 0.2 != 0.3
+
+
+This is not a bug — it is a fundamental limitation.
+
+3. Floating-Point Representation (Conceptual)
+
+A float stores:
+
+Sign
+
+Mantissa (significant digits)
+
+Exponent
+
+This creates:
+
+Rounding errors
+
+Underflow (too small → 0)
+
+Overflow (too large → inf)
+
+In ML, these issues accumulate across:
+
+Iterations
+
+Layers
+
+Matrix multiplications
+
+4. Error Accumulation (Why Iteration Is Dangerous)
+
+Repeated operations amplify small errors.
+
+Example:
+
+x = 1e-10
+for _ in range(1000000):
+    x += 1e-10
+
+
+The result is not exact, even though math says it should be.
+
+In ML:
+
+Gradient descent
+
+Backpropagation
+
+Recurrent models
+
+all involve long chains of operations.
+
+5. Subtraction of Similar Numbers (Catastrophic Cancellation)
+a = 1.0000001
+b = 1.0000000
+a - b
+
+
+Most significant digits cancel out, leaving:
+
+Large relative error
+
+Loss of precision
+
+This appears in:
+
+Variance calculations
+
+Distance metrics
+
+Likelihoods
+
+6. Overflow and Underflow (Extremely Common)
+Overflow
+np.exp(1000)  # inf
+
+Underflow
+np.exp(-1000)  # 0.0
+
+
+In ML:
+
+Softmax
+
+Sigmoid
+
+Log-likelihoods
+
+are especially vulnerable.
+
+7. Logarithms as a Stability Tool
+
+Log transforms convert:
+
+Multiplication → addition
+
+Very small numbers → manageable values
+
+Example:
+
+log(a * b) = log(a) + log(b)
+
+
+This is why:
+
+Loss functions use log-probabilities
+
+Cross-entropy is stable
+
+Likelihoods are computed in log-space
+
+8. Stable Softmax (Canonical Example)
+
+❌ Unstable:
+
+exp_x = np.exp(x)
+softmax = exp_x / exp_x.sum()
+
+
+✅ Stable:
+
+exp_x = np.exp(x - np.max(x))
+softmax = exp_x / exp_x.sum()
+
+
+Subtracting the max:
+
+Prevents overflow
+
+Preserves relative differences
+
+This pattern appears everywhere in ML libraries.
+
+9. Normalization & Scaling (Preventative Stability)
+
+Large-scale differences in features cause:
+
+Gradient explosion
+
+Slow convergence
+
+Numerical instability
+
+Scaling helps:
+
+X = (X - X.mean(axis=0)) / X.std(axis=0)
+
+
+This is not cosmetic — it is numerical protection.
+
+10. Conditioning & Matrix Stability
+
+Ill-conditioned matrices:
+
+Have large condition numbers
+
+Amplify numerical errors
+
+This affects:
+
+Matrix inversion
+
+Linear regression
+
+Optimization steps
+
+SVD and regularization exist partly to stabilize computation.
+
+11. Regularization as Stability Control
+
+Adding small penalties:
+
+Prevents coefficients from exploding
+
+Improves conditioning
+
+Stabilizes optimization
+
+Example:
+
+(XᵀX + λI)⁻¹Xᵀy
+
+
+This is numerical safety, not just overfitting control.
+
+12. Practical Stability Rules (Mental Checklist)
+
+Avoid explicit matrix inversion
+
+Prefer log-space computations
+
+Normalize inputs
+
+Clip extreme values
+
+Monitor NaNs and infs early
+
+Use library implementations (they encode stability tricks)
+
+13. Common Beginner Mistakes
+
+❌ Trusting math blindly
+❌ Ignoring scale differences
+❌ Implementing formulas directly from textbooks
+❌ Debugging NaNs too late
+
+Numerical stability must be designed in, not patched later.
+
+14. Concept Outcomes
+
+After this topic, learners should:
+
+Understand why numbers fail
+
+Recognize instability patterns
+
+Read ML code with new insight
+
+Respect numerical constraints
+
+15. References
+
+NumPy Docs – Floating Point Errors
+https://numpy.org/doc/stable/user/basics.types.html
+
+Stanford CS231n – Numerical Stability
+https://cs231n.github.io/linear-classify/#numerical-stability
+
+Higham – Accuracy and Stability of Numerical Algorithms

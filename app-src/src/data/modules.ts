@@ -1,0 +1,217 @@
+import { Module } from '@/types/learning';
+
+export const modules: Module[] = [
+    // FOUNDATIONS
+    {
+        id: 'statistics',
+        slug: 'statistics',
+        subjectSlug: 'foundations',
+        title: 'Statistics',
+        description: 'Descriptive and inferential statistics fundamentals',
+        order: 1,
+    },
+    {
+        id: 'probability',
+        slug: 'probability',
+        subjectSlug: 'foundations',
+        title: 'Probability',
+        description: 'Random variables, distributions, and theorems',
+        order: 2,
+    },
+    {
+        id: 'linear-algebra',
+        slug: 'linear-algebra',
+        subjectSlug: 'foundations',
+        title: 'Linear Algebra',
+        description: 'Vectors, matrices, and geometric interpretation',
+        order: 3,
+    },
+    {
+        id: 'optimization',
+        slug: 'optimization',
+        subjectSlug: 'foundations',
+        title: 'Optimization',
+        description: 'Objective functions, gradients, and gradient descent',
+        order: 4,
+    },
+
+    // PROGRAMMING
+    {
+        id: 'python-basics',
+        slug: 'python-basics',
+        subjectSlug: 'programming',
+        title: 'Python Basics',
+        description: 'Python syntax and fundamentals for data science',
+        order: 1,
+    },
+    {
+        id: 'numpy',
+        slug: 'numpy',
+        subjectSlug: 'programming',
+        title: 'NumPy',
+        description: 'Array operations and numerical computing',
+        order: 2,
+    },
+    {
+        id: 'pandas',
+        slug: 'pandas',
+        subjectSlug: 'programming',
+        title: 'Pandas',
+        description: 'DataFrames and data manipulation',
+        order: 3,
+    },
+    {
+        id: 'visualization',
+        slug: 'visualization',
+        subjectSlug: 'programming',
+        title: 'Visualization',
+        description: 'Matplotlib, Seaborn, and plotting techniques',
+        order: 4,
+    },
+
+    // DATA HANDLING
+    {
+        id: 'data-cleaning',
+        slug: 'data-cleaning',
+        subjectSlug: 'data-handling',
+        title: 'Data Cleaning',
+        description: 'Handling missing data, outliers, and quality issues',
+        order: 1,
+    },
+    {
+        id: 'feature-engineering',
+        slug: 'feature-engineering',
+        subjectSlug: 'data-handling',
+        title: 'Feature Engineering',
+        description: 'Creating and selecting features for models',
+        order: 2,
+    },
+    {
+        id: 'data-splitting',
+        slug: 'data-splitting',
+        subjectSlug: 'data-handling',
+        title: 'Data Splitting',
+        description: 'Train, validation, and test set strategies',
+        order: 3,
+    },
+
+    // MACHINE LEARNING
+    {
+        id: 'regression',
+        slug: 'regression',
+        subjectSlug: 'machine-learning',
+        title: 'Regression',
+        description: 'Linear, polynomial, and advanced regression techniques',
+        order: 1,
+    },
+    {
+        id: 'classification',
+        slug: 'classification',
+        subjectSlug: 'machine-learning',
+        title: 'Classification',
+        description: 'Logistic regression, decision boundaries, and classifiers',
+        order: 2,
+    },
+    {
+        id: 'clustering',
+        slug: 'clustering',
+        subjectSlug: 'machine-learning',
+        title: 'Clustering',
+        description: 'K-means, hierarchical, and density-based clustering',
+        order: 3,
+    },
+    {
+        id: 'trees-ensembles',
+        slug: 'trees-ensembles',
+        subjectSlug: 'machine-learning',
+        title: 'Trees & Ensembles',
+        description: 'Decision trees, random forests, and boosting',
+        order: 4,
+    },
+
+    // MODEL EVALUATION
+    {
+        id: 'metrics',
+        slug: 'metrics',
+        subjectSlug: 'model-evaluation',
+        title: 'Metrics',
+        description: 'Regression and classification evaluation metrics',
+        order: 1,
+    },
+    {
+        id: 'validation',
+        slug: 'validation',
+        subjectSlug: 'model-evaluation',
+        title: 'Validation',
+        description: 'Cross-validation and hyperparameter tuning',
+        order: 2,
+    },
+    {
+        id: 'bias-variance',
+        slug: 'bias-variance',
+        subjectSlug: 'model-evaluation',
+        title: 'Bias & Variance',
+        description: 'Understanding underfitting and overfitting',
+        order: 3,
+    },
+
+    // DEEP LEARNING
+    {
+        id: 'neural-networks',
+        slug: 'neural-networks',
+        subjectSlug: 'deep-learning',
+        title: 'Neural Networks',
+        description: 'Perceptrons, architectures, and backpropagation',
+        order: 1,
+    },
+    {
+        id: 'optimization-dl',
+        slug: 'optimization-dl',
+        subjectSlug: 'deep-learning',
+        title: 'Optimization in DL',
+        description: 'Batch normalization, dropout, and optimizers',
+        order: 2,
+    },
+    {
+        id: 'convolutional-networks',
+        slug: 'convolutional-networks',
+        subjectSlug: 'deep-learning',
+        title: 'Convolutional Networks',
+        description: 'CNNs for computer vision',
+        order: 3,
+    },
+    {
+        id: 'sequence-models',
+        slug: 'sequence-models',
+        subjectSlug: 'deep-learning',
+        title: 'Sequence Models',
+        description: 'RNNs, LSTMs, and transformers',
+        order: 4,
+    },
+
+    // APPLIED DOMAINS
+    {
+        id: 'computer-vision',
+        slug: 'computer-vision',
+        subjectSlug: 'applied-domains',
+        title: 'Computer Vision',
+        description: 'Image classification and object detection',
+        order: 1,
+    },
+    {
+        id: 'nlp',
+        slug: 'nlp',
+        subjectSlug: 'applied-domains',
+        title: 'Natural Language Processing',
+        description: 'Text representation and transformers for NLP',
+        order: 2,
+    },
+    {
+        id: 'end-to-end-systems',
+        slug: 'end-to-end-systems',
+        subjectSlug: 'applied-domains',
+        title: 'End-to-End Systems',
+        description: 'ML pipelines and deployment',
+        order: 3,
+    },
+];
