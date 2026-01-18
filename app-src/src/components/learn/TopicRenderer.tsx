@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import type { Topic as LearningTopic, CodeSnippet } from "@/lib/content-types";
+import type { FitProgressionConfig, ParameterSensitivityConfig } from "@/lib/visual-types";
 import { getVisualConfig } from "@/lib/visual-configs";
 import CodeEditor from "./CodeEditor";
 import ParameterSensitivityPrimitive from "./ParameterSensitivityPrimitive";
+import FitProgressionPrimitive from "./FitProgressionPrimitive";
 
 interface TopicRendererProps {
     topic: LearningTopic;
@@ -141,7 +143,7 @@ function CodeBlock({
 
 /**
  * VisualIntuitionWithAnimation - Renders animation with fallback
- * Uses the generalized ParameterSensitivityPrimitive
+ * Selects correct primitive based on config type
  */
 function VisualIntuitionWithAnimation({
     topic,
@@ -156,10 +158,17 @@ function VisualIntuitionWithAnimation({
         return <VisualIntuitionPlaceholder topic={topic} />;
     }
 
+    // Determine which primitive to render based on config type
+    const isFitProgression = "primitiveType" in config && config.primitiveType === "fit-progression";
+
     return (
         <div className="space-y-4">
-            {/* Animation */}
-            <ParameterSensitivityPrimitive config={config} />
+            {/* Animation - select primitive based on config type */}
+            {isFitProgression ? (
+                <FitProgressionPrimitive config={config as FitProgressionConfig} />
+            ) : (
+                <ParameterSensitivityPrimitive config={config as ParameterSensitivityConfig} />
+            )}
 
             {/* Caption */}
             <p className="text-xs text-muted text-center italic">

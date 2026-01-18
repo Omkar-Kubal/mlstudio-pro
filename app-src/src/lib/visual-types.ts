@@ -67,7 +67,43 @@ export interface MetricConfig {
 }
 
 // ============================================
+// Fit Progression Primitive Config
+// ============================================
+
+export interface FitProgressionConfig {
+    /** Unique identifier for this visualization */
+    id: string;
+
+    /** Primitive type discriminator */
+    primitiveType: "fit-progression";
+
+    /** Slider configuration */
+    slider: {
+        label: string;
+        min: number;
+        max: number;
+        step: number;
+        initial: number;
+        inverted?: boolean;  // true for KNN where low = overfit
+    };
+
+    /** Visualization mode */
+    mode: "polynomial-regression" | "decision-boundary";
+
+    /** Data points for visualization */
+    data: {
+        trainPoints: Array<{ x: number; y: number }>;
+        testPoints: Array<{ x: number; y: number }>;
+    };
+
+    /** Caption text */
+    caption: string;
+}
+
+// ============================================
 // Config Registry Type
 // ============================================
 
-export type VisualConfigRegistry = Record<string, ParameterSensitivityConfig>;
+export type VisualConfig = ParameterSensitivityConfig | FitProgressionConfig;
+export type VisualConfigRegistry = Record<string, VisualConfig>;
+
