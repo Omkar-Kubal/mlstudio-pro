@@ -1,0 +1,180 @@
+{
+    "meta": {
+        "subject": "programming",
+        "module": "pandas",
+        "level": "beginner",
+        "estimatedHours": 4
+    },
+    "overview": [
+        "Pandas is the workhorse of data manipulation in Python. This module covers the essential operations: reading data, indexing and filtering, grouping and aggregation, merging datasets, and handling missing data.",
+        "Everything converges from NumPy: arrays become vectors and matrices, shapes have dimensional meaning, broadcasting enables efficient operations. Machine Learning = Linear Algebra executed at scale."
+    ],
+    "topics": [
+        {
+            "title": "Linear Algebra with NumPy",
+            "theory": [
+                "In NumPy: 1D arrays are vectors, 2D arrays are matrices. But interpretation matters: (n,) ≠ (n, 1) ≠ (1, n). Shape defines semantics — always inspect shapes before operations.",
+                "Dot product (np.dot(a, b)) measures similarity, projection, and contribution weighting. Used in linear models, cosine similarity, and attention mechanisms. Matrix multiplication (X @ W) is the engine of linear models — inner dimensions must match.",
+                "Transpose (X.T) is required for normal equations, covariance matrices, and gradient calculations. It swaps rows and columns — a semantic change, not just cosmetic.",
+                "For solving linear systems, prefer np.linalg.solve(A, b) over np.linalg.inv(A) @ b — it's more stable, faster, and numerically safer. Matrix rank tells you how much independent information exists and whether solutions are unique.",
+                "Eigenvalues/eigenvectors (np.linalg.eig(A)) measure directional importance and define principal directions. SVD (np.linalg.svd) enables dimensionality reduction, noise removal, and low-rank approximation. PCA = SVD on centered data."
+            ],
+            "visualIntuition": [
+                "Geometry of linear algebra in ML: Data as points in space, weights as directions, dot product as projection, matrix multiplication as space transformation. Training a model means rotating and scaling space until patterns align."
+            ],
+            "visualSuggestions": [
+                "Matrix multiplication as space transformation animation",
+                "SVD decomposition showing rotate → scale → rotate"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Basic linear algebra operations",
+                    "content": "import numpy as np\n\nv = np.array([1, 2, 3])      # vector\nX = np.array([[1, 2],\n              [3, 4]])       # matrix\n\n# Dot product\nprint(np.dot(v, v))  # 14\n\n# Matrix multiplication\nW = np.array([[1, 0], [0, 1]])\nprint(X @ W)\n\n# Transpose\nprint(X.T)"
+                },
+                {
+                    "language": "python",
+                    "description": "Solving linear systems and linear regression",
+                    "content": "import numpy as np\n\n# Linear regression in pure NumPy\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([2, 4, 5, 4, 5])\n\n# Design matrix with bias column\nX = np.c_[np.ones(len(x)), x]\n\n# Solve using normal equation (stable version)\ntheta = np.linalg.solve(X.T @ X, X.T @ y)\nprint(\"Intercept and slope:\", theta)"
+                }
+            ]
+        },
+        {
+            "title": "Reading & Writing Data",
+            "theory": [
+                "How datasets enter your workflow matters. Formats (CSV, Excel, JSON, Parquet) are not equivalent — they influence structure and types differently.",
+                "Schema inference can be wrong. Explicit dtypes prevent downstream bugs. If data is wrong at load time, everything after is compromised.",
+                "This topic teaches how formats influence structure, how data integrity can be lost at ingestion, and why explicit type specification matters."
+            ],
+            "visualIntuition": [
+                "Pipeline view: Raw Files → Read & Validate → Select & Filter → Group & Summarize → Merge Context → Handle Missingness → Clean Dataset → ML/Visualization"
+            ],
+            "visualSuggestions": [
+                "Format comparison showing same data in CSV vs JSON vs Parquet",
+                "Type inference failure example"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Reading data with explicit types",
+                    "content": "import pandas as pd\n\n# Read with explicit dtypes\ndf = pd.read_csv('data.csv', dtype={'age': 'int32', 'income': 'float64'})\n\n# Specify date parsing\ndf = pd.read_csv('data.csv', parse_dates=['date_column'])"
+                }
+            ]
+        },
+        {
+            "title": "Indexing & Filtering",
+            "theory": [
+                "Difference between label-based (loc) and position-based (iloc) access is critical. Pandas forces explicit intent to prevent silent mistakes.",
+                "Boolean masks provide vectorized filtering — replacing loops with declarative expressions. Index alignment is more important than row numbers.",
+                "Selection is a semantic operation, not a positional one. This mindset prevents many common bugs."
+            ],
+            "visualIntuition": [
+                "Boolean mask visualization: condition creates True/False array, which filters rows when applied to DataFrame."
+            ],
+            "visualSuggestions": [
+                "loc vs iloc comparison with index labels",
+                "Boolean mask filtering step-by-step"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Label vs position-based indexing",
+                    "content": "import pandas as pd\n\ndf = pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]}, index=['x', 'y', 'z'])\n\n# Label-based (use column names and index labels)\nprint(df.loc['x', 'A'])\n\n# Position-based (use integer positions)\nprint(df.iloc[0, 0])\n\n# Boolean filtering\nfiltered = df[df['A'] > 1]\nprint(filtered)"
+                }
+            ]
+        },
+        {
+            "title": "GroupBy & Aggregation",
+            "theory": [
+                "Split → Apply → Combine pattern is the heart of analytics. Groups define context, aggregations define questions, results define insight.",
+                "GroupBy is asking the same question repeatedly for different slices of data. This turns rows into insights."
+            ],
+            "visualIntuition": [
+                "Split-Apply-Combine diagram: DataFrame splits into groups, function applies to each, results combine into summary table."
+            ],
+            "visualSuggestions": [
+                "Step-by-step groupby animation",
+                "Multiple aggregation functions on same group"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "GroupBy and aggregation",
+                    "content": "import pandas as pd\n\ndf = pd.DataFrame({\n    'category': ['A', 'A', 'B', 'B'],\n    'value': [10, 20, 30, 40]\n})\n\n# Basic groupby\nprint(df.groupby('category')['value'].mean())\n\n# Multiple aggregations\nprint(df.groupby('category')['value'].agg(['mean', 'sum', 'count']))"
+                }
+            ]
+        },
+        {
+            "title": "Merging & Joining",
+            "theory": [
+                "Reconstructing reality from fragmented data requires understanding how relational data combines. Keys matter more than rows — wrong join = wrong dataset.",
+                "A join is a claim about how two datasets relate. Cardinality awareness is critical to avoid duplication and data leakage.",
+                "Join types: inner (matching only), left (keep all left), right (keep all right), outer (keep all)."
+            ],
+            "visualIntuition": [
+                "Venn diagram showing different join types and which rows are kept from each table."
+            ],
+            "visualSuggestions": [
+                "Join type comparison with same example data",
+                "Cardinality warning when one-to-many becomes many-to-many"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Merging DataFrames",
+                    "content": "import pandas as pd\n\ndf1 = pd.DataFrame({'key': ['A', 'B', 'C'], 'value1': [1, 2, 3]})\ndf2 = pd.DataFrame({'key': ['A', 'B', 'D'], 'value2': [4, 5, 6]})\n\n# Inner join (matching keys only)\ninner = pd.merge(df1, df2, on='key', how='inner')\n\n# Left join (keep all from left)\nleft = pd.merge(df1, df2, on='key', how='left')\n\nprint(\"Inner:\\n\", inner)\nprint(\"Left:\\n\", left)"
+                }
+            ]
+        },
+        {
+            "title": "Handling Missing Data",
+            "theory": [
+                "Missingness is information, not error. Missing ≠ zero, missing ≠ bug. How you handle missing data encodes assumptions.",
+                "Dropping vs imputing has consequences. NaNs propagate intentionally in Pandas. Imputation strategy depends on whether data is MCAR, MAR, or MNAR.",
+                "Common anti-patterns: chaining operations without inspecting output, relying on default behavior, ignoring index alignment, joining without checking row counts, dropping NaNs blindly."
+            ],
+            "visualIntuition": [
+                "Distribution comparison: original data vs after dropping missing vs after mean imputation — showing how imputation shrinks variance."
+            ],
+            "visualSuggestions": [
+                "Missing pattern visualization (matrix of NaN locations)",
+                "Imputation strategy comparison"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Handling missing data",
+                    "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'A': [1, np.nan, 3], 'B': [4, 5, np.nan]})\n\n# Check for missing\nprint(df.isna().sum())\n\n# Drop rows with any missing\nprint(df.dropna())\n\n# Fill with median\nprint(df.fillna(df.median()))\n\n# Create missingness indicator\ndf['A_missing'] = df['A'].isna().astype(int)"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "Why use np.linalg.solve instead of np.linalg.inv for solving linear systems?",
+        "What is the difference between loc and iloc in Pandas?",
+        "What does the Split-Apply-Combine pattern mean in GroupBy?",
+        "Why is cardinality awareness important when merging DataFrames?",
+        "When is dropping missing data acceptable vs dangerous?",
+        "What is the difference between MCAR, MAR, and MNAR missing data?"
+    ],
+    "references": [
+        {
+            "label": "NumPy Linear Algebra Documentation",
+            "url": "https://numpy.org/doc/stable/reference/routines.linalg.html"
+        },
+        {
+            "label": "Pandas Documentation",
+            "url": "https://pandas.pydata.org/docs/"
+        },
+        {
+            "label": "MIT OCW - Linear Algebra",
+            "url": "https://ocw.mit.edu"
+        }
+    ],
+    "_contentWarnings": [
+        "File contained mixed content: NumPy linear algebra + Pandas overview topics",
+        "Pandas topics are conceptual overviews without detailed code examples",
+        "Missing: detailed Pandas reading/writing examples with different file formats",
+        "Missing: time series handling in Pandas"
+    ]
+}

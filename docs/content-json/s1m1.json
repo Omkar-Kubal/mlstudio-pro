@@ -1,0 +1,236 @@
+{
+  "meta": {
+    "subject": "foundations",
+    "module": "statistics",
+    "level": "beginner",
+    "estimatedHours": 3
+  },
+  "overview": [
+    "Descriptive statistics summarize and organize the main features of a dataset. They focus on the distribution of data (frequency of values), the central tendency (typical values like mean, median, mode), and the variability or spread (range, variance, standard deviation).",
+    "These metrics give a concise summary of data without inferring beyond it. Understanding these fundamentals is critical for data analysis and machine learning."
+  ],
+  "topics": [
+    {
+      "title": "Descriptive Statistics Overview",
+      "theory": [
+        "Descriptive statistics are numerical and graphical tools to summarize data. They describe what the data looks like without making predictions or generalizations.",
+        "The three main components are: distribution (how values are spread), central tendency (where values cluster), and variability (how much values differ from each other).",
+        "Common measures include: Mean (average) - sum of values divided by count; Median - middle value when data is sorted; Mode - most frequent value; Range - max minus min; Variance/Standard Deviation - average squared deviation from mean and its square root."
+      ],
+      "visualIntuition": [
+        "A histogram showing the distribution of values, where bars represent frequency of data points in each bin. The shape hints at the mean (center of bulk of data) and spread (width of distribution)."
+      ],
+      "visualSuggestions": [
+        "Animated histogram that builds up as data points are added, showing how distribution shape emerges",
+        "Interactive chart where users can toggle between different datasets to see how descriptive statistics change"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Visualization: Histogram of sample data",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Generate sample data from a normal distribution\nnp.random.seed(0)\ndata = np.random.normal(loc=5, scale=2, size=200)\n\n# Plot histogram of the data\nplt.hist(data, bins=20, color='skyblue', edgecolor='black')\nplt.xlabel(\"Value\")\nplt.ylabel(\"Frequency\")\nplt.title(\"Histogram of Sample Data\")\nplt.show()"
+        },
+        {
+          "language": "python",
+          "description": "Computing basic descriptive statistics",
+          "content": "import numpy as np\nimport pandas as pd\n\n# Example data\ndata = [2, 5, 7, 7, 10]\n\n# Convert to NumPy array for calculations\narr = np.array(data)\n\nprint(\"Mean:\", np.mean(arr))\nprint(\"Median:\", np.median(arr))\nprint(\"Standard Deviation:\", np.std(arr, ddof=0))\n\n# Calculate mode using pandas\nseries = pd.Series(data)\nmodes = series.mode()\nprint(\"Mode(s):\", list(modes))"
+        }
+      ]
+    },
+    {
+      "title": "Population vs Sample",
+      "theory": [
+        "In statistics, data always comes from somewhere. Understanding where it comes from determines how reliable your conclusions are.",
+        "A population is the complete set of all possible observations you care about. Examples include all users of an app, every house in a city, or every transaction in a year. A population represents the entire reality you want to understand.",
+        "However, populations are often too large, too expensive, or sometimes impossible to measure fully.",
+        "A sample is a subset of the population used to estimate population properties. A sample is a proxy for reality, not reality itself. We calculate statistics on samples (sample mean, sample variance) to infer population parameters (true mean, true variance).",
+        "Machine Learning models never see the population—they learn patterns from samples. If your sample is biased, your model is biased. If it's too small, your model overfits. If it's not representative, your predictions fail in production.",
+        "This is the foundation of generalization, overfitting, train/test splits, and model evaluation."
+      ],
+      "visualIntuition": [
+        "A large cloud of points representing the true population distribution with mean and variance clearly visible. Random subsets are drawn repeatedly, each sample showing its own mean. Sample means fluctuate around the population mean.",
+        "As sample size increases, sample mean stabilizes and variance decreases. This visually explains why more data improves learning."
+      ],
+      "visualSuggestions": [
+        "Interactive slider controlling sample size, showing how sample means converge to population mean as n increases",
+        "Animation showing repeated sampling with confidence intervals narrowing"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Simulating population vs sample behavior",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nnp.random.seed(42)\n\n# True population\npopulation = np.random.normal(loc=50, scale=10, size=100000)\npopulation_mean = population.mean()\n\nsample_sizes = [10, 30, 100, 500]\nsample_means = []\n\nfor size in sample_sizes:\n    sample = np.random.choice(population, size=size)\n    sample_means.append(sample.mean())\n\nprint(\"Population mean:\", population_mean)\nprint(\"Sample means:\", sample_means)"
+        },
+        {
+          "language": "python",
+          "description": "Visualizing the effect of sample size",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nnp.random.seed(42)\npopulation = np.random.normal(loc=50, scale=10, size=100000)\npopulation_mean = population.mean()\nsample_sizes = [10, 30, 100, 500]\n\nplt.figure(figsize=(8, 4))\nplt.hist(population, bins=100, alpha=0.4, label=\"Population\")\n\nfor size in sample_sizes:\n    sample = np.random.choice(population, size=size)\n    plt.axvline(sample.mean(), linestyle=\"--\", label=f\"Sample mean (n={size})\")\n\nplt.axvline(population_mean, color=\"black\", linewidth=2, label=\"Population mean\")\nplt.legend()\nplt.title(\"Population vs Sample Means\")\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Measures of Central Tendency",
+      "theory": [
+        "When we summarize data, the first question we ask is: Where is the center? Measures of central tendency answer this by identifying a typical or representative value. However, there is no single best center—each measure captures a different notion of typicality.",
+        "The Mean (Arithmetic Average) is the sum of all values divided by the number of values. The mean is the balance point of the data where every value contributes equally. It is sensitive to extreme values (outliers). Mean works well for symmetric distributions with no extreme outliers. Many ML algorithms implicitly optimize around the mean (e.g., MSE in regression). A single extreme value can pull the mean far from where most data lies.",
+        "The Median is the middle value when data is sorted. It splits the data into two equal halves and depends only on order, not magnitude. It is robust to outliers. Median works well for skewed distributions like income, house prices, and salaries.",
+        "The Mode is the value that appears most often. It captures commonness, not centrality. A dataset can have one mode (unimodal), multiple modes (multimodal), or no mode. Mode is useful for categorical features, discrete outcomes, and frequency-based decisions.",
+        "Consider salaries: Mean is influenced by billionaires, Median represents the typical worker, Mode shows the most common salary band. In ML: Regression minimizes error around the mean, robust models often align closer to the median, and classification frequency aligns with mode."
+      ],
+      "visualIntuition": [
+        "Show how mean, median, and mode respond differently to data changes—especially outliers. In a symmetric distribution, Mean = Median = Mode. When you introduce an outlier, the mean shifts significantly while the median stays stable and mode remains unchanged."
+      ],
+      "visualSuggestions": [
+        "Interactive visualization where users can drag outlier points and watch mean shift while median stays stable",
+        "Side-by-side comparison of symmetric vs skewed distributions showing the three measures"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Computing mean, median, and mode",
+          "content": "import numpy as np\nimport pandas as pd\n\ndata = [30, 32, 34, 35, 36, 100]  # includes outlier\n\narr = np.array(data)\n\nprint(\"Mean:\", np.mean(arr))\nprint(\"Median:\", np.median(arr))\n\nseries = pd.Series(arr)\nprint(\"Mode:\", series.mode().values)"
+        },
+        {
+          "language": "python",
+          "description": "Visual comparison showing outlier effects",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\ndata = np.array([30, 32, 34, 35, 36, 100])\n\nplt.hist(data, bins=10, alpha=0.6)\nplt.axvline(np.mean(data), color=\"red\", label=\"Mean\")\nplt.axvline(np.median(data), color=\"green\", label=\"Median\")\nplt.legend()\nplt.title(\"Effect of Outliers on Central Tendency\")\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Measures of Dispersion (Variance & Standard Deviation)",
+      "theory": [
+        "If measures of central tendency answer 'Where is the center?', measures of dispersion answer 'How spread out is the data?' Two datasets can have the same mean and median yet behave very differently. Dispersion quantifies uncertainty, variability, and risk—all of which directly affect model behavior.",
+        "Range is the simplest measure: Range = max(x) - min(x). It captures total span but is extremely sensitive to outliers and ignores internal structure. Two datasets with wildly different internal spreads can share the same range.",
+        "Variance measures the average squared deviation from the mean. Every point contributes to spread. Squaring removes sign and penalizes large deviations. Units are squared, which hurts interpretability. Outliers matter more, and variance is differentiable—crucial for optimization via gradient descent. This is why Mean Squared Error (MSE) is used in regression.",
+        "Standard Deviation is the square root of variance. It represents the typical distance from the mean and has the same units as data, making it much easier to reason about. For normal distributions: ~68% of data falls within 1σ, ~95% within 2σ, and ~99.7% within 3σ.",
+        "In ML: High variance leads to unstable predictions, low variance leads to underfitting risk. Feature scale affects distance-based models (KNN, SVM) and gradient-based optimization. Regularization is fundamentally variance control."
+      ],
+      "visualIntuition": [
+        "Show that same mean does not equal same behavior. Two distributions with identical mean but one tight and one wide demonstrate how variance controls confidence and stability. Standard deviation bands (±1σ, ±2σ) can be highlighted with data density fading outward."
+      ],
+      "visualSuggestions": [
+        "Interactive variance slider showing how spread changes while mean stays fixed",
+        "Overlapping histograms of two datasets with same mean but different standard deviations"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Computing variance and standard deviation",
+          "content": "import numpy as np\n\ndata = [10, 12, 13, 15, 50]  # includes outlier\n\narr = np.array(data)\n\nprint(\"Mean:\", np.mean(arr))\nprint(\"Variance:\", np.var(arr))\nprint(\"Standard Deviation:\", np.std(arr))"
+        },
+        {
+          "language": "python",
+          "description": "Comparing two datasets with same mean but different dispersion",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\ndata1 = np.random.normal(50, 5, 500)\ndata2 = np.random.normal(50, 20, 500)\n\nplt.hist(data1, bins=30, alpha=0.5, label=\"Low variance\")\nplt.hist(data2, bins=30, alpha=0.5, label=\"High variance\")\nplt.axvline(50, color=\"black\", linewidth=2)\nplt.legend()\nplt.title(\"Same Mean, Different Dispersion\")\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Skewness & Kurtosis",
+      "theory": [
+        "Not all distributions are symmetric, and not all spreads behave the same. Skewness and kurtosis describe the shape of a distribution beyond center and spread. They answer: Is the distribution pulled to one side? How heavy are the tails? How extreme are rare events?",
+        "Skewness measures whether data leans left or right. Zero skew means symmetric distribution. Positive skew (right-skewed) has a long right tail. Negative skew (left-skewed) has a long left tail. Skewness is about tail direction, not where most data lies. In right-skewed data: Mean > Median > Mode. Examples include income distributions and waiting times.",
+        "Kurtosis measures how extreme the tails of a distribution are. It is often discussed as excess kurtosis (kurtosis − 3). Mesokurtic distributions have normal-like tails. Leptokurtic distributions have heavy tails with more extreme values. Platykurtic distributions have light tails with few extremes. Kurtosis is not peakedness—it's about outlier frequency and extremity.",
+        "In ML: Heavy tails mean frequent large errors. Skewed targets cause regression bias. Many models assume near-normal residuals. Loss functions react differently to tail behavior. MSE is very sensitive to heavy tails while MAE is more robust to kurtosis."
+      ],
+      "visualIntuition": [
+        "Help users see shape differences that statistics alone can't explain. With a skewness slider, the distribution leans left/right and mean moves faster than median. With a kurtosis slider, tails become heavier or lighter while the center remains similar."
+      ],
+      "visualSuggestions": [
+        "Interactive sliders for skewness and kurtosis showing distribution shape changes in real-time",
+        "Comparison of normal vs heavy-tailed distributions highlighting extreme value regions"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Measuring skewness and kurtosis",
+          "content": "import numpy as np\nfrom scipy.stats import skew, kurtosis\n\ndata = np.random.lognormal(mean=0, sigma=1, size=1000)\n\nprint(\"Skewness:\", skew(data))\nprint(\"Kurtosis:\", kurtosis(data))  # excess kurtosis"
+        },
+        {
+          "language": "python",
+          "description": "Visual comparison of normal vs heavy-tailed distributions",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nnormal = np.random.normal(0, 1, 1000)\nheavy_tail = np.random.standard_t(df=2, size=1000)\n\nplt.hist(normal, bins=40, alpha=0.5, label=\"Normal\")\nplt.hist(heavy_tail, bins=40, alpha=0.5, label=\"Heavy-tailed\")\nplt.legend()\nplt.title(\"Kurtosis Comparison\")\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Outliers & Anomalies",
+      "theory": [
+        "Not all data points are equal. Some observations do not follow the general pattern of the data. These are called outliers or anomalies. They can be errors (measurement, logging, data entry), rare but valid events (fraud, failures, spikes), or signals that matter more than averages.",
+        "An Outlier is a data point far from the rest, defined statistically. An Anomaly is a data point that is unusual in context. For example, a salary of ₹10 crore is a statistical outlier, while a sudden spike in network traffic is an anomaly (possibly an attack).",
+        "Outliers appear due to measurement errors, data corruption, rare real-world events, or distribution tail behavior (high kurtosis). Key insight: Outliers are not always bad—removing them blindly destroys information.",
+        "In ML: Mean-based models are extremely sensitive to outliers. Distance-based models amplify them. Scaling can exaggerate their effect. They influence regression coefficients, decision boundaries, and loss values. MSE explodes with outliers while MAE is more robust.",
+        "Detection techniques include: IQR Method (Box-Plot Logic) using Lower bound = Q1 - 1.5×IQR and Upper bound = Q3 + 1.5×IQR, which is robust and distribution-agnostic. Z-Score Method uses z = (x - μ) / σ with threshold |z| > 3, but assumes normality and fails with skewed data. Density and Distance-Based Methods like Local Outlier Factor (LOF), Isolation Forest, and DBSCAN are used for high-dimensional data without clear statistical distribution."
+      ],
+      "visualIntuition": [
+        "Show how outliers distort mean, variance, and decision boundaries. Start with a clean dataset showing a tight cluster with stable center and predictable spread. Then inject outliers—a single point far away causes mean to shift and variance to spike. Compare with robust statistics where median remains unchanged and IQR-based bounds are visible."
+      ],
+      "visualSuggestions": [
+        "Interactive button to add outliers one by one, watching statistics update in real-time",
+        "Split view comparing IQR method vs Z-score method for the same dataset"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "IQR-based outlier detection",
+          "content": "import numpy as np\nimport pandas as pd\n\ndata = pd.Series([10, 12, 13, 14, 15, 100])\n\nQ1 = data.quantile(0.25)\nQ3 = data.quantile(0.75)\nIQR = Q3 - Q1\n\noutliers = data[(data < Q1 - 1.5 * IQR) | (data > Q3 + 1.5 * IQR)]\nprint(\"Outliers detected:\", outliers.values)"
+        },
+        {
+          "language": "python",
+          "description": "Isolation Forest for anomaly detection",
+          "content": "from sklearn.ensemble import IsolationForest\nimport numpy as np\n\ndata = [10, 12, 13, 14, 15, 100]\nX = np.array([[x] for x in data])\n\nmodel = IsolationForest(contamination=0.1, random_state=42)\npreds = model.fit_predict(X)\n\nprint(\"Predictions:\", preds)  # -1 = anomaly, 1 = normal"
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    "What is the difference between mean and median, and when would you prefer one over the other?",
+    "Why does sample size matter when estimating population parameters?",
+    "A dataset has mean 50, median 45, and mode 40. What does this tell you about its shape?",
+    "Why is variance squared while standard deviation is not?",
+    "What is the difference between an outlier and an anomaly?",
+    "Which detection method would you use for high-dimensional data with no clear distribution?"
+  ],
+  "references": [
+    {
+      "label": "Scribbr - Descriptive Statistics Comprehensive Guide",
+      "url": "https://www.scribbr.com/statistics/descriptive-statistics/"
+    },
+    {
+      "label": "Investopedia - Descriptive Statistics Definition",
+      "url": "https://www.investopedia.com/terms/d/descriptive_statistics.asp"
+    },
+    {
+      "label": "NumPy Documentation - Statistical Functions",
+      "url": "https://numpy.org/doc/stable/reference/routines.statistics.html"
+    },
+    {
+      "label": "Pandas Documentation - Series.mode()",
+      "url": "https://pandas.pydata.org/docs/reference/api/pandas.Series.mode.html"
+    },
+    {
+      "label": "Khan Academy - Statistics and Probability",
+      "url": "https://www.khanacademy.org/math/statistics-probability"
+    },
+    {
+      "label": "NIST Engineering Statistics Handbook",
+      "url": "https://www.itl.nist.gov/div898/handbook/"
+    },
+    {
+      "label": "SciPy Statistics Documentation",
+      "url": "https://docs.scipy.org/doc/scipy/reference/stats.html"
+    },
+    {
+      "label": "scikit-learn - Outlier Detection",
+      "url": "https://scikit-learn.org/stable/modules/outlier_detection.html"
+    }
+  ],
+  "_contentWarnings": [
+    "Mathematical formulas in original text were corrupted (garbled Unicode) - formulas described in prose instead",
+    "D3.js visualization code removed as it's frontend-specific; conceptual descriptions preserved in visualIntuition",
+    "Playground interaction ideas preserved as suggestions but not implemented",
+    "Quiz section is basic - could benefit from multiple-choice format with answers",
+    "No practical real-world dataset examples provided - uses synthetic data only"
+  ]
+}

@@ -1,0 +1,139 @@
+{
+    "meta": {
+        "subject": "machine-learning",
+        "module": "trees-ensembles",
+        "level": "intermediate",
+        "estimatedHours": 4
+    },
+    "overview": [
+        "Decision trees and ensemble methods are among the most powerful and interpretable machine learning techniques. Trees recursively partition feature space, while ensembles combine multiple trees to reduce variance or bias.",
+        "This module covers decision trees, bias-variance tradeoff, bagging, random forests, boosting, gradient boosting, and modern implementations like XGBoost and LightGBM."
+    ],
+    "topics": [
+        {
+            "title": "Decision Trees and Bias-Variance",
+            "theory": [
+                "A decision tree is a flowchart-like model that recursively splits data based on feature values. At each node, the algorithm chooses the feature and threshold that best separates the target (using Gini impurity or MSE).",
+                "Trees create hierarchical decision rules: 'If feature x < 5, go left; else go right.' Each leaf outputs a prediction. Easy to interpret and naturally handle mixed data types.",
+                "Unconstrained trees overfit — they can create one leaf per training instance. Deep trees have low bias (model complex patterns) but high variance (small data changes yield very different trees).",
+                "Shallow trees are robust (low variance) but may miss complex structure (high bias). We limit trees via max_depth, pruning, or min_samples_leaf to balance bias and variance."
+            ],
+            "visualIntuition": [
+                "Interactive 2D scatter with decision boundary splitting one feature at a time. Slider for tree depth shows coarse (shallow) vs zig-zag (deep) boundaries."
+            ],
+            "visualSuggestions": [
+                "Tree depth slider showing underfitting vs overfitting",
+                "Boundary stability comparison with small data perturbations"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Decision tree classification and regression",
+                    "content": "from sklearn.datasets import make_classification\nfrom sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor\nimport numpy as np\n\n# Classification\nX, y = make_classification(n_samples=100, n_features=2, n_redundant=0, random_state=1)\ntree_clf = DecisionTreeClassifier(max_depth=5, random_state=1)\ntree_clf.fit(X, y)\n\n# Regression\nrng = np.random.RandomState(42)\nX_reg = rng.uniform(-3, 3, 100).reshape(-1, 1)\ny_reg = X_reg.ravel()**2 + rng.normal(0, 2, 100)\ntree_reg = DecisionTreeRegressor(max_depth=4, random_state=42)\ntree_reg.fit(X_reg, y_reg)\n\nprint(\"Classification accuracy:\", tree_clf.score(X, y))"
+                }
+            ]
+        },
+        {
+            "title": "Bagging and Random Forests",
+            "theory": [
+                "Bagging (Bootstrap Aggregation) reduces variance by building many models in parallel on different random subsets (bootstrap samples) and averaging predictions.",
+                "Each bootstrapped dataset includes ~63% of original points. Since each tree overfits its own sample (low bias, high variance), averaging yields lower variance with similar bias.",
+                "Random Forests extend bagging by adding extra randomness: only a random subset of features is considered at each split. This decorrelates trees for stronger variance reduction.",
+                "Random Forests use full-grown trees but limit feature choice (√d features by default). Final prediction is majority vote (classification) or average (regression). Works well out-of-the-box with few hyperparameters."
+            ],
+            "visualIntuition": [
+                "Multiple tree boundaries (translucent) on same data, then averaged ensemble boundary (solid). As more trees vote, ensemble boundary stabilizes."
+            ],
+            "visualSuggestions": [
+                "Number of estimators slider showing stabilization",
+                "OOB error tracking"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Bagging and Random Forest",
+                    "content": "from sklearn.ensemble import BaggingClassifier, RandomForestClassifier\nfrom sklearn.tree import DecisionTreeClassifier\nfrom sklearn.model_selection import train_test_split\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)\n\n# Bagging\nbag = BaggingClassifier(\n    estimator=DecisionTreeClassifier(max_depth=None),\n    n_estimators=50, random_state=0\n)\nbag.fit(X_train, y_train)\nprint(\"Bagging Accuracy:\", bag.score(X_test, y_test))\n\n# Random Forest\nrf = RandomForestClassifier(n_estimators=100, max_features='sqrt', random_state=42)\nrf.fit(X_train, y_train)\nprint(\"Random Forest Accuracy:\", rf.score(X_test, y_test))\nprint(\"Feature importances:\", rf.feature_importances_)"
+                }
+            ]
+        },
+        {
+            "title": "Boosting and Gradient Boosting",
+            "theory": [
+                "Boosting builds models sequentially, each new model trying to fix errors of the previous ones. Unlike bagging, boosting focuses on reducing bias by combining many weak learners.",
+                "AdaBoost: Start with equal weights, fit weak learner (e.g., tree stump), increase weights on misclassified points, repeat. 'Puts more focus' on difficult cases.",
+                "Gradient Boosting: Fit each new tree to the gradient (pseudo-residual) of a loss function. Performs gradient descent in function space. Uses learning rate to control step size.",
+                "Boosting produces high-accuracy models but can overfit without regularization (early stopping, learning rate, tree depth limits)."
+            ],
+            "visualIntuition": [
+                "1D regression showing residuals after each tree. For classification, point sizes indicate weights shifting after each round."
+            ],
+            "visualSuggestions": [
+                "Training/validation loss curves vs boosting rounds",
+                "Decision boundary evolution as trees are added"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "AdaBoost and Gradient Boosting",
+                    "content": "from sklearn.ensemble import AdaBoostClassifier, GradientBoostingRegressor\nfrom sklearn.datasets import make_regression\n\n# AdaBoost\nada = AdaBoostClassifier(\n    estimator=DecisionTreeClassifier(max_depth=1),\n    n_estimators=50, learning_rate=1.0, random_state=0\n)\nada.fit(X_train, y_train)\nprint(\"AdaBoost Accuracy:\", ada.score(X_test, y_test))\n\n# Gradient Boosting (regression)\nX_reg2, y_reg2 = make_regression(n_samples=150, n_features=1, noise=20.0, random_state=42)\ngbr = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)\ngbr.fit(X_reg2, y_reg2)\nprint(\"Gradient Boosting R²:\", gbr.score(X_reg2, y_reg2))"
+                }
+            ]
+        },
+        {
+            "title": "XGBoost and LightGBM",
+            "theory": [
+                "XGBoost (eXtreme Gradient Boosting) is optimized for speed and performance. Uses second-order Taylor approximation (gradient + Hessian) for split decisions. Supports L1/L2 regularization, parallel tree construction.",
+                "XGBoost grows trees level-wise (all nodes at one depth before going deeper), yielding balanced trees. Supports custom loss functions and sparse inputs.",
+                "LightGBM grows trees leaf-wise (best-first), always splitting the leaf with largest loss reduction. Often faster on large datasets, can achieve higher accuracy but may create very deep trees.",
+                "LightGBM uses histogram-based binning and GOSS (Gradient-based One-Side Sampling) for efficiency. Natively supports categorical features. Both frameworks dominate competitions but require careful tuning."
+            ],
+            "visualIntuition": [
+                "Side-by-side tree growth: XGBoost level-wise (breadth-first) vs LightGBM leaf-wise (one branch deep). Performance comparison as data size increases."
+            ],
+            "visualSuggestions": [
+                "Tree growth animation comparison",
+                "Training time vs accuracy tradeoff visualization"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "XGBoost and LightGBM",
+                    "content": "import xgboost as xgb\nimport lightgbm as lgb\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.datasets import make_classification\n\nX_clf, y_clf = make_classification(n_samples=200, n_features=5, n_informative=3, random_state=0)\nX_tr, X_te, y_tr, y_te = train_test_split(X_clf, y_clf, test_size=0.3, random_state=0)\n\n# XGBoost\nxgb_clf = xgb.XGBClassifier(\n    n_estimators=50, max_depth=4, learning_rate=0.1,\n    use_label_encoder=False, eval_metric='logloss', random_state=42\n)\nxgb_clf.fit(X_tr, y_tr)\nprint(\"XGBoost Accuracy:\", xgb_clf.score(X_te, y_te))\n\n# LightGBM\nlgb_clf = lgb.LGBMClassifier(n_estimators=50, max_depth=4, learning_rate=0.1, random_state=42)\nlgb_clf.fit(X_tr, y_tr)\nprint(\"LightGBM Accuracy:\", lgb_clf.score(X_te, y_te))"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "Why do deep decision trees have low bias but high variance?",
+        "How does bagging reduce variance while maintaining low bias?",
+        "What extra randomness does Random Forest add beyond bagging?",
+        "How does gradient boosting differ from AdaBoost conceptually?",
+        "What is the key difference between XGBoost's level-wise and LightGBM's leaf-wise tree growth?",
+        "When might you choose Random Forest over Gradient Boosting?"
+    ],
+    "references": [
+        {
+            "label": "XGBoost Documentation",
+            "url": "https://xgboost.readthedocs.io/"
+        },
+        {
+            "label": "LightGBM Documentation",
+            "url": "https://lightgbm.readthedocs.io/"
+        },
+        {
+            "label": "Cornell CS - Bagging and Random Forests",
+            "url": "https://www.cs.cornell.edu/courses/cs4780/2022sp/notes/LectureNotes21.html"
+        },
+        {
+            "label": "Neptune AI - XGBoost vs LightGBM",
+            "url": "https://neptune.ai/blog/xgboost-vs-lightgbm"
+        }
+    ],
+    "_contentWarnings": [
+        "Mathematical formulas were corrupted - converted to prose",
+        "Frontend suggestions reference specific technologies (D3, Framer Motion, Pyodide)",
+        "Missing: CatBoost comparison",
+        "Missing: hyperparameter tuning strategies in detail",
+        "XGBoost/LightGBM code requires those packages installed"
+    ]
+}

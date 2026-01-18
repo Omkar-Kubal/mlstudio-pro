@@ -1,0 +1,258 @@
+Model Evaluation: Metrics Module
+Model evaluation is a critical stage in machine learning that ensures models perform reliably and meet real-world requirements
+. It guides model selection, tuning, and deployment by providing quantitative measures of performance. Without proper evaluation, we risk deploying models that only work in ideal conditions, overlook bias or poor generalization, and cannot be explained or trusted by stakeholders
+. Rigorous evaluation also builds trust: if decision-makers don’t understand how a model was tested or what metrics were used, they are unlikely to rely on its predictions
+. In practice, evaluation helps answer questions like “Is the model accurate enough?” and “Does it align with business goals?”, and it is essential for iterative improvement. Why evaluation matters – key points:
+Ensures reliability: Detects overfitting or underperformance before deployment by comparing training vs test results.
+Domain alignment: Chooses metrics that reflect real costs (e.g. false negatives in disease diagnosis may be far worse than false positives).
+Accountability and trust: Quantitative scores (accuracy, error rates, AUC, etc.) provide transparency to stakeholders.
+Guides iteration: Helps prioritize improvements (e.g. changing features or algorithms) by showing where a model fails.
+Visualizations/animations: A useful visualization is an interactive plot comparing training vs test error as model complexity increases (overfitting curve). Another idea is an animation showing predictions on a live data distribution where some predictions are correct/incorrect, highlighting how many errors occur. A simple animation could sweep a slider that increases model noise or bias and shows metrics (accuracy, error) changing in real time. For example, sliders controlling dataset noise level or class imbalance could dynamically update a chart of evaluation metrics. Code example: While "why evaluation matters" is conceptual, you can illustrate overfitting with a toy example. For instance, fit a polynomial regression on noisy data and plot training/test mean squared error (MSE). Below is Python code using scikit-learn and matplotlib to show how increasing model complexity (polynomial degree) affects training vs test MSE on synthetic data. Users can interactively change the degree to see the “U-shaped” test error curve that signals the optimal complexity.
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+
+# Generate synthetic data: y = sin(x) + noise
+rng = np.random.RandomState(0)
+X = rng.uniform(-3, 3, size=100)[:, np.newaxis]
+y = np.sin(X).ravel() + rng.normal(scale=0.3, size=100)
+
+# Split into train/test
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+degrees = [1, 3, 5, 9]  # polynomial degrees to test
+train_errors = []
+test_errors = []
+for d in degrees:
+    model = np.poly1d(np.polyfit(X_train.ravel(), y_train, d))
+    y_pred_train = model(X_train)
+    y_pred_test = model(X_test)
+    train_errors.append(mean_squared_error(y_train, y_pred_train))
+    test_errors.append(mean_squared_error(y_test, y_pred_test))
+
+# Plot training vs test error
+plt.figure(figsize=(6, 4))
+plt.plot(degrees, train_errors, label='Train MSE', marker='o')
+plt.plot(degrees, test_errors, label='Test MSE', marker='o')
+plt.xlabel('Model Complexity (Polynomial Degree)')
+plt.ylabel('Mean Squared Error')
+plt.title('Underfitting vs Overfitting')
+plt.legend()
+plt.show()
+Practice integration: This example lends itself to interactivity. For instance, using ipywidgets in a Jupyter notebook, you can create a slider for degree or noise level so learners can adjust these parameters and instantly see updated training and test errors (using Python in browser frameworks like Pyodide or services like Binder/Voila). On a web frontend, one could build a simple UI with D3.js or Plotly that recalculates errors when sliders (for model complexity or data noise) are changed. Tools like Streamlit or Voila can also host the interactive code so students can tweak parameters themselves.
+Regression Metrics
+Theory: Regression metrics quantify the accuracy of a model whose output is continuous. Common measures include Mean Squared Error (MSE), Mean Absolute Error (MAE), and the Coefficient of Determination (R²). MSE computes the average squared difference between predictions and true values:
+MSE
+=
+1
+n
+∑
+i
+=
+1
+n
+(
+y
+i
+−
+y
+^
+i
+)
+2
+.
+MSE= 
+n
+1
+​
+  
+i=1
+∑
+n
+​
+ (y 
+i
+​
+ − 
+y
+^
+​
+  
+i
+​
+ ) 
+2
+ .
+By squaring errors, MSE heavily penalizes large errors, which can be important in contexts like housing price predictions where a large mistake is costly
+. MAE, given by $\frac{1}{n}\sum |y_i - \hat y_i|$, penalizes errors linearly and is more robust to outliers. The R² score (coefficient of determination) measures the proportion of variance in the target explained by the model, ranging from $-\infty$ to 1. An $R^2=1$ means a perfect fit; $R^2=0$ means the model is no better than predicting the mean
+. In real-world terms, use MSE/RMSE when large errors are particularly undesirable (e.g. forecasting stock prices), and MAE/MAPE (Mean Absolute Percentage Error) when interpretability in original units or relative errors is needed. Visualizations/animations: A helpful visualization is a scatter plot of actual vs predicted values with the ideal $y=x$ line. Points scattered close to the line indicate low error. Coloring points by error magnitude (e.g. heatmap color) can show which predictions are very wrong. Another idea is an interactive residual plot: show residuals $(y_i - \hat{y}_i)$ on the vertical axis against either predicted values or input feature, highlighting patterns or outliers. For animations, one could animate noise being added to the training data and watch how error metrics (MSE/MAE) increase, or slider-control of R² by blending predictions with the true mean line. Code example: The following Python code demonstrates regression metrics on a simple linear dataset. We generate noisy linear data, fit a linear regression, and compute MSE, MAE, and $R^2$ using scikit-learn. The code also plots the true line and predictions.
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.linear_model import LinearRegression
+
+# Create synthetic linear data
+rng = np.random.RandomState(42)
+X = 2 * rng.rand(100, 1) - 1  # feature in [-1,1]
+y = 3 * X.ravel() + 2 + rng.normal(scale=0.5, size=100)  # y = 3x+2 + noise
+
+# Fit linear regression model
+model = LinearRegression().fit(X, y)
+y_pred = model.predict(X)
+
+# Compute metrics
+mse = mean_squared_error(y, y_pred)
+mae = mean_absolute_error(y, y_pred)
+r2 = r2_score(y, y_pred)
+print(f"MSE: {mse:.3f}, MAE: {mae:.3f}, R^2: {r2:.3f}")
+
+# Plot actual vs predicted
+plt.figure(figsize=(5,4))
+plt.scatter(X, y, label='Actual')
+plt.plot(X, y_pred, color='red', label='Predicted')
+plt.xlabel('X'); plt.ylabel('y')
+plt.title('Actual vs Predicted (Linear Regression)')
+plt.legend()
+plt.show()
+Practice integration: To make regression metrics interactive, consider a slider for noise level or outlier fraction. For example, using ipywidgets, one can create a slider that adds increasing Gaussian noise to the data and then automatically refits the model and updates metric values and plots. In a web dashboard (e.g. Streamlit or Dash), you could add interactive input fields for coefficients or noise and redraw the scatter/prediction line. Libraries like Bokeh or Plotly support interactive plots where users can pan/zoom to examine residuals and errors. Alternatively, building a small notebook with Pyodide and matplotlib would allow live code editing and immediate visual feedback as users tweak parameters.
+Classification Metrics
+Theory: Classification metrics assess models that assign discrete labels (e.g. spam vs not-spam). Common metrics include Accuracy, Precision, Recall (Sensitivity), and F1 score. Accuracy is the fraction of all predictions that are correct, but it can be misleading if classes are imbalanced
+ (e.g., predicting 99% “no disease” gets 99% accuracy even if you never detect the disease). Precision is the fraction of predicted positives that are actually positive ($\text{Precision}=TP/(TP+FP)$), measuring how many selected items are relevant. Recall (or Sensitivity) is the fraction of actual positives identified ($\text{Recall}=TP/(TP+FN)$), measuring how many relevant items are selected
+. The F1 score is the harmonic mean of precision and recall, balancing them into one number. These metrics come from the confusion matrix (see next section). In practice, choose metrics based on context: e.g., in medical tests recall (catch all sick patients) may matter more than precision, whereas in email spam filters precision (avoid flagging good emails) could be prioritized. Visualizations/animations: A useful visualization is a bar chart or radar chart comparing accuracy, precision, recall, and F1 for one or more models. For binary classification, overlaying these metrics for different thresholds can show trade-offs. For multi-class problems, a bar graph per class can compare per-class recall and precision. Another idea: animate how precision and recall change as the decision threshold moves. For example, show a slider for the probability threshold, and dynamically update text or charts of precision/recall. A live confusion matrix heatmap (see next section) colored by counts also helps visualize these metrics. Code example: Below is Python code that trains a simple logistic regression on a binary classification dataset (using make_classification). It computes accuracy, precision, recall, and F1 using scikit-learn, and prints a classification report.
+from sklearn.datasets import make_classification
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
+from sklearn.model_selection import train_test_split
+
+# Generate synthetic binary classification data
+X, y = make_classification(n_samples=200, n_features=4, n_informative=2, 
+                           n_redundant=0, n_classes=2, random_state=1)
+
+# Split and train logistic regression
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+clf = LogisticRegression(solver='liblinear').fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+
+# Compute metrics
+acc = accuracy_score(y_test, y_pred)
+prec = precision_score(y_test, y_pred)
+rec = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+print(f"Accuracy: {acc:.3f}, Precision: {prec:.3f}, Recall: {rec:.3f}, F1: {f1:.3f}")
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
+Practice integration: Classification metrics shine with interactive threshold tuning. For instance, take the above logistic model and instead of using clf.predict, use clf.predict_proba to get probability scores. Using a slider, students can set the threshold for classifying a sample as positive. As the threshold changes, the code can update precision, recall, and F1 in real time, demonstrating the trade-off (e.g. a higher threshold may increase precision but lower recall). Tools like Plotly Dash or Streamlit can easily create sliders and display updated metrics and confusion matrices. For frontend-only demos, one could use Altair (with Vega) or D3.js to animate a scatterplot of scores where a vertical line (threshold) moves and metrics are recomputed via WebAssembly or a callback.
+Confusion Matrix
+Theory: A confusion matrix is a summary table for classification performance, especially binary classification. It has four cells: True Positives (TP), True Negatives (TN), False Positives (FP), and False Negatives (FN). For example, in fraud detection: TP = correctly flagged frauds; FP = legitimate transactions wrongly flagged as fraud; FN = missed frauds; TN = correctly identified non-fraud. From this, many metrics derive: accuracy = $(TP+TN)/(TP+TN+FP+FN)$, precision = $TP/(TP+FP)$, recall = $TP/(TP+FN)$, and specificity = $TN/(TN+FP)$. The confusion matrix shows which types of errors a model makes. In multi-class classification, the confusion matrix generalizes to an $N \times N$ table for $N$ classes, where each entry $(i,j)$ counts instances of true class $i$ predicted as $j$. Examining the confusion matrix helps in diagnosing if the model confuses particular classes. Visualizations/animations: A heatmap is a natural way to display a confusion matrix, with rows as true classes and columns as predicted classes. Interactive versions can highlight one cell and compute derived metrics when clicked. Another idea: an exploded pie chart or grid where slices correspond to TP/FP/FN/TN percentages. Animations could include gradually accumulating predictions and updating the matrix counts in real time. For binary classification, an animation of shifting a decision threshold can show how counts move between TP, FP, etc. Code example: Use sklearn.metrics.confusion_matrix and a heatmap from seaborn to display the results. Below we continue from the previous logistic example and plot the confusion matrix.
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+
+# Compute confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+labels = ['Negative', 'Positive']
+
+# Plot heatmap
+plt.figure(figsize=(4,3))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=labels, yticklabels=labels)
+plt.xlabel('Predicted label'); plt.ylabel('True label')
+plt.title('Confusion Matrix')
+plt.show()
+Practice integration: To make confusion matrices interactive, one approach is a web app where users can input or upload predictions and see the resulting matrix and metrics. For an educational tool, a slider could control the threshold for classification probabilities: as students move it, the confusion matrix updates immediately, showing how TP/FP/FN/TN shift. Tools like ipywidgets with interact or Panel/Bokeh can bind a threshold slider to a Python function that recomputes and plots the matrix. In a JavaScript frontend, one could use D3.js to draw the matrix and animate changes, while Python code (via Pyodide or an API) recalculates the counts when threshold moves. Another interactive idea: allow students to manually flip individual predictions (simulate model corrections) and see how the metrics improve.
+ROC and AUC
+Theory: The ROC (Receiver Operating Characteristic) curve plots the True Positive Rate (TPR) (y-axis, same as recall) against the False Positive Rate (FPR) (x-axis, $=!FP/(FP+TN)$) for all possible classification thresholds
+. It shows the trade-off between sensitivity and specificity across thresholds. An ideal model would achieve TPR=1 with FPR=0 (upper left corner)
+. The AUC (Area Under Curve) summarizes the ROC into a single number: it represents the probability that the classifier will rank a random positive example higher than a random negative example
+. An AUC of 1.0 is perfect (as the figure below shows) and 0.5 is no better than random guessing
+. AUC is useful for comparing models, especially when we care about ranking scores rather than a specific threshold. However, AUC assumes a balanced view of classes; with heavy class imbalance, Precision-Recall curves (next section) can be more informative
+. 
+https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc
+Figure: ROC curve of a perfect classifier (filled area AUC=1.0).
+Visualizations/animations: The classic visualization is the ROC plot itself. In an interactive setting, use a slider to vary the decision threshold and move a point on the ROC curve accordingly. For instance, show distributions of prediction scores for the two classes and an adjustable threshold; as the threshold moves, update the TPR and FPR values and move a dot along the ROC plot. The two embedded images illustrate the extremes: the perfect classifier (AUC=1.0) and a random classifier (AUC=0.5). One could also animate comparing multiple ROC curves (e.g., different models or over time) to see which one consistently lies above others.
+from sklearn.metrics import roc_curve, roc_auc_score
+
+# Get prediction probabilities for positive class
+y_scores = clf.predict_proba(X_test)[:,1]
+fpr, tpr, thresholds = roc_curve(y_test, y_scores)
+auc = roc_auc_score(y_test, y_scores)
+
+plt.figure(figsize=(5,4))
+plt.plot(fpr, tpr, label=f'ROC (AUC = {auc:.3f})')
+plt.plot([0,1], [0,1], 'r--', label='Random guess (AUC=0.5)')
+plt.xlabel('False Positive Rate'); plt.ylabel('True Positive Rate')
+plt.title('ROC Curve')
+plt.legend()
+plt.show()
+Practice integration: Interactivity for ROC can involve sliders and live plots. For example, have a slider that selects a threshold, and dynamically draw lines from that threshold to the ROC curve (showing current TPR and FPR). In a Python notebook, one could use Plotly or Bokeh to allow zooming and hovering on the ROC curve to inspect AUC. Alternatively, use Altair with selection to highlight ROC points. On the frontend, D3.js or React with animation libraries (e.g. Framer Motion) can create smooth transitions when switching between multiple ROC curves (e.g., for different models) or evolving models. Running logistic regression predictions with Pyodide in-browser would let students manipulate the threshold slider and see ROC/AUC update in real time. 
+https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc
+Figure: ROC curve of a random classifier (diagonal line, AUC=0.5).
+References: ROC and AUC definitions
+.
+Precision-Recall Curves
+Theory: A Precision-Recall (PR) curve plots Precision (y-axis) against Recall (x-axis) as the classification threshold varies. It is particularly informative when dealing with imbalanced datasets where the positive class is rare
+. The PR curve highlights the trade-off between precision and recall: for example, increasing recall (catching more positives) typically lowers precision (more false positives). The area under the PR curve (sometimes called Average Precision or AP) summarizes this trade-off into a single score (ranging from 0 to 1). Unlike ROC-AUC, a higher baseline for precision occurs when positive classes are rare. In practice, PR curves help answer: “At what threshold can we achieve a desired precision (or recall)?” For instance, in medical tests we may want very high recall (catch all sick patients), even if precision suffers. Visualizations/animations: The PR plot itself is the main visualization. An interactive variant could animate threshold changes similar to ROC: a slider that moves a point along the PR curve, showing current (precision, recall). You can also overlay multiple models’ PR curves for comparison. Additionally, dual charts can show the distribution of scores for positives and negatives, with a moving threshold line, updating precision/recall metrics and points on the curve. The embedded figure (from a sample dataset) shows a PR curve with area ≈0.623. Another idea: since PR curves are less intuitive than ROC, pair the curve with a second panel showing the confusion matrix or count of TP/FP vs threshold dynamically.
+from sklearn.metrics import precision_recall_curve, average_precision_score
+
+precision, recall, pr_thresholds = precision_recall_curve(y_test, y_scores)
+ap = average_precision_score(y_test, y_scores)
+
+plt.figure(figsize=(5,4))
+plt.step(recall, precision, where='post')
+plt.xlabel('Recall'); plt.ylabel('Precision')
+plt.title(f'Precision-Recall Curve (AP = {ap:.3f})')
+plt.ylim([0.0, 1.05])
+plt.xlim([0.0, 1.0])
+plt.show()
+Practice integration: For an interactive demo, one could use a slider for threshold just like with ROC. As the slider moves, recompute and display the current precision and recall, and move a marker along the curve. In a Jupyter environment, ipywidgets or Plotly Dash can be used: selection of the positive class or threshold updates the plot and prints metrics. A more advanced interactive visualization might synchronize the PR curve with the ROC curve views, helping learners see differences (e.g. what happens to AUC-ROC vs AP when data is imbalanced). On the frontend, use ObservableHQ (JavaScript notebooks) or D3.js to draw dynamic PR charts; the computation of precision/recall can be done in-browser with JavaScript or via a small Python engine like Pyodide. Embedding editable code cells (e.g. using Binder with a live notebook) would let students experiment by training different classifiers or altering class distributions and observing how the PR curve shifts. 
+https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc
+Figure: Example Precision-Recall curve (shaded area shows AP ≈0.623).
+References: PR curves favor imbalanced data scenarios
+ and are plotted as precision vs recall.
+Citations
+
+AI Model Evaluation Guide | Label Studio
+
+https://labelstud.io/learningcenter/the-complete-guide-to-evaluations-in-ai/
+
+Classification: ROC and AUC  |  Machine Learning  |  Google for Developers
+
+https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc
+
+AI Model Evaluation Guide | Label Studio
+
+https://labelstud.io/learningcenter/the-complete-guide-to-evaluations-in-ai/
+
+Evaluation metrics and statistical tests for machine learning | Scientific Reports
+
+https://www.nature.com/articles/s41598-024-56706-x?error=cookies_not_supported&code=66affbcd-fe4c-448b-bae7-128cf47eb1f3
+
+Tune Model Hyperparameters - Azure Machine Learning | Microsoft Learn
+
+https://learn.microsoft.com/en-us/azure/machine-learning/component-reference/tune-model-hyperparameters?view=azureml-api-2
+
+The 5 Classification Evaluation metrics every Data Scientist must know | by Rahul Agarwal | TDS Archive | Medium
+
+https://medium.com/data-science/the-5-classification-evaluation-metrics-you-must-know-aa97784ff226
+
+3.4. Metrics and scoring: quantifying the quality of predictions — scikit-learn 1.8.0 documentation
+
+https://scikit-learn.org/stable/modules/model_evaluation.html
+
+3.4. Metrics and scoring: quantifying the quality of predictions — scikit-learn 1.8.0 documentation
+
+https://scikit-learn.org/stable/modules/model_evaluation.html
+
+Classification: ROC and AUC  |  Machine Learning  |  Google for Developers
+
+https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc
+
+Classification: ROC and AUC  |  Machine Learning  |  Google for Developers
+
+https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc
+
+Classification: ROC and AUC  |  Machine Learning  |  Google for Developers
+
+https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc
+All Sources

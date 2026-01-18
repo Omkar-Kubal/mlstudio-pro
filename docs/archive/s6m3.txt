@@ -1,0 +1,2202 @@
+Module: Convolutional Networks
+
+Topic 1: Why CNNs?
+Conceptual Explanation
+The Problem with Fully Connected Networks for Images
+Imagine you're trying to recognize a cat in a photograph. A typical color image might be 224×224 pixels with 3 color channels (RGB), giving us 224 × 224 × 3 = 150,528 input values. If we use a traditional fully connected neural network with just 1,000 neurons in the first hidden layer, we'd need 150,528 × 1,000 = 150,528,000 parameters just for that first layer!
+This creates several critical problems:
+
+Computational Expense: Training becomes prohibitively slow and memory-intensive
+Overfitting: With millions of parameters and limited training data, the model memorizes rather than learns
+Loss of Spatial Structure: Flattening an image into a vector destroys the 2D spatial relationships between pixels
+No Translation Invariance: A cat in the top-left corner and a cat in the bottom-right are treated as completely different patterns
+
+The CNN Solution
+Convolutional Neural Networks solve these problems through three key principles:
+
+Local Connectivity: Each neuron connects only to a small region of the input (receptive field)
+Parameter Sharing: The same filter/kernel is applied across the entire image
+Spatial Hierarchy: Build complex features by combining simple patterns layer by layer
+
+Think of it like this: To recognize a face, you don't need to look at every pixel simultaneously. You first detect edges, then combine edges into facial features (eyes, nose, mouth), then combine features into a complete face. CNNs mirror this hierarchical processing.
+Real-World Analogy
+Consider how you scan a document for typos. You don't memorize the entire page at once. Instead, you:
+
+Move a "reading window" across the text (convolution)
+Look for patterns like misspellings using the same spell-checking rules everywhere (parameter sharing)
+Notice local context matters most—letters next to each other, not words on opposite pages (local connectivity)
+
+Visualization Ideas
+
+Interactive Parameter Comparison Widget
+
+Split screen showing:
+
+Left: Fully connected network with lines representing all connections (overwhelming spaghetti diagram)
+Right: CNN with local receptive fields (clean, organized structure)
+
+
+Display parameter count for each architecture dynamically
+Use Framer Motion to animate the reduction in connections
+
+
+Translation Invariance Demonstration
+
+Show the same object (e.g., digit "5") at different positions in an image
+Animate a sliding window showing how CNNs detect the pattern regardless of location
+Contrast with fully connected network needing to relearn the pattern at each position
+
+
+Hierarchical Feature Learning Visualization
+
+Multi-layer animation showing:
+
+Layer 1: Edge detectors (horizontal, vertical, diagonal)
+Layer 2: Simple shapes (corners, curves)
+Layer 3: Object parts (wheels, windows for cars)
+Layer 4: Complete objects (cars, faces)
+
+
+Use Three.js for 3D layer visualization
+
+
+
+Python Code Example
+pythonimport numpy as np
+import matplotlib.pyplot as plt
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# Compare parameter counts: Fully Connected vs CNN
+def compare_architectures(input_shape=(28, 28, 1), num_classes=10):
+    """
+    Compare fully connected and CNN architectures for MNIST
+    """
+    # Fully Connected Network
+    fc_model = keras.Sequential([
+        layers.Flatten(input_shape=input_shape),
+        layers.Dense(128, activation='relu'),
+        layers.Dense(64, activation='relu'),
+        layers.Dense(num_classes, activation='softmax')
+    ])
+    
+    # Convolutional Neural Network
+    cnn_model = keras.Sequential([
+        layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
+        layers.MaxPooling2D((2, 2)),
+        layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.MaxPooling2D((2, 2)),
+        layers.Flatten(),
+        layers.Dense(64, activation='relu'),
+        layers.Dense(num_classes, activation='softmax')
+    ])
+    
+    # Count parameters
+    fc_params = fc_model.count_params()
+    cnn_params = cnn_model.count_params()
+    
+    print(f"Fully Connected Parameters: {fc_params:,}")
+    print(f"CNN Parameters: {cnn_params:,}")
+    print(f"Parameter Reduction: {((fc_params - cnn_params) / fc_params * 100):.1f}%")
+    
+    return fc_model, cnn_model
+
+# Demonstrate translation invariance
+def demonstrate_translation_invariance():
+    """
+    Show how CNNs detect patterns regardless of position
+    """
+    # Load a sample digit
+    (x_train, y_train), _ = keras.datasets.mnist.load_data()
+    sample_digit = x_train[0]  # Shape: (28, 28)
+    
+    # Create shifted versions
+    shifts = [0, 5, 10, 15]
+    shifted_images = []
+    
+    for shift in shifts:
+        # Create blank canvas
+        canvas = np.zeros((28, 28))
+        # Place digit at different positions
+        if shift + 28 <= 28:
+            canvas[:, shift:shift+28] = sample_digit[:, :28-shift]
+        shifted_images.append(canvas)
+    
+    # Visualize
+    fig, axes = plt.subplots(1, len(shifts), figsize=(12, 3))
+    for i, (img, shift) in enumerate(zip(shifted_images, shifts)):
+        axes[i].imshow(img, cmap='gray')
+        axes[i].set_title(f'Shift: {shift}px')
+        axes[i].axis('off')
+    plt.tight_layout()
+    plt.savefig('translation_invariance.png', dpi=150, bbox_inches='tight')
+    plt.close()
+    
+    return shifted_images
+
+# Visualize receptive fields
+def visualize_receptive_fields(kernel_size=3, image_size=28):
+    """
+    Show how local connectivity works in CNNs
+    """
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+    
+    # Create sample image
+    image = np.random.rand(image_size, image_size)
+    
+    # Show three different receptive field positions
+    positions = [(5, 5), (10, 15), (20, 20)]
+    
+    for idx, (row, col) in enumerate(positions):
+        ax = axes[idx]
+        ax.imshow(image, cmap='viridis', alpha=0.3)
+        
+        # Highlight receptive field
+        rect = plt.Rectangle((col - kernel_size//2, row - kernel_size//2), 
+                            kernel_size, kernel_size, 
+                            linewidth=3, edgecolor='red', facecolor='red', alpha=0.3)
+        ax.add_patch(rect)
+        ax.set_title(f'Receptive Field at ({row}, {col})')
+        ax.axis('off')
+    
+    plt.tight_layout()
+    plt.savefig('receptive_fields.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+# Run comparisons
+if __name__ == "__main__":
+    fc_model, cnn_model = compare_architectures()
+    shifted_images = demonstrate_translation_invariance()
+    visualize_receptive_fields()
+    
+    print("\nArchitecture Summaries:")
+    print("\n--- Fully Connected ---")
+    fc_model.summary()
+    print("\n--- CNN ---")
+    cnn_model.summary()
+```
+
+#### Interactive Exercises
+
+**Exercise 1: Parameter Calculator**
+- Create an interactive widget where learners input:
+  - Image dimensions (width, height, channels)
+  - Number of hidden units for FC network
+  - CNN configuration (number of filters, kernel sizes)
+- Real-time display of parameter counts with visual bar chart comparison
+- Challenge: Find CNN architecture with <10% of FC parameters but similar capacity
+
+**Exercise 2: Translation Invariance Explorer**
+- Upload or draw a simple shape
+- Slider to shift the shape horizontally and vertically
+- Show both FC and CNN activations as the shape moves
+- Learners observe that CNN activations remain consistent while FC activations change dramatically
+
+**Exercise 3: Receptive Field Painter**
+- Interactive grid representing an image
+- Click to select a position
+- Visualize the receptive field that would "see" that position
+- Layer-by-layer view showing how receptive fields grow in deeper layers
+
+**Implementation Notes for Web Platform**
+- Use **Plotly.js** for interactive parameter comparison charts
+- Use **Canvas API** or **Konva.js** for the translation invariance explorer
+- Use **Framer Motion** for smooth transitions when showing layer-by-layer feature building
+- Create a **TensorFlow.js** demo where users can train a tiny FC vs CNN in the browser
+
+---
+
+### Topic 2: Convolution Operation
+
+#### Conceptual Explanation
+
+**What is Convolution?**
+
+Convolution is a mathematical operation that combines two functions to produce a third function. In the context of CNNs, we slide a small matrix called a **kernel** (or **filter**) across an input image, computing the dot product at each position.
+
+Think of it like a stamp that you press onto different parts of a document:
+- The stamp pattern is the **kernel**
+- Where you press the stamp is the **position**
+- The mark it leaves is the **activation**
+
+**The Mathematics**
+
+For a 2D image `I` and kernel `K`, the convolution at position (i, j) is:
+```
+(I * K)[i,j] = ΣΣ I[i+m, j+n] × K[m, n]
+```
+
+Where the summation is over the kernel dimensions.
+
+**Step-by-Step Example**
+
+Let's convolve a 5×5 image with a 3×3 edge detection kernel:
+```
+Image I:                    Kernel K (vertical edge):
+[1 1 1 0 0]                 [-1  0  1]
+[1 1 1 0 0]                 [-1  0  1]
+[1 1 1 0 0]                 [-1  0  1]
+[1 1 0 0 0]
+[1 0 0 0 0]
+```
+
+At position (1,1):
+```
+Output = 1×(-1) + 1×0 + 1×1 +
+         1×(-1) + 1×0 + 1×1 +
+         1×(-1) + 1×0 + 1×1
+       = (-1+1) + (-1+1) + (-1+1) = 0
+```
+
+At the edge between light and dark regions, you get high activations—this is how edge detection works!
+
+**Key Parameters**
+
+1. **Kernel Size**: Typically 3×3, 5×5, or 7×7. Larger kernels capture more context but increase computation.
+
+2. **Stride**: How many pixels to skip when sliding the kernel. Stride=1 is most common; stride=2 reduces output size.
+
+3. **Padding**: Adding border pixels to control output size
+   - **Valid**: No padding (output smaller than input)
+   - **Same**: Padding to keep output size = input size
+
+4. **Number of Filters**: How many different kernels to apply (creates depth in output)
+
+**Output Size Formula**
+```
+Output Width = (Input Width - Kernel Width + 2×Padding) / Stride + 1
+Output Height = (Input Height - Kernel Height + 2×Padding) / Stride + 1
+Visualization Ideas
+
+Interactive Convolution Animator
+
+2D grid showing input image and kernel
+Animate kernel sliding across image (use Framer Motion)
+Highlight current receptive field in color
+Show element-wise multiplication in a popup
+Display running sum and final activation value
+Control stride and padding with sliders
+
+
+Filter Effect Gallery
+
+Upload an image or use sample images
+Predefined kernels: edge detection (horizontal, vertical, diagonal), blur, sharpen
+Apply filter and show before/after with a slider divider
+Display the kernel values as a heatmap
+
+
+3D Convolution Visualization
+
+Use Three.js to show:
+
+Input as a 3D volume (height × width × channels)
+Multiple kernels as 3D blocks
+Output feature maps stacked in depth
+
+
+Animate the sliding and computation process in 3D
+
+
+Padding and Stride Explorer
+
+Interactive controls for padding (0, 1, 2) and stride (1, 2, 3)
+Real-time calculation of output dimensions
+Visual representation of which input pixels contribute to each output pixel
+
+
+
+Python Code Example
+pythonimport numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import correlate2d
+import seaborn as sns
+from matplotlib.animation import FuncAnimation
+from IPython.display import HTML
+
+# Manual convolution implementation
+def convolve2d_manual(image, kernel, stride=1, padding=0):
+    """
+    Perform 2D convolution manually (actually cross-correlation as in CNNs)
+    
+    Args:
+        image: 2D numpy array
+        kernel: 2D numpy array (filter)
+        stride: step size for sliding window
+        padding: number of zeros to add around border
+    
+    Returns:
+        output: convolved feature map
+    """
+    # Add padding
+    if padding > 0:
+        image = np.pad(image, padding, mode='constant', constant_values=0)
+    
+    # Calculate output dimensions
+    i_h, i_w = image.shape
+    k_h, k_w = kernel.shape
+    o_h = (i_h - k_h) // stride + 1
+    o_w = (i_w - k_w) // stride + 1
+    
+    # Initialize output
+    output = np.zeros((o_h, o_w))
+    
+    # Perform convolution
+    for i in range(o_h):
+        for j in range(o_w):
+            # Extract region
+            i_start = i * stride
+            j_start = j * stride
+            region = image[i_start:i_start+k_h, j_start:j_start+k_w]
+            
+            # Element-wise multiplication and sum
+            output[i, j] = np.sum(region * kernel)
+    
+    return output
+
+# Common kernels
+def get_kernels():
+    """
+    Return dictionary of common convolution kernels
+    """
+    kernels = {
+        'vertical_edge': np.array([
+            [-1, 0, 1],
+            [-1, 0, 1],
+            [-1, 0, 1]
+        ]),
+        'horizontal_edge': np.array([
+            [-1, -1, -1],
+            [ 0,  0,  0],
+            [ 1,  1,  1]
+        ]),
+        'sobel_x': np.array([
+            [-1, 0, 1],
+            [-2, 0, 2],
+            [-1, 0, 1]
+        ]),
+        'sobel_y': np.array([
+            [-1, -2, -1],
+            [ 0,  0,  0],
+            [ 1,  2,  1]
+        ]),
+        'blur': np.ones((3, 3)) / 9,
+        'sharpen': np.array([
+            [ 0, -1,  0],
+            [-1,  5, -1],
+            [ 0, -1,  0]
+        ]),
+        'emboss': np.array([
+            [-2, -1, 0],
+            [-1,  1, 1],
+            [ 0,  1, 2]
+        ])
+    }
+    return kernels
+
+# Visualize convolution step by step
+def visualize_convolution_steps(image, kernel, stride=1, padding=0):
+    """
+    Create visualization showing convolution computation step by step
+    """
+    # Add padding
+    if padding > 0:
+        padded_image = np.pad(image, padding, mode='constant', constant_values=0)
+    else:
+        padded_image = image.copy()
+    
+    k_h, k_w = kernel.shape
+    i_h, i_w = padded_image.shape
+    o_h = (i_h - k_h) // stride + 1
+    o_w = (i_w - k_w) // stride + 1
+    
+    # Create figure for first few steps
+    num_steps = min(6, o_h * o_w)
+    fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+    axes = axes.flatten()
+    
+    step = 0
+    for i in range(o_h):
+        for j in range(o_w):
+            if step >= num_steps:
+                break
+            
+            # Extract region
+            i_start = i * stride
+            j_start = j * stride
+            region = padded_image[i_start:i_start+k_h, j_start:j_start+k_w]
+            
+            # Compute activation
+            activation = np.sum(region * kernel)
+            
+            # Visualize
+            ax = axes[step]
+            
+            # Show padded image with highlighted region
+            display_image = padded_image.copy()
+            highlight = np.zeros_like(display_image)
+            highlight[i_start:i_start+k_h, j_start:j_start+k_w] = 1
+            
+            ax.imshow(display_image, cmap='gray', alpha=0.5)
+            ax.imshow(highlight, cmap='Reds', alpha=0.3)
+            ax.set_title(f'Position ({i},{j})\nActivation: {activation:.2f}')
+            ax.axis('off')
+            
+            # Add kernel visualization as inset
+            axins = ax.inset_axes([0.65, 0.05, 0.3, 0.3])
+            axins.imshow(kernel, cmap='RdBu_r', vmin=-2, vmax=2)
+            axins.set_title('Kernel', fontsize=8)
+            axins.axis('off')
+            
+            step += 1
+    
+    plt.tight_layout()
+    plt.savefig('convolution_steps.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+# Apply different kernels to an image
+def apply_multiple_kernels(image, save_path='kernel_effects.png'):
+    """
+    Apply various kernels and display results
+    """
+    kernels = get_kernels()
+    
+    fig, axes = plt.subplots(2, 4, figsize=(16, 8))
+    axes = axes.flatten()
+    
+    # Original image
+    axes[0].imshow(image, cmap='gray')
+    axes[0].set_title('Original Image', fontsize=12, fontweight='bold')
+    axes[0].axis('off')
+    
+    # Apply each kernel
+    for idx, (name, kernel) in enumerate(kernels.items(), start=1):
+        # Convolve
+        output = convolve2d_manual(image, kernel, padding=1)
+        
+        # Plot
+        axes[idx].imshow(output, cmap='gray')
+        axes[idx].set_title(name.replace('_', ' ').title(), fontsize=12)
+        axes[idx].axis('off')
+        
+        # Show kernel as small inset
+        axins = axes[idx].inset_axes([0.7, 0.05, 0.25, 0.25])
+        im = axins.imshow(kernel, cmap='RdBu_r', vmin=-2, vmax=2)
+        axins.axis('off')
+    
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150, bbox_inches='tight')
+    plt.close()
+
+# Demonstrate stride and padding effects
+def demonstrate_stride_padding():
+    """
+    Show how stride and padding affect output size
+    """
+    # Create simple image
+    image = np.random.rand(8, 8)
+    kernel = np.array([
+        [1, 0, -1],
+        [1, 0, -1],
+        [1, 0, -1]
+    ])
+    
+    configs = [
+        {'stride': 1, 'padding': 0, 'title': 'Stride=1, Padding=0'},
+        {'stride': 1, 'padding': 1, 'title': 'Stride=1, Padding=1'},
+        {'stride': 2, 'padding': 0, 'title': 'Stride=2, Padding=0'},
+        {'stride': 2, 'padding': 1, 'title': 'Stride=2, Padding=1'},
+    ]
+    
+    fig, axes = plt.subplots(2, 2, figsize=(12, 12))
+    axes = axes.flatten()
+    
+    for ax, config in zip(axes, configs):
+        output = convolve2d_manual(image, kernel, 
+                                   stride=config['stride'], 
+                                   padding=config['padding'])
+        
+        im = ax.imshow(output, cmap='RdBu_r')
+        ax.set_title(f"{config['title']}\nOutput: {output.shape}", 
+                    fontsize=12, fontweight='bold')
+        ax.axis('off')
+        plt.colorbar(im, ax=ax, fraction=0.046)
+    
+    plt.tight_layout()
+    plt.savefig('stride_padding_effects.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+# Using TensorFlow/Keras
+def keras_convolution_example():
+    """
+    Show convolution using Keras layers
+    """
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import Conv2D
+    
+    # Create a simple model with one conv layer
+    model = Sequential([
+        Conv2D(filters=32, kernel_size=(3, 3), 
+               activation='relu', padding='same',
+               input_shape=(28, 28, 1))
+    ])
+    
+    # Load MNIST
+    (x_train, _), _ = keras.datasets.mnist.load_data()
+    sample_image = x_train[0:1] / 255.0  # Normalize
+    sample_image = sample_image.reshape(1, 28, 28, 1)
+    
+    # Get feature maps
+    feature_maps = model.predict(sample_image, verbose=0)
+    
+    # Visualize some feature maps
+    fig, axes = plt.subplots(4, 8, figsize=(16, 8))
+    axes = axes.flatten()
+    
+    for i in range(32):
+        axes[i].imshow(feature_maps[0, :, :, i], cmap='viridis')
+        axes[i].set_title(f'Filter {i+1}', fontsize=8)
+        axes[i].axis('off')
+    
+    plt.suptitle('Feature Maps from 32 Learned Filters', fontsize=14, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig('keras_feature_maps.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+# Main execution
+if __name__ == "__main__":
+    # Create sample image (simple pattern)
+    image = np.array([
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+    ], dtype=float)
+    
+    # Get kernels
+    kernels = get_kernels()
+    
+    # Run visualizations
+    print("Generating visualizations...")
+    visualize_convolution_steps(image, kernels['vertical_edge'], stride=1, padding=0)
+    apply_multiple_kernels(image)
+    demonstrate_stride_padding()
+    keras_convolution_example()
+    print("Visualizations saved!")
+```
+
+#### Interactive Exercises
+
+**Exercise 1: Convolution Sandbox**
+- Interactive grid for drawing or uploading an image
+- Kernel designer: 3×3 or 5×5 grid where users set values
+- Real-time convolution output display
+- Preset kernels (edge detection, blur, etc.) for quick experimentation
+- Export resulting feature map
+
+**Exercise 2: Stride & Padding Calculator**
+- Input fields: image size, kernel size, stride, padding
+- Real-time calculation and visualization of output dimensions
+- Visual representation showing which input pixels map to each output pixel
+- Challenge mode: Given desired output size, find correct padding/stride
+
+**Exercise 3: Build Your Edge Detector**
+- Present a simple image with edges
+- Challenge: Design a kernel that maximizes edge responses
+- Score based on edge detection quality
+- Show Sobel operator as the optimal solution
+
+**Exercise 4: Animation Quiz**
+- Show animation of kernel sliding over image
+- Pause at a position and ask: "What will the activation be?"
+- Multiple choice with computation shown after selection
+
+**Implementation Notes for Web Platform**
+- Use **Canvas API** for interactive grid drawing
+- Use **Plotly.js** or **D3.js** for real-time output dimension calculations
+- Create **TensorFlow.js** implementation for in-browser convolution
+- Use **React** state management for kernel values
+- **Framer Motion** for smooth kernel sliding animations
+- Consider **WebGL** for performance with larger images
+
+---
+
+### Topic 3: Feature Maps
+
+#### Conceptual Explanation
+
+**What are Feature Maps?**
+
+A **feature map** (also called an **activation map**) is the output produced when a filter/kernel is applied to an input image or a previous layer's feature maps. Think of it as a "filtered view" of the input that highlights specific patterns.
+
+**Key Concepts**
+
+1. **Depth Dimension**: When we apply multiple filters (e.g., 32 different 3×3 kernels), we get 32 different feature maps stacked in the depth dimension. Each feature map detects a different pattern.
+
+2. **Spatial Dimensions**: Each feature map has height and width, showing WHERE in the image the pattern was detected.
+
+3. **Hierarchical Learning**: 
+   - **Early layers**: Detect simple patterns (edges, colors, textures)
+   - **Middle layers**: Combine simple patterns into parts (corners, simple shapes)
+   - **Deep layers**: Detect complex objects (faces, cars, animals)
+
+**Mathematical Representation**
+
+If our input is shape (H, W, C) and we apply F filters of size (K, K):
+```
+Input: (Height, Width, Channels)
+Filters: F kernels, each (K, K, C)
+Output Feature Maps: (H', W', F)
+```
+
+Where H' and W' depend on padding and stride.
+
+**Example: Edge Detection Progression**
+```
+Layer 1: 3 filters detect
+├─ Filter 1: Vertical edges
+├─ Filter 2: Horizontal edges  
+└─ Filter 3: Diagonal edges
+
+Layer 2: Combine edges into shapes
+├─ Filter 1: Corners (vertical + horizontal edges)
+├─ Filter 2: Curves (diagonal edges combined)
+└─ Filter 3: T-junctions
+
+Layer 3: Object parts
+├─ Filter 1: Eyes (specific curve + edge combinations)
+├─ Filter 2: Wheels (circular patterns)
+└─ Filter 3: Windows (rectangular patterns)
+Feature Map Activation Patterns
+
+High activation (bright pixels): Pattern is present
+Low activation (dark pixels): Pattern is absent
+Spatial location: High activation at position (x,y) means pattern detected there
+
+Why Multiple Feature Maps Matter
+Imagine you're a detective looking at a crime scene photo:
+
+One "filter" looks for fingerprints (vertical ridge patterns)
+Another looks for footprints (specific sole patterns)
+Another looks for weapons (specific shapes)
+
+Each filter specializes in detecting ONE type of evidence. Together, they give you the complete picture. CNNs work the same way—different filters specialize in detecting different visual patterns.
+Visualization Ideas
+
+Feature Map Gallery
+
+Upload an image (or use MNIST digit)
+Display original image
+Show all feature maps from layer 1, layer 2, layer 3
+Color-code by activation intensity (heatmap)
+Hover over a feature map to see which filter created it
+Side-by-side comparison showing pattern progression
+
+
+Interactive Feature Map Explorer
+
+3D visualization using Three.js:
+
+Input image as bottom layer
+Each layer's feature maps stacked above
+Animate flow from input through layers
+
+
+Click on a neuron in a deep layer to trace back which input regions activated it
+"Light up" the receptive field path
+
+
+Filter Specialization Demonstration
+
+Train a simple CNN on shapes (circles, squares, triangles)
+Visualize what each filter learned:
+
+Show the filter weights as an image
+Show images that maximally activate that filter
+Show activation patterns across different inputs
+
+
+
+
+Depth Progression Slider
+
+Slider to navigate through depth dimension
+Show one feature map at a time with filter number
+Display filter weights alongside activation map
+Compare activation across different input images
+
+
+
+Python Code Example
+pythonimport numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from tensorflow import keras
+from tensorflow.keras import layers, models
+from tensorflow.keras.datasets import mnist, cifar10
+import cv2
+
+# Build a simple CNN and extract feature maps
+def build_feature_extractor():
+    """
+    Build a CNN model for MNIST and create feature extractors
+    """
+    # Build model
+    model = models.Sequential([
+        # Layer 1: 32 filters
+        layers.Conv2D(32, (3, 3), activation='relu', 
+                     padding='same', input_shape=(28, 28, 1), name='conv1'),
+        layers.MaxPooling2D((2, 2), name='pool1'),
+        
+        # Layer 2: 64 filters
+        layers.Conv2D(64, (3, 3), activation='relu', 
+                     padding='same', name='conv2'),
+        layers.MaxPooling2D((2, 2), name='pool2'),
+        
+        # Layer 3: 64 filters
+        layers.Conv2D(64, (3, 3), activation='relu', 
+                     padding='same', name='conv3'),
+        
+        # Classifier
+        layers.Flatten(),
+        layers.Dense(64, activation='relu'),
+        layers.Dense(10, activation='softmax')
+    ])
+    
+    # Load and prepare data
+    (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    x_train = x_train.reshape(-1, 28, 28, 1).astype('float32') / 255
+    x_test = x_test.reshape(-1, 28, 28, 1).astype('float32') / 255
+    
+    # Train briefly
+    print("Training model...")
+    model.compile(optimizer='adam',
+                 loss='sparse_categorical_crossentropy',
+                 metrics=['accuracy'])
+    model.fit(x_train[:5000], y_train[:5000], 
+             epochs=3, batch_size=128, verbose=0)
+    
+    # Create feature extractors for each conv layer
+    layer_outputs = [layer.output for layer in model.layers 
+                    if 'conv' in layer.name]
+    feature_extractor = models.Model(inputs=model.input, 
+                                    outputs=layer_outputs)
+    
+    return model, feature_extractor, x_test, y_test
+
+# Visualize feature maps for a single image
+def visualize_feature_maps(feature_extractor, image, layer_names):
+    """
+
+    Display feature maps from all convolutional layers
+"""
+# Get feature maps
+feature_maps = feature_extractor.predict(image[np.newaxis, ...], verbose=0)
+# Plot
+num_layers = len(feature_maps)
+fig = plt.figure(figsize=(20, 4 * num_layers))
+
+for layer_idx, (fmap, layer_name) in enumerate(zip(feature_maps, layer_names)):
+    num_features = fmap.shape[-1]
+    
+    # Display up to 16 feature maps per layer
+    display_grid_size = min(16, num_features)
+    cols = 8
+    rows = (display_grid_size + cols - 1) // cols
+    
+    for i in range(display_grid_size):
+        ax = plt.subplot(num_layers, cols, layer_idx * cols + i + 1)
+        ax.imshow(fmap[0, :, :, i], cmap='viridis')
+        if i == 0:
+            ax.set_ylabel(f'{layer_name}\n({fmap.shape[1]}×{fmap.shape[2]}×{fmap.shape[3]})', 
+                        fontsize=10, fontweight='bold')
+        ax.set_title(f'Filter {i+1}', fontsize=8)
+        ax.axis('off')
+
+plt.tight_layout()
+plt.savefig('feature_maps_all_layers.png', dpi=150, bbox_inches='tight')
+plt.close()
+Visualize what activates each filter
+def visualize_filter_activations(model, x_test, y_test, layer_name='conv1', num_filters=8):
+"""
+For each filter, find and display images that activate it most
+"""
+# Create model to get intermediate activations
+intermediate_model = models.Model(
+inputs=model.input,
+outputs=model.get_layer(layer_name).output
+)
+# Get activations for test set
+print(f"Computing activations for {len(x_test)} images...")
+activations = intermediate_model.predict(x_test[:1000], verbose=0)
+
+# For each filter, find images with highest activation
+fig, axes = plt.subplots(num_filters, 5, figsize=(15, 3*num_filters))
+
+for filter_idx in range(num_filters):
+    # Get max activation per image for this filter
+    max_activations = np.max(activations[:, :, :, filter_idx], 
+                            axis=(1, 2))
+    
+    # Get top 5 activating images
+    top_indices = np.argsort(max_activations)[-5:][::-1]
+    
+    for img_idx, test_idx in enumerate(top_indices):
+        ax = axes[filter_idx, img_idx]
+        ax.imshow(x_test[test_idx].squeeze(), cmap='gray')
+        if img_idx == 0:
+            ax.set_ylabel(f'Filter {filter_idx+1}', 
+                        fontsize=10, fontweight='bold')
+        ax.set_title(f'Act: {max_activations[test_idx]:.2f}\nLabel: {y_test[test_idx]}', 
+                    fontsize=8)
+        ax.axis('off')
+
+plt.suptitle(f'Top Activating Images per Filter - {layer_name}', 
+            fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.savefig(f'filter_activations_{layer_name}.png', dpi=150, bbox_inches='tight')
+plt.close()
+Visualize learned filter weights
+def visualize_filter_weights(model, layer_name='conv1'):
+"""
+Display the actual learned kernel weights
+"""
+# Get layer
+layer = model.get_layer(layer_name)
+weights = layer.get_weights()[0]  # Shape: (kernel_h, kernel_w, in_channels, out_channels)
+# Normalize weights for visualization
+weights_min = weights.min()
+weights_max = weights.max()
+weights_normalized = (weights - weights_min) / (weights_max - weights_min)
+
+# Display up to 32 filters
+num_filters = min(32, weights.shape[-1])
+cols = 8
+rows = (num_filters + cols - 1) // cols
+
+fig, axes = plt.subplots(rows, cols, figsize=(16, 2*rows))
+axes = axes.flatten()
+
+for i in range(num_filters):
+    # For grayscale input (1 channel), just show the kernel
+    if weights.shape[2] == 1:
+        kernel = weights_normalized[:, :, 0, i]
+    else:
+        # For RGB, show average across input channels
+        kernel = weights_normalized[:, :, :, i].mean(axis=2)
+    
+    axes[i].imshow(kernel, cmap='RdBu_r', vmin=0, vmax=1)
+    axes[i].set_title(f'Filter {i+1}', fontsize=8)
+    axes[i].axis('off')
+
+# Hide empty subplots
+for i in range(num_filters, len(axes)):
+    axes[i].axis('off')
+
+plt.suptitle(f'Learned Filter Weights - {layer_name}', 
+            fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.savefig(f'filter_weights_{layer_name}.png', dpi=150, bbox_inches='tight')
+plt.close()
+Compare feature maps across different inputs
+def compare_feature_maps_across_inputs(feature_extractor, images, labels, layer_idx=0):
+"""
+Show how the same filter responds to different inputs
+"""
+num_images = len(images)
+# Get feature maps
+all_feature_maps = []
+for img in images:
+    fmaps = feature_extractor.predict(img[np.newaxis, ...], verbose=0)
+    all_feature_maps.append(fmaps[layer_idx][0])  # Get first layer
+
+# Display first 4 filters for each image
+num_filters = 4
+fig, axes = plt.subplots(num_images, num_filters + 1, 
+                        figsize=(15, 3*num_images))
+
+for img_idx in range(num_images):
+    # Show original image
+    axes[img_idx, 0].imshow(images[img_idx].squeeze(), cmap='gray')
+    axes[img_idx, 0].set_title(f'Input\nLabel: {labels[img_idx]}', fontsize=10)
+    axes[img_idx, 0].axis('off')
+    
+    # Show feature maps
+    for filter_idx in range(num_filters):
+        fmap = all_feature_maps[img_idx][:, :, filter_idx]
+        im = axes[img_idx, filter_idx + 1].imshow(fmap, cmap='viridis')
+        if img_idx == 0:
+            axes[img_idx, filter_idx + 1].set_title(f'Filter {filter_idx+1}', 
+                                                    fontsize=10, fontweight='bold')
+        axes[img_idx, filter_idx + 1].axis('off')
+        plt.colorbar(im, ax=axes[img_idx, filter_idx + 1], fraction=0.046)
+
+plt.tight_layout()
+plt.savefig('feature_maps_comparison.png', dpi=150, bbox_inches='tight')
+plt.close()
+Heatmap of feature map statistics
+def feature_map_statistics(feature_extractor, x_test, num_samples=100):
+"""
+Analyze statistical properties of feature maps
+"""
+# Get feature maps for samples
+feature_maps = feature_extractor.predict(x_test[:num_samples], verbose=0)
+# Analyze each layer
+fig, axes = plt.subplots(1, len(feature_maps), figsize=(15, 5))
+
+for layer_idx, fmap in enumerate(feature_maps):
+    # Calculate mean activation per filter across all samples
+    mean_activations = fmap.mean(axis=(0, 1, 2))  # Average over batch and spatial dims
+    
+    # Plot
+    ax = axes[layer_idx]
+    ax.bar(range(len(mean_activations)), mean_activations, color='steelblue')
+    ax.set_xlabel('Filter Index')
+    ax.set_ylabel('Mean Activation')
+    ax.set_title(f'Layer {layer_idx+1}\n{fmap.shape[-1]} filters')
+    ax.grid(axis='y', alpha=0.3)
+
+plt.suptitle('Average Feature Map Activations Across Layers', 
+            fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.savefig('feature_map_statistics.png', dpi=150, bbox_inches='tight')
+plt.close()
+Main execution
+if name == "main":
+print("Building and training model...")
+model, feature_extractor, x_test, y_test = build_feature_extractor()
+print("\nGenerating visualizations...")
+
+# Get layer names
+layer_names = [layer.name for layer in model.layers if 'conv' in layer.name]
+
+# Select sample images
+sample_indices = [0, 10, 20, 30]  # Different digits
+sample_images = x_test[sample_indices]
+sample_labels = y_test[sample_indices]
+
+# Generate all visualizations
+visualize_feature_maps(feature_extractor, x_test[0], layer_names)
+visualize_filter_activations(model, x_test, y_test, 'conv1', num_filters=8)
+visualize_filter_weights(model, 'conv1')
+visualize_filter_weights(model, 'conv2')
+compare_feature_maps_across_inputs(feature_extractor, 
+                                   sample_images, sample_labels, 
+                                   layer_idx=0)
+feature_map_statistics(feature_extractor, x_test, num_samples=100)
+
+print("\nAll visualizations saved!")
+print(f"\nModel summary:")
+model.summary()
+
+#### Interactive Exercises
+
+**Exercise 1: Feature Map Explorer**
+- Upload an image or select from gallery (digits, objects, faces)
+- Display feature maps from all layers side-by-side
+- Slider to navigate through filters
+- Hover to see filter activation strength
+- Click feature map to see corresponding filter weights
+
+**Exercise 2: Pattern Detector Challenge**
+- Show 5 different images
+- Display feature maps from a specific filter
+- Challenge: What pattern does this filter detect?
+- Multiple choice: edges, curves, corners, textures, etc.
+- Reveal answer with examples
+
+**Exercise 3: Layer Depth Progression**
+- Interactive slider from layer 1 → layer N
+- Visual animation showing feature maps becoming more abstract
+- Side panel explaining what each layer typically learns
+- Real-time updates as you slide through layers
+
+**Exercise 4: Maximum Activation Finder**
+- Select a specific filter
+- Algorithm finds images in dataset that maximize that filter's activation
+- Display top 10 activating images
+- Learner identifies the common pattern
+
+**Exercise 5: Build Your Own Feature Detector**
+- Provide a target pattern (e.g., "detect horizontal lines")
+- Design filters by setting kernel weights
+- Test on sample images
+- Score based on activation strength for target pattern
+
+**Implementation Notes for Web Platform**
+- Use **TensorFlow.js** to run inference in browser
+- Pre-train model on server, load weights in browser
+- Use **Canvas API** or **Plotly.js** for heatmap visualizations
+- **Framer Motion** for smooth transitions between layers
+- **Three.js** for 3D feature map stack visualization
+- Consider **WebGL** shaders for real-time convolution display
+- Implement lazy loading for feature maps (only compute when viewed)
+
+---
+
+### Topic 4: Pooling
+
+#### Conceptual Explanation
+
+**What is Pooling?**
+
+Pooling is a downsampling operation that reduces the spatial dimensions (height and width) of feature maps while retaining the most important information. Think of it as creating a "summary" or "compressed version" of the data.
+
+**Why Do We Need Pooling?**
+
+1. **Reduce Computational Cost**: Fewer pixels = faster processing and less memory
+2. **Control Overfitting**: Fewer parameters reduce the risk of memorizing training data
+3. **Increase Receptive Field**: Each neuron in deeper layers "sees" a larger portion of the original image
+4. **Translation Invariance**: Small shifts in input don't dramatically change output
+5. **Extract Dominant Features**: Keep strongest activations, discard weak signals
+
+**Real-World Analogy**
+
+Imagine you're summarizing a neighborhood:
+- **Max Pooling**: "The tallest building in this block is 50 stories" (keeps maximum)
+- **Average Pooling**: "Buildings in this block average 20 stories" (keeps average)
+- **Global Average Pooling**: "The entire city averages 15 stories" (one value for entire map)
+
+**Types of Pooling**
+
+1. **Max Pooling** (Most Common)
+   - Takes the maximum value in each pooling window
+   - Captures strongest activations
+   - Most popular: 2×2 max pooling with stride 2
+   - Best for: Detecting presence of features
+
+2. **Average Pooling**
+   - Takes the mean of values in pooling window
+   - Smoother downsampling
+   - Less aggressive than max pooling
+   - Best for: Feature smoothing, final layers
+
+3. **Global Average Pooling (GAP)**
+   - Reduces each feature map to a single value
+   - Common before final classification layer
+   - Reduces parameters dramatically
+   - Best for: Replacing flatten + dense layers
+
+4. **Global Max Pooling**
+   - Takes maximum across entire feature map
+   - Alternative to GAP
+   - Best for: When maximum activation matters most
+
+**Mathematical Example**
+
+Max Pooling 2×2 with stride 2:
+Input (4×4):           Output (2×2):
+[1  2  3  4]           [6  8]
+[5  6  7  8]    →      [14 16]
+[9  10 11 12]
+[13 14 15 16]
+Each 2×2 region → max value
+Top-left:  max(1,2,5,6) = 6
+Top-right: max(3,4,7,8) = 8
+Bottom-left: max(9,10,13,14) = 14
+Bottom-right: max(11,12,15,16) = 16
+
+**Output Size Formula**
+Output Height = ⌊(Input Height - Pool Size) / Stride⌋ + 1
+Output Width = ⌊(Input Width - Pool Size) / Stride⌋ + 1
+
+For 2×2 pooling with stride 2: output size = input size / 2
+
+**Pooling vs Convolution with Stride**
+
+Both reduce spatial dimensions, but:
+- **Pooling**: No learned parameters, fixed operation (max or mean)
+- **Strided Convolution**: Learned parameters, flexible patterns
+- **Modern Trend**: Some architectures replace pooling with strided convolutions
+
+**Common Misconceptions**
+
+❌ "Pooling loses information" → ✅ It loses spatial resolution but keeps dominant features  
+❌ "Always use max pooling" → ✅ Average pooling works better in some cases  
+❌ "Pooling has parameters to learn" → ✅ Pooling is parameter-free
+
+#### Visualization Ideas
+
+1. **Interactive Pooling Simulator**
+   - Grid showing input feature map (e.g., 8×8)
+   - Draggable pooling window (2×2, 3×3, etc.)
+   - Toggle between max/average pooling
+   - Animate sliding window across input
+   - Highlight values being pooled
+   - Show output value computation in real-time
+
+2. **Translation Invariance Demo**
+   - Show same pattern at slightly different positions
+   - Apply pooling and display results
+   - Demonstrate how pooled output is identical despite input shift
+   - Side-by-side: with vs without pooling
+
+3. **Information Retention Visualization**
+   - Show original feature map with detail
+   - Apply progressive pooling (1→2→4→8× reduction)
+   - Visualize what information remains at each level
+   - Reconstruction attempt to show what's lost
+
+4. **Pooling Type Comparison**
+   - Same input feature map
+   - Four panels: Original, Max Pooling, Average Pooling, Strided Conv
+   - Heatmap color-coding for easy comparison
+   - Statistics (min, max, mean) for each output
+
+5. **Receptive Field Growth**
+   - Animated diagram showing how receptive fields expand with pooling
+   - Layer 1: 3×3 receptive field
+   - After pooling: 6×6 receptive field
+   - Layer 2: Even larger receptive field
+   - Use Three.js for 3D visualization
+
+#### Python Code Example
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+from matplotlib.animation import FuncAnimation
+from tensorflow import keras
+from tensorflow.keras import layers, models
+import seaborn as sns
+
+# Manual pooling implementation
+def max_pool_2d(feature_map, pool_size=2, stride=2):
+    """
+    Perform max pooling operation manually
+    
+    Args:
+        feature_map: 2D numpy array
+        pool_size: size of pooling window
+        stride: step size
+    
+    Returns:
+        pooled: downsampled feature map
+    """
+    h, w = feature_map.shape
+    out_h = (h - pool_size) // stride + 1
+    out_w = (w - pool_size) // stride + 1
+    
+    pooled = np.zeros((out_h, out_w))
+    
+    for i in range(out_h):
+        for j in range(out_w):
+            h_start = i * stride
+            w_start = j * stride
+            window = feature_map[h_start:h_start+pool_size, 
+                               w_start:w_start+pool_size]
+            pooled[i, j] = np.max(window)
+    
+    return pooled
+
+def avg_pool_2d(feature_map, pool_size=2, stride=2):
+    """
+    Perform average pooling operation manually
+    """
+    h, w = feature_map.shape
+    out_h = (h - pool_size) // stride + 1
+    out_w = (w - pool_size) // stride + 1
+    
+    pooled = np.zeros((out_h, out_w))
+    
+    for i in range(out_h):
+        for j in range(out_w):
+            h_start = i * stride
+            w_start = j * stride
+            window = feature_map[h_start:h_start+pool_size, 
+                               w_start:w_start+pool_size]
+            pooled[i, j] = np.mean(window)
+    
+    return pooled
+
+# Visualize pooling step by step
+def visualize_pooling_steps(feature_map, pool_size=2, stride=2, pool_type='max'):
+    """
+    Show pooling operation step by step
+    """
+    h, w = feature_map.shape
+    out_h = (h - pool_size) // stride + 1
+    out_w = (w - pool_size) // stride + 1
+    
+    # Create figure
+    num_steps = min(9, out_h * out_w)
+    fig, axes = plt.subplots(3, 3, figsize=(15, 15))
+    axes = axes.flatten()
+    
+    step = 0
+    for i in range(out_h):
+        for j in range(out_w):
+            if step >= num_steps:
+                break
+            
+            ax = axes[step]
+            
+            # Show feature map
+            im = ax.imshow(feature_map, cmap='viridis', alpha=0.7)
+            
+            # Highlight pooling window
+            h_start = i * stride
+            w_start = j * stride
+            window = feature_map[h_start:h_start+pool_size, 
+                               w_start:w_start+pool_size]
+            
+            rect = Rectangle((w_start-0.5, h_start-0.5), 
+                           pool_size, pool_size,
+                           linewidth=3, edgecolor='red', 
+                           facecolor='red', alpha=0.3)
+            ax.add_patch(rect)
+            
+            # Calculate pooled value
+            if pool_type == 'max':
+                pooled_value = np.max(window)
+                operation = f'max({window.flatten()})'
+            else:
+                pooled_value = np.mean(window)
+                operation = f'mean({window.flatten()})'
+            
+            ax.set_title(f'Position ({i},{j})\n{operation[:50]}...\nResult: {pooled_value:.2f}', 
+                        fontsize=9)
+            ax.axis('off')
+            
+            # Add grid
+            ax.set_xticks(np.arange(-0.5, w, 1), minor=True)
+            ax.set_yticks(np.arange(-0.5, h, 1), minor=True)
+            ax.grid(which="minor", color="gray", linestyle='-', linewidth=0.5)
+            
+            step += 1
+    
+    # Hide unused subplots
+    for idx in range(step, len(axes)):
+        axes[idx].axis('off')
+    
+    plt.suptitle(f'{pool_type.title()} Pooling ({pool_size}×{pool_size}, stride={stride})', 
+                fontsize=14, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig(f'{pool_type}_pooling_steps.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+# Compare different pooling operations
+def compare_pooling_types(feature_map):
+    """
+    Compare max pooling, average pooling, and no pooling
+    """
+    # Apply different pooling
+    max_pooled = max_pool_2d(feature_map, pool_size=2, stride=2)
+    avg_pooled = avg_pool_2d(feature_map, pool_size=2, stride=2)
+    
+    # Visualize
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+    
+    # Original
+    im0 = axes[0].imshow(feature_map, cmap='viridis')
+    axes[0].set_title(f'Original\n{feature_map.shape}', fontsize=12, fontweight='bold')
+    axes[0].axis('off')
+    plt.colorbar(im0, ax=axes[0], fraction=0.046)
+    
+    # Max pooling
+    im1 = axes[1].imshow(max_pooled, cmap='viridis')
+    axes[1].set_title(f'Max Pooling (2×2)\n{max_pooled.shape}', fontsize=12, fontweight='bold')
+    axes[1].axis('off')
+    plt.colorbar(im1, ax=axes[1], fraction=0.046)
+    
+    # Average pooling
+    im2 = axes[2].imshow(avg_pooled, cmap='viridis')
+    axes[2].set_title(f'Average Pooling (2×2)\n{avg_pooled.shape}', fontsize=12, fontweight='bold')
+    axes[2].axis('off')
+    plt.colorbar(im2, ax=axes[2], fraction=0.046)
+    
+    plt.tight_layout()
+    plt.savefig('pooling_comparison.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+# Demonstrate translation invariance
+def demonstrate_translation_invariance():
+    """
+    Show how pooling provides translation invariance
+    """
+    # Create a simple pattern
+    base_pattern = np.zeros((8, 8))
+    base_pattern[2:4, 2:4] = 1.0  # Small square
+    
+    # Shift pattern slightly
+    shifted_pattern = np.zeros((8, 8))
+    shifted_pattern[2:4, 3:5] = 1.0  # Shifted by 1 pixel
+    
+    # Apply max pooling
+    base_pooled = max_pool_2d(base_pattern, pool_size=2, stride=2)
+    shifted_pooled = max_pool_2d(shifted_pattern, pool_size=2, stride=2)
+    
+    # Visualize
+    fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+    
+    # Row 1: Original patterns
+    axes[0, 0].imshow(base_pattern, cmap='gray', vmin=0, vmax=1)
+    axes[0, 0].set_title('Original Pattern', fontsize=12, fontweight='bold')
+    axes[0, 0].axis('off')
+    
+    axes[0, 1].imshow(shifted_pattern, cmap='gray', vmin=0, vmax=1)
+    axes[0, 1].set_title('Shifted Pattern (+1 pixel)', fontsize=12, fontweight='bold')
+    axes[0, 1].axis('off')
+    
+    axes[0, 2].imshow(np.abs(base_pattern - shifted_pattern), cmap='Reds')
+    axes[0, 2].set_title('Difference (Before Pooling)', fontsize=12, fontweight='bold')
+    axes[0, 2].axis('off')
+    
+    # Row 2: After pooling
+    axes[1, 0].imshow(base_pooled, cmap='gray', vmin=0, vmax=1)
+    axes[1, 0].set_title('After Pooling', fontsize=12, fontweight='bold')
+    axes[1, 0].axis('off')
+    
+    axes[1, 1].imshow(shifted_pooled, cmap='gray', vmin=0, vmax=1)
+    axes[1, 1].set_title('After Pooling (Shifted)', fontsize=12, fontweight='bold')
+    axes[1, 1].axis('off')
+    
+    axes[1, 2].imshow(np.abs(base_pooled - shifted_pooled), cmap='Reds')
+    axes[1, 2].set_title('Difference (After Pooling)\n✓ More Invariant!', 
+                        fontsize=12, fontweight='bold', color='green')
+    axes[1, 2].axis('off')
+    
+    plt.tight_layout()
+    plt.savefig('translation_invariance_pooling.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+# Progressive pooling visualization
+def progressive_pooling(feature_map):
+    """
+    Show effect of multiple pooling layers
+    """
+    fig, axes = plt.subplots(1, 5, figsize=(20, 4))
+    
+    # Original
+    current = feature_map.copy()
+    axes[0].imshow(current, cmap='viridis')
+    axes[0].set_title(f'Original\n{current.shape}', fontsize=11, fontweight='bold')
+    axes[0].axis('off')
+    
+    # Apply pooling 4 times
+    for i in range(1, 5):
+        if current.shape[0] >= 2 and current.shape[1] >= 2:
+            current = max_pool_2d(current, pool_size=2, stride=2)
+            axes[i].imshow(current, cmap='viridis')
+            axes[i].set_title(f'After {i} Pooling(s)\n{current.shape}', 
+                            fontsize=11, fontweight='bold')
+            axes[i].axis('off')
+        else:
+            axes[i].text(0.5, 0.5, 'Too small\nto pool further', 
+                        ha='center', va='center', fontsize=12)
+            axes[i].axis('off')
+    
+    plt.suptitle('Progressive Spatial Reduction through Pooling', 
+                fontsize=14, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig('progressive_pooling.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+# Compare with Keras implementation
+def keras_pooling_comparison():
+    """
+    Show pooling using Keras layers
+    """
+    # Create sample CNN with different pooling types
+    from tensorflow.keras.datasets import mnist
+    
+    (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    x_test = x_test.reshape(-1, 28, 28, 1).astype('float32') / 255
+    
+    # Model with max pooling
+    model_max = models.Sequential([
+        layers.Conv2D(16, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+        layers.MaxPooling2D((2, 2)),
+        layers.Conv2D(32, (3, 3), activation='relu'),
+        layers.MaxPooling2D((2, 2)),
+        layers.Flatten(),
+        layers.Dense(10, activation='softmax')
+    ])
+    
+    # Model with average pooling
+    model_avg = models.Sequential([
+        layers.Conv2D(16, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+        layers.AveragePooling2D((2, 2)),
+        layers.Conv2D(32, (3, 3), activation='relu'),
+        layers.AveragePooling2D((2, 2)),
+        layers.Flatten(),
+        layers.Dense(10, activation='softmax')
+    ])
+    
+    # Model with global average pooling
+    model_gap = models.Sequential([
+        layers.Conv2D(16, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+        layers.MaxPooling2D((2, 2)),
+        layers.Conv2D(32, (3, 3), activation='relu'),
+        layers.GlobalAveragePooling2D(),
+        layers.Dense(10, activation='softmax')
+    ])
+    
+    print("Max Pooling Model:")
+    model_max.summary()
+    print(f"\nTotal parameters: {model_max.count_params():,}\n")
+    
+    print("\n" + "="*50 + "\n")
+    
+    print("Average Pooling Model:")
+    model_avg.summary()
+    print(f"\nTotal parameters: {model_avg.count_params():,}\n")
+    
+    print("\n" + "="*50 + "\n")
+    
+    print("Global Average Pooling Model:")
+    model_gap.summary()
+    print(f"\nTotal parameters: {model_gap.count_params():,}")
+    print("Note: GAP reduces parameters by replacing Flatten + Dense!")
+
+# Information retention analysis
+def analyze_information_retention():
+    """
+    Quantify how much information is retained after pooling
+    """
+    # Create a detailed feature map
+    np.random.seed(42)
+    feature_map = np.random.rand(32, 32) * 100
+    
+    # Apply different levels of pooling
+    pool_levels = [1, 2, 4, 8]
+    retained_info = []
+    
+    fig, axes = plt.subplots(2, len(pool_levels), figsize=(16, 8))
+    
+    for idx, pool_size in enumerate(pool_levels):
+        if pool_size == 1:
+            pooled = feature_map
+        else:
+            pooled = max_pool_2d(feature_map, pool_size=pool_size, stride=pool_size)
+        
+        # Calculate information retention (approximate)
+        original_variance = np.var(feature_map)
+        pooled_variance = np.var(pooled)
+        retention = (pooled_variance / original_variance) * 100
+        retained_info
+
+        .append(retention)
+    # Visualize
+    axes[0, idx].imshow(pooled, cmap='viridis')
+    axes[0, idx].set_title(f'Pool Size: {pool_size}×{pool_size}\nShape: {pooled.shape}', 
+                          fontsize=10, fontweight='bold')
+    axes[0, idx].axis('off')
+    
+    # Show histogram
+    axes[1, idx].hist(pooled.flatten(), bins=30, color='steelblue', alpha=0.7, edgecolor='black')
+    axes[1, idx].set_title(f'Variance Retention: {retention:.1f}%', fontsize=10)
+    axes[1, idx].set_xlabel('Activation Value')
+    axes[1, idx].set_ylabel('Frequency')
+    axes[1, idx].grid(axis='y', alpha=0.3)
+
+plt.suptitle('Information Retention at Different Pooling Levels', 
+            fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.savefig('information_retention.png', dpi=150, bbox_inches='tight')
+plt.close()
+Main execution
+if name == "main":
+print("Generating pooling visualizations...\n")
+# Create sample feature map
+np.random.seed(42)
+feature_map = np.random.rand(8, 8) * 10
+large_feature_map = np.random.rand(32, 32) * 10
+
+# Generate visualizations
+visualize_pooling_steps(feature_map, pool_size=2, stride=2, pool_type='max')
+visualize_pooling_steps(feature_map, pool_size=2, stride=2, pool_type='avg')
+compare_pooling_types(feature_map)
+demonstrate_translation_invariance()
+progressive_pooling(large_feature_map)
+analyze_information_retention()
+
+print("\nKeras pooling comparison:")
+keras_pooling_comparison()
+
+print("\n✓ All visualizations saved!")
+
+#### Interactive Exercises
+
+**Exercise 1: Pooling Sandbox**
+- Interactive grid (8×8 or larger)
+- Users set values or upload feature map
+- Choose pooling type (max/average)
+- Choose pool size (2×2, 3×3, 4×4)
+- Choose stride (1, 2, 3)
+- Real-time output display
+- Show calculations for each pooling window on hover
+
+**Exercise 2: Translation Invariance Challenge**
+- Show a pattern in an image
+- Shift it by 1-2 pixels in different directions
+- Ask: "Will the pooled output be the same?"
+- Reveal answer with visualization
+- Score based on correct predictions
+
+**Exercise 3: Parameter Reduction Calculator**
+- Input: network architecture with/without pooling
+- Calculate total parameters for each
+- Visualize parameter savings
+- Show memory and computation time estimates
+
+**Exercise 4: Pooling Type Quiz**
+- Show a feature map with specific characteristics
+- Ask: "Which pooling type is best for this?"
+- Options: max, average, global average
+- Explain why (e.g., max for sparse features, average for dense)
+
+**Exercise 5: Receptive Field Growth Simulator**
+- Start with 3×3 conv layer
+- Add pooling layer
+- Visualize how receptive field doubles
+- Stack multiple layers
+- Show final receptive field size
+
+**Implementation Notes for Web Platform**
+- Use **Canvas API** for interactive grid manipulation
+- **React** state for pooling parameters
+- **Plotly.js** or **D3.js** for real-time output visualization
+- **Framer Motion** for sliding window animation
+- **TensorFlow.js** for in-browser pooling operations
+- Color-code pooling windows (green=current, gray=completed)
+- Add tooltips showing calculations on hover
+
+---
+
+### Topic 5: CNN Architectures
+
+#### Conceptual Explanation
+
+**Evolution of CNN Architectures**
+
+Since AlexNet's breakthrough in 2012, CNN architectures have evolved dramatically. Each new architecture introduced innovations that improved accuracy, efficiency, or both. Understanding these architectures helps you choose the right model for your task and design better custom networks.
+
+**Key Architecture Families**
+
+### 1. **LeNet-5 (1998)** - The Pioneer
+
+**Context**: Developed by Yann LeCun for handwritten digit recognition
+
+**Architecture**:
+Input (32×32) → Conv(6 filters, 5×5) → AvgPool → Conv(16 filters, 5×5) → AvgPool → FC(120) → FC(84) → Output(10)
+
+**Innovations**:
+- First successful CNN
+- Demonstrated convolution + pooling pattern
+
+**Limitations**: Too shallow for complex tasks
+
+---
+
+### 2. **AlexNet (2012)** - The Revolution
+
+**Context**: Won ImageNet 2012, sparked deep learning revolution
+
+**Architecture**:
+Input (227×227×3) → Conv(96, 11×11, stride=4) → MaxPool → Conv(256, 5×5) → MaxPool →
+Conv(384, 3×3) → Conv(384, 3×3) → Conv(256, 3×3) → MaxPool → FC(4096) → FC(4096) → FC(1000)
+
+**Innovations**:
+- ReLU activation (faster than tanh/sigmoid)
+- Dropout for regularization
+- Data augmentation
+- GPU training (2 GPUs)
+
+**Parameters**: ~60 million
+
+---
+
+### 3. **VGGNet (2014)** - Simplicity and Depth
+
+**Context**: Showed that depth matters more than kernel size
+
+**Architecture Pattern** (VGG-16):
+- Uses only 3×3 conv filters throughout
+- Stacks multiple conv layers before pooling
+- Doubles filters after each pooling: 64 → 128 → 256 → 512 → 512
+Block 1: Conv(64)×2 → MaxPool
+Block 2: Conv(128)×2 → MaxPool
+Block 3: Conv(256)×3 → MaxPool
+Block 4: Conv(512)×3 → MaxPool
+Block 5: Conv(512)×3 → MaxPool
+→ FC(4096) → FC(4096) → FC(1000)
+
+**Key Insight**: Two 3×3 convs have same receptive field as one 5×5 but fewer parameters
+
+**Limitations**: 138 million parameters, computationally expensive
+
+---
+
+### 4. **GoogLeNet/Inception (2014)** - Multi-Scale Features
+
+**Context**: Won ImageNet 2014, introduced "Inception modules"
+
+**Inception Module**: Process input at multiple scales simultaneously
+Input
+├─ 1×1 conv
+├─ 1×1 conv → 3×3 conv
+├─ 1×1 conv → 5×5 conv
+└─ 3×3 MaxPool → 1×1 conv
+→ Concatenate all outputs
+
+**Innovations**:
+- Multi-scale feature extraction
+- 1×1 convolutions for dimensionality reduction
+- Global average pooling instead of FC layers
+- Only 7 million parameters (vs VGG's 138M!)
+
+**Auxiliary classifiers**: Extra outputs during training to combat vanishing gradients
+
+---
+
+### 5. **ResNet (2015)** - Skip Connections
+
+**Context**: Won ImageNet 2015, enabled very deep networks (152+ layers)
+
+**The Problem**: Deep networks were harder to train (degradation problem)
+
+**The Solution**: **Residual connections** (skip connections)
+    Input
+      |
+┌─────┴─────┐
+|     Conv  |
+|     ReLU  |
+|     Conv  |
+└─────┬─────┘
+      |
+   [Add] ← Input (skip connection)
+      |
+    ReLU
+
+**Key Insight**: Learn residual F(x) instead of direct mapping H(x)
+H(x) = F(x) + x
+Instead of learning H(x) directly, learn F(x) = H(x) - x
+
+**Why it works**:
+- Easier to learn "refinements" than full mappings
+- Gradients flow directly through skip connections
+- Can train 100+ layer networks
+
+**Variants**: ResNet-18, ResNet-34, ResNet-50, ResNet-101, ResNet-152
+
+---
+
+### 6. **MobileNet (2017)** - Efficiency for Mobile
+
+**Context**: Designed for mobile and edge devices
+
+**Innovation**: **Depthwise Separable Convolutions**
+
+Standard conv: 3×3 conv with 256 filters on 256 channels = 3×3×256×256 = 589,824 operations
+
+Depthwise separable:
+1. **Depthwise**: 3×3 conv per channel (256 separate 3×3 convs) = 3×3×256 = 2,304
+2. **Pointwise**: 1×1 conv to combine channels (1×1×256×256) = 65,536
+3. Total: 67,840 operations (8.6× reduction!)
+
+**Result**: 90% reduction in parameters while maintaining accuracy
+
+---
+
+### 7. **EfficientNet (2019)** - Scaling Done Right
+
+**Context**: Systematic way to scale networks
+
+**Problem**: How to scale up a network?
+- More depth? More width? Larger inputs?
+
+**Solution**: **Compound Scaling**
+Depth: d = α^φ
+Width: w = β^φ
+Resolution: r = γ^φ
+Where α, β, γ are found through grid search, and φ is user-specified
+
+**Result**: EfficientNet-B7 achieves 84.4% top-1 accuracy on ImageNet (state-of-the-art for its size)
+
+---
+
+### 8. **Vision Transformers (ViT) (2020)** - Beyond Convolutions
+
+**Context**: Apply Transformer architecture (from NLP) to vision
+
+**How it works**:
+1. Split image into patches (e.g., 16×16 pixels)
+2. Flatten each patch into a vector
+3. Add positional embeddings
+4. Process with standard Transformer encoder
+5. Classify using [CLS] token
+
+**Advantages**:
+- Captures long-range dependencies better than CNNs
+- Scales well with data
+- Achieves SOTA on large datasets
+
+**Limitations**:
+- Requires massive datasets (ImageNet-21k, JFT-300M)
+- Less effective on smaller datasets without pretraining
+
+---
+
+**Architecture Comparison Table**
+
+| Architecture | Year | Layers | Parameters | Top-1 Acc (ImageNet) | Innovation |
+|--------------|------|--------|------------|----------------------|------------|
+| LeNet-5 | 1998 | 7 | 60K | N/A (MNIST) | First CNN |
+| AlexNet | 2012 | 8 | 60M | 63.3% | GPU training, ReLU |
+| VGG-16 | 2014 | 16 | 138M | 71.5% | Deep, uniform architecture |
+| GoogLeNet | 2014 | 22 | 7M | 74.8% | Inception modules |
+| ResNet-50 | 2015 | 50 | 25M | 76.1% | Skip connections |
+| MobileNet | 2017 | 28 | 4.2M | 70.6% | Mobile-optimized |
+| EfficientNet-B7 | 2019 | ∼ | 66M | 84.4% | Compound scaling |
+| ViT-H/14 | 2020 | 32 | 632M | 88.5% | Transformer for vision |
+
+---
+
+**Design Principles** (Lessons from Architecture Evolution)
+
+1. **Go Deeper, But Wisely**: Use skip connections (ResNet) or aggressive pooling (VGG)
+2. **Efficient Feature Extraction**: 1×1 convs, depthwise separable convs
+3. **Multi-Scale Features**: Inception modules, feature pyramids
+4. **Trade-offs**: Accuracy vs Speed vs Memory
+5. **Transfer Learning**: Use pretrained models, fine-tune for your task
+
+#### Visualization Ideas
+
+1. **Architecture Timeline**
+   - Interactive timeline from 1998 to 2024
+   - Click each architecture to see details
+   - Animated comparison of depth, parameters, accuracy
+   - Use Framer Motion for smooth transitions
+
+2. **3D Architecture Visualizer**
+   - Three.js 3D representation of network layers
+   - Color-coded by layer type (conv, pool, FC)
+   - Adjustable camera to explore architecture
+   - Click layer to see dimensions and parameters
+
+3. **Residual Connection Animator**
+   - Split-screen showing:
+     - Plain network (without skip connections)
+     - Residual network (with skip connections)
+   - Animate gradient flow during backpropagation
+   - Show how gradients vanish in plain network but flow in ResNet
+
+4. **Inception Module Interactive Builder**
+   - Drag-and-drop interface to build Inception module
+   - Real-time parameter and computation count
+   - Compare with standard conv block
+
+5. **Architecture Performance Dashboard**
+   - Interactive charts comparing:
+     - Accuracy vs Parameters
+     - Accuracy vs Inference Time
+     - Accuracy vs Memory Usage
+   - Filter by year, use case, hardware
+
+#### Python Code Example
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from tensorflow import keras
+from tensorflow.keras import layers, models
+from tensorflow.keras.applications import (
+    VGG16, ResNet50, MobileNetV2, EfficientNetB0
+)
+import time
+
+# Implement LeNet-5
+def build_lenet5():
+    """
+    LeNet-5 architecture for MNIST
+    """
+    model = models.Sequential([
+        # Layer 1: Convolution
+        layers.Conv2D(6, kernel_size=(5, 5), activation='tanh', 
+                     input_shape=(32, 32, 1), padding='same'),
+        layers.AveragePooling2D(pool_size=(2, 2), strides=2),
+        
+        # Layer 2: Convolution
+        layers.Conv2D(16, kernel_size=(5, 5), activation='tanh'),
+        layers.AveragePooling2D(pool_size=(2, 2), strides=2),
+        
+        # Fully connected layers
+        layers.Flatten(),
+        layers.Dense(120, activation='tanh'),
+        layers.Dense(84, activation='tanh'),
+        layers.Dense(10, activation='softmax')
+    ], name='LeNet-5')
+    
+    return model
+
+# Implement simplified AlexNet
+def build_alexnet():
+    """
+    Simplified AlexNet for demonstration
+    """
+    model = models.Sequential([
+        # Layer 1
+        layers.Conv2D(96, kernel_size=(11, 11), strides=4, 
+                     activation='relu', input_shape=(227, 227, 3)),
+        layers.MaxPooling2D(pool_size=(3, 3), strides=2),
+        
+        # Layer 2
+        layers.Conv2D(256, kernel_size=(5, 5), padding='same', activation='relu'),
+        layers.MaxPooling2D(pool_size=(3, 3), strides=2),
+        
+        # Layers 3-5
+        layers.Conv2D(384, kernel_size=(3, 3), padding='same', activation='relu'),
+        layers.Conv2D(384, kernel_size=(3, 3), padding='same', activation='relu'),
+        layers.Conv2D(256, kernel_size=(3, 3), padding='same', activation='relu'),
+        layers.MaxPooling2D(pool_size=(3, 3), strides=2),
+        
+        # Fully connected layers
+        layers.Flatten(),
+        layers.Dense(4096, activation='relu'),
+        layers.Dropout(0.5),
+        layers.Dense(4096, activation='relu'),
+        layers.Dropout(0.5),
+        layers.Dense(1000, activation='softmax')
+    ], name='AlexNet')
+    
+    return model
+
+# Implement VGG-style block
+def vgg_block(num_convs, num_filters):
+    """
+    Create a VGG block with multiple conv layers
+    """
+    block = models.Sequential()
+    for _ in range(num_convs):
+        block.add(layers.Conv2D(num_filters, kernel_size=(3, 3), 
+                               padding='same', activation='relu'))
+    block.add(layers.MaxPooling2D(pool_size=(2, 2), strides=2))
+    return block
+
+def build_vgg16():
+    """
+    VGG-16 architecture
+    """
+    model = models.Sequential([
+        # Block 1
+        layers.Conv2D(64, (3, 3), activation='relu', padding='same', 
+                     input_shape=(224, 224, 3)),
+        layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
+        layers.MaxPooling2D((2, 2), strides=2),
+        
+        # Block 2
+        layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
+        layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
+        layers.MaxPooling2D((2, 2), strides=2),
+        
+        # Block 3
+        layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
+        layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
+        layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
+        layers.MaxPooling2D((2, 2), strides=2),
+        
+        # Block 4
+        layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+        layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+        layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+        layers.MaxPooling2D((2, 2), strides=2),
+        
+        # Block 5
+        layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+        layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+        layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+        layers.MaxPooling2D((2, 2), strides=2),
+        
+        # Classifier
+        layers.Flatten(),
+        layers.Dense(4096, activation='relu'),
+        layers.Dropout(0.5),
+        layers.Dense(4096, activation='relu'),
+        layers.Dropout(0.5),
+        layers.Dense(1000, activation='softmax')
+    ], name='VGG-16')
+    
+    return model
+
+# Implement Inception module
+def inception_module(x, filters_1x1, filters_3x3_reduce, filters_3x3, 
+                    filters_5x5_reduce, filters_5x5, filters_pool_proj):
+    """
+    Inception module as used in GoogLeNet
+    """
+    # 1x1 convolution branch
+    conv_1x1 = layers.Conv2D(filters_1x1, (1, 1), padding='same', activation='relu')(x)
+    
+    # 3x3 convolution branch
+    conv_3x3_reduce = layers.Conv2D(filters_3x3_reduce, (1, 1), padding='same', activation='relu')(x)
+    conv_3x3 = layers.Conv2D(filters_3x3, (3, 3), padding='same', activation='relu')(conv_3x3_reduce)
+    
+    # 5x5 convolution branch
+    conv_5x5_reduce = layers.Conv2D(filters_5x5_reduce, (1, 1), padding='same', activation='relu')(x)
+    conv_5x5 = layers.Conv2D(filters_5x5, (5, 5), padding='same', activation='relu')(conv_5x5_reduce)
+    
+    # Max pooling branch
+    pool = layers.MaxPooling2D((3, 3), strides=(1, 1), padding='same')(x)
+    pool_proj = layers.Conv2D(filters_pool_proj, (1, 1), padding='same', activation='relu')(pool)
+    
+    # Concatenate all branches
+    output = layers.concatenate([conv_1x1, conv_3x3, conv_5x5, pool_proj], axis=-1)
+    
+    return output
+
+# Implement residual block
+def residual_block(x, filters, stride=1):
+    """
+    Residual block as used in ResNet
+    """
+    # Shortcut connection
+    shortcut = x
+    
+    # Main path
+    x = layers.Conv2D(filters, (3, 3), strides=stride, padding='same')(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation('relu')(x)
+    
+    x = layers.Conv2D(filters, (3, 3), padding='same')(x)
+    x = layers.BatchNormalization()(x)
+    
+    # Match dimensions if needed
+    if stride != 1 or shortcut.shape[-1] != filters:
+        shortcut = layers.Conv2D(filters, (1, 1), strides=stride)(shortcut)
+        shortcut = layers.BatchNormalization()(shortcut)
+    
+    # Add shortcut
+    x = layers.Add()([x, shortcut])
+    x = layers.Activation('relu')(x)
+    
+    return x
+
+def build_simple_resnet():
+    """
+    Simplified ResNet for demonstration
+    """
+    inputs = layers.Input(shape=(224, 224, 3))
+    
+    # Initial convolution
+    x = layers.Conv2D(64, (7, 7), strides=2, padding='same')(inputs)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation('relu')(x)
+    x = layers.MaxPooling2D((3, 3), strides=2, padding='same')(x)
+    
+    # Residual blocks
+    x = residual_block(x, 64)
+    x = residual_block(x, 64)
+    
+    x = residual_block(x, 128, stride=2)
+    x = residual_block(x, 128)
+    
+    x = residual_block(x, 256, stride=2)
+    x = residual_block(x, 256)
+    
+    # Global average pooling and classification
+    x = layers.GlobalAveragePooling2D()(x)
+    outputs = layers.Dense(1000, activation='softmax')(x)
+    
+    model = models.Model(inputs=inputs, outputs=outputs, name='SimpleResNet')
+    return model
+
+# Compare architecture statistics
+def compare_architectures():
+    """
+    Compare different CNN architectures
+    """
+    architectures = {
+        'LeNet-5': build_lenet5(),
+        'VGG-16 (pretrained)': VGG16(weights=None, include_top=True),
+        'ResNet-50 (pretrained)': ResNet50(weights=None, include_top=True),
+        'MobileNetV2 (pretrained)': MobileNetV2(weights=None, include_top=True),
+        'EfficientNetB0 (pretrained)': EfficientNetB0(weights=None, include_top=True)
+    }
+    
+    stats = []
+    
+    for name, model in architectures.items():
+        params = model.count_params()
+        layers_count = len(model.layers)
+        
+        # Estimate FLOPs (rough estimate)
+        # This is simplified; actual FLOP calculation is more complex
+        
+        stats.append({
+            'Architecture': name,
+            'Layers': layers_count,
+            'Parameters': f'{params:,}',
+            'Parameters (M)': params / 1e6
+        })
+    
+    # Create comparison visualization
+    fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+    
+    # Plot 1: Parameters comparison
+    names = [s['Architecture'] for s in stats]
+    params = [s['Parameters (M)'] for s in stats]
+    
+    axes[0].barh(names, params, color='steelblue', edgecolor='black')
+    axes[0].set_xlabel('Parameters (Millions)', fontsize=12, fontweight='bold')
+    axes[0].set_title('Model Size Comparison', fontsize=14, fontweight='bold')
+    axes[0].grid(axis='x', alpha=0.3)
+    
+    # Plot 2: Layers comparison
+    layer_counts = [s['Layers'] for s in stats]
+    
+    axes[1].barh(names, layer_counts, color='coral', edgecolor='black')
+    axes[1].set_xlabel('Number of Layers', fontsize=12, fontweight='bold')
+    axes[1].set_title('Model Depth Comparison', fontsize=14, fontweight='bold')
+    axes[1].grid(axis='x', alpha=0.3)
+    
+    plt.tight_layout()
+    plt.savefig('architecture_comparison.png', dpi=150, bbox_inches='tight')
+    plt.close()
+    
+    # Print table
+    print("\n" + "="*80)
+    print("CNN ARCHITECTURE COMPARISON")
+    print("="*80)
+    print(f"{'Architecture':<30} {'Layers':<10} {'Parameters':<20}")
+    print("-"*80)
+    for s in stats:
+        print(f"{s['Architecture']:<30} {s['Layers']:<10} {s['Parameters']:<20}")
+    print("="*80 + "\n")
+
+# Visualize residual connections
+def visualize_residual_connections():
+    """
+    Illustrate how residual connections work
+    """
+    fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+    
+    # Plain network
+    ax = axes[0]
+    ax.text(0.5, 0.9, 'Input', ha='center', fontsize=12, fontweight='bold',
+           bbox=dict(boxstyle='round', facecolor='lightblue'))
+    ax.arrow(0.5, 0.85, 0, -0.15, head_width=0.05, head_length=0.02, fc='black')
+    ax.text(0.5, 0.65, 'Conv + ReLU', ha='center', fontsize=11,
+           bbox=dict(boxstyle='round', facecolor='lightgreen'))
+    ax.arrow(0.5, 0.6, 0, -0.15, head_width=0.05, head_length=0.02, fc='black')
+    ax.text(0.5, 0.4, 'Conv', ha='center', fontsize=11,
+           bbox=dict(boxstyle='round', facecolor='lightgreen'))
+    ax.arrow(0.5, 0.35, 0, -0.15, head_width=0.05, head_length=0.02, fc='black')
+    ax.text(0.5, 0.15, 'ReLU', ha='center', fontsize=11,
+           bbox=dict(boxstyle='round', facecolor='lightyellow'))
+    ax.arrow(0.5, 0.1, 0, -0.05, head_width=0.05, head_length=0.02, fc='black')
+    ax.text(0.5, 0.02, 'Output', ha='center', fontsize=12, fontweight='bold',
+           bbox=dict(boxstyle='round', facecolor='lightcoral'))
+    ax.set_title('Plain Network (No Skip Connection)', fontsize=13, fontweight='bold')
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.axis('off')
+    
+    # Residual network
+    ax = axes[1]
+    ax.text(0.5, 0.9, 'Input', ha='center', fontsize=12, fontweight='bold',
+           bbox=dict(boxstyle='round', facecolor='lightblue'))
+    ax.arrow(0.5, 0.85, 0, -0.15, head_width=0.05, head_length=0.02, fc='black')
+    ax.text(0.5, 0.65, 'Conv + ReLU', ha='center', fontsize=11,
+           bbox=dict(boxstyle='round', facecolor='lightgreen'))
+    ax.arrow(0.5, 0.6, 0, -0.15, head_width=0.05, head_length=0.02, fc='black')
+    ax.text(0.5, 0.4, 'Conv', ha='center', fontsize=11,
+           bbox=dict(boxstyle='round', facecolor='lightgreen'))
+    ax.arrow(0.5, 0.35, 0, -0.1, head_width=0.05, head_length=0.02, fc='black')
+    
+    # Skip connection (curved arrow)
+    from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+    arrow = FancyArrowPatch((0.55, 0.87), (0.7, 0.27),
+                          connectionstyle="arc3,rad=.3", arrowstyle='->', 
+                          mutation_scale=20, lw=3, color='red')
+    ax.add_patch(arrow)
+    ax.text(0.8, 0.57, 'Skip\nConnection', ha='center', fontsize=10, 
+           fontweight='bold', color='red')
+    
+    ax.text(0.5, 0.25, 'Add', ha='center', fontsize=11,
+           bbox=dict(boxstyle='round', facecolor='orange'))
+    ax.arrow(0.5, 0.2, 0, -0.05, head_width=0.05, head_length=0.02, fc='black')
+    ax.text(0.5, 0.1, 'ReLU', ha='center', fontsize=11,
+           bbox=dict(boxstyle='round', facecolor='lightyellow'))
+    ax.arrow(0.5, 0.05, 0, -0.03, head_width=0.05, head_length=0.02, fc='black')
+    ax.text(0.5, 0.01, 'Output', ha='center', fontsize=12, fontweight='bold',
+           bbox=dict(boxstyle='round', facecolor='lightcoral'))
+    ax.set_title('Residual Network (With Skip Connection)', fontsize=13, fontweight='bold')
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.axis('off')
+    
+    plt.tight_layout()
+    plt.savefig('residual_connection_diagram.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+# Main execution
+if __name__ == "__main__":
+    print("Building and comparing CNN architectures...\n")
+    
+    # Compare architectures
+    compare_architectures()
+    
+    # Visualize residual connections
+    visualize_residual_connections()
+    
+    print("\n✓ Architecture comparisons complete!")
+    
+    # Show one architecture in detail
+    print("\nResNet-50 Summary:")
+    print("="*80)
+    resnet_model = ResNet50(weights=None, include_top=True)
+    resnet_model.summary()
+```
+
+#### Interactive Exercises
+
+**Exercise 1: Architecture Builder**
+- Drag-and-drop interface to build custom CNN
+- Components: Conv layers, Pooling, Skip connections, Dense layers
+- Real-time parameter count and estimated FLOPs
+- Validate architecture (check dimensions match)
+- Compare with famous architectures
+
+**Exercise 2: Architecture Timeline Explorer**
+- Interactive timeline from LeNet to ViT
+- Click each to see:
+  - Architecture diagram
+  - Key innovations
+  - Performance metrics
+  - Code example
+- Quiz: "Which architecture introduced [innovation]?"
+
+**Exercise 3: Skip Connection Simulator**
+- Two parallel training simulations:
+  -Plain network (20 layers)
+
+ResNet (20 layers with skip connections)
+Visualize gradient flow during backprop
+Show training loss curves
+Demonstrate degradation problem
+Exercise 4: Efficiency Challenge
+
+Given constraints (e.g., "< 10M parameters, mobile device")
+Design architecture to maximize accuracy
+Test on sample dataset
+Leaderboard of efficient architectures
+Exercise 5: Transfer Learning Selector
+
+Input: Your task (image classification, object detection, etc.)
+Input: Dataset size, hardware constraints
+Recommend best pretrained architecture
+Explain trade-offs
+Implementation Notes for Web Platform
+
+Use React Flow or ReactFlow for visual architecture builder
+D3.js for architecture diagrams and comparisons
+Plotly.js for performance metrics charts
+TensorFlow.js to load pretrained models in browser
+Three.js for 3D architecture visualization
+Framer Motion for timeline animations
+Store popular architectures as JSON configs
+Implement architecture validator (dimension checker)

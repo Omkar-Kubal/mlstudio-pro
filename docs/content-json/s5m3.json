@@ -1,0 +1,125 @@
+{
+    "meta": {
+        "subject": "model-evaluation",
+        "module": "bias-variance",
+        "level": "intermediate",
+        "estimatedHours": 3
+    },
+    "overview": [
+        "The bias-variance tradeoff is a fundamental concept that describes how model complexity impacts prediction error. Understanding this tradeoff is essential for building models that generalize well.",
+        "This module covers bias vs variance, underfitting vs overfitting, learning curves, and regularization effects."
+    ],
+    "topics": [
+        {
+            "title": "Bias-Variance Tradeoff",
+            "theory": [
+                "Bias is error due to overly simplistic assumptions — high bias models underfit data. Variance is error due to sensitivity to training data — high variance models overfit.",
+                "Total Error = Bias² + Variance + Irreducible Error. As model complexity increases, bias decreases but variance increases.",
+                "The goal is finding the sweet spot that minimizes total error. This is the core of model selection and hyperparameter tuning."
+            ],
+            "visualIntuition": [
+                "Interactive plot with X-axis as model complexity, Y-axis as error. Three curves: Bias², Variance, Total Error showing U-shaped total error."
+            ],
+            "visualSuggestions": [
+                "Complexity slider with live error curve update",
+                "Decomposition animation showing bias vs variance contribution"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Visualizing bias-variance tradeoff",
+                    "content": "from sklearn.model_selection import validation_curve\nfrom sklearn.tree import DecisionTreeRegressor\nfrom sklearn.datasets import make_regression\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nX, y = make_regression(n_samples=500, n_features=1, noise=10)\nmodel = DecisionTreeRegressor()\nparam_range = np.arange(1, 15)\n\ntrain_scores, test_scores = validation_curve(\n    model, X, y, param_name=\"max_depth\", param_range=param_range,\n    cv=5, scoring=\"neg_mean_squared_error\"\n)\n\ntrain_mean = -np.mean(train_scores, axis=1)\ntest_mean = -np.mean(test_scores, axis=1)\n\nplt.plot(param_range, train_mean, label=\"Training Error\")\nplt.plot(param_range, test_mean, label=\"Validation Error\")\nplt.xlabel(\"Model Complexity (max_depth)\")\nplt.ylabel(\"MSE\")\nplt.legend()\nplt.title(\"Bias-Variance Tradeoff\")\nplt.show()"
+                }
+            ]
+        },
+        {
+            "title": "Underfitting vs Overfitting",
+            "theory": [
+                "Underfitting: Model too simple to capture data trends. Examples: linear model on non-linear data, high regularization.",
+                "Overfitting: Model too complex, memorizes noise in training data. Examples: very deep tree, polynomial of degree 15 on 20 points.",
+                "Good fit: Balance between bias and variance. Model captures true patterns without fitting noise."
+            ],
+            "visualIntuition": [
+                "Three plots with same data: underfit (straight line through curve), good fit (smooth curve), overfit (wiggly line through all points)."
+            ],
+            "visualSuggestions": [
+                "Polynomial degree slider showing transition",
+                "Animated progression from underfit to overfit"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Underfitting vs overfitting with polynomial regression",
+                    "content": "from sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.linear_model import LinearRegression\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nnp.random.seed(1)\nX = np.sort(5 * np.random.rand(80, 1), axis=0)\ny = np.sin(X).ravel() + np.random.normal(0, 0.1, X.shape[0])\n\nplt.figure(figsize=(12, 4))\n\nfor i, degree in enumerate([1, 4, 15]):\n    poly = PolynomialFeatures(degree)\n    X_poly = poly.fit_transform(X)\n    model = LinearRegression().fit(X_poly, y)\n    y_pred = model.predict(X_poly)\n    \n    plt.subplot(1, 3, i+1)\n    plt.scatter(X, y, color=\"black\", s=15)\n    plt.plot(X, y_pred, color=\"red\")\n    plt.title([\"Underfit (deg 1)\", \"Good Fit (deg 4)\", \"Overfit (deg 15)\"][i])\n\nplt.tight_layout()\nplt.show()"
+                }
+            ]
+        },
+        {
+            "title": "Learning Curves",
+            "theory": [
+                "Learning curves show model performance as a function of training set size. They help diagnose under/overfitting.",
+                "If train and validation scores converge at low value → underfitting (need more complex model). If gap stays large → overfitting (need more data or simpler model).",
+                "High bias: both curves plateau at high error. High variance: gap between curves, training error much lower than validation."
+            ],
+            "visualIntuition": [
+                "Dual-line plot: training vs validation accuracy as training samples increase. Gap indicates overfitting, convergence at low value indicates underfitting."
+            ],
+            "visualSuggestions": [
+                "Animated data accumulation",
+                "Side-by-side comparison for different model complexities"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Learning curves",
+                    "content": "from sklearn.model_selection import learning_curve\nfrom sklearn.linear_model import Ridge\nfrom sklearn.datasets import make_regression\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nX, y = make_regression(n_samples=1000, n_features=20)\ntrain_sizes, train_scores, val_scores = learning_curve(\n    Ridge(), X, y, cv=5,\n    train_sizes=np.linspace(0.1, 1.0, 10)\n)\n\ntrain_mean = np.mean(train_scores, axis=1)\nval_mean = np.mean(val_scores, axis=1)\n\nplt.plot(train_sizes, train_mean, label=\"Training Score\")\nplt.plot(train_sizes, val_mean, label=\"Validation Score\")\nplt.xlabel(\"Training Set Size\")\nplt.ylabel(\"Score\")\nplt.title(\"Learning Curve\")\nplt.legend()\nplt.show()"
+                }
+            ]
+        },
+        {
+            "title": "Regularization Effects",
+            "theory": [
+                "Regularization penalizes model complexity to prevent overfitting. Adds penalty term to loss function.",
+                "L1 (Lasso): Shrinks some coefficients to exactly zero → feature selection. Good for sparse solutions.",
+                "L2 (Ridge): Shrinks all coefficients toward zero → smooth, stable solutions. Doesn't eliminate features.",
+                "Elastic Net combines both L1 and L2 regularization. Choice depends on problem and data characteristics."
+            ],
+            "visualIntuition": [
+                "Bar plot of feature weights for Lasso vs Ridge. Slider for alpha parameter with real-time weight updates."
+            ],
+            "visualSuggestions": [
+                "Alpha slider showing coefficient shrinkage",
+                "L1 vs L2 constraint region visualization"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Comparing L1 and L2 regularization",
+                    "content": "from sklearn.linear_model import Lasso, Ridge\nfrom sklearn.datasets import make_regression\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nX, y = make_regression(n_samples=100, n_features=10, noise=10)\n\nlasso = Lasso(alpha=0.1).fit(X, y)\nridge = Ridge(alpha=1.0).fit(X, y)\n\ncoef_indices = np.arange(len(ridge.coef_))\n\nplt.bar(coef_indices - 0.2, ridge.coef_, width=0.4, alpha=0.7, label=\"Ridge (L2)\")\nplt.bar(coef_indices + 0.2, lasso.coef_, width=0.4, alpha=0.7, label=\"Lasso (L1)\")\nplt.xlabel(\"Feature Index\")\nplt.ylabel(\"Coefficient Value\")\nplt.legend()\nplt.title(\"Regularization Effects on Coefficients\")\nplt.show()"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "What is the relationship between model complexity and bias/variance?",
+        "How can you identify underfitting from a learning curve?",
+        "How can you identify overfitting from a learning curve?",
+        "What is the key difference between L1 and L2 regularization?",
+        "When would you prefer Lasso over Ridge regression?"
+    ],
+    "references": [
+        {
+            "label": "scikit-learn Validation Curves",
+            "url": "https://scikit-learn.org/stable/modules/learning_curve.html"
+        },
+        {
+            "label": "ESL - Bias-Variance Tradeoff",
+            "url": "https://hastie.su.domains/ElemStatLearn/"
+        }
+    ],
+    "_contentWarnings": [
+        "Original code used deprecated load_boston - replaced with make_regression",
+        "Missing: Elastic Net detailed coverage",
+        "Missing: Cross-validation for regularization parameter selection"
+    ]
+}

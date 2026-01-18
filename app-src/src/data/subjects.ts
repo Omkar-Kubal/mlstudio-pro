@@ -1,5 +1,65 @@
 import { Subject } from '@/types/learning';
 
+export interface SubjectMeta {
+    difficulty: 'Beginner' | 'Core' | 'Advanced';
+    modules: number;
+    hours: string;
+    format: ('theory' | 'code' | 'visual' | 'interactive')[];
+    prerequisites?: string[];
+}
+
+export const subjectMeta: Record<string, SubjectMeta> = {
+    'foundations': {
+        difficulty: 'Beginner',
+        modules: 4,
+        hours: '6-8',
+        format: ['theory', 'visual'],
+        prerequisites: [],
+    },
+    'programming': {
+        difficulty: 'Beginner',
+        modules: 5,
+        hours: '10-12',
+        format: ['code', 'interactive'],
+        prerequisites: [],
+    },
+    'data-handling': {
+        difficulty: 'Core',
+        modules: 4,
+        hours: '8-10',
+        format: ['code', 'interactive'],
+        prerequisites: ['programming'],
+    },
+    'machine-learning': {
+        difficulty: 'Core',
+        modules: 6,
+        hours: '12-15',
+        format: ['theory', 'code', 'visual'],
+        prerequisites: ['foundations', 'programming'],
+    },
+    'model-evaluation': {
+        difficulty: 'Core',
+        modules: 3,
+        hours: '4-6',
+        format: ['theory', 'code'],
+        prerequisites: ['machine-learning'],
+    },
+    'deep-learning': {
+        difficulty: 'Advanced',
+        modules: 5,
+        hours: '10-12',
+        format: ['theory', 'code', 'visual'],
+        prerequisites: ['machine-learning'],
+    },
+    'applied-domains': {
+        difficulty: 'Advanced',
+        modules: 4,
+        hours: '8-10',
+        format: ['code', 'interactive'],
+        prerequisites: ['deep-learning'],
+    },
+};
+
 export const subjects: Subject[] = [
     {
         id: 'foundations',

@@ -84,3 +84,31 @@ export interface TopicContent {
     code: CodeConfig;
     playground: PlaygroundConfig;
 }
+
+// Parsed content types (from .txt files)
+export interface ParsedContent {
+    title: string;
+    sections: ContentSection[];
+    codeSnippets: CodeSnippet[];
+    quiz: string[];
+    references: string[];
+}
+
+export interface ContentSection {
+    type: 'heading' | 'paragraph' | 'list' | 'reference';
+    content: string;
+    level?: number;
+}
+
+export interface CodeSnippet {
+    language: string;
+    content: string;
+    description?: string;
+}
+
+export interface CodeExecutionResult {
+    output: string;
+    error?: string;
+    executionTime?: number;
+}
+

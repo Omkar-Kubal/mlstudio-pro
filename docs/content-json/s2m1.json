@@ -1,0 +1,230 @@
+{
+    "meta": {
+        "subject": "programming",
+        "module": "python-basics",
+        "level": "beginner",
+        "estimatedHours": 4
+    },
+    "overview": [
+        "Python is chosen for data science because it maps closely to mathematical thinking, reads like pseudocode, integrates deeply with scientific libraries, and lets you express ideas faster than syntax allows.",
+        "This module covers Python syntax fundamentals, data types and structures, control flow, functions, error handling, and clean code practices — all essential for writing reliable data science code."
+    ],
+    "topics": [
+        {
+            "title": "Python Syntax for Data Science",
+            "theory": [
+                "Python code is often written linearly, results are inspected interactively, and code is exploratory. This matches the data science workflow: Observe → Modify → Test → Reason → Repeat.",
+                "Python syntax follows three principles: Readability over brevity, Explicit over implicit, and Indentation defines logic. This is critical when revisiting experiments, collaborating, and debugging models.",
+                "A variable is a name bound to an object, not a box. This matters because objects are mutable or immutable, and memory references affect behavior. When working with arrays, DataFrames, and models, you must know whether you're copying data or modifying it in place.",
+                "Python uses indentation instead of braces. Indentation defines scope, control flow, and meaning. In ML pipelines, a wrong indent can silently skip training, break evaluation, or leak data.",
+                "Python is dynamically typed — no type declarations required. This gives flexibility but adds responsibility: bugs appear at runtime, type discipline must be mental. Wrong types lead to silent failures, shape mismatches cause runtime crashes."
+            ],
+            "visualIntuition": [
+                "Interactive REPL demonstration: run small blocks, inspect output, adjust logic, iterate. This tight feedback loop is core to data science productivity."
+            ],
+            "visualSuggestions": [
+                "Side-by-side comparison of Python vs Java/C showing syntax clarity",
+                "Indentation visualizer highlighting scope levels"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Basic Python syntax examples",
+                    "content": "# Variable binding\nn_samples = 100\n\n# Expression\nmean = total / n_samples\n\n# Control block with indentation\nif mean > 0:\n    status = \"positive\"\nelse:\n    status = \"negative\"\n\n# Comment explaining intent, not syntax\n# Normalize to avoid scale dominance\nX = X / X.max()"
+                }
+            ]
+        },
+        {
+            "title": "Data Types and Data Structures",
+            "theory": [
+                "In data science, most bugs are data bugs, not algorithm bugs. Understanding data types answers: What operations are valid? What is mutable? What gets copied vs referenced? What will scale and what will break?",
+                "Primitive types: int (counts, indices, iterations — arbitrary precision), float (approximate representation, subject to precision errors — 0.1 + 0.2 != 0.3), bool (filtering, masking, conditional logic), str (categories, column names, paths, text data — immutable).",
+                "Core data structures: list (ordered, mutable, mixed types — not ideal for large numerical data), tuple (ordered, immutable, hashable — fixed structure data), dict (key-value mapping, fast lookup — metadata, configs, feature mappings), set (unordered, unique elements, fast membership — deduplication).",
+                "Mutability is critical: int, float, str, tuple are immutable; list, dict, set are mutable. Passing mutable data to functions can cause side effects. Copy vs reference pitfall: b = a creates a reference, not a copy. Use b = a.copy() to avoid corrupting datasets or leaking test data."
+            ],
+            "visualIntuition": [
+                "Memory diagram showing reference vs copy behavior. When b = a, both point to same object. When b = a.copy(), separate objects exist."
+            ],
+            "visualSuggestions": [
+                "Interactive type inspector showing what operations are valid for each type",
+                "Reference diagram animation showing copy vs reference behavior"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Python data types",
+                    "content": "# Primitives\nn = 42           # int\nx = 3.14         # float\nis_valid = True  # bool\nlabel = \"spam\"   # str\n\n# Data structures\nvalues = [1, 2, 3]                    # list\npoint = (x, y)                        # tuple\nrecord = {\"age\": 25, \"score\": 0.82}   # dict\nunique_ids = set([1, 2, 2, 3])        # set"
+                },
+                {
+                    "language": "python",
+                    "description": "Mutability and copy vs reference",
+                    "content": "# Reference pitfall\na = [1, 2, 3]\nb = a          # b references same object as a\nb.append(4)\nprint(a)       # [1, 2, 3, 4] - a is also changed!\n\n# Correct way - make a copy\na = [1, 2, 3]\nb = a.copy()   # b is a new object\nb.append(4)\nprint(a)       # [1, 2, 3] - a is unchanged"
+                },
+                {
+                    "language": "python",
+                    "description": "Working with nested structures",
+                    "content": "# Real data is often nested\ndata = [\n    {\"name\": \"A\", \"scores\": [80, 90]},\n    {\"name\": \"B\", \"scores\": [70, 85]}\n]\n\n# Access nested data\nfor record in data:\n    avg = sum(record[\"scores\"]) / len(record[\"scores\"])\n    print(f\"{record['name']}: {avg}\")"
+                }
+            ]
+        },
+        {
+            "title": "Control Flow",
+            "theory": [
+                "Data science is making decisions based on data. Control flow answers: Which rows do we keep? Which branch of logic applies? How do we process datasets step by step? When do we stop iterating?",
+                "Conditionals (if/elif/else) express rules — filtering data, handling edge cases, applying thresholds, categorizing values. Every condition resolves to True or False. Truthiness: 0, 0.0, empty containers, and None are falsy.",
+                "For loops iterate over collections, process rows, apply transformations. Theory: Loops are clear and flexible but slower for large data. Later, NumPy/Pandas replace loops with vectorized operations. Conceptually: loops define the logic, vectorization optimizes it.",
+                "While loops are used for condition-based stopping, convergence logic, and iterative optimization — directly mirroring training loops. Loop control: break stops the loop, continue skips current iteration, pass is a placeholder."
+            ],
+            "visualIntuition": [
+                "Control flow as data filtering engine: if = condition, loop = traversal, combined = filtering engine. Pandas later replaces this with boolean masks, but logic remains identical."
+            ],
+            "visualSuggestions": [
+                "Flowchart visualization of if/elif/else branching",
+                "Loop iteration animation showing step-by-step processing"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Conditional logic for evaluation",
+                    "content": "if accuracy >= 0.9:\n    status = \"excellent\"\nelif accuracy >= 0.8:\n    status = \"acceptable\"\nelse:\n    status = \"needs improvement\"\n\n# Truthiness check for empty data\nif data:  # True if data is non-empty\n    process(data)"
+                },
+                {
+                    "language": "python",
+                    "description": "Loops in data processing",
+                    "content": "# For loop - iterate over data\nfor value in values:\n    transformed.append(value * 2)\n\n# While loop - training convergence\nwhile loss > threshold:\n    update_model()\n    loss = compute_loss()"
+                },
+                {
+                    "language": "python",
+                    "description": "Nested control flow for data pipelines",
+                    "content": "for row in dataset:\n    if row[\"age\"] is None:\n        continue  # Skip missing values\n    if row[\"age\"] > 60:\n        group = \"senior\"\n    else:\n        group = \"adult\"\n    processed.append({\"group\": group, **row})"
+                }
+            ]
+        },
+        {
+            "title": "Functions and Modules",
+            "theory": [
+                "Data science code is rarely written once. You clean data repeatedly, re-run experiments, tune parameters, compare results. Functions encapsulate logic, preventing repetition. Without functions, pipelines become fragile, experiments irreproducible, bugs multiply silently.",
+                "A function is a named transformation mapping inputs → outputs with isolated logic. Pure functions (no external state) are predictable and easy to test. Impure functions with hidden state cause bugs and non-reproducible results.",
+                "Parameters are variables in definition; arguments are values passed at call time. Default arguments provide controlled flexibility for hyperparameter tuning. Danger: mutable defaults like lists can cause unexpected behavior.",
+                "Modules are files containing functions — logical units of responsibility. Structure: preprocessing.py, metrics.py, models.py. Imports bind names, control namespace, define dependencies. Script thinking (linear, one-time) should evolve to module thinking (composable, test-friendly)."
+            ],
+            "visualIntuition": [
+                "Pipeline visualization: load_data() → clean() → engineer() → train() → evaluate(). Each step is independent, testable, and replaceable."
+            ],
+            "visualSuggestions": [
+                "Function as black box: inputs on left, outputs on right, logic inside",
+                "Module dependency graph showing imports"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Defining and using functions",
+                    "content": "def normalize(values):\n    \"\"\"Scales input array to [0,1].\"\"\"\n    return values / max(values)\n\ndef scale(x, factor=1.0):\n    \"\"\"Scale x by factor. Default factor is 1.0.\"\"\"\n    return x * factor\n\n# Usage\nnorm_data = normalize(raw_data)\nscaled_data = scale(raw_data, factor=0.5)"
+                },
+                {
+                    "language": "python",
+                    "description": "Functions as pipeline building blocks",
+                    "content": "def load_data():\n    return pd.read_csv(\"data.csv\")\n\ndef clean(df):\n    return df.dropna()\n\ndef train(features, target):\n    model = LinearRegression()\n    model.fit(features, target)\n    return model\n\n# Pipeline\ndata = load_data()\ndata = clean(data)\nmodel = train(data.drop('target', axis=1), data['target'])"
+                },
+                {
+                    "language": "python",
+                    "description": "Importing modules",
+                    "content": "import numpy as np\nfrom sklearn.metrics import accuracy_score\n\n# Imports define your stack and reproducibility\nfrom preprocessing import clean_data\nfrom models import train_classifier"
+                }
+            ]
+        },
+        {
+            "title": "Error Handling",
+            "theory": [
+                "In data science, errors are expected, not exceptional. Data is often incomplete, messy, inconsistent, unexpected. Error handling answers: What happens when assumptions break? How do we fail safely instead of silently?",
+                "Exceptions are signals, not failures. They indicate broken assumptions, invalid data, or incorrect logic paths. Good DS code interprets exceptions and responds intentionally. Types: SyntaxError (caught early), RuntimeErrors like TypeError, ValueError, KeyError, IndexError.",
+                "try/except provides controlled failure: attempt a risky operation, handle known failure modes, keep pipeline alive. Avoid over-broad exception handling (except: pass) — it hides bugs, masks data issues, and produces false confidence.",
+                "Raise custom errors to make assumptions explicit: if age < 0: raise ValueError('Age cannot be negative'). Assertions validate invariants at development time. Error handling philosophy: Handle expected data issues, let unexpected errors crash, never hide failures silently."
+            ],
+            "visualIntuition": [
+                "Exception flow: try block executes, if exception occurs, control jumps to matching except block. If no exception, code continues normally."
+            ],
+            "visualSuggestions": [
+                "Exception type hierarchy diagram",
+                "Good vs bad error handling comparison"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Basic try/except for data handling",
+                    "content": "try:\n    value = int(user_input)\nexcept ValueError:\n    value = None\n    print(\"Invalid input, using default\")\n\n# Specific exception handling\ntry:\n    result = x / y\nexcept ZeroDivisionError:\n    result = 0"
+                },
+                {
+                    "language": "python",
+                    "description": "Raising custom errors and assertions",
+                    "content": "# Raise error for invalid data\nif df.empty:\n    raise ValueError(\"Dataset is empty\")\n\nif age < 0:\n    raise ValueError(\"Age cannot be negative\")\n\n# Assertions for development-time validation\nassert X.shape[0] == y.shape[0], \"Feature and target shapes must match\""
+                }
+            ]
+        },
+        {
+            "title": "Writing Clean, Maintainable Code",
+            "theory": [
+                "Data science code is iterative, experimental, revisited months later, and read by others. Clean code is about trust — if you can't trust the code, you can't trust the results. Working code answers one question once; clean code answers many questions repeatedly.",
+                "Readability is the primary metric. Prefer average_age = total_age / num_people over a = t / n. Variables encode meaning, meaning encodes assumptions. Good names communicate what data represents, units, and pipeline stage.",
+                "One function = one responsibility. Keep functions small — if you can't explain it in one sentence, it's too big. Avoid magic numbers: use THRESHOLD = 0.73 instead of hardcoded 0.73 to make assumptions explicit.",
+                "Structure code like a pipeline. Reproducibility through fixed random seeds, explicit parameters, deterministic pipelines. Comments explain why, not what. Docstrings explain purpose, inputs, outputs, assumptions. Clarity beats cleverness every time."
+            ],
+            "visualIntuition": [
+                "Before/after code comparison: messy script vs clean pipeline structure. Pipeline shows clear data flow through named functions."
+            ],
+            "visualSuggestions": [
+                "Code diff showing bad naming vs good naming",
+                "Pipeline diagram showing modular function structure"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Clean naming and constants",
+                    "content": "# Bad: unclear names and magic numbers\nif s > 0.73:\n    l = 1\n\n# Good: clear names and explicit constants\nTHRESHOLD = 0.73\n\nif prediction_score > THRESHOLD:\n    label = 1"
+                },
+                {
+                    "language": "python",
+                    "description": "Clean pipeline structure",
+                    "content": "import numpy as np\n\nnp.random.seed(42)  # Reproducibility\n\ndef main():\n    data = load_data()\n    data = clean(data)\n    features, target = prepare(data)\n    model = train(features, target)\n    evaluate(model, features, target)\n\nif __name__ == \"__main__\":\n    main()"
+                },
+                {
+                    "language": "python",
+                    "description": "Docstrings and comments",
+                    "content": "def normalize(x):\n    \"\"\"\n    Scales numeric array to [0, 1].\n    \n    Assumes x contains non-negative values.\n    \n    Args:\n        x: numpy array of non-negative numbers\n    \n    Returns:\n        Normalized array with values in [0, 1]\n    \"\"\"\n    # Normalize to avoid feature dominance in distance calculations\n    return x / x.max()"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "Why is Python's dynamic typing both a benefit and a risk in data science?",
+        "What is the difference between a list and a tuple, and when would you use each?",
+        "Why is copy vs reference behavior critical in data pipelines?",
+        "When should you use a while loop instead of a for loop?",
+        "What is the difference between a pure function and an impure function?",
+        "Why should you avoid except: pass in data science code?"
+    ],
+    "references": [
+        {
+            "label": "Python Official Documentation",
+            "url": "https://docs.python.org/3/"
+        },
+        {
+            "label": "PEP 20 - The Zen of Python",
+            "url": "https://peps.python.org/pep-0020/"
+        },
+        {
+            "label": "Real Python - Python Tutorials",
+            "url": "https://realpython.com/"
+        },
+        {
+            "label": "Python Docs - Built-in Types",
+            "url": "https://docs.python.org/3/library/stdtypes.html"
+        }
+    ],
+    "_contentWarnings": [
+        "Mathematical formula notation was corrupted - converted to prose",
+        "Content is comprehensive but could benefit from more hands-on exercises",
+        "Missing: file I/O operations, context managers (with statement)",
+        "Clean code topic could link to PEP 8 style guide more explicitly"
+    ]
+}

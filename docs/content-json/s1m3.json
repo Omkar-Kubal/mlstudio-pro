@@ -1,0 +1,226 @@
+{
+    "meta": {
+        "subject": "foundations",
+        "module": "linear-algebra",
+        "level": "beginner",
+        "estimatedHours": 5
+    },
+    "overview": [
+        "Machine Learning is not about equations — it is about geometry. Every ML system operates in a space where data points are vectors, models define surfaces, and learning is movement through space.",
+        "This module covers vector operations, matrices as transformations, matrix properties, linear independence, eigenvalues/eigenvectors, and SVD — the mathematical foundations that make ML algorithms work."
+    ],
+    "topics": [
+        {
+            "title": "Vector Operations (Addition, Dot Product, Norms)",
+            "theory": [
+                "Vectors by themselves represent data. Vector operations describe relationships. Every ML model is built on adding vectors, measuring similarity, measuring distance, and projecting vectors.",
+                "Vector Addition: a + b = [a₁+b₁, a₂+b₂, ..., aₙ+bₙ]. Geometrically, place vectors head-to-tail and the result is net movement. In ML: weight updates = old weights + gradient step.",
+                "Vector Norm (Length): The Euclidean norm (L2) is ||x|| = √(x₁² + x₂² + ... + xₙ²). It measures distance from origin — 'how strong' or 'how far'. Norms matter for regularization (L1, L2), distance-based models, feature scaling, and gradient explosion/vanishing. Large norms often indicate overfitting or instability.",
+                "Dot Product: a·b = Σaᵢbᵢ. Geometrically: a·b = ||a|| ||b|| cos(θ). The dot product measures alignment, similarity, and projection. Large positive = strong alignment, zero = orthogonal (no relation), negative = opposite directions. Every linear model is: prediction = w·x.",
+                "Cosine Similarity: cos(θ) = (a·b)/(||a|| ||b||). This is crucial for text embeddings, recommendation systems, search relevance, and clustering. Similarity is often more meaningful than distance in high dimensions."
+            ],
+            "visualIntuition": [
+                "Vector addition as movement: two arrows combining into one. Dot product shown as alignment — slider controls angle between vectors, showing how dot product changes from positive (aligned) through zero (perpendicular) to negative (opposite)."
+            ],
+            "visualSuggestions": [
+                "Interactive angle slider showing how dot product changes with vector alignment",
+                "Comparison of distance vs cosine similarity in 2D space"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Basic vector operations",
+                    "content": "import numpy as np\n\na = np.array([2, 1])\nb = np.array([-1, 3])\n\nprint(\"Vector addition:\", a + b)\nprint(\"Norm of a:\", np.linalg.norm(a))"
+                },
+                {
+                    "language": "python",
+                    "description": "Dot product for prediction",
+                    "content": "import numpy as np\n\nw = np.array([0.4, 0.6])  # weights\nx = np.array([10, 5])     # features\n\nprediction = np.dot(w, x)\nprint(\"Prediction:\", prediction)"
+                },
+                {
+                    "language": "python",
+                    "description": "Cosine similarity",
+                    "content": "import numpy as np\nfrom numpy.linalg import norm\n\na = np.array([1, 2, 3])\nb = np.array([2, 4, 6])\n\ncos_sim = np.dot(a, b) / (norm(a) * norm(b))\nprint(\"Cosine similarity:\", cos_sim)"
+                }
+            ]
+        },
+        {
+            "title": "Matrices & Matrix Multiplication",
+            "theory": [
+                "Vectors describe single data points. Matrices describe systems. Every ML model at scale is a sequence of matrix operations: datasets are matrices, model parameters are matrices, neural networks are chained matrix multiplications.",
+                "A matrix is a 2D array of numbers A ∈ R^(m×n). Rows → observations, Columns → features. A matrix is not just storage — it transforms vectors. When you multiply y = Ax, you are rotating, scaling, shearing, or projecting. This is how models reshape data space to make patterns separable.",
+                "Matrix Multiplication: If A ∈ R^(m×n) and B ∈ R^(n×p), then C = AB ∈ R^(m×p). Inner dimensions must align. Each output element is a dot product. Each row of A asks: 'How aligned is this row with each column of B?'",
+                "Special matrices: Identity (no change), Diagonal (feature scaling), Orthogonal (pure rotation), Sparse (efficiency). In ML: Dataset = design matrix, Linear layer = weight matrix, Batch inference = matrix multiplication, Backprop = transposed matrices."
+            ],
+            "visualIntuition": [
+                "Matrix as transformation: Identity matrix leaves points unchanged, scaling matrix stretches space, rotation matrix rotates space. Grid of points transforms to show the effect."
+            ],
+            "visualSuggestions": [
+                "Rotation slider showing how a grid of points transforms",
+                "Comparison of identity, scaling, and rotation transformations"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Matrix multiplication",
+                    "content": "import numpy as np\n\nA = np.array([[1, 2],\n              [3, 4]])\n\nB = np.array([[2, 0],\n              [1, 2]])\n\nC = A @ B\nprint(\"A @ B =\\n\", C)"
+                },
+                {
+                    "language": "python",
+                    "description": "Dataset × Weights = Predictions (linear regression)",
+                    "content": "import numpy as np\n\nX = np.array([[170, 65],\n              [160, 55],\n              [180, 75]])\n\nW = np.array([[0.02],\n              [0.05]])\n\ny = X @ W\nprint(\"Predictions:\\n\", y)"
+                }
+            ]
+        },
+        {
+            "title": "Matrix Properties: Transpose, Inverse, Rank",
+            "theory": [
+                "Matrix properties describe what kinds of transformations are possible and what can or cannot be undone. They answer: Can this system be solved? Is this transformation reversible? Is information lost? Is the model stable?",
+                "Transpose flips rows and columns: A^T[ij] = A[ji]. If A ∈ R^(m×n) then A^T ∈ R^(n×m). Transpose changes perspective: Rows ↔ Columns, Observations ↔ Features. It appears in the Normal Equation (X^TX)^(-1)X^Ty, backpropagation, gradient calculations, and covariance matrices.",
+                "Inverse: For square matrix A, the inverse A^(-1) satisfies AA^(-1) = A^(-1)A = I. Inverse means undoing a transformation. A matrix is invertible only if it is square, does not collapse dimensions, and no information is lost. Modern ML prefers gradient descent over matrix inversion due to numerical instability.",
+                "Rank: The number of linearly independent rows or columns. Rank tells you 'how many independent directions exist' — it measures information content, not size. Rank deficiency means features are linearly dependent, inverse doesn't exist, and solutions are unstable. This leads to multicollinearity, ill-conditioned matrices, and overfitting."
+            ],
+            "visualIntuition": [
+                "Transpose as axis swapping. Inverse as reversible vs irreversible transformation — some transformations can be undone, others collapse dimensions. Rank as dimensional collapse: full-rank matrix preserves all dimensions, rank-deficient matrix collapses some."
+            ],
+            "visualSuggestions": [
+                "Before/after comparison showing transformation and its inverse",
+                "Rank visualization: points collapsing onto a line (rank 1) or plane (rank 2)"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Matrix transpose",
+                    "content": "import numpy as np\n\nA = np.array([[1, 2, 3],\n              [4, 5, 6]])\n\nprint(\"A.T =\\n\", A.T)"
+                },
+                {
+                    "language": "python",
+                    "description": "Matrix inverse",
+                    "content": "import numpy as np\n\nA = np.array([[4, 7],\n              [2, 6]])\n\nA_inv = np.linalg.inv(A)\nprint(\"A inverse =\\n\", A_inv)\nprint(\"A @ A_inv =\\n\", A @ A_inv)  # Should be identity"
+                },
+                {
+                    "language": "python",
+                    "description": "Matrix rank (detecting redundancy)",
+                    "content": "import numpy as np\n\nA = np.array([[1, 2, 3],\n              [2, 4, 6],\n              [3, 6, 9]])\n\nprint(\"Rank:\", np.linalg.matrix_rank(A))  # Rank = 1, all rows are multiples"
+                }
+            ]
+        },
+        {
+            "title": "Linear Independence & Basis",
+            "theory": [
+                "Linear independence and basis explain what information actually matters. This answers: Which features are redundant? How many dimensions do we really need? Why PCA works. Why embeddings are compact.",
+                "A vector v is a linear combination of vectors v₁, v₂, ..., vₙ if v = a₁v₁ + a₂v₂ + ... + aₙvₙ. A set of vectors is linearly independent if a₁v₁ + a₂v₂ + ... + aₙvₙ = 0 only when all aᵢ = 0. Independent vectors add new directions; dependent vectors add no new information.",
+                "A basis is a minimal, independent, complete set of vectors that can represent every vector in the space. It is the coordinate system of your data. Once a basis is fixed: every vector has unique representation, dimensionality is defined, compression becomes possible.",
+                "The number of basis vectors = dimension of the space. Rank = dimension of column space. PCA finds a new basis. Embeddings learn a compressed basis. ML models often rotate feature space, compress directions, and discard weak dimensions — they change representation, not data."
+            ],
+            "visualIntuition": [
+                "Two vectors in same direction = dependent (no new info). Two non-collinear vectors = independent (span 2D). Original axes (x, y) shown alongside new tilted basis — same points, new coordinates. One basis explains variance better."
+            ],
+            "visualSuggestions": [
+                "Interactive visualization of dependent vs independent vectors",
+                "Basis change showing same data in different coordinate systems"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Checking linear dependence",
+                    "content": "import numpy as np\n\nv1 = np.array([1, 2])\nv2 = np.array([2, 4])  # Multiple of v1\n\nrank = np.linalg.matrix_rank(np.vstack([v1, v2]))\nprint(\"Rank:\", rank)  # Rank = 1 means dependent"
+                },
+                {
+                    "language": "python",
+                    "description": "Finding redundant features via rank",
+                    "content": "import numpy as np\n\nX = np.array([\n    [1, 0, 1],\n    [0, 1, 1],\n    [1, 1, 2]  # Third column = first + second\n])\n\nprint(\"Rank:\", np.linalg.matrix_rank(X))  # Rank = 2, one column is redundant"
+                }
+            ]
+        },
+        {
+            "title": "Eigenvalues & Eigenvectors",
+            "theory": [
+                "Most vectors get rotated when transformed by a matrix. Eigenvectors are special directions that do NOT rotate—they only stretch or shrink. Eigenvalues tell you how much they stretch or shrink. This concept is at the heart of PCA, optimization, stability analysis, and neural network dynamics.",
+                "For a square matrix A: Av = λv, where v is the eigenvector (direction) and λ is the eigenvalue (scaling factor). Applying matrix A to eigenvector v does not change its direction, only scales it.",
+                "Geometric interpretation: Transform a circle into an ellipse. Eigenvectors are the ellipse axes. Eigenvalues are the axis lengths. This explains why PCA finds principal directions and why optimization follows curvature.",
+                "Eigenvalue meanings: λ > 1 means direction expands, 0 < λ < 1 means direction shrinks, λ = 0 means dimension collapses, λ < 0 means direction flips. Large magnitude means strong influence. In ML: PCA uses eigenvalues for variance magnitude, Hessians use them for curvature, they determine training stability and gradient behavior."
+            ],
+            "visualIntuition": [
+                "Grid of points transformed by matrix. Two directions remain aligned (eigenvectors) — they stretch or shrink but don't rotate. User sees stability directions and variance directions."
+            ],
+            "visualSuggestions": [
+                "Transformation showing most vectors rotating while eigenvectors only scale",
+                "Circle-to-ellipse visualization with eigenvector axes highlighted"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Computing eigenvalues and eigenvectors",
+                    "content": "import numpy as np\n\nA = np.array([[3, 1],\n              [1, 3]])\n\nvalues, vectors = np.linalg.eig(A)\n\nprint(\"Eigenvalues:\", values)\nprint(\"Eigenvectors:\\n\", vectors)"
+                },
+                {
+                    "language": "python",
+                    "description": "Verifying Av = λv",
+                    "content": "import numpy as np\n\nA = np.array([[3, 1],\n              [1, 3]])\n\nvalues, vectors = np.linalg.eig(A)\n\nfor i in range(len(values)):\n    v = vectors[:, i]\n    print(f\"A @ v{i+1} = {A @ v}\")\n    print(f\"λ{i+1} * v{i+1} = {values[i] * v}\")\n    print()"
+                }
+            ]
+        },
+        {
+            "title": "Singular Value Decomposition (SVD)",
+            "theory": [
+                "Eigenvalues work only for square matrices. Real-world ML data matrices are almost never square. SVD is the universal tool: works for any matrix shape, reveals structure, enables compression, powers PCA, embeddings, and recommender systems.",
+                "For any matrix X ∈ R^(m×n): X = UΣV^T. U is left singular vectors (output space), Σ is singular values (importance, sorted largest to smallest), V^T is right singular vectors (input space). SVD says: Any matrix can be decomposed into rotate → scale → rotate.",
+                "Right singular vectors (V) define principal directions in input space, representing feature combinations. Singular values (Σ) measure importance/energy — large means important structure, small means noise/redundancy. Left singular vectors (U) describe output directions.",
+                "The number of non-zero singular values = rank of matrix. Keeping only top-k singular values gives low-rank approximation, noise reduction, and compression. This is the mathematical foundation of PCA (SVD on centered data), embeddings, latent representations, and recommendation systems."
+            ],
+            "visualIntuition": [
+                "Cloud of points with rotated axes appearing. Axes stretch differently (singular values). Minor axes collapse. Reduced-dimensional projection shown. User sees compression in action."
+            ],
+            "visualSuggestions": [
+                "Step-by-step SVD: original data → rotation → scaling → final rotation",
+                "Low-rank approximation showing how noise is removed"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Computing SVD",
+                    "content": "import numpy as np\n\nX = np.array([\n    [1, 0, 0],\n    [0, 1, 0],\n    [1, 1, 0],\n    [0, 0, 1]\n])\n\nU, S, Vt = np.linalg.svd(X, full_matrices=False)\n\nprint(\"Singular values:\", S)"
+                },
+                {
+                    "language": "python",
+                    "description": "Low-rank approximation",
+                    "content": "import numpy as np\n\nX = np.random.randn(10, 5)\nU, S, Vt = np.linalg.svd(X, full_matrices=False)\n\nk = 2  # Keep top 2 components\nX_approx = U[:, :k] @ np.diag(S[:k]) @ Vt[:k, :]\n\nprint(\"Original shape:\", X.shape)\nprint(\"Approximation rank:\", k)\nprint(\"Reconstruction error:\", np.linalg.norm(X - X_approx))"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "What does a dot product of zero between two vectors mean geometrically?",
+        "Why do inner dimensions need to match for matrix multiplication?",
+        "When does a matrix inverse not exist, and what does this mean for ML?",
+        "What is the relationship between rank and the number of linearly independent features?",
+        "Why are eigenvectors called 'invariant directions' of a transformation?",
+        "How does SVD enable dimensionality reduction through low-rank approximation?"
+    ],
+    "references": [
+        {
+            "label": "Khan Academy - Linear Algebra",
+            "url": "https://www.khanacademy.org/math/linear-algebra"
+        },
+        {
+            "label": "MIT OpenCourseWare - Linear Algebra",
+            "url": "https://ocw.mit.edu"
+        },
+        {
+            "label": "NumPy Linear Algebra Documentation",
+            "url": "https://numpy.org/doc/stable/reference/routines.linalg.html"
+        },
+        {
+            "label": "Stanford CS - SVD and PCA",
+            "url": "https://cs.stanford.edu"
+        }
+    ],
+    "_contentWarnings": [
+        "Mathematical formulas were corrupted in original file - converted to readable text notation",
+        "D3.js visualization code removed - replaced with conceptual descriptions",
+        "Some overlap with s1m2 (Probability) which also introduced vectors/spaces",
+        "Missing: practical feature engineering examples using these concepts",
+        "SVD/PCA connection could be expanded with more examples"
+    ]
+}

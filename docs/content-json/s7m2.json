@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "subject": "applied-domains",
+        "module": "natural-language-processing",
+        "level": "intermediate",
+        "estimatedHours": 0
+    },
+    "overview": [
+        "This module is a placeholder for Natural Language Processing content.",
+        "Content for NLP topics including text preprocessing, word embeddings, sequence models, transformers, and language models is pending development."
+    ],
+    "topics": [],
+    "quiz": [],
+    "references": [],
+    "_contentWarnings": [
+        "PLACEHOLDER: No content available in source file",
+        "Original s7m2.txt contained only '#nlp left to add'",
+        "Suggested topics to develop: text preprocessing, tokenization, word embeddings, RNNs/LSTMs, attention mechanisms, transformers, BERT/GPT"
+    ]
+}

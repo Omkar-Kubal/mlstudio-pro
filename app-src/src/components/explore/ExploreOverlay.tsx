@@ -11,7 +11,7 @@ interface ExploreOverlayProps {
 export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
     const [scene, setScene] = useState(1);
 
-    // Map progress to 6 scenes
+    // Map progress to 6 scenes (UNCHANGED TIMING)
     useEffect(() => {
         // Scene 1: 0.00 - 0.15 (Emergence)
         // Scene 2: 0.15 - 0.30 (Core Formation)
@@ -33,16 +33,10 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
         exit: { opacity: 0, y: -20 },
     };
 
-    // Smoother easing configuration
-    const smoothTransition = {
-        duration: 1.4,
-        ease: [0.25, 0.1, 0.25, 1], // Custom cubic-bezier for buttery smooth easing
-    };
-
     return (
-        <div className="fixed inset-0 pointer-events-none flex flex-col items-center justify-center p-8 z-10">
+        <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-4 md:p-8 z-10">
             <AnimatePresence mode="wait">
-                {/* Scene 1: Emergence (Orientation) */}
+                {/* Scene 1: Emergence (Orientation) — IMPROVED CONTENT */}
                 {scene === 1 && (
                     <motion.div
                         key="scene1"
@@ -51,13 +45,13 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                         exit="exit"
                         variants={fadeVariants}
                         transition={{ duration: 1.2, ease: "easeOut" }}
-                        className="text-center space-y-6 max-w-2xl"
+                        className="text-center space-y-6 max-w-2xl px-4"
                     >
-                        <p className="text-xl md:text-2xl text-muted font-light leading-relaxed">
-                            Learning begins with orientation.
+                        <p className="text-lg md:text-2xl text-muted font-light leading-relaxed">
+                            You're about to see how Data Science concepts connect.
                         </p>
-                        <p className="text-lg md:text-xl text-muted/70 font-light">
-                            Before details, see the whole.
+                        <p className="text-base md:text-xl text-muted/70 font-light">
+                            This visual map reveals relationships between Programming, Mathematics, and Machine Learning — the pillars of the field.
                         </p>
                     </motion.div>
                 )}
@@ -71,18 +65,18 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                         exit="exit"
                         variants={fadeVariants}
                         transition={{ duration: 1, ease: "easeOut" }}
-                        className="text-center space-y-8"
+                        className="text-center space-y-8 px-4"
                     >
-                        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
+                        <h1 className="text-4xl md:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
                             DATA SCIENCE
                         </h1>
-                        <p className="text-lg md:text-xl text-muted/80 font-light max-w-xl mx-auto leading-relaxed">
+                        <p className="text-base md:text-xl text-muted/80 font-light max-w-xl mx-auto leading-relaxed">
                             Data Science is not a list of tools — it is a system of relationships.
                         </p>
                     </motion.div>
                 )}
 
-                {/* Scene 3: Primary Structure (Domains) */}
+                {/* Scene 3: Primary Structure (Domains) — RESPONSIVE LABELS */}
                 {scene === 3 && (
                     <motion.div
                         key="scene3"
@@ -91,48 +85,54 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                         exit="exit"
                         variants={fadeVariants}
                         transition={{ duration: 0.8 }}
-                        className="absolute inset-0 flex items-center justify-center"
+                        className="absolute inset-0 flex items-center justify-center p-4"
                     >
-                        <div className="relative w-full max-w-4xl">
-                            {/* Domain labels positioned around the visualization */}
+                        {/* Use flex layout with safe positioning instead of fixed percentages */}
+                        <div className="relative w-full h-full max-w-5xl max-h-[80vh] mx-auto">
+                            {/* Programming - Top Left */}
                             <motion.div
                                 initial={{ opacity: 0, x: -40 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.2, duration: 0.8 }}
-                                className="absolute top-[25%] left-[10%] text-left"
+                                className="absolute top-[15%] left-[5%] md:top-[20%] md:left-[8%] text-left max-w-[40%]"
+                                role="listitem"
                             >
-                                <h3 className="text-xl md:text-2xl font-medium text-white mb-1">Programming</h3>
-                                <p className="text-sm text-muted/60">The language of instruction</p>
+                                <h3 className="text-lg md:text-2xl font-medium text-white mb-1">Programming</h3>
+                                <p className="text-xs md:text-sm text-muted/70 hidden sm:block">The language of instruction</p>
                             </motion.div>
 
+                            {/* Mathematics - Top Right */}
                             <motion.div
                                 initial={{ opacity: 0, x: 40 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.4, duration: 0.8 }}
-                                className="absolute top-[20%] right-[10%] text-right"
+                                className="absolute top-[15%] right-[5%] md:top-[15%] md:right-[8%] text-right max-w-[40%]"
+                                role="listitem"
                             >
-                                <h3 className="text-xl md:text-2xl font-medium text-white mb-1">Mathematics</h3>
-                                <p className="text-sm text-muted/60">The foundation of truth</p>
+                                <h3 className="text-lg md:text-2xl font-medium text-white mb-1">Mathematics</h3>
+                                <p className="text-xs md:text-sm text-muted/70 hidden sm:block">The foundation of truth</p>
                             </motion.div>
 
+                            {/* Machine Learning - Bottom Center */}
                             <motion.div
                                 initial={{ opacity: 0, y: 40 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.6, duration: 0.8 }}
-                                className="absolute bottom-[25%] left-1/2 -translate-x-1/2 text-center"
+                                className="absolute bottom-[20%] left-1/2 -translate-x-1/2 text-center max-w-[80%]"
+                                role="listitem"
                             >
-                                <h3 className="text-xl md:text-2xl font-medium text-white mb-1">Machine Learning</h3>
-                                <p className="text-sm text-muted/60">From rules to intuition</p>
+                                <h3 className="text-lg md:text-2xl font-medium text-white mb-1">Machine Learning</h3>
+                                <p className="text-xs md:text-sm text-muted/70 hidden sm:block">From rules to intuition</p>
                             </motion.div>
 
-                            {/* Contextual micro-labels */}
+                            {/* Contextual explanation */}
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 1, duration: 1 }}
-                                className="absolute bottom-[10%] left-1/2 -translate-x-1/2 text-center"
+                                className="absolute bottom-[8%] left-1/2 -translate-x-1/2 text-center w-full px-4"
                             >
-                                <p className="text-sm text-muted/50 font-light italic">
+                                <p className="text-xs md:text-sm text-muted/50 font-light italic">
                                     Each domain supports the others. No single part works in isolation.
                                 </p>
                             </motion.div>
@@ -140,7 +140,7 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                     </motion.div>
                 )}
 
-                {/* Scene 4: Internal Structure (Depth Without Overload) */}
+                {/* Scene 4: Internal Structure — IMPROVED READABILITY */}
                 {scene === 4 && (
                     <motion.div
                         key="scene4"
@@ -149,47 +149,52 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                         exit="exit"
                         variants={fadeVariants}
                         transition={{ duration: 0.8 }}
-                        className="absolute inset-0 flex items-center justify-center"
+                        className="absolute inset-0 flex items-center justify-center p-4"
                     >
-                        <div className="relative w-full h-full">
-                            {/* Sub-branch labels scattered contextually */}
+                        <div className="relative w-full h-full max-w-5xl max-h-[80vh] mx-auto" role="list" aria-label="Sub-topics">
+                            {/* Sub-branch labels with improved sizing and contrast */}
                             <motion.div
                                 initial={{ opacity: 0 }}
-                                animate={{ opacity: 0.7 }}
+                                animate={{ opacity: 0.85 }}
                                 transition={{ delay: 0.1 }}
-                                className="absolute top-[20%] left-[20%] text-xs text-muted/60 font-mono"
+                                className="absolute top-[18%] left-[15%] md:left-[18%] text-sm md:text-base text-muted/80 font-mono"
+                                role="listitem"
                             >
                                 Regression
                             </motion.div>
                             <motion.div
                                 initial={{ opacity: 0 }}
-                                animate={{ opacity: 0.7 }}
+                                animate={{ opacity: 0.85 }}
                                 transition={{ delay: 0.2 }}
-                                className="absolute top-[28%] left-[25%] text-xs text-muted/60 font-mono"
+                                className="absolute top-[28%] left-[20%] md:left-[24%] text-sm md:text-base text-muted/80 font-mono"
+                                role="listitem"
                             >
                                 Classification
                             </motion.div>
                             <motion.div
                                 initial={{ opacity: 0 }}
-                                animate={{ opacity: 0.7 }}
+                                animate={{ opacity: 0.85 }}
                                 transition={{ delay: 0.3 }}
-                                className="absolute bottom-[35%] right-[25%] text-xs text-muted/60 font-mono"
+                                className="absolute bottom-[32%] right-[18%] md:right-[22%] text-sm md:text-base text-muted/80 font-mono"
+                                role="listitem"
                             >
                                 Probability
                             </motion.div>
                             <motion.div
                                 initial={{ opacity: 0 }}
-                                animate={{ opacity: 0.7 }}
+                                animate={{ opacity: 0.85 }}
                                 transition={{ delay: 0.4 }}
-                                className="absolute bottom-[28%] right-[20%] text-xs text-muted/60 font-mono"
+                                className="absolute bottom-[22%] right-[15%] md:right-[18%] text-sm md:text-base text-muted/80 font-mono"
+                                role="listitem"
                             >
                                 Optimization
                             </motion.div>
                             <motion.div
                                 initial={{ opacity: 0 }}
-                                animate={{ opacity: 0.7 }}
+                                animate={{ opacity: 0.85 }}
                                 transition={{ delay: 0.5 }}
-                                className="absolute top-[40%] right-[15%] text-xs text-muted/60 font-mono"
+                                className="absolute top-[38%] right-[12%] md:right-[14%] text-sm md:text-base text-muted/80 font-mono"
+                                role="listitem"
                             >
                                 Evaluation
                             </motion.div>
@@ -201,11 +206,11 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                                 transition={{ delay: 0.6, duration: 1 }}
                                 className="absolute inset-0 flex items-center justify-center"
                             >
-                                <div className="text-center space-y-4 max-w-xl">
-                                    <p className="text-lg md:text-xl text-white/90 font-light">
+                                <div className="text-center space-y-4 max-w-xl px-4">
+                                    <p className="text-base md:text-xl text-white/90 font-light">
                                         This is what you are learning — not yet how.
                                     </p>
-                                    <p className="text-base md:text-lg text-muted/70 font-light italic">
+                                    <p className="text-sm md:text-lg text-muted/70 font-light italic">
                                         Structure precedes implementation.
                                     </p>
                                 </div>
@@ -223,13 +228,13 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                         exit="exit"
                         variants={fadeVariants}
                         transition={{ duration: 1.2, ease: "easeOut" }}
-                        className="text-center space-y-10 max-w-3xl"
+                        className="text-center space-y-8 md:space-y-10 max-w-3xl px-4"
                     >
                         <motion.h2
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2, duration: 1 }}
-                            className="text-4xl md:text-6xl font-medium text-white leading-tight"
+                            className="text-3xl md:text-6xl font-medium text-white leading-tight"
                         >
                             See the structure.
                         </motion.h2>
@@ -237,7 +242,7 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.6, duration: 1 }}
-                            className="text-3xl md:text-5xl font-light text-muted leading-tight"
+                            className="text-2xl md:text-5xl font-light text-muted leading-tight"
                         >
                             Understand relationships.
                         </motion.h2>
@@ -245,7 +250,7 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1, duration: 1 }}
-                            className="text-2xl md:text-4xl font-light text-muted/70 leading-tight"
+                            className="text-xl md:text-4xl font-light text-muted/70 leading-tight"
                         >
                             Build intuition before code.
                         </motion.h2>
@@ -261,7 +266,7 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                         exit="exit"
                         variants={fadeVariants}
                         transition={{ duration: 1, ease: "easeOut" }}
-                        className="text-center pointer-events-auto space-y-10"
+                        className="text-center pointer-events-auto space-y-8 md:space-y-10 px-4"
                     >
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -269,10 +274,10 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                             transition={{ delay: 0.3, duration: 0.8 }}
                             className="space-y-4"
                         >
-                            <h2 className="text-3xl md:text-4xl font-medium text-white">
+                            <h2 className="text-2xl md:text-4xl font-medium text-white">
                                 You've seen how the system fits together.
                             </h2>
-                            <p className="text-base text-muted/60 font-light max-w-md mx-auto">
+                            <p className="text-sm md:text-base text-muted/60 font-light max-w-md mx-auto">
                                 Interact with concepts. Change parameters. Write code.
                             </p>
                         </motion.div>
@@ -286,7 +291,7 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                                 <motion.button
                                     whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(255,255,255,0.4)" }}
                                     whileTap={{ scale: 0.98 }}
-                                    className="px-10 py-5 bg-white text-black font-medium rounded-full text-xl shadow-[0_0_25px_rgba(255,255,255,0.25)] transition-all"
+                                    className="px-8 md:px-10 py-4 md:py-5 bg-white text-black font-medium rounded-full text-lg md:text-xl shadow-[0_0_25px_rgba(255,255,255,0.25)] transition-all"
                                 >
                                     Start Learning
                                 </motion.button>
@@ -296,10 +301,10 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                 )}
             </AnimatePresence>
 
-            {/* Persistent Scroll Indicator (fades out near end) */}
+            {/* Persistent Scroll Indicator — FIXED: fades only at true end */}
             <motion.div
-                className="fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-                animate={{ opacity: progress > 0.9 ? 0 : 0.6 }}
+                className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+                animate={{ opacity: progress > 0.95 ? 0 : 0.6 }}
                 transition={{ duration: 0.5 }}
             >
                 <span className="text-[10px] uppercase tracking-widest text-muted/40 font-light">
@@ -308,7 +313,7 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                 <motion.div
                     animate={{ y: [0, 6, 0] }}
                     transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                    className="w-px h-10 bg-gradient-to-b from-transparent via-muted/30 to-transparent"
+                    className="w-px h-8 md:h-10 bg-gradient-to-b from-transparent via-muted/30 to-transparent"
                 />
             </motion.div>
         </div>

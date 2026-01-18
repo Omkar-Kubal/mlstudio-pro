@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Navbar() {
@@ -30,25 +31,40 @@ export default function Navbar() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="flex items-center gap-2"
                 >
-                    <span className="text-lg font-medium tracking-tight text-foreground">
-                        MLStudio Pro
-                    </span>
+                    <Link href="/" className="flex items-center gap-2">
+                        <span className="text-lg font-medium tracking-tight text-foreground">
+                            MLStudio Pro
+                        </span>
+                    </Link>
                 </motion.div>
 
-                {/* CTA */}
-                <motion.a
-                    href="#concepts"
+                {/* Navigation Links */}
+                <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="text-sm font-medium text-muted hover:text-foreground transition-colors duration-200 px-4 py-2 rounded-full border border-border hover:border-accent"
+                    className="flex items-center gap-6"
                 >
-                    View Concepts
-                </motion.a>
+                    <Link
+                        href="/explore"
+                        className="text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
+                    >
+                        Explore
+                    </Link>
+                    <Link
+                        href="/learn"
+                        className="text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
+                    >
+                        Learn
+                    </Link>
+                    <Link
+                        href="/learn"
+                        className="text-sm font-medium text-background bg-foreground hover:bg-primary px-4 py-2 rounded-full transition-colors duration-200"
+                    >
+                        Get Started
+                    </Link>
+                </motion.div>
             </div>
         </motion.nav>
     );

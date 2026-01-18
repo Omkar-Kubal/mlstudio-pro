@@ -15,7 +15,7 @@ const phases = [
             "Loss functions and optimization intuition",
         ],
         action: "View Foundation Concepts",
-        href: "/learn",
+        href: "/learn/foundations",
     },
     {
         number: "2",
@@ -28,7 +28,7 @@ const phases = [
             "Decision trees and ensembles",
         ],
         action: "Start with Regression",
-        href: "/learn",
+        href: "/learn/machine-learning",
     },
     {
         number: "3",
@@ -41,7 +41,7 @@ const phases = [
             "Model evaluation and metrics",
         ],
         action: "Explore Practical Workflows",
-        href: "/learn",
+        href: "/learn/model-evaluation",
     },
     {
         number: "4",
@@ -54,7 +54,7 @@ const phases = [
             "Transformer intuition",
         ],
         action: "Explore Deep Learning",
-        href: "/learn",
+        href: "/learn/deep-learning",
     },
     {
         number: "5",
@@ -65,9 +65,10 @@ const phases = [
             "Natural Language Processing",
             "End-to-end pipelines",
         ],
-        action: "Unlocked after foundations",
-        href: "/learn",
+        action: "Unlocks after completing core foundations",
+        href: "/learn/applied-domains",
         locked: true,
+        unlockHint: "Complete Foundations, ML, and Deep Learning modules to unlock",
     },
 ];
 
@@ -150,9 +151,19 @@ export default function LearningRoadmap() {
                                 {/* Action */}
                                 <div className="ml-16">
                                     {phase.locked ? (
-                                        <span className="text-sm text-muted/50 italic">
-                                            {phase.action}
-                                        </span>
+                                        <div className="space-y-1">
+                                            <span className="text-sm text-muted/50 italic flex items-center gap-2">
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                                </svg>
+                                                {phase.action}
+                                            </span>
+                                            {phase.unlockHint && (
+                                                <p className="text-xs text-muted/40">
+                                                    {phase.unlockHint}
+                                                </p>
+                                            )}
+                                        </div>
                                     ) : (
                                         <Link href={phase.href}>
                                             <span className="text-sm text-foreground hover:text-white transition-colors inline-flex items-center gap-1 group/link">

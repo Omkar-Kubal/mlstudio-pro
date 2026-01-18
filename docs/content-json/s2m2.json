@@ -1,0 +1,153 @@
+{
+    "meta": {
+        "subject": "programming",
+        "module": "numpy",
+        "level": "beginner",
+        "estimatedHours": 3
+    },
+    "overview": [
+        "NumPy exists to make numerical computation fast, expressive, and mathematically aligned. Python lists are flexible but slow for large data, have high memory overhead, no built-in mathematical semantics, and require explicit loops.",
+        "This module covers NumPy arrays, shape and broadcasting, and numerical stability — essential concepts for efficient data science computation."
+    ],
+    "topics": [
+        {
+            "title": "NumPy Arrays",
+            "theory": [
+                "A NumPy array (ndarray) is a homogeneous collection of elements stored in contiguous memory, interpreted as an n-dimensional mathematical object. This enables fast vectorized operations, efficient memory usage, and direct mapping to linear algebra concepts.",
+                "All elements share the same data type (homogeneity), allowing predictable memory layout, SIMD optimizations, and fast computation at scale. Python lists store references to arbitrary objects — NumPy arrays are mathematical objects.",
+                "Every array has: ndim (number of axes), shape (size along each axis), size (total elements). In ML: rows → samples, columns → features. Shape errors are among the most common ML bugs.",
+                "NumPy slicing returns a view, not a copy. Modifying a slice modifies the original array. Use .copy() when isolation is required. This behavior is for memory efficiency but creates side effects if misunderstood.",
+                "Vectorization: Instead of for loops (c[i] = a[i] + b[i]), NumPy allows c = a + b. Operations run in optimized C, loops are eliminated at Python level. This is faster, clearer, and more mathematically expressive."
+            ],
+            "visualIntuition": [
+                "Memory layout comparison: Python list as scattered references vs NumPy array as contiguous memory block. View vs copy diagram showing same underlying data."
+            ],
+            "visualSuggestions": [
+                "Memory layout visualization comparing list vs array",
+                "View vs copy diagram showing shared vs independent data"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Creating NumPy arrays",
+                    "content": "import numpy as np\n\n# From Python list\narr = np.array([1, 2, 3])\nprint(arr.dtype)  # int64\n\n# Shape-defined arrays\nzeros = np.zeros((3, 4))\nones = np.ones((2, 2))\nidentity = np.eye(3)\n\n# Range-based arrays\nsequence = np.arange(0, 10, 0.5)\nuniform = np.linspace(0, 1, 100)"
+                },
+                {
+                    "language": "python",
+                    "description": "Array shape and indexing",
+                    "content": "import numpy as np\n\nX = np.array([[1, 2, 3],\n              [4, 5, 6]])\n\nprint(f\"ndim: {X.ndim}\")    # 2\nprint(f\"shape: {X.shape}\")  # (2, 3)\nprint(f\"size: {X.size}\")    # 6\n\n# Coordinate access (not list access)\nprint(X[0, 1])  # row 0, column 1 = 2"
+                },
+                {
+                    "language": "python",
+                    "description": "Views vs copies",
+                    "content": "import numpy as np\n\nX = np.array([[1, 2, 3],\n              [4, 5, 6]])\n\n# Slicing creates a VIEW\nsub = X[:, 0]\nsub[0] = 100\nprint(X)  # X is modified!\n\n# Use .copy() for isolation\nX = np.array([[1, 2, 3], [4, 5, 6]])\nsub = X[:, 0].copy()\nsub[0] = 100\nprint(X)  # X is unchanged"
+                }
+            ]
+        },
+        {
+            "title": "Array Shapes and Broadcasting",
+            "theory": [
+                "In data science, most runtime errors are shape errors. Models don't fail because formulas are wrong — they fail because arrays don't align. An array's shape defines its meaning: (100, 3) = 100 samples, 3 features; (3, 100) = 3 samples, 100 features. Same numbers, completely different meaning.",
+                "Each axis corresponds to a logical dimension. NumPy does not assign meaning — you must. Elementwise operations require compatible shapes (A.shape == B.shape) or shapes must be broadcastable.",
+                "Broadcasting allows NumPy to operate on arrays of different shapes without copying data. Rules: Compare shapes from right to left, dimensions must be equal or one must be 1, missing dimensions are treated as 1.",
+                "Row-wise broadcasting: bias (3,) treated as (1, 3), applies per feature. Column-wise broadcasting requires reshaping: bias.reshape(-1, 1) becomes (n, 1), applies per row. Reshaping controls semantics — it changes interpretation, not data.",
+                "Silent broadcasting danger: Some broadcasts succeed but are conceptually wrong. If shapes align accidentally, NumPy won't warn you. This can corrupt training, produce wrong gradients, and go unnoticed. Always inspect shapes explicitly."
+            ],
+            "visualIntuition": [
+                "Broadcasting visualization: smaller array being stretched to match larger array dimensions. Row-wise vs column-wise broadcasting showing different expansion directions."
+            ],
+            "visualSuggestions": [
+                "Step-by-step broadcasting animation showing dimension alignment",
+                "Shape mismatch error visualization with suggested fixes"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Basic broadcasting",
+                    "content": "import numpy as np\n\nX = np.array([[1, 2, 3],\n              [4, 5, 6]])\n\n# Scalar broadcast to all elements\nprint(X + 10)\n\n# Row-wise broadcast (per feature)\nbias = np.array([1, 2, 3])  # shape (3,)\nprint(X + bias)"
+                },
+                {
+                    "language": "python",
+                    "description": "Column-wise broadcasting requires reshape",
+                    "content": "import numpy as np\n\nX = np.array([[1, 2, 3],\n              [4, 5, 6]])\n\n# Column-wise broadcast (per row)\nbias = np.array([10, 20]).reshape(-1, 1)  # shape (2, 1)\nprint(X + bias)"
+                },
+                {
+                    "language": "python",
+                    "description": "Reshaping for correct semantics",
+                    "content": "import numpy as np\n\nx = np.array([1, 2, 3])\n\nprint(x.shape)               # (3,)\nprint(x.reshape(1, -1).shape)  # (1, 3) - row vector\nprint(x.reshape(-1, 1).shape)  # (3, 1) - column vector"
+                },
+                {
+                    "language": "python",
+                    "description": "Broadcasting in linear models",
+                    "content": "import numpy as np\n\n# y = XW + b\nX = np.random.randn(100, 5)  # 100 samples, 5 features\nW = np.random.randn(5, 1)    # 5 features -> 1 output\nb = np.array([0.5])          # bias broadcasts across samples\n\ny = X @ W + b  # Works because of broadcasting\nprint(y.shape)  # (100, 1)"
+                }
+            ]
+        },
+        {
+            "title": "Numerical Stability",
+            "theory": [
+                "It is possible for correct formulas, correct code, and correct logic to still produce wrong results. The reason is finite-precision arithmetic. Computers do not store real numbers exactly — floating-point numbers are approximations with limited precision.",
+                "Floating-point representation stores sign, mantissa (significant digits), and exponent. This creates rounding errors, underflow (too small → 0), and overflow (too large → inf). In ML, these issues accumulate across iterations, layers, and matrix multiplications.",
+                "Catastrophic cancellation occurs when subtracting similar numbers: most significant digits cancel out, leaving large relative error. This appears in variance calculations, distance metrics, and likelihoods.",
+                "Logarithms as stability tool: log transforms convert multiplication to addition and very small numbers to manageable values. This is why loss functions use log-probabilities and cross-entropy is stable.",
+                "Stable softmax: Instead of exp(x)/sum(exp(x)), use exp(x - max(x))/sum(exp(x - max(x))). Subtracting max prevents overflow while preserving relative differences. Feature scaling (X = (X - mean)/std) provides numerical protection, not just cosmetic normalization."
+            ],
+            "visualIntuition": [
+                "Overflow/underflow visualization: number line showing where values become inf or 0. Error accumulation graph showing small errors growing over iterations."
+            ],
+            "visualSuggestions": [
+                "Floating-point precision limits visualization",
+                "Stable vs unstable softmax comparison with extreme values"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Floating-point precision issues",
+                    "content": "import numpy as np\n\n# Classic floating-point surprise\nprint(0.1 + 0.2 == 0.3)  # False!\n\n# Overflow and underflow\nprint(np.exp(1000))   # inf\nprint(np.exp(-1000))  # 0.0\n\n# Error accumulation\nx = 0\nfor _ in range(1000000):\n    x += 1e-10\nprint(x)  # Not exactly 0.0001"
+                },
+                {
+                    "language": "python",
+                    "description": "Stable softmax implementation",
+                    "content": "import numpy as np\n\ndef unstable_softmax(x):\n    exp_x = np.exp(x)\n    return exp_x / exp_x.sum()\n\ndef stable_softmax(x):\n    exp_x = np.exp(x - np.max(x))  # Subtract max for stability\n    return exp_x / exp_x.sum()\n\nx = np.array([1000, 1001, 1002])\n\nprint(\"Unstable:\", unstable_softmax(x))  # [nan, nan, nan]\nprint(\"Stable:\", stable_softmax(x))      # Valid probabilities"
+                },
+                {
+                    "language": "python",
+                    "description": "Feature scaling for stability",
+                    "content": "import numpy as np\n\n# Unscaled features can cause gradient explosion\nX = np.array([[1e6, 1e-6],\n              [2e6, 2e-6]])\n\n# Standardization for numerical protection\nX_scaled = (X - X.mean(axis=0)) / X.std(axis=0)\nprint(X_scaled)"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "Why does NumPy use homogeneous arrays instead of allowing mixed types?",
+        "What is the difference between a view and a copy in NumPy?",
+        "How does broadcasting work when adding a (3,) array to a (2, 3) array?",
+        "Why does subtracting max(x) make softmax numerically stable?",
+        "What is catastrophic cancellation and when does it occur?",
+        "Why is 0.1 + 0.2 != 0.3 in Python?"
+    ],
+    "references": [
+        {
+            "label": "NumPy Official Documentation",
+            "url": "https://numpy.org/doc/stable/"
+        },
+        {
+            "label": "NumPy Broadcasting Guide",
+            "url": "https://numpy.org/doc/stable/user/basics.broadcasting.html"
+        },
+        {
+            "label": "SciPy Lectures - NumPy",
+            "url": "https://scipy-lectures.org/"
+        },
+        {
+            "label": "Stanford CS231n - Numerical Stability",
+            "url": "https://cs231n.github.io/linear-classify/#numerical-stability"
+        }
+    ],
+    "_contentWarnings": [
+        "Topics 1 and 3 were duplicated in original file - content consolidated",
+        "Could benefit from more examples of real ML operations using broadcasting",
+        "Missing: advanced indexing (fancy indexing, boolean indexing)",
+        "Missing: memory layout (C-order vs Fortran-order) discussion"
+    ]
+}

@@ -335,16 +335,6 @@ pooling
 
 cnn-architectures
 
-Module: Sequence Models
-
-rnn-intuition
-
-lstm-gru
-
-attention-mechanism
-
-transformers-overview
-
 🌍 SUBJECT 7 — APPLIED DOMAINS
 Module: Computer Vision
 
@@ -367,13 +357,3 @@ word-embeddings
 text-classification
 
 transformers-for-nlp
-
-Module: End-to-End Systems
-
-ml-pipelines
-
-data-to-model-flow
-
-model-deployment-intuition
-
-monitoring-and-drift

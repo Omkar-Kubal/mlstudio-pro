@@ -1,0 +1,57 @@
+{
+    "meta": {
+        "subject": "foundations",
+        "module": "optimization",
+        "level": "beginner",
+        "estimatedHours": 2
+    },
+    "overview": [
+        "This module is intended to cover optimization fundamentals including objective functions, gradients, and gradient descent - the core algorithms that power machine learning training.",
+        "Note: The original content file contained only SVD material which duplicates content from the Linear Algebra module. This file requires new content authoring."
+    ],
+    "topics": [
+        {
+            "title": "SVD (Placeholder - Duplicate Content)",
+            "theory": [
+                "SVD (Singular Value Decomposition) is a universal matrix decomposition tool that works for any matrix shape. For matrix X ∈ R^(m×n): X = UΣV^T.",
+                "U contains left singular vectors (output space), Σ contains singular values (importance), and V^T contains right singular vectors (input space). SVD decomposes any matrix into rotate → scale → rotate.",
+                "This content duplicates material from the Linear Algebra module and should be replaced with actual Optimization content covering gradient descent, learning rates, and convergence."
+            ],
+            "visualIntuition": [
+                "This topic requires visualization of gradient descent on a loss surface, showing how the algorithm navigates toward minima."
+            ],
+            "visualSuggestions": [
+                "3D loss surface with gradient descent path animation",
+                "Learning rate comparison showing oscillation vs slow convergence"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "SVD computation (from duplicate content)",
+                    "content": "import numpy as np\n\nX = np.array([\n    [1, 0, 0],\n    [0, 1, 0],\n    [1, 1, 0],\n    [0, 0, 1]\n])\n\nU, S, Vt = np.linalg.svd(X, full_matrices=False)\nprint(\"Singular values:\", S)"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "What is the purpose of gradient descent in machine learning?",
+        "How does learning rate affect convergence?",
+        "What is the difference between batch, mini-batch, and stochastic gradient descent?"
+    ],
+    "references": [
+        {
+            "label": "MIT OCW - Singular Value Decomposition",
+            "url": "https://ocw.mit.edu"
+        },
+        {
+            "label": "NumPy Documentation - SVD",
+            "url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html"
+        }
+    ],
+    "_contentWarnings": [
+        "CRITICAL: This file contains DUPLICATE content from s1m3 (Linear Algebra - SVD topic)",
+        "Expected content for Optimization module is MISSING: objective functions, gradients, gradient descent, learning rates, convergence",
+        "This module requires complete content rewrite to cover optimization fundamentals",
+        "Quiz questions are placeholders based on expected topic coverage"
+    ]
+}

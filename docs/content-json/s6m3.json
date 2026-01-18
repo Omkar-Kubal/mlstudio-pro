@@ -1,0 +1,152 @@
+{
+    "meta": {
+        "subject": "deep-learning",
+        "module": "convolutional-networks",
+        "level": "intermediate",
+        "estimatedHours": 5
+    },
+    "overview": [
+        "Convolutional Neural Networks (CNNs) revolutionized computer vision by exploiting spatial structure in images. Unlike fully connected networks, CNNs use local connectivity and parameter sharing to efficiently process visual data.",
+        "This module covers why CNNs exist, the convolution operation, feature maps, pooling, and classic CNN architectures."
+    ],
+    "topics": [
+        {
+            "title": "Why CNNs?",
+            "theory": [
+                "A 224×224×3 image has 150,528 input values. With 1,000 neurons in the first hidden layer, a fully connected network needs 150 million parameters just for that layer — computationally prohibitive and prone to overfitting.",
+                "CNNs solve this through: Local connectivity (each neuron connects only to small region), Parameter sharing (same filter across entire image), Spatial hierarchy (build complex features from simple ones).",
+                "To recognize a face, you first detect edges, combine them into features (eyes, nose), then combine features into the complete face. CNNs mirror this hierarchical processing.",
+                "Key benefits: massive parameter reduction, translation invariance (pattern detected regardless of position), and natural exploitation of spatial structure."
+            ],
+            "visualIntuition": [
+                "Split screen: FC network with overwhelming connections vs CNN with organized local connectivity. Parameter count comparison."
+            ],
+            "visualSuggestions": [
+                "Translation invariance demo with sliding window",
+                "Hierarchical feature learning animation"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Comparing FC vs CNN parameter counts",
+                    "content": "from tensorflow import keras\nfrom tensorflow.keras import layers\n\n# Fully Connected Network\nfc_model = keras.Sequential([\n    layers.Flatten(input_shape=(28, 28, 1)),\n    layers.Dense(128, activation='relu'),\n    layers.Dense(64, activation='relu'),\n    layers.Dense(10, activation='softmax')\n])\n\n# CNN\ncnn_model = keras.Sequential([\n    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),\n    layers.MaxPooling2D((2, 2)),\n    layers.Conv2D(64, (3, 3), activation='relu'),\n    layers.MaxPooling2D((2, 2)),\n    layers.Flatten(),\n    layers.Dense(64, activation='relu'),\n    layers.Dense(10, activation='softmax')\n])\n\nprint(f\"FC Parameters: {fc_model.count_params():,}\")\nprint(f\"CNN Parameters: {cnn_model.count_params():,}\")"
+                }
+            ]
+        },
+        {
+            "title": "Convolution Operation",
+            "theory": [
+                "Convolution slides a small kernel (filter) across the image, computing dot product at each position. The kernel learns to detect specific patterns (edges, textures, shapes).",
+                "Key parameters: Kernel size (typically 3×3, 5×5), Stride (how many pixels to skip), Padding (border handling to control output size), Number of filters (creates depth).",
+                "Output size formula: Output = (Input - Kernel + 2×Padding) / Stride + 1. 'Same' padding keeps output size equal to input; 'valid' padding shrinks it.",
+                "Different kernels detect different patterns: vertical edges, horizontal edges, blur, sharpen. In CNNs, kernel values are learned during training."
+            ],
+            "visualIntuition": [
+                "Animation of kernel sliding across image. Highlight current receptive field, show element-wise multiplication, display output activation."
+            ],
+            "visualSuggestions": [
+                "Interactive convolution sandbox",
+                "Stride and padding impact visualization"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Manual convolution and common kernels",
+                    "content": "import numpy as np\n\ndef convolve2d(image, kernel, stride=1, padding=0):\n    \"\"\"Manual 2D convolution\"\"\"\n    if padding > 0:\n        image = np.pad(image, padding, mode='constant')\n    \n    i_h, i_w = image.shape\n    k_h, k_w = kernel.shape\n    o_h = (i_h - k_h) // stride + 1\n    o_w = (i_w - k_w) // stride + 1\n    output = np.zeros((o_h, o_w))\n    \n    for i in range(o_h):\n        for j in range(o_w):\n            region = image[i*stride:i*stride+k_h, j*stride:j*stride+k_w]\n            output[i, j] = np.sum(region * kernel)\n    return output\n\n# Edge detection kernel\nvertical_edge = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])\n\n# Sample image with vertical edge\nimage = np.array([[0,0,1,1], [0,0,1,1], [0,0,1,1], [0,0,1,1]], dtype=float)\nresult = convolve2d(image, vertical_edge, padding=1)\nprint(\"Edge detection result:\\n\", result)"
+                }
+            ]
+        },
+        {
+            "title": "Feature Maps",
+            "theory": [
+                "A feature map is the output when a filter is applied — it shows WHERE in the image the pattern was detected. High activation = pattern present; low = absent.",
+                "Multiple filters create multiple feature maps (depth). Each learns to detect different patterns. Early layers detect edges/textures; deep layers detect complex objects.",
+                "Hierarchical learning: Layer 1 (edges) → Layer 2 (shapes) → Layer 3 (object parts) → Layer 4 (complete objects). Each layer builds on the previous.",
+                "Feature maps have spatial dimensions (height, width) showing pattern location, and depth dimension (number of filters) showing what patterns were detected."
+            ],
+            "visualIntuition": [
+                "Gallery showing original image and feature maps from each layer. Color-coded by activation intensity. Progression from simple edge maps to complex object detectors."
+            ],
+            "visualSuggestions": [
+                "3D feature map stack visualization",
+                "Filter specialization demonstration"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Extracting and visualizing feature maps",
+                    "content": "from tensorflow import keras\nfrom tensorflow.keras import layers, models\nimport matplotlib.pyplot as plt\n\n# Build simple CNN\nmodel = models.Sequential([\n    layers.Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(28, 28, 1)),\n    layers.MaxPooling2D((2, 2)),\n    layers.Conv2D(64, (3, 3), activation='relu', padding='same'),\n])\n\n# Create feature extractor\nlayer_outputs = [layer.output for layer in model.layers if 'conv' in layer.name]\nfeature_extractor = models.Model(inputs=model.input, outputs=layer_outputs)\n\n# Get sample image\n(x_train, _), _ = keras.datasets.mnist.load_data()\nsample = x_train[0:1].reshape(1, 28, 28, 1) / 255.0\n\n# Extract feature maps\nfeature_maps = feature_extractor.predict(sample, verbose=0)\nprint(f\"Layer 1 feature maps shape: {feature_maps[0].shape}\")\nprint(f\"Layer 2 feature maps shape: {feature_maps[1].shape}\")"
+                }
+            ]
+        },
+        {
+            "title": "Pooling Layers",
+            "theory": [
+                "Pooling reduces spatial dimensions while retaining important features. Max pooling takes maximum value in each region; average pooling takes the average.",
+                "Typical 2×2 max pooling with stride 2 reduces each dimension by half (e.g., 28×28 → 14×14). This reduces computation and provides some translation invariance.",
+                "Global Average Pooling (GAP) averages entire feature map to single value. Often used before final classification layer, reducing parameters dramatically.",
+                "Pooling provides slight spatial invariance — small shifts in input don't change output. Combined with convolution's translation equivariance, CNNs handle position variations well."
+            ],
+            "visualIntuition": [
+                "2×2 grid sliding over feature map showing max selection. Before/after comparison showing spatial reduction."
+            ],
+            "visualSuggestions": [
+                "Interactive pooling demonstration",
+                "Max vs average pooling comparison"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Pooling operations",
+                    "content": "import numpy as np\nfrom tensorflow.keras import layers\n\n# Manual max pooling\ndef max_pool_2d(image, pool_size=2):\n    h, w = image.shape\n    out_h, out_w = h // pool_size, w // pool_size\n    output = np.zeros((out_h, out_w))\n    \n    for i in range(out_h):\n        for j in range(out_w):\n            region = image[i*pool_size:(i+1)*pool_size, \n                          j*pool_size:(j+1)*pool_size]\n            output[i, j] = np.max(region)\n    return output\n\n# Example\nfeature_map = np.array([[1, 2, 3, 4], [5, 6, 7, 8], \n                        [9, 10, 11, 12], [13, 14, 15, 16]])\npooled = max_pool_2d(feature_map)\nprint(\"Original (4x4):\\n\", feature_map)\nprint(\"\\nMax Pooled (2x2):\\n\", pooled)"
+                }
+            ]
+        },
+        {
+            "title": "Classic CNN Architectures",
+            "theory": [
+                "LeNet (1998): First successful CNN for digit recognition. 2 conv layers, 2 pooling, 3 FC layers. Proved convolution works for visual recognition.",
+                "VGGNet (2014): Simple repeated pattern of 3×3 convs. Showed depth matters — VGG-16 has 16 layers. Clean architecture but many parameters.",
+                "ResNet (2015): Introduced skip connections allowing gradients to flow directly. Enabled training very deep networks (50, 101, 152 layers). Solved degradation problem.",
+                "Modern architectures: MobileNet (efficient for mobile), EfficientNet (compound scaling), Vision Transformers (attention-based). Choose based on accuracy/efficiency tradeoff."
+            ],
+            "visualIntuition": [
+                "Timeline showing CNN evolution: LeNet → AlexNet → VGG → ResNet → Modern architectures with key innovations highlighted."
+            ],
+            "visualSuggestions": [
+                "Architecture comparison diagram",
+                "Skip connection flow visualization"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Building common architectures",
+                    "content": "from tensorflow import keras\nfrom tensorflow.keras import layers\n\n# VGG-like block\ndef vgg_block(x, filters, num_convs):\n    for _ in range(num_convs):\n        x = layers.Conv2D(filters, (3, 3), activation='relu', padding='same')(x)\n    x = layers.MaxPooling2D((2, 2))(x)\n    return x\n\n# Residual block (ResNet)\ndef residual_block(x, filters):\n    shortcut = x\n    x = layers.Conv2D(filters, (3, 3), padding='same')(x)\n    x = layers.BatchNormalization()(x)\n    x = layers.ReLU()(x)\n    x = layers.Conv2D(filters, (3, 3), padding='same')(x)\n    x = layers.BatchNormalization()(x)\n    x = layers.Add()([shortcut, x])  # Skip connection!\n    x = layers.ReLU()(x)\n    return x\n\n# Using pretrained models\nresnet = keras.applications.ResNet50(weights='imagenet', include_top=False)\nprint(f\"ResNet50 layers: {len(resnet.layers)}\")"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "Why are fully connected networks impractical for large images?",
+        "What is parameter sharing in CNNs and why does it help?",
+        "How does the convolution operation work mathematically?",
+        "What is the purpose of pooling layers?",
+        "How do skip connections in ResNet help train very deep networks?"
+    ],
+    "references": [
+        {
+            "label": "CS231n - Convolutional Neural Networks",
+            "url": "https://cs231n.github.io/convolutional-networks/"
+        },
+        {
+            "label": "Deep Residual Learning (ResNet paper)",
+            "url": "https://arxiv.org/abs/1512.03385"
+        }
+    ],
+    "_contentWarnings": [
+        "Original file contained incomplete/truncated code blocks",
+        "Many frontend visualization suggestions reference specific technologies",
+        "Missing: transposed convolution / upsampling",
+        "Missing: dilated/atrous convolution"
+    ]
+}

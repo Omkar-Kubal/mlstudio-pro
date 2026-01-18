@@ -1,0 +1,154 @@
+{
+    "meta": {
+        "subject": "data-preparation",
+        "module": "feature-engineering",
+        "level": "intermediate",
+        "estimatedHours": 4
+    },
+    "overview": [
+        "Feature engineering is the process of translating reality into signals a model can learn from. Models only understand numerical structure — they do not understand meaning, context, causality, or semantics.",
+        "A simple model with good features beats a complex model with bad features. Most performance gains come from feature work, not algorithm swaps. Feature engineering is hypothesis encoding."
+    ],
+    "topics": [
+        {
+            "title": "Categorical Encoding",
+            "theory": [
+                "Categories have no inherent order, are not numeric, can be high-cardinality, and encode social/semantic meaning. Models require numbers — encoding is unavoidable.",
+                "One-Hot Encoding: Color=Red → [1,0,0]. Simple, interpretable, no false ordering. But explodes dimensionality and is inefficient for high-cardinality. Use when few categories, linear models, or interpretability matters.",
+                "Ordinal Encoding: Low→1, Medium→2, High→3. Implies distance and linearity — only valid when order is meaningful and distance is roughly consistent.",
+                "Target/Mean Encoding: Encode category using target statistics (e.g., City → average income). Powerful and compact, handles high cardinality. But severe data leakage risk — must be cross-validated. Never compute using full dataset.",
+                "Frequency Encoding: Encode by occurrence frequency. Encodes rarity and importance. Useful for tree-based models and high-cardinality features."
+            ],
+            "visualIntuition": [
+                "Encoding comparison: same categorical data shown as one-hot (sparse matrix), ordinal (single column), and target-encoded (continuous values)."
+            ],
+            "visualSuggestions": [
+                "One-hot explosion visualization as categories increase",
+                "Target encoding leakage demonstration"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Encoding categorical features",
+                    "content": "import pandas as pd\nfrom sklearn.preprocessing import OneHotEncoder, OrdinalEncoder\n\ndf = pd.DataFrame({'color': ['red', 'blue', 'green', 'red']})\n\n# One-hot encoding\none_hot = pd.get_dummies(df['color'], prefix='color')\nprint(\"One-hot:\\n\", one_hot)\n\n# Ordinal encoding (when order exists)\nsize_df = pd.DataFrame({'size': ['S', 'M', 'L', 'M']})\nenc = OrdinalEncoder(categories=[['S', 'M', 'L']])\nsize_df['size_ord'] = enc.fit_transform(size_df[['size']])\nprint(\"\\nOrdinal:\\n\", size_df)"
+                }
+            ]
+        },
+        {
+            "title": "Feature Scaling",
+            "theory": [
+                "Many models assume comparable feature ranges, balanced gradients, and meaningful distances. Without scaling, large-magnitude features dominate and optimization becomes unstable.",
+                "Standardization (Z-score): (x - mean) / std. Centers data, normalizes variance. Best for linear models, logistic regression, neural networks. Assumes roughly symmetric distributions.",
+                "Min-Max Scaling: (x - min) / (max - min). Maps to [0,1]. Preserves shape, bounded. But sensitive to outliers.",
+                "Robust Scaling: Uses median and IQR. Best when outliers present or heavy-tailed distributions.",
+                "Scaling is model-dependent: Linear/Logistic, KNN, SVM, Neural Networks need scaling. Tree-based models do NOT need scaling."
+            ],
+            "visualIntuition": [
+                "Before/after scaling comparison showing feature ranges aligned."
+            ],
+            "visualSuggestions": [
+                "Distribution comparison before vs after each scaling method",
+                "Gradient descent path with vs without scaling"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Scaling methods",
+                    "content": "from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler\nimport numpy as np\n\nX = np.array([[100, 0.01], [200, 0.02], [150, 0.015]])\n\n# Standardization\nstd_scaler = StandardScaler()\nX_std = std_scaler.fit_transform(X)\n\n# Min-Max\nminmax_scaler = MinMaxScaler()\nX_minmax = minmax_scaler.fit_transform(X)\n\n# Robust (for outliers)\nrobust_scaler = RobustScaler()\nX_robust = robust_scaler.fit_transform(X)\n\nprint(\"Original:\\n\", X)\nprint(\"Standardized:\\n\", X_std)"
+                }
+            ]
+        },
+        {
+            "title": "Polynomial Features",
+            "theory": [
+                "Linear models assume y = a·x + b. Reality often involves curvature, interactions, and nonlinear effects. Polynomial features allow linear models to behave nonlinearly.",
+                "Polynomial expansion: x → x, x², x³. Also interactions: x₁·x₂. Captures curvature and gives simple models more power. But explodes feature space and risks overfitting.",
+                "Use when data is small, interpretability matters, relationship is smooth, and model must stay simple. Avoid when high dimensionality or noisy data."
+            ],
+            "visualIntuition": [
+                "Linear fit vs polynomial fit on curved data showing improved capture of pattern."
+            ],
+            "visualSuggestions": [
+                "Degree slider showing underfitting vs overfitting",
+                "Feature explosion visualization as degree increases"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Polynomial features",
+                    "content": "from sklearn.preprocessing import PolynomialFeatures\nimport numpy as np\n\nX = np.array([[1], [2], [3]])\n\npoly = PolynomialFeatures(degree=2, include_bias=False)\nX_poly = poly.fit_transform(X)\n\nprint(\"Original:\", X.ravel())\nprint(\"Polynomial:\\n\", X_poly)\nprint(\"Feature names:\", poly.get_feature_names_out())"
+                }
+            ]
+        },
+        {
+            "title": "Feature Selection",
+            "theory": [
+                "Too many features cause overfitting, noise amplification, slower training, and reduced interpretability. Feature selection is signal isolation.",
+                "Filter Methods: Use statistics (correlation, mutual information, variance thresholds). Fast and model-agnostic.",
+                "Wrapper Methods: Evaluate feature subsets using a model (e.g., Recursive Feature Elimination). Accurate but expensive.",
+                "Embedded Methods: Feature selection during training (L1 regularization, tree feature importance). Often best balance. Feature selection removes; engineering creates — they complement each other."
+            ],
+            "visualIntuition": [
+                "Feature importance bar chart showing which features matter most."
+            ],
+            "visualSuggestions": [
+                "Correlation heatmap for filter method",
+                "RFE elimination sequence visualization"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Feature selection methods",
+                    "content": "from sklearn.feature_selection import SelectKBest, f_classif, RFE\nfrom sklearn.linear_model import LogisticRegression\nimport numpy as np\n\nX = np.random.randn(100, 10)\ny = (X[:, 0] + X[:, 1] > 0).astype(int)\n\n# Filter: Select top 3 features by F-score\nselector = SelectKBest(f_classif, k=3)\nX_filtered = selector.fit_transform(X, y)\nprint(\"Selected features:\", selector.get_support())\n\n# Wrapper: RFE with logistic regression\nmodel = LogisticRegression()\nrfe = RFE(model, n_features_to_select=3)\nX_rfe = rfe.fit_transform(X, y)\nprint(\"RFE selected:\", rfe.support_)"
+                }
+            ]
+        },
+        {
+            "title": "Domain-Driven Features",
+            "theory": [
+                "Domain features encode causality, reduce noise, improve generalization, and increase trust. Examples: ratios, rates, trends, aggregations.",
+                "Time-based features from timestamps: hour of day, day of week, seasonality, time since last event. Critical for forecasting, user behavior, and anomaly detection.",
+                "Aggregation features: mean per user, count per session, rolling averages. These encode history and context.",
+                "Feature leakage warning: If a feature uses future information or target indirectly, model performance becomes invalid. Always ask: 'Would this exist at prediction time?'"
+            ],
+            "visualIntuition": [
+                "Raw timestamp vs extracted features (hour, day, month, is_weekend) showing information extraction."
+            ],
+            "visualSuggestions": [
+                "Time feature extraction demonstration",
+                "Leakage detection example"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Time-based and aggregation features",
+                    "content": "import pandas as pd\n\ndf = pd.DataFrame({\n    'timestamp': pd.date_range('2024-01-01', periods=5, freq='H'),\n    'user_id': [1, 1, 2, 2, 1],\n    'value': [10, 20, 15, 25, 30]\n})\n\n# Time-based features\ndf['hour'] = df['timestamp'].dt.hour\ndf['day_of_week'] = df['timestamp'].dt.dayofweek\ndf['is_weekend'] = df['day_of_week'].isin([5, 6]).astype(int)\n\n# Aggregation features\ndf['user_mean'] = df.groupby('user_id')['value'].transform('mean')\ndf['user_count'] = df.groupby('user_id')['value'].transform('count')\n\nprint(df)"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "When should you use ordinal encoding vs one-hot encoding?",
+        "Why can target encoding cause data leakage?",
+        "Which types of models require feature scaling?",
+        "When are polynomial features appropriate vs problematic?",
+        "What is the difference between filter and wrapper feature selection methods?",
+        "How do you check if a feature would cause data leakage?"
+    ],
+    "references": [
+        {
+            "label": "scikit-learn Preprocessing Guide",
+            "url": "https://scikit-learn.org/stable/modules/preprocessing.html"
+        },
+        {
+            "label": "scikit-learn Feature Selection",
+            "url": "https://scikit-learn.org/stable/modules/feature_selection.html"
+        }
+    ],
+    "_contentWarnings": [
+        "Missing: text feature engineering (TF-IDF, word embeddings)",
+        "Missing: image feature engineering",
+        "Pipeline integration with sklearn Pipeline not covered in detail",
+        "Cross-validation for target encoding not shown in code examples"
+    ]
+}

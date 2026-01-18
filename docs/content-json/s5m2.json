@@ -1,0 +1,145 @@
+{
+    "meta": {
+        "subject": "model-evaluation",
+        "module": "validation",
+        "level": "intermediate",
+        "estimatedHours": 3
+    },
+    "overview": [
+        "Validation techniques ensure models generalize beyond training data. This module covers holdout validation, cross-validation, stratified sampling, hyperparameter tuning, and search strategies.",
+        "Proper validation prevents overfitting to a specific test set and provides reliable performance estimates."
+    ],
+    "topics": [
+        {
+            "title": "Holdout Validation",
+            "theory": [
+                "Holdout validation is the simplest form: split dataset into training set (to train) and testing set (to evaluate generalization). Typical splits are 70/30 or 80/20.",
+                "Fast and easy, but gives high variance estimates — performance depends heavily on the specific split. Good for quick experiments, not for final evaluation."
+            ],
+            "visualIntuition": [
+                "Pie chart animation of dataset splitting into training and testing portions. Show performance metrics changing with different random splits."
+            ],
+            "visualSuggestions": [
+                "Slider for test size with metric update",
+                "Multiple random splits comparison"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Holdout validation",
+                    "content": "from sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import accuracy_score\nfrom sklearn.datasets import load_iris\n\nX, y = load_iris(return_X_y=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)\n\nmodel = LogisticRegression()\nmodel.fit(X_train, y_train)\npredictions = model.predict(X_test)\n\nprint(\"Accuracy:\", accuracy_score(y_test, predictions))"
+                }
+            ]
+        },
+        {
+            "title": "Cross-Validation",
+            "theory": [
+                "Cross-validation improves reliability by splitting data multiple times. K-fold CV: split into k subsets, train on k-1 folds, test on remaining one, repeat k times, average results.",
+                "Provides more stable estimate and reduces overfitting to a particular test set. Standard choice is k=5 or k=10. More folds = less bias but higher variance and more computation."
+            ],
+            "visualIntuition": [
+                "Animation of dataset being folded into 5 subsets. Cycle through active test fold. Show average metric accumulation."
+            ],
+            "visualSuggestions": [
+                "K-fold visualization with fold cycling",
+                "Bar chart of per-fold accuracies"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "K-fold cross-validation",
+                    "content": "from sklearn.model_selection import cross_val_score\nfrom sklearn.ensemble import RandomForestClassifier\n\nmodel = RandomForestClassifier()\nscores = cross_val_score(model, X, y, cv=5)\n\nprint(\"Cross-Validation Scores:\", scores)\nprint(f\"Average Accuracy: {scores.mean():.3f} (+/- {scores.std():.3f})\")"
+                }
+            ]
+        },
+        {
+            "title": "K-Fold vs Stratified K-Fold",
+            "theory": [
+                "K-Fold: random equal-sized splits. May not preserve class distribution, especially with imbalanced data.",
+                "Stratified K-Fold: preserves class distribution in each fold. Critical for classification with imbalanced classes — ensures each fold is representative.",
+                "Always use Stratified K-Fold for classification unless you have a specific reason not to."
+            ],
+            "visualIntuition": [
+                "Side-by-side animation comparing K-Fold vs Stratified on imbalanced data. Color-coding shows class distribution per fold."
+            ],
+            "visualSuggestions": [
+                "Toggle between KFold and Stratified with class ratio bars",
+                "Imbalance impact demonstration"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Comparing K-Fold and Stratified K-Fold",
+                    "content": "from sklearn.model_selection import StratifiedKFold, KFold\nimport numpy as np\n\nkf = KFold(n_splits=5, shuffle=True, random_state=1)\nskf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)\n\nprint(\"Stratified K-Fold - Class distribution per test fold:\")\nfor fold, (train_idx, test_idx) in enumerate(skf.split(X, y)):\n    unique, counts = np.unique(y[test_idx], return_counts=True)\n    print(f\"  Fold {fold+1}: {dict(zip(unique, counts))}\")"
+                }
+            ]
+        },
+        {
+            "title": "Hyperparameter Tuning",
+            "theory": [
+                "Hyperparameters are model-level settings (tree depth, learning rate, regularization). Tuning finds the best combination for optimal performance.",
+                "Too small = underfitting (high bias). Too large = overfitting (high variance). Goal is to find the sweet spot.",
+                "Always tune using cross-validation, not test set, to avoid overfitting to test data. Keep test set truly held out."
+            ],
+            "visualIntuition": [
+                "Accuracy curve vs hyperparameter value (e.g., depth 1-10) showing underfitting→optimal→overfitting pattern."
+            ],
+            "visualSuggestions": [
+                "Hyperparameter slider with live accuracy update",
+                "Decision boundary comparison at different parameter values"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Hyperparameter tuning with cross-validation",
+                    "content": "from sklearn.model_selection import cross_val_score\nfrom sklearn.ensemble import RandomForestClassifier\n\nprint(\"Testing different max_depth values:\")\nfor depth in range(1, 11):\n    model = RandomForestClassifier(max_depth=depth, random_state=0)\n    scores = cross_val_score(model, X, y, cv=5)\n    print(f\"  Depth {depth}: Accuracy = {scores.mean():.3f} (+/- {scores.std():.3f})\")"
+                }
+            ]
+        },
+        {
+            "title": "Grid Search vs Random Search",
+            "theory": [
+                "Grid Search: exhaustive search over all specified parameter combinations. Full coverage but slow, especially with many parameters.",
+                "Random Search: randomly sample parameter combinations. More efficient in high dimensions — often finds good results with fewer evaluations.",
+                "Trade-off: Grid = thorough but expensive. Random = faster, approximate. Random search is often preferred when parameter space is large."
+            ],
+            "visualIntuition": [
+                "Point plot over 2D parameter space showing grid (regular pattern) vs random (scattered). Heatmap showing performance over combinations."
+            ],
+            "visualSuggestions": [
+                "Interactive grid vs random sampling visualization",
+                "Search progress animation"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Grid Search and Random Search",
+                    "content": "from sklearn.model_selection import GridSearchCV, RandomizedSearchCV\nfrom sklearn.ensemble import RandomForestClassifier\nfrom scipy.stats import randint\n\n# Grid Search\nparam_grid = {'n_estimators': [10, 50, 100], 'max_depth': [2, 4, 6]}\ngrid = GridSearchCV(RandomForestClassifier(), param_grid, cv=3)\ngrid.fit(X, y)\nprint(\"Best Grid Params:\", grid.best_params_)\nprint(f\"Best Score: {grid.best_score_:.3f}\")\n\n# Random Search\nparam_dist = {'n_estimators': randint(10, 200), 'max_depth': randint(1, 10)}\nrandom_search = RandomizedSearchCV(\n    RandomForestClassifier(), param_distributions=param_dist,\n    n_iter=10, cv=3, random_state=0\n)\nrandom_search.fit(X, y)\nprint(\"\\nBest Random Params:\", random_search.best_params_)\nprint(f\"Best Score: {random_search.best_score_:.3f}\")"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "Why does holdout validation have high variance in performance estimates?",
+        "What is the main advantage of cross-validation over holdout?",
+        "When is Stratified K-Fold essential?",
+        "Why should you never tune hyperparameters on the test set?",
+        "When would you prefer Random Search over Grid Search?"
+    ],
+    "references": [
+        {
+            "label": "scikit-learn Cross-Validation Guide",
+            "url": "https://scikit-learn.org/stable/modules/cross_validation.html"
+        },
+        {
+            "label": "scikit-learn Hyperparameter Tuning",
+            "url": "https://scikit-learn.org/stable/modules/grid_search.html"
+        }
+    ],
+    "_contentWarnings": [
+        "Missing: Leave-One-Out Cross-Validation (LOOCV)",
+        "Missing: Time Series Cross-Validation",
+        "Missing: Bayesian Optimization for hyperparameter tuning",
+        "Missing: nested cross-validation for unbiased estimates"
+    ]
+}

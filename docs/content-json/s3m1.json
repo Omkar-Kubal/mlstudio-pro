@@ -1,0 +1,115 @@
+{
+    "meta": {
+        "subject": "data-preparation",
+        "module": "data-cleaning",
+        "level": "beginner",
+        "estimatedHours": 3
+    },
+    "overview": [
+        "Data cleaning is where most real-world data science work happens. This module covers strategies for handling missing data, detecting and removing duplicates, and ensuring data quality before modeling.",
+        "Clean data enables reliable models. Dirty data produces misleading results regardless of how sophisticated the algorithm is."
+    ],
+    "topics": [
+        {
+            "title": "Missing Data Strategies",
+            "theory": [
+                "Missing data is not a bug — it's a signal. Values go missing because sensors fail, users skip fields, systems merge imperfectly, business rules change. Missingness itself often contains information.",
+                "Three types of missing data: MCAR (Missing Completely At Random — safe to drop, rare in practice), MAR (Missing At Random — depends on observed variables, very common), MNAR (Missing Not At Random — depends on the missing value itself, most dangerous).",
+                "Naive imputation (fillna with mean) is dangerous: it assumes missing values are average, missingness is random, and distribution shape is preserved. All three are often false. It shrinks variance, distorts correlations, and misleads models.",
+                "Strategies: Drop (only when MCAR, small fraction, large dataset), Simple imputation (mean/median/mode — preserves central tendency, destroys variance), Missingness indicator (create is_missing column — often boosts performance), Conditional imputation (impute within groups), Model-based imputation (KNN, MICE — uses multivariate structure)."
+            ],
+            "visualIntuition": [
+                "Distribution comparison: original data vs after dropping vs after mean imputation showing variance shrinkage."
+            ],
+            "visualSuggestions": [
+                "Missing pattern matrix visualization",
+                "Imputation strategy comparison on same dataset"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Missing data strategies",
+                    "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({\n    'age': [25, np.nan, 30, 35, np.nan],\n    'income': [50000, 60000, np.nan, 80000, 90000],\n    'education': ['BS', 'MS', 'PhD', np.nan, 'BS']\n})\n\n# Check missing\nprint(df.isna().sum())\n\n# Strategy 1: Drop\ndf_dropped = df.dropna()\n\n# Strategy 2: Median imputation for numeric\ndf['age'] = df['age'].fillna(df['age'].median())\n\n# Strategy 3: Missingness indicator (powerful!)\ndf['income_missing'] = df['income'].isna().astype(int)\n\n# Strategy 4: Mode imputation for categorical\ndf['education'] = df['education'].fillna(df['education'].mode()[0])"
+                },
+                {
+                    "language": "python",
+                    "description": "Conditional imputation by group",
+                    "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({\n    'education': ['BS', 'MS', 'BS', 'MS', 'PhD'],\n    'income': [50000, np.nan, 45000, 75000, np.nan]\n})\n\n# Impute income based on education group\ndf['income'] = df.groupby('education')['income'].transform(\n    lambda x: x.fillna(x.median())\n)\nprint(df)"
+                }
+            ]
+        },
+        {
+            "title": "Duplicate Data",
+            "theory": [
+                "Duplicate data does not just waste space — it changes reality. Duplicates inflate frequencies, bias statistics, distort class balance, skew model learning, and create false confidence.",
+                "Types of duplicates: Exact duplicates (rows identical across all columns — easy to detect), Logical/semantic duplicates (same entity with slight differences — harder to detect, more dangerous), Partial duplicates (subset of columns duplicates — context decides if valid).",
+                "Duplicates cause statistical distortion (mean shifts, variance shrinks), model bias (overfitting to repeated samples, minority classes drowned out), and evaluation leakage (train-test contamination).",
+                "Detection: Use df.duplicated() for exact duplicates, check subsets with df.duplicated(subset=['key_column']), use fuzzy matching for semantic duplicates. Always inspect before dropping."
+            ],
+            "visualIntuition": [
+                "Duplicate impact visualization: distribution before and after duplicate removal showing frequency distortion."
+            ],
+            "visualSuggestions": [
+                "Duplicate detection workflow diagram",
+                "Train-test leakage from duplicates illustration"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Detecting and removing duplicates",
+                    "content": "import pandas as pd\n\ndf = pd.DataFrame({\n    'id': [1, 1, 2, 3, 3],\n    'name': ['Alice', 'Alice', 'Bob', 'Carol', 'Carol'],\n    'value': [100, 100, 200, 300, 300]\n})\n\n# Check for duplicates\nprint(\"Duplicated rows:\")\nprint(df[df.duplicated()])\n\n# Drop exact duplicates\ndf_clean = df.drop_duplicates()\n\n# Check duplicates on subset of columns\nprint(\"\\nDuplicates by ID:\")\nprint(df[df.duplicated(subset=['id'])])\n\n# Keep first occurrence only\ndf_unique = df.drop_duplicates(subset=['id'], keep='first')"
+                }
+            ]
+        },
+        {
+            "title": "Model Result Visualization for Data Quality",
+            "theory": [
+                "Visualizing model results is part of data quality assessment. Predictions vs reality comparison answers: Where does the model fail? Is error random or structured? Are failures acceptable?",
+                "Regression diagnostics: Predicted vs Actual plot (perfect predictions on diagonal), Residual plots (reveal non-linearity, heteroscedasticity), Residual distribution (checks symmetry and bias).",
+                "Classification diagnostics: Confusion matrix (what the model confuses), Probability distributions (calibration and confidence), ROC and PR curves (threshold-independent performance).",
+                "Error analysis by subgroup reveals bias, fairness issues, and model blind spots. Always visualize before optimization — understanding failure modes is prerequisite to improving models."
+            ],
+            "visualIntuition": [
+                "Residual analysis: random scatter = good fit, pattern = model misspecification, heavy tails = outliers."
+            ],
+            "visualSuggestions": [
+                "Residual plot comparison: good fit vs poor fit",
+                "Error analysis by demographic subgroup"
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Model diagnostics for data quality",
+                    "content": "import matplotlib.pyplot as plt\nimport seaborn as sns\nimport numpy as np\n\n# Simulated predictions\ny_true = np.array([3, 1, 2, 7, 4, 5, 3, 6])\ny_pred = np.array([2.5, 1.5, 2, 8, 3.5, 4.5, 3.5, 6.5])\nresiduals = y_true - y_pred\n\n# Residual distribution\nsns.histplot(residuals, kde=True)\nplt.axvline(0, color='r', linestyle='--')\nplt.title(\"Residual Distribution\")\nplt.xlabel(\"Residual\")\nplt.show()\n\n# Check for bias (mean residual should be ~0)\nprint(f\"Mean residual: {residuals.mean():.4f}\")"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "What is the difference between MCAR, MAR, and MNAR missing data?",
+        "Why is naive mean imputation dangerous for missing data?",
+        "Why might creating a missingness indicator column improve model performance?",
+        "How can duplicate data cause train-test leakage?",
+        "What does a non-random pattern in residuals indicate about data quality?"
+    ],
+    "references": [
+        {
+            "label": "Little & Rubin - Statistical Analysis with Missing Data",
+            "url": ""
+        },
+        {
+            "label": "scikit-learn Imputation Guide",
+            "url": "https://scikit-learn.org/stable/modules/impute.html"
+        },
+        {
+            "label": "Pandas Documentation - Missing Data",
+            "url": "https://pandas.pydata.org/docs/user_guide/missing_data.html"
+        }
+    ],
+    "_contentWarnings": [
+        "File contained mixed topics from Visualization and Data Cleaning modules",
+        "Missing: outlier detection and treatment strategies",
+        "Missing: data validation and schema enforcement",
+        "Missing: feature encoding (one-hot, label encoding)"
+    ]
+}
