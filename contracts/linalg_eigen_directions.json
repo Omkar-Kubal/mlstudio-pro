@@ -1,0 +1,18 @@
+{
+  "lab_name": "linalg_eigen_directions",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "linalg_eigen_directions_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "linalg_eigen_directions_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

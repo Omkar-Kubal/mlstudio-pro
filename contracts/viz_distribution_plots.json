@@ -1,0 +1,13 @@
+{
+  "lab_name": "viz_distribution_plots",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "viz_distribution_plots_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

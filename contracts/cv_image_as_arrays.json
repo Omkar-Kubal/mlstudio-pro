@@ -1,0 +1,13 @@
+{
+  "lab_name": "cv_image_as_arrays",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "cv_image_as_arrays_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

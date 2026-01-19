@@ -1,0 +1,18 @@
+{
+  "lab_name": "dl_activation_functions",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "dl_activation_functions_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "dl_activation_functions_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

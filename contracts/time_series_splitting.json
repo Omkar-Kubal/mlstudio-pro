@@ -1,0 +1,13 @@
+{
+  "lab_name": "time_series_splitting",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "time_series_splitting_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

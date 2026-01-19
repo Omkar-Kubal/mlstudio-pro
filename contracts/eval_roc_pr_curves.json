@@ -1,0 +1,18 @@
+{
+  "lab_name": "eval_roc_pr_curves",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "eval_roc_pr_curves_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "eval_roc_pr_curves_probs_normalized",
+      "invariant_type": "normalized",
+      "params": {}
+    }
+  ]
+}

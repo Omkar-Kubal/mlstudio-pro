@@ -1,0 +1,18 @@
+{
+  "lab_name": "prob_distribution_families",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "prob_distribution_families_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "prob_distribution_families_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "lab_name": "bias_variance_tradeoff",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "bias_variance_tradeoff_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

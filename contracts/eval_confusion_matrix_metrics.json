@@ -1,0 +1,13 @@
+{
+  "lab_name": "eval_confusion_matrix_metrics",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "eval_confusion_matrix_metrics_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

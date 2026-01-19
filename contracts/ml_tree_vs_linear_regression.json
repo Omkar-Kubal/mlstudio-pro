@@ -1,0 +1,18 @@
+{
+  "lab_name": "ml_tree_vs_linear_regression",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "ml_tree_vs_linear_regression_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "ml_tree_vs_linear_regression_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

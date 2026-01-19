@@ -1,0 +1,21 @@
+{
+  "lab_name": "data_leakage_examples",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "data_leakage_examples_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "data_leakage_examples_accuracy_bounded",
+      "invariant_type": "in_range",
+      "params": {
+        "lower": 0.0,
+        "upper": 1.0
+      }
+    }
+  ]
+}

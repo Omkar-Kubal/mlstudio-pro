@@ -1,0 +1,18 @@
+{
+  "lab_name": "opt_local_global_minima",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "opt_local_global_minima_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "opt_local_global_minima_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

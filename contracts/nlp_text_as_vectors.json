@@ -1,0 +1,13 @@
+{
+  "lab_name": "nlp_text_as_vectors",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "nlp_text_as_vectors_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "lab_name": "feature_selection_methods",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "feature_selection_methods_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

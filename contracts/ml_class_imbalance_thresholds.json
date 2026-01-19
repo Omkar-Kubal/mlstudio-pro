@@ -1,0 +1,23 @@
+{
+  "lab_name": "ml_class_imbalance_thresholds",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "ml_class_imbalance_thresholds_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "ml_class_imbalance_thresholds_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    },
+    {
+      "name": "ml_class_imbalance_thresholds_probs_normalized",
+      "invariant_type": "normalized",
+      "params": {}
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "lab_name": "prob_lln_convergence",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "prob_lln_convergence_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "prob_lln_convergence_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

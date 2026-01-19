@@ -1,0 +1,13 @@
+{
+  "lab_name": "feature_encoding_scaling",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "feature_encoding_scaling_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "lab_name": "ml_linear_regression_from_scratch",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "ml_linear_regression_from_scratch_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "ml_linear_regression_from_scratch_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    },
+    {
+      "name": "ml_linear_regression_from_scratch_loss_non_negative",
+      "invariant_type": "non_negative",
+      "params": {}
+    }
+  ]
+}

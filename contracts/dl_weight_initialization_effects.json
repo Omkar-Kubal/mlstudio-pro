@@ -1,0 +1,18 @@
+{
+  "lab_name": "dl_weight_initialization_effects",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "dl_weight_initialization_effects_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "dl_weight_initialization_effects_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

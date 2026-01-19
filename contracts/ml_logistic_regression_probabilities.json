@@ -1,0 +1,23 @@
+{
+  "lab_name": "ml_logistic_regression_probabilities",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "ml_logistic_regression_probabilities_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "ml_logistic_regression_probabilities_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    },
+    {
+      "name": "ml_logistic_regression_probabilities_probs_normalized",
+      "invariant_type": "normalized",
+      "params": {}
+    }
+  ]
+}

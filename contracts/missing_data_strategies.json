@@ -1,0 +1,13 @@
+{
+  "lab_name": "missing_data_strategies",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "missing_data_strategies_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "lab_name": "eval_regression_metrics",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "eval_regression_metrics_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "eval_regression_metrics_r2_bounded",
+      "invariant_type": "in_range",
+      "params": {
+        "lower": -10.0,
+        "upper": 1.0
+      }
+    }
+  ]
+}

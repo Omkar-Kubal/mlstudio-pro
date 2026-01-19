@@ -1,0 +1,18 @@
+{
+  "lab_name": "prob_probability_simulation",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "prob_probability_simulation_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "prob_probability_simulation_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

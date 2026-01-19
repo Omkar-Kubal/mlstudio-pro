@@ -1,0 +1,18 @@
+{
+  "lab_name": "dl_batchnorm_dropout_effects",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "dl_batchnorm_dropout_effects_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "dl_batchnorm_dropout_effects_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

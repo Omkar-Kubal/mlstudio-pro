@@ -1,0 +1,13 @@
+{
+  "lab_name": "data_quality_issues",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "data_quality_issues_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

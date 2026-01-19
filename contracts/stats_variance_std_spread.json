@@ -1,0 +1,18 @@
+{
+  "lab_name": "stats_variance_std_spread",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "stats_variance_std_spread_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "stats_variance_std_spread_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

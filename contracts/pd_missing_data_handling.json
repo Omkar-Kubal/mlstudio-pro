@@ -1,0 +1,13 @@
+{
+  "lab_name": "pd_missing_data_handling",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "pd_missing_data_handling_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

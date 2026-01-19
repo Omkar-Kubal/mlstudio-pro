@@ -1,0 +1,23 @@
+{
+  "lab_name": "np_numerical_stability",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "np_numerical_stability_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "np_numerical_stability_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    },
+    {
+      "name": "np_numerical_stability_probs_normalized",
+      "invariant_type": "normalized",
+      "params": {}
+    }
+  ]
+}

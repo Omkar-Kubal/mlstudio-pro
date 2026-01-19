@@ -1,0 +1,13 @@
+{
+  "lab_name": "polynomial_features_effect",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "polynomial_features_effect_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

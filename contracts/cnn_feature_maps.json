@@ -1,0 +1,18 @@
+{
+  "lab_name": "cnn_feature_maps",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "cnn_feature_maps_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "cnn_feature_maps_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

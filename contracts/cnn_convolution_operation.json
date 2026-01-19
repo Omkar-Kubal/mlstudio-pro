@@ -1,0 +1,18 @@
+{
+  "lab_name": "cnn_convolution_operation",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "cnn_convolution_operation_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "cnn_convolution_operation_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

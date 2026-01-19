@@ -1,0 +1,28 @@
+{
+  "lab_name": "opt_objective_functions_examples",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "opt_objective_functions_examples_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "opt_objective_functions_examples_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    },
+    {
+      "name": "opt_objective_functions_examples_probs_normalized",
+      "invariant_type": "normalized",
+      "params": {}
+    },
+    {
+      "name": "opt_objective_functions_examples_loss_non_negative",
+      "invariant_type": "non_negative",
+      "params": {}
+    }
+  ]
+}

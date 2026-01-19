@@ -1,0 +1,18 @@
+{
+  "lab_name": "np_linear_algebra_ops",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "np_linear_algebra_ops_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "np_linear_algebra_ops_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

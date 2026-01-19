@@ -1,0 +1,23 @@
+{
+  "lab_name": "dl_optimizer_comparison",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "dl_optimizer_comparison_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "dl_optimizer_comparison_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    },
+    {
+      "name": "dl_optimizer_comparison_loss_non_negative",
+      "invariant_type": "non_negative",
+      "params": {}
+    }
+  ]
+}

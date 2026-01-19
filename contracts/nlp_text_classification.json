@@ -1,0 +1,21 @@
+{
+  "lab_name": "nlp_text_classification",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "nlp_text_classification_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "nlp_text_classification_accuracy_bounded",
+      "invariant_type": "in_range",
+      "params": {
+        "lower": 0.0,
+        "upper": 1.0
+      }
+    }
+  ]
+}

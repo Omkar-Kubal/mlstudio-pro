@@ -1,0 +1,13 @@
+{
+  "lab_name": "pd_groupby_aggregation",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "pd_groupby_aggregation_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

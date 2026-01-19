@@ -1,0 +1,13 @@
+{
+  "lab_name": "duplicate_outlier_handling",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "duplicate_outlier_handling_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

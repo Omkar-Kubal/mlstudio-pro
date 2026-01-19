@@ -1,0 +1,18 @@
+{
+  "lab_name": "opt_gradient_descent_from_scratch",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "opt_gradient_descent_from_scratch_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "opt_gradient_descent_from_scratch_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

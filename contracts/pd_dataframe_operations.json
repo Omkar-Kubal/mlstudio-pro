@@ -1,0 +1,13 @@
+{
+  "lab_name": "pd_dataframe_operations",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "pd_dataframe_operations_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "lab_name": "viz_model_results",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "viz_model_results_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

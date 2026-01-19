@@ -1,0 +1,13 @@
+{
+  "lab_name": "train_validation_test_splits",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "train_validation_test_splits_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "lab_name": "pd_merging_joining",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "pd_merging_joining_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}

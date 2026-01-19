@@ -1,0 +1,18 @@
+{
+  "lab_name": "cnn_pooling_effects",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "cnn_pooling_effects_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "cnn_pooling_effects_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

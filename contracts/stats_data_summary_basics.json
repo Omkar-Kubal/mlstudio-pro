@@ -1,0 +1,18 @@
+{
+  "lab_name": "stats_data_summary_basics",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "stats_data_summary_basics_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "stats_data_summary_basics_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

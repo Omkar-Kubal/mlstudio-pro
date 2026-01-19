@@ -1,0 +1,18 @@
+{
+  "lab_name": "ml_choosing_k_elbow",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "ml_choosing_k_elbow_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "ml_choosing_k_elbow_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

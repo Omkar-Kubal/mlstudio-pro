@@ -1,0 +1,18 @@
+{
+  "lab_name": "ml_bagging_vs_boosting",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "ml_bagging_vs_boosting_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    },
+    {
+      "name": "ml_bagging_vs_boosting_no_inf",
+      "invariant_type": "no_inf",
+      "params": {}
+    }
+  ]
+}

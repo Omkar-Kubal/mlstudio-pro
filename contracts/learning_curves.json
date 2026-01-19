@@ -1,0 +1,13 @@
+{
+  "lab_name": "learning_curves",
+  "version": "1.0",
+  "scalars": [],
+  "shapes": [],
+  "invariants": [
+    {
+      "name": "learning_curves_no_nan",
+      "invariant_type": "no_nan",
+      "params": {}
+    }
+  ]
+}
