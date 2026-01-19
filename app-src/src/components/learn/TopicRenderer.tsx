@@ -2,11 +2,18 @@
 
 import { useState } from "react";
 import type { Topic as LearningTopic, CodeSnippet } from "@/lib/content-types";
-import type { FitProgressionConfig, ParameterSensitivityConfig } from "@/lib/visual-types";
+import type { FitProgressionConfig, ParameterSensitivityConfig, DistributionEvolutionConfig, BoundaryMorphingConfig, MetricDashboardConfig, ClusterFormationConfig, NetworkForwardPassConfig, GradientBackflowConfig } from "@/lib/visual-types";
 import { getVisualConfig } from "@/lib/visual-configs";
 import CodeEditor from "./CodeEditor";
 import ParameterSensitivityPrimitive from "./ParameterSensitivityPrimitive";
 import FitProgressionPrimitive from "./FitProgressionPrimitive";
+import DistributionEvolutionPrimitive from "./DistributionEvolutionPrimitive";
+import BoundaryMorphingPrimitive from "./BoundaryMorphingPrimitive";
+import MetricDashboardPrimitive from "./MetricDashboardPrimitive";
+import ClusterFormationPrimitive from "./ClusterFormationPrimitive";
+import NetworkForwardPassPrimitive from "./NetworkForwardPassPrimitive";
+import GradientBackflowPrimitive from "./GradientBackflowPrimitive";
+import { PrimitiveWrapper, isPrimitiveRegistered } from "./PrimitiveWrapper";
 
 interface TopicRendererProps {
     topic: LearningTopic;
@@ -152,29 +159,42 @@ function VisualIntuitionWithAnimation({
     topic: LearningTopic;
     config: NonNullable<ReturnType<typeof getVisualConfig>>;
 }) {
-    const [hasError, setHasError] = useState(false);
+    // Determine which primitive to render based on config type
+    const primitiveType = "primitiveType" in config ? config.primitiveType : "parameter-sensitivity";
 
-    if (hasError) {
+    // Validate primitive is registered
+    if (!isPrimitiveRegistered(primitiveType)) {
         return <VisualIntuitionPlaceholder topic={topic} />;
     }
 
-    // Determine which primitive to render based on config type
-    const isFitProgression = "primitiveType" in config && config.primitiveType === "fit-progression";
-
     return (
-        <div className="space-y-4">
-            {/* Animation - select primitive based on config type */}
-            {isFitProgression ? (
-                <FitProgressionPrimitive config={config as FitProgressionConfig} />
-            ) : (
-                <ParameterSensitivityPrimitive config={config as ParameterSensitivityConfig} />
-            )}
+        <PrimitiveWrapper primitiveName={primitiveType} caption={config.caption}>
+            <div className="space-y-4">
+                {/* Animation - select primitive based on config type */}
+                {primitiveType === "fit-progression" ? (
+                    <FitProgressionPrimitive config={config as FitProgressionConfig} />
+                ) : primitiveType === "distribution-evolution" ? (
+                    <DistributionEvolutionPrimitive config={config as DistributionEvolutionConfig} />
+                ) : primitiveType === "boundary-morphing" ? (
+                    <BoundaryMorphingPrimitive config={config as BoundaryMorphingConfig} />
+                ) : primitiveType === "metric-dashboard" ? (
+                    <MetricDashboardPrimitive config={config as MetricDashboardConfig} />
+                ) : primitiveType === "cluster-formation" ? (
+                    <ClusterFormationPrimitive config={config as ClusterFormationConfig} />
+                ) : primitiveType === "network-forward-pass" ? (
+                    <NetworkForwardPassPrimitive config={config as NetworkForwardPassConfig} />
+                ) : primitiveType === "gradient-backflow" ? (
+                    <GradientBackflowPrimitive config={config as GradientBackflowConfig} />
+                ) : (
+                    <ParameterSensitivityPrimitive config={config as ParameterSensitivityConfig} />
+                )}
 
-            {/* Caption */}
-            <p className="text-xs text-muted text-center italic">
-                {config.caption}
-            </p>
-        </div>
+                {/* Caption */}
+                <p className="text-xs text-muted text-center italic">
+                    {config.caption}
+                </p>
+            </div>
+        </PrimitiveWrapper>
     );
 }
 
