@@ -80,3 +80,8 @@ ENV/
 # Archive folder (legacy content, keep but don't track changes)
 # Uncomment if you want to ignore archive:
 # docs/archive/
+
+# Agent/AI
+.gemini/
+.agent/
+brain/
