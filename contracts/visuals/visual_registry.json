@@ -1,0 +1,163 @@
+{
+    "registry_version": "3.0.0",
+    "description": "V3 Visual-to-Concept Registry mapping labs to visual primitives",
+    "generated": "2026-01-20",
+    "constraints": {
+        "read_only": true,
+        "deterministic": true,
+        "optional": true,
+        "no_ui_language": true
+    },
+    "visual_primitives": [
+        "projection",
+        "sequence",
+        "attention",
+        "filters"
+    ],
+    "mappings": [
+        {
+            "lab_name": "linalg_eigen_directions",
+            "visual_type": "projection",
+            "rationale": "Eigenvectors define principal directions; 2D projection of transformed space illustrates eigendecomposition",
+            "data_source": "computed_eigenvectors",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "linalg_linear_transformations",
+            "visual_type": "projection",
+            "rationale": "Linear transformations visualized as 2D projections showing matrix effects on vectors",
+            "data_source": "transformed_vectors",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "linalg_geometry_of_ml",
+            "visual_type": "projection",
+            "rationale": "Geometric interpretation of high-dimensional ML concepts via 2D projection",
+            "data_source": "feature_projections",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "ml_kmeans_convergence",
+            "visual_type": "projection",
+            "rationale": "Cluster assignments visualized in 2D projected space with centroids",
+            "data_source": "cluster_assignments_and_centroids",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "ml_dbscan_density",
+            "visual_type": "projection",
+            "rationale": "Density-based clusters visualized as 2D scatter with cluster coloring",
+            "data_source": "cluster_labels",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "ml_choosing_k_elbow",
+            "visual_type": "projection",
+            "rationale": "K selection visualized via projected cluster separation",
+            "data_source": "cluster_assignments",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "ml_decision_boundaries",
+            "visual_type": "projection",
+            "rationale": "Decision boundaries projected to 2D feature space",
+            "data_source": "predictions_grid",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "ml_knn_vs_svm",
+            "visual_type": "projection",
+            "rationale": "Classification regions compared in 2D projection",
+            "data_source": "class_predictions",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "dl_vanishing_gradients",
+            "visual_type": "sequence",
+            "rationale": "Gradient magnitude over network layers shown as sequence flow",
+            "data_source": "layer_gradient_magnitudes",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "dl_backpropagation_numerical",
+            "visual_type": "sequence",
+            "rationale": "Backpropagation as sequential gradient flow through layers",
+            "data_source": "gradient_values_per_layer",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "dl_weight_initialization_effects",
+            "visual_type": "sequence",
+            "rationale": "Activation distributions across layers as sequence",
+            "data_source": "layer_activation_stats",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "dl_batchnorm_dropout_effects",
+            "visual_type": "sequence",
+            "rationale": "Layer-wise effects of normalization shown as sequence",
+            "data_source": "layer_outputs",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "cnn_feature_maps",
+            "visual_type": "filters",
+            "rationale": "Feature map activations at each layer",
+            "data_source": "activation_maps",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "cnn_convolution_operation",
+            "visual_type": "filters",
+            "rationale": "Convolution filter weights visualization",
+            "data_source": "filter_weights",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "cnn_pooling_effects",
+            "visual_type": "filters",
+            "rationale": "Pooling effects on feature maps",
+            "data_source": "pre_post_pooling_maps",
+            "deterministic": true,
+            "skippable": true
+        },
+        {
+            "lab_name": "cv_image_as_arrays",
+            "visual_type": "filters",
+            "rationale": "Image channels as feature map representation",
+            "data_source": "image_channels",
+            "deterministic": true,
+            "skippable": true
+        }
+    ],
+    "unmapped_labs": {
+        "count": 68,
+        "reason": "No applicable visual primitive or insufficient output structure",
+        "examples": [
+            "py_control_flow_functions",
+            "py_data_types_structures",
+            "pd_dataframe_operations",
+            "stats_mean_median_mode_effects",
+            "prob_bayes_medical_test"
+        ],
+        "policy": "Text-only explanation is sufficient for these concepts"
+    },
+    "attention_primitives": {
+        "mapped_labs": 0,
+        "reason": "No Transformer-based labs in V2 curriculum; attention primitive remains unused"
+    }
+}
