@@ -1,0 +1,137 @@
+{
+    "visual_type": "projection",
+    "version": "1.0",
+    "description": "Dimensionality reduction and embedding projection visualization",
+    "v2_only": true,
+    "inputs": [
+        {
+            "name": "points",
+            "dtype": "array",
+            "required": true,
+            "shape": [
+                null,
+                null
+            ],
+            "description": "High-dimensional data points [n_points, n_dims]"
+        },
+        {
+            "name": "projected",
+            "dtype": "array",
+            "required": true,
+            "shape": [
+                null,
+                2
+            ],
+            "description": "Projected coordinates [n_points, 2] or [n_points, 3]"
+        },
+        {
+            "name": "labels",
+            "dtype": "array",
+            "required": false,
+            "description": "Point labels for coloring"
+        },
+        {
+            "name": "method",
+            "dtype": "string",
+            "required": true,
+            "constraints": {
+                "choices": [
+                    "pca",
+                    "tsne",
+                    "umap"
+                ]
+            },
+            "description": "Projection method used"
+        },
+        {
+            "name": "explained_variance",
+            "dtype": "array",
+            "required": false,
+            "description": "Explained variance ratio (PCA only)"
+        }
+    ],
+    "output_schema": {
+        "type": "object",
+        "required": [
+            "points",
+            "method",
+            "dimensions"
+        ],
+        "properties": {
+            "points": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "x": {
+                            "type": "number"
+                        },
+                        "y": {
+                            "type": "number"
+                        },
+                        "z": {
+                            "type": [
+                                "number",
+                                "null"
+                            ]
+                        },
+                        "label": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "cluster": {
+                            "type": [
+                                "integer",
+                                "null"
+                            ]
+                        }
+                    }
+                }
+            },
+            "method": {
+                "type": "string"
+            },
+            "dimensions": {
+                "type": "integer",
+                "enum": [
+                    2,
+                    3
+                ]
+            },
+            "n_points": {
+                "type": "integer"
+            },
+            "explained_variance": {
+                "type": "array",
+                "items": {
+                    "type": "number"
+                }
+            }
+        }
+    },
+    "deterministic": true,
+    "supported_modes": [
+        "json",
+        "svg"
+    ],
+    "failure_modes": [
+        {
+            "code": "empty_input",
+            "description": "Input points array is empty"
+        },
+        {
+            "code": "dimension_mismatch",
+            "description": "Number of points vs projected coordinates mismatch"
+        },
+        {
+            "code": "invalid_method",
+            "description": "Unsupported projection method specified"
+        },
+        {
+            "code": "non_numeric_data",
+            "description": "Input contains non-numeric values"
+        }
+    ]
+}

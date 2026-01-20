@@ -1,0 +1,172 @@
+{
+    "visual_type": "filters",
+    "version": "1.0",
+    "description": "CNN filters and feature map visualization",
+    "v2_only": true,
+    "inputs": [
+        {
+            "name": "filters",
+            "dtype": "array",
+            "required": false,
+            "shape": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "description": "Convolutional filter weights [out_ch, in_ch, H, W]"
+        },
+        {
+            "name": "feature_maps",
+            "dtype": "array",
+            "required": false,
+            "shape": [
+                null,
+                null,
+                null
+            ],
+            "description": "Feature map activations [channels, H, W]"
+        },
+        {
+            "name": "layer_name",
+            "dtype": "string",
+            "required": false,
+            "description": "Name of the layer"
+        },
+        {
+            "name": "visualization_type",
+            "dtype": "string",
+            "required": true,
+            "constraints": {
+                "choices": [
+                    "filters",
+                    "feature_maps",
+                    "both"
+                ]
+            },
+            "description": "What to visualize"
+        },
+        {
+            "name": "selected_channels",
+            "dtype": "array",
+            "required": false,
+            "description": "Indices of channels to visualize (null = all)"
+        },
+        {
+            "name": "normalize",
+            "dtype": "boolean",
+            "required": false,
+            "constraints": {
+                "default": true
+            },
+            "description": "Whether to normalize values for visualization"
+        }
+    ],
+    "output_schema": {
+        "type": "object",
+        "required": [
+            "visualization_type"
+        ],
+        "properties": {
+            "visualization_type": {
+                "type": "string"
+            },
+            "layer_name": {
+                "type": [
+                    "string",
+                    "null"
+                ]
+            },
+            "filters": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "filter_index": {
+                            "type": "integer"
+                        },
+                        "weights": {
+                            "type": "array"
+                        },
+                        "layer_name": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    }
+                }
+            },
+            "feature_maps": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "channel_index": {
+                            "type": "integer"
+                        },
+                        "activation": {
+                            "type": "array"
+                        },
+                        "layer_name": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "statistics": {
+                            "type": "object",
+                            "properties": {
+                                "mean": {
+                                    "type": "number"
+                                },
+                                "max": {
+                                    "type": "number"
+                                },
+                                "min": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "filter_shape": {
+                "type": [
+                    "array",
+                    "null"
+                ],
+                "items": {
+                    "type": "integer"
+                }
+            },
+            "feature_map_shape": {
+                "type": [
+                    "array",
+                    "null"
+                ],
+                "items": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "deterministic": true,
+    "supported_modes": [
+        "json"
+    ],
+    "failure_modes": [
+        {
+            "code": "empty_data",
+            "description": "Neither filters nor feature_maps provided"
+        },
+        {
+            "code": "invalid_type",
+            "description": "Unsupported visualization type"
+        },
+        {
+            "code": "dimension_mismatch",
+            "description": "Array dimensions are inconsistent"
+        }
+    ]
+}

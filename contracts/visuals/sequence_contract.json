@@ -1,0 +1,153 @@
+{
+    "visual_type": "sequence",
+    "version": "1.0",
+    "description": "Sequential data flow visualization for RNN/LSTM",
+    "v2_only": true,
+    "inputs": [
+        {
+            "name": "inputs",
+            "dtype": "array",
+            "required": true,
+            "shape": [
+                null
+            ],
+            "description": "Input sequence values"
+        },
+        {
+            "name": "hidden_states",
+            "dtype": "array",
+            "required": true,
+            "shape": [
+                null,
+                null
+            ],
+            "description": "Hidden states at each time step [time_steps, hidden_dim]"
+        },
+        {
+            "name": "outputs",
+            "dtype": "array",
+            "required": false,
+            "shape": [
+                null
+            ],
+            "description": "Output values at each time step"
+        },
+        {
+            "name": "cell_states",
+            "dtype": "array",
+            "required": false,
+            "shape": [
+                null,
+                null
+            ],
+            "description": "Cell states at each step (LSTM only)"
+        },
+        {
+            "name": "gradients",
+            "dtype": "array",
+            "required": false,
+            "shape": [
+                null
+            ],
+            "description": "Gradient magnitudes per time step"
+        },
+        {
+            "name": "sequence_type",
+            "dtype": "string",
+            "required": true,
+            "constraints": {
+                "choices": [
+                    "rnn",
+                    "lstm",
+                    "gru"
+                ]
+            },
+            "description": "Type of sequence model"
+        }
+    ],
+    "output_schema": {
+        "type": "object",
+        "required": [
+            "steps",
+            "sequence_type",
+            "sequence_length"
+        ],
+        "properties": {
+            "steps": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "step_index": {
+                            "type": "integer"
+                        },
+                        "input_value": {},
+                        "hidden_state": {
+                            "type": "array"
+                        },
+                        "output_value": {},
+                        "cell_state": {
+                            "type": [
+                                "array",
+                                "null"
+                            ]
+                        },
+                        "gradient_magnitude": {
+                            "type": [
+                                "number",
+                                "null"
+                            ]
+                        }
+                    }
+                }
+            },
+            "sequence_type": {
+                "type": "string"
+            },
+            "sequence_length": {
+                "type": "integer"
+            },
+            "hidden_dim": {
+                "type": "integer"
+            },
+            "gradient_flow": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "step_index": {
+                            "type": "integer"
+                        },
+                        "gradient_norm": {
+                            "type": "number"
+                        },
+                        "vanishing": {
+                            "type": "boolean"
+                        },
+                        "exploding": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "deterministic": true,
+    "supported_modes": [
+        "json"
+    ],
+    "failure_modes": [
+        {
+            "code": "empty_sequence",
+            "description": "Input sequence is empty"
+        },
+        {
+            "code": "dimension_mismatch",
+            "description": "Sequence length mismatch between inputs and hidden states"
+        },
+        {
+            "code": "invalid_sequence_type",
+            "description": "Unsupported sequence model type"
+        }
+    ]
+}

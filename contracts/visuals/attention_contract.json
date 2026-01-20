@@ -1,0 +1,148 @@
+{
+    "visual_type": "attention",
+    "version": "1.0",
+    "description": "Transformer attention matrix visualization",
+    "v2_only": true,
+    "inputs": [
+        {
+            "name": "attention_weights",
+            "dtype": "array",
+            "required": true,
+            "shape": [
+                null,
+                null,
+                null
+            ],
+            "description": "Attention weight matrices [heads, seq_len, seq_len]"
+        },
+        {
+            "name": "source_tokens",
+            "dtype": "array",
+            "required": true,
+            "description": "Source sequence tokens"
+        },
+        {
+            "name": "target_tokens",
+            "dtype": "array",
+            "required": false,
+            "description": "Target sequence tokens (for cross-attention)"
+        },
+        {
+            "name": "attention_type",
+            "dtype": "string",
+            "required": true,
+            "constraints": {
+                "choices": [
+                    "self_attention",
+                    "cross_attention",
+                    "multi_head"
+                ]
+            },
+            "description": "Type of attention mechanism"
+        },
+        {
+            "name": "layer_index",
+            "dtype": "integer",
+            "required": false,
+            "description": "Layer index (if from specific layer)"
+        },
+        {
+            "name": "selected_heads",
+            "dtype": "array",
+            "required": false,
+            "description": "Indices of heads to visualize (null = all)"
+        }
+    ],
+    "output_schema": {
+        "type": "object",
+        "required": [
+            "attention_type",
+            "num_heads",
+            "seq_length",
+            "source_tokens"
+        ],
+        "properties": {
+            "attention_type": {
+                "type": "string"
+            },
+            "num_heads": {
+                "type": "integer"
+            },
+            "seq_length": {
+                "type": "integer"
+            },
+            "layer_index": {
+                "type": [
+                    "integer",
+                    "null"
+                ]
+            },
+            "source_tokens": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "target_tokens": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "heads": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "head_index": {
+                            "type": "integer"
+                        },
+                        "head_name": {
+                            "type": "string"
+                        },
+                        "weights": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "aggregated": {
+                "type": "array",
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                }
+            }
+        }
+    },
+    "deterministic": true,
+    "supported_modes": [
+        "json"
+    ],
+    "failure_modes": [
+        {
+            "code": "empty_weights",
+            "description": "Attention weights array is empty"
+        },
+        {
+            "code": "token_mismatch",
+            "description": "Token count doesn't match attention dimensions"
+        },
+        {
+            "code": "invalid_attention_type",
+            "description": "Unsupported attention type specified"
+        },
+        {
+            "code": "dimension_mismatch",
+            "description": "Attention matrix dimensions are inconsistent"
+        }
+    ]
+}
