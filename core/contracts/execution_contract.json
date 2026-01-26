@@ -1,0 +1,14 @@
+{
+    "version": "1.0",
+    "execution_contract": {
+        "type": "object",
+        "properties": {
+            "lab_name": {
+                "type": "string"
+            },
+            "output_hash": {
+                "type": "string"
+            }
+        }
+    }
+}

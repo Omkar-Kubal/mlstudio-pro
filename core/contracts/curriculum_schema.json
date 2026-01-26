@@ -1,0 +1,17 @@
+{
+    "version": "1.0",
+    "lesson_schema": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string"
+            },
+            "title": {
+                "type": "string"
+            },
+            "file": {
+                "type": "string"
+            }
+        }
+    }
+}

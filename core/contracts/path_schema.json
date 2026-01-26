@@ -1,0 +1,14 @@
+{
+    "version": "4.3",
+    "persona_schema": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string"
+            },
+            "prereqs": {
+                "type": "array"
+            }
+        }
+    }
+}

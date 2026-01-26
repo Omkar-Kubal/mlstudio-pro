@@ -1,0 +1,14 @@
+{
+    "version": "1.0",
+    "lab_schema": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string"
+            },
+            "file": {
+                "type": "string"
+            }
+        }
+    }
+}

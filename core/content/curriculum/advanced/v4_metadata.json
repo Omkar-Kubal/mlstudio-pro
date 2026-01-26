@@ -1,0 +1,71 @@
+{
+    "version": "4.0",
+    "name": "V4 Curriculum Expansion",
+    "lessons": [
+        {
+            "id": "v4_transformers",
+            "title": "Transformers",
+            "file": "transformers.md",
+            "prerequisites": [
+                "s6_deep_learning"
+            ],
+            "exclusions": [
+                "V1-Deep-Learning-Basics"
+            ]
+        },
+        {
+            "id": "v4_attention",
+            "title": "Attention Mechanisms",
+            "file": "attention_mechanisms.md",
+            "prerequisites": [
+                "v4_transformers"
+            ],
+            "exclusions": []
+        },
+        {
+            "id": "v4_llm_architectures",
+            "title": "LLM Architectures",
+            "file": "llm_architectures.md",
+            "prerequisites": [
+                "v4_attention"
+            ],
+            "exclusions": []
+        },
+        {
+            "id": "v4_tokenization",
+            "title": "Tokenization",
+            "file": "tokenization.md",
+            "prerequisites": [
+                "v4_transformers"
+            ],
+            "exclusions": []
+        },
+        {
+            "id": "v4_prompting",
+            "title": "Prompting",
+            "file": "prompting.md",
+            "prerequisites": [
+                "v4_llm_architectures"
+            ],
+            "exclusions": []
+        },
+        {
+            "id": "v4_fine_tuning",
+            "title": "Fine-tuning Concepts",
+            "file": "fine_tuning_concepts.md",
+            "prerequisites": [
+                "v4_llm_architectures"
+            ],
+            "exclusions": []
+        },
+        {
+            "id": "v4_evaluation",
+            "title": "Evaluation & Alignment",
+            "file": "evaluation_alignment.md",
+            "prerequisites": [
+                "v4_fine_tuning"
+            ],
+            "exclusions": []
+        }
+    ]
+}

@@ -1,0 +1,56 @@
+{
+    "version": "4.3",
+    "personas": [
+        "student",
+        "practitioner",
+        "researcher"
+    ],
+    "paths": {
+        "student": {
+            "name": "Academic Student",
+            "description": "Theory-first.",
+            "critical_path": [
+                "s1",
+                "s6",
+                "v4_transformers"
+            ],
+            "weights": {
+                "theory": 1.0,
+                "lab": 0.5
+            }
+        },
+        "practitioner": {
+            "name": "ML Engineer",
+            "description": "Lab-focused.",
+            "critical_path": [
+                "s2",
+                "s6",
+                "v4_transformers"
+            ],
+            "weights": {
+                "theory": 0.2,
+                "lab": 1.0
+            }
+        },
+        "researcher": {
+            "name": "AI Researcher",
+            "description": "Advanced non-linear.",
+            "critical_path": [
+                "s6",
+                "v4_transformers"
+            ],
+            "weights": {
+                "theory": 0.8,
+                "lab": 0.8
+            }
+        }
+    },
+    "dependencies": [
+        {
+            "id": "v4_transformers",
+            "prereqs": [
+                "s6_deep_learning"
+            ]
+        }
+    ]
+}

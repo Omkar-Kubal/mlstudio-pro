@@ -1,0 +1,14 @@
+{
+    "version": "4.1",
+    "labs": [
+        {
+            "id": "v4_lab_transformer_math",
+            "title": "Transformer Forward Pass",
+            "file": "transformer_forward_pass.ipynb",
+            "tier": "core",
+            "gpu_required": false,
+            "deterministic_seed": 42,
+            "output_contract": "json"
+        }
+    ]
+}
