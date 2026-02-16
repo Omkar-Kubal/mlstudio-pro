@@ -14,6 +14,7 @@ interface CodeEditorProps {
 interface ExecutionResult {
     output: string;
     error?: string;
+    image?: string;
 }
 
 export default function CodeEditor({
@@ -49,6 +50,7 @@ export default function CodeEditor({
             setResult({
                 output: data.output || "",
                 error: data.error || undefined,
+                image: data.image || undefined,
             });
             onRun?.(code);
         } catch (error) {
@@ -155,12 +157,32 @@ export default function CodeEditor({
             {/* Output */}
             {result && (
                 <div className="border-t border-border">
-                    <div className="px-4 py-2 bg-neutral-900 text-xs text-muted">
-                        Output
+                    <div className="px-4 py-2 bg-neutral-900 text-xs text-muted flex justify-between items-center">
+                        <span>Output</span>
+                        {result.image && <span className="text-[10px] bg-primary/10 text-primary px-1 rounded">Graph Generated</span>}
                     </div>
-                    <pre className={`p-4 text-sm font-mono whitespace-pre-wrap ${result.error ? 'text-red-400' : 'text-green-400'}`}>
-                        {result.error || result.output || "(No output)"}
-                    </pre>
+
+                    {/* Console Output */}
+                    {(result.output || result.error) && (
+                        <pre className={`p-4 text-sm font-mono whitespace-pre-wrap ${result.error ? 'text-red-400' : 'text-green-400'}`}>
+                            {result.error || result.output}
+                        </pre>
+                    )}
+
+                    {/* Image Output */}
+                    {result.image && (
+                        <div className="p-4 bg-white rounded-b-lg flex justify-center">
+                            <img
+                                src={`data:image/png;base64,${result.image}`}
+                                alt="Generated Plot"
+                                className="max-w-full h-auto rounded shadow-sm"
+                            />
+                        </div>
+                    )}
+
+                    {!result.output && !result.error && !result.image && (
+                        <div className="p-4 text-sm text-muted font-mono">(No output)</div>
+                    )}
                 </div>
             )}
         </div>

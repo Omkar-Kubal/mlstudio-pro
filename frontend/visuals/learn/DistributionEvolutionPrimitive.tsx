@@ -29,11 +29,13 @@ export default function DistributionEvolutionPrimitive({ config }: Props) {
     const [toggleState, setToggleState] = useState<0 | 1>(secondaryToggle?.initial ?? 0);
 
     // Reduced motion preference
-    const [reducedMotion, setReducedMotion] = useState(false);
+    const [reducedMotion, setReducedMotion] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    });
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-        setReducedMotion(mediaQuery.matches);
         const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
         mediaQuery.addEventListener("change", handler);
         return () => mediaQuery.removeEventListener("change", handler);
@@ -246,8 +248,8 @@ export default function DistributionEvolutionPrimitive({ config }: Props) {
                                     key={option}
                                     onClick={() => setToggleState(idx as 0 | 1)}
                                     className={`px-3 py-1 text-sm rounded transition-colors ${toggleState === idx
-                                            ? "bg-primary text-white"
-                                            : "bg-surface text-muted hover:text-foreground"
+                                        ? "bg-primary text-white"
+                                        : "bg-surface text-muted hover:text-foreground"
                                         }`}
                                 >
                                     {option}

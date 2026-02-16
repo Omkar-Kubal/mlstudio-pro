@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import type { Topic as LearningTopic, CodeSnippet } from "@/lib/content-types";
 import type { FitProgressionConfig, ParameterSensitivityConfig, DistributionEvolutionConfig, BoundaryMorphingConfig, MetricDashboardConfig, ClusterFormationConfig, NetworkForwardPassConfig, GradientBackflowConfig } from "@/lib/visual-types";
 import { getVisualConfig } from "@/lib/visual-configs";
@@ -30,6 +29,55 @@ interface TopicRendererProps {
  * 3. Visual Intuition (conceptual)
  * 4. Code Examples (with descriptions)
  */
+
+/**
+ * FormulaRenderer - Simple component to render math expressions
+ * Supports simple LaTeX surrounded by $$ (e.g. $$\mu = \sigma^2$$)
+ */
+function FormulaRenderer({ text }: { text: string }) {
+    // Regex to find content between $$...$$
+    const parts = text.split(/(\$\$.*?\$\$)/g);
+
+    return (
+        <span className="leading-relaxed">
+            {parts.map((part, idx) => {
+                if (part.startsWith("$$") && part.endsWith("$$")) {
+                    const formula = part.slice(2, -2);
+                    return (
+                        <span
+                            key={idx}
+                            className="inline-flex items-center mx-1 px-2 py-0.5 bg-primary/5 border border-primary/10 rounded font-mono text-primary text-[1.1em] italic"
+                            title="Mathematical Formula"
+                        >
+                            {/* Simple replacement mapping for common symbols */}
+                            {formula
+                                .replace(/\\mu/g, 'μ')
+                                .replace(/\\sigma/g, 'σ')
+                                .replace(/\\alpha/g, 'α')
+                                .replace(/\\beta/g, 'β')
+                                .replace(/\\sum/g, 'Σ')
+                                .replace(/\\bar\{x\}/g, 'x̄')
+                                .replace(/\\hat\{y\}/g, 'ŷ')
+                                .replace(/\\infty/g, '∞')
+                                .replace(/\\Delta/g, 'Δ')
+                                .replace(/\\theta/g, 'θ')
+                                .replace(/\\approx/g, '≈')
+                                .replace(/\\sqrt/g, '√')
+                                .replace(/\^2/g, '²')
+                                .replace(/\^3/g, '³')
+                                .replace(/\_i/g, 'ᵢ')
+                                .replace(/\_j/g, 'ⱼ')
+                                .replace(/\_n/g, 'ₙ')
+                                .replace(/\\frac\{(.*?)\}\{(.*?)\}/g, '($1 / $2)')
+                            }
+                        </span>
+                    );
+                }
+                return <span key={idx}>{part}</span>;
+            })}
+        </span>
+    );
+}
 export default function TopicRenderer({ topic, topicIndex, totalTopics }: TopicRendererProps) {
     // Check if this topic has a visual config
     const visualConfig = getVisualConfig(topic.title);
@@ -63,7 +111,7 @@ export default function TopicRenderer({ topic, topicIndex, totalTopics }: TopicR
                             key={idx}
                             className="text-muted leading-relaxed text-base border-l-2 border-transparent hover:border-primary/30 pl-4 -ml-4 transition-colors"
                         >
-                            {paragraph}
+                            <FormulaRenderer text={paragraph} />
                         </p>
                     ))}
                 </div>

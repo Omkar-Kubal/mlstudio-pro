@@ -46,11 +46,13 @@ export default function GradientBackflowPrimitive({ config }: Props) {
     const [activation, setActivation] = useState<keyof typeof activationDerivatives>(initialActivation);
 
     // Reduced motion
-    const [reducedMotion, setReducedMotion] = useState(false);
+    const [reducedMotion, setReducedMotion] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    });
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-        setReducedMotion(mediaQuery.matches);
         const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
         mediaQuery.addEventListener("change", handler);
         return () => mediaQuery.removeEventListener("change", handler);
@@ -294,8 +296,8 @@ export default function GradientBackflowPrimitive({ config }: Props) {
                         key={act}
                         onClick={() => setActivation(act)}
                         className={`px-2 py-1 text-xs rounded capitalize transition-colors ${activation === act
-                                ? "bg-purple-600 text-white"
-                                : "bg-surface text-muted hover:text-foreground"
+                            ? "bg-purple-600 text-white"
+                            : "bg-surface text-muted hover:text-foreground"
                             }`}
                     >
                         {act}

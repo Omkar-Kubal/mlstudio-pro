@@ -6,6 +6,8 @@ import { useParams } from "next/navigation";
 import { Module } from "@/types/learning";
 import { subjects } from "@/data/subjects";
 
+import { progressTracker } from "@/adapters/progress";
+
 // Progress bar component
 function ProgressBar({ progress }: { progress: number }) {
     return (
@@ -21,49 +23,44 @@ function ProgressBar({ progress }: { progress: number }) {
     );
 }
 
-// Sample progress data (preview only — connects to user account in full version)
-const moduleProgress: Record<string, number> = {
-    "statistics": 0,
-    "probability": 0,
-    "linear-algebra": 0,
-    "optimization": 0,
-    "python-basics": 0,
-    "numpy": 0,
-    "pandas": 0,
-    "visualization": 0,
-    "regression": 0,
-    "classification": 0,
-    "clustering": 0,
-    "trees-ensembles": 0,
-};
-
 export default function SubjectPage() {
     const params = useParams();
     const subjectSlug = params.subject as string;
 
     const [modules, setModules] = useState<Module[]>([]);
     const [loading, setLoading] = useState(true);
+    const [progressMap, setProgressMap] = useState<Record<string, number>>({});
 
     // Get subject info
     const subject = subjects.find(s => s.slug === subjectSlug);
 
     useEffect(() => {
+        // Initial load - states already initialized to [] and true
+
         fetch(`/api/modules?subject=${subjectSlug}`)
             .then((res) => res.json())
             .then((data) => {
                 setModules(data);
+                setProgressMap(progressTracker.getAllProgress());
                 setLoading(false);
             });
+
+        // Listen for progress updates
+        const handleProgressUpdate = () => {
+            setProgressMap(progressTracker.getAllProgress());
+        };
+        window.addEventListener("progressUpdate", handleProgressUpdate);
+        return () => window.removeEventListener("progressUpdate", handleProgressUpdate);
     }, [subjectSlug]);
 
     // Calculate overall progress
     const overallProgress = modules.length > 0
-        ? Math.round(modules.reduce((acc, m) => acc + (moduleProgress[m.slug] || 0), 0) / modules.length)
+        ? Math.round(modules.reduce((acc, m) => acc + (progressMap[m.slug] || 0), 0) / modules.length)
         : 0;
 
-    const completedModules = modules.filter(m => (moduleProgress[m.slug] || 0) === 100).length;
+    const completedModules = modules.filter(m => (progressMap[m.slug] || 0) === 100).length;
     const currentModule = modules.find(m => {
-        const progress = moduleProgress[m.slug] || 0;
+        const progress = progressMap[m.slug] || 0;
         return progress > 0 && progress < 100;
     });
 
@@ -96,10 +93,10 @@ export default function SubjectPage() {
                         {subject?.title || subjectSlug.replace(/-/g, ' ')} Path
                     </div>
                     <h1 className="text-5xl md:text-6xl font-black tracking-tighter leading-[1.1] text-white capitalize">
-                        {subject?.title || subjectSlug.replace(/-/g, ' ')}
+                        {subject?.title || subjectSlug.replace(/-/g, " ")}
                     </h1>
                     <p className="text-lg md:text-xl text-muted max-w-2xl leading-relaxed font-light">
-                        {subject?.description || 'Master the core concepts and build practical skills through interactive modules.'}
+                        {subject?.description || "Master the core concepts and build practical skills through interactive modules."}
                     </p>
                     <div className="flex flex-wrap gap-4 mt-2">
                         <div className="flex items-center gap-2 text-sm text-muted bg-[#1a1a1a] px-3 py-1.5 rounded border border-[#262626]">
@@ -190,20 +187,20 @@ export default function SubjectPage() {
             {/* Module Grid */}
             <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {modules.map((module, index) => {
-                    const progress = moduleProgress[module.slug] || 0;
+                    const progress = progressMap[module.slug] || 0;
                     const isCompleted = progress === 100;
                     const isCurrent = currentModule?.slug === module.slug;
-                    const isLocked = index > 0 && (moduleProgress[modules[index - 1]?.slug] || 0) < 50 && progress === 0;
+                    const isLocked = index > 0 && (progressMap[modules[index - 1]?.slug] || 0) < 50 && progress === 0;
 
                     return (
                         <Link
                             key={module.id}
-                            href={isLocked ? '#' : `/learn/${subjectSlug}/${module.slug}`}
+                            href={isLocked ? "#" : `/learn/${subjectSlug}/${module.slug}`}
                             className={`glass-panel rounded-lg p-6 flex flex-col h-full relative overflow-hidden transition-all-custom group ${isCurrent
-                                ? 'shadow-[inset_0_1px_0_0_rgba(215,224,234,0.2),0_0_0_1px_rgba(215,224,234,0.3)] bg-gradient-to-b from-white/[0.08] to-transparent'
+                                ? "shadow-[inset_0_1px_0_0_rgba(215,224,234,0.2),0_0_0_1px_rgba(215,224,234,0.3)] bg-gradient-to-b from-white/[0.08] to-transparent"
                                 : isLocked
-                                    ? 'opacity-50 cursor-not-allowed grayscale-[0.5] hover:opacity-60'
-                                    : 'shadow-silver-glow hover:shadow-silver-glow-hover'
+                                    ? "opacity-50 cursor-not-allowed grayscale-[0.5] hover:opacity-60"
+                                    : "shadow-silver-glow hover:shadow-silver-glow-hover"
                                 }`}
                         >
                             {/* Background glow for current module */}
@@ -223,12 +220,12 @@ export default function SubjectPage() {
                             {/* Header */}
                             <div className="flex justify-between items-start mb-4 relative z-10">
                                 <span className={`text-xs font-bold px-2 py-1 rounded ${isCurrent
-                                    ? 'text-black bg-primary'
+                                    ? "text-black bg-primary"
                                     : isCompleted
-                                        ? 'text-primary border border-primary/30 bg-primary/10'
-                                        : 'text-primary border border-primary/30 bg-primary/5'
+                                        ? "text-primary border border-primary/30 bg-primary/10"
+                                        : "text-primary border border-primary/30 bg-primary/5"
                                     }`}>
-                                    Module {String(index + 1).padStart(2, '0')}
+                                    Module {String(index + 1).padStart(2, "0")}
                                 </span>
                                 <span className="text-xs text-muted flex items-center gap-1">
                                     <span className="material-symbols-outlined text-sm">schedule</span>
@@ -281,9 +278,9 @@ export default function SubjectPage() {
                                             <span className="material-symbols-outlined text-sm">arrow_forward</span>
                                         </>
                                     ) : isLocked ? (
-                                        'Locked'
+                                        "Locked"
                                     ) : (
-                                        'Start Module'
+                                        "Start Module"
                                     )}
                                 </button>
                             </div>

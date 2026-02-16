@@ -58,8 +58,8 @@ export interface LearningModule {
     overview: string[];
     /** Learning topics (empty array indicates placeholder) */
     topics: Topic[];
-    /** Review questions */
-    quiz: string[];
+    /** Review questions (supports both legacy string array and structured QuizQuestion objects) */
+    quiz: Array<string | QuizQuestion>;
     /** External references and resources */
     references: Reference[];
     /** Internal warnings about content issues (not shown to users) */
@@ -69,6 +69,14 @@ export interface LearningModule {
 // ============================================================================
 // Validation Types
 // ============================================================================
+
+export interface QuizQuestion {
+    id: string;
+    question: string;
+    options: string[];
+    correctAnswer: number;
+    explanation: string;
+}
 
 export interface ValidationResult {
     valid: boolean;

@@ -30,11 +30,13 @@ export default function BoundaryMorphingPrimitive({ config }: Props) {
     const [showGradient, setShowGradient] = useState(secondaryToggle?.initial === 1);
 
     // Reduced motion preference
-    const [reducedMotion, setReducedMotion] = useState(false);
+    const [reducedMotion, setReducedMotion] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    });
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-        setReducedMotion(mediaQuery.matches);
         const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
         mediaQuery.addEventListener("change", handler);
         return () => mediaQuery.removeEventListener("change", handler);
@@ -142,8 +144,8 @@ export default function BoundaryMorphingPrimitive({ config }: Props) {
                     <motion.div
                         key={idx}
                         className={`absolute w-3 h-3 rounded-full border-2 ${point.classLabel === 0
-                                ? "bg-blue-500 border-blue-300"
-                                : "bg-orange-500 border-orange-300"
+                            ? "bg-blue-500 border-blue-300"
+                            : "bg-orange-500 border-orange-300"
                             }`}
                         style={{
                             left: `${point.x * 100}%`,
@@ -205,8 +207,8 @@ export default function BoundaryMorphingPrimitive({ config }: Props) {
                                     key={option}
                                     onClick={() => setShowGradient(idx === 1)}
                                     className={`px-3 py-1 text-sm rounded transition-colors ${(showGradient ? 1 : 0) === idx
-                                            ? "bg-primary text-white"
-                                            : "bg-surface text-muted hover:text-foreground"
+                                        ? "bg-primary text-white"
+                                        : "bg-surface text-muted hover:text-foreground"
                                         }`}
                                 >
                                     {option}

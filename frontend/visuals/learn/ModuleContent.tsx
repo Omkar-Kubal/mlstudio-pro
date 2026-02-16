@@ -1,6 +1,8 @@
 "use client";
 
-import type { LearningModule, Reference } from "@/lib/content-types";
+import { useState } from "react";
+import type { LearningModule, Reference, QuizQuestion } from "@/lib/content-types";
+import { progressTracker } from "@/lib/progress";
 import TopicRenderer from "./TopicRenderer";
 
 interface ModuleContentProps {
@@ -64,7 +66,7 @@ export default function ModuleContent({ module, subjectSlug }: ModuleContentProp
 
             {/* Check Understanding */}
             {quiz.length > 0 && (
-                <QuizSection questions={quiz} />
+                <QuizSection questions={quiz} moduleSlug={meta.module} />
             )}
 
             {/* References */}
@@ -159,33 +161,133 @@ function PlaceholderNotice() {
 }
 
 /**
- * QuizSection - Check Understanding section
+ * QuizSection - Interactive Check Understanding section
  */
-function QuizSection({ questions }: { questions: string[] }) {
+function QuizSection({
+    questions,
+    moduleSlug
+}: {
+    questions: Array<string | QuizQuestion>,
+    moduleSlug: string
+}) {
+    const [answers, setAnswers] = useState<Record<number, number>>({});
+    const [showResults, setShowResults] = useState<Record<number, boolean>>({});
+
+    const handleOptionSelect = (qIdx: number, oIdx: number) => {
+        setAnswers(prev => ({ ...prev, [qIdx]: oIdx }));
+        setShowResults(prev => ({ ...prev, [qIdx]: true }));
+    };
+
+    const handleComplete = () => {
+        progressTracker.completeModule(moduleSlug);
+        alert("Module marked as complete! Your progress has been saved.");
+    };
+
     return (
-        <section className="border-t border-border pt-12">
+        <section className="border-t border-border pt-12 pb-20">
             <h2 className="text-xl font-bold text-foreground mb-6 flex items-center gap-3">
                 <span className="material-symbols-outlined text-primary">quiz</span>
                 Check Your Understanding
             </h2>
-            <p className="text-sm text-muted mb-6">
-                Reflect on these questions to reinforce your learning:
-            </p>
-            <ol className="space-y-4">
-                {questions.map((question, idx) => (
-                    <li
-                        key={idx}
-                        className="bg-surface/30 border border-border rounded-lg p-4 flex gap-4"
-                    >
-                        <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-sm font-mono text-primary">
-                            {idx + 1}
-                        </span>
-                        <p className="text-muted leading-relaxed pt-1">
-                            {question}
-                        </p>
-                    </li>
-                ))}
-            </ol>
+
+            <div className="space-y-8">
+                {questions.map((q, qIdx) => {
+                    if (typeof q === 'string') {
+                        return (
+                            <div key={qIdx} className="bg-surface/30 border border-border rounded-lg p-6 flex gap-4">
+                                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-sm font-mono text-primary">
+                                    {qIdx + 1}
+                                </span>
+                                <p className="text-muted leading-relaxed pt-1">{q}</p>
+                            </div>
+                        );
+                    }
+
+                    const isCorrect = answers[qIdx] === q.correctAnswer;
+                    const hasSelected = showResults[qIdx];
+
+                    return (
+                        <div key={q.id || qIdx} className="bg-surface/30 border border-border rounded-xl overflow-hidden">
+                            <div className="p-6">
+                                <div className="flex gap-4 mb-6">
+                                    <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-surface border border-border flex items-center justify-center text-xs font-mono text-muted">
+                                        Q{qIdx + 1}
+                                    </span>
+                                    <h4 className="text-foreground font-medium text-lg leading-snug pt-1">
+                                        {q.question}
+                                    </h4>
+                                </div>
+
+                                <div className="grid gap-3 ml-12">
+                                    {q.options.map((option, oIdx) => {
+                                        const isSelected = answers[qIdx] === oIdx;
+                                        const isThisCorrect = oIdx === q.correctAnswer;
+
+                                        let style = "border-border bg-surface/50 hover:bg-surface hover:border-primary/30";
+                                        if (hasSelected) {
+                                            if (isThisCorrect) style = "border-green-500/50 bg-green-500/10 text-green-400";
+                                            else if (isSelected) style = "border-red-500/50 bg-red-500/10 text-red-400 opacity-80";
+                                            else style = "border-border bg-surface/20 opacity-40";
+                                        }
+
+                                        return (
+                                            <button
+                                                key={oIdx}
+                                                disabled={hasSelected}
+                                                onClick={() => handleOptionSelect(qIdx, oIdx)}
+                                                className={`w-full text-left p-4 rounded-lg border transition-all flex items-center justify-between group ${style}`}
+                                            >
+                                                <span>{option}</span>
+                                                {hasSelected && isThisCorrect && (
+                                                    <span className="material-symbols-outlined text-lg">check_circle</span>
+                                                )}
+                                                {hasSelected && isSelected && !isThisCorrect && (
+                                                    <span className="material-symbols-outlined text-lg">cancel</span>
+                                                )}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            {hasSelected && (
+                                <div className={`px-6 py-4 border-t ${isCorrect ? 'bg-green-500/5 border-green-500/10' : 'bg-red-500/5 border-red-500/10'}`}>
+                                    <p className="text-sm font-bold mb-1 flex items-center gap-2">
+                                        {isCorrect ? (
+                                            <>
+                                                <span className="text-green-400">Correct Answer</span>
+                                                <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span className="text-red-400">Incorrect Answer</span>
+                                                <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                                            </>
+                                        )}
+                                    </p>
+                                    <p className="text-sm text-muted leading-relaxed">
+                                        {q.explanation}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Completion Trigger */}
+            <div className="mt-12 flex justify-center">
+                <button
+                    onClick={handleComplete}
+                    className="group relative px-8 py-3 bg-primary text-black font-black uppercase tracking-widest rounded-lg transition-transform active:scale-95 hover:shadow-[0_0_30px_rgba(215,224,234,0.3)] shadow-silver-glow"
+                >
+                    <span className="relative z-10 flex items-center gap-2">
+                        Mark Module as Complete
+                        <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">verified</span>
+                    </span>
+                    <div className="absolute inset-0 bg-white/20 rounded-lg group-hover:scale-105 transition-transform duration-500 -z-10 blur-xl opacity-0 group-hover:opacity-100" />
+                </button>
+            </div>
         </section>
     );
 }

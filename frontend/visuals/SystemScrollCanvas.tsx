@@ -34,7 +34,7 @@ export default function SystemScrollCanvas({ progress }: SystemScrollCanvasProps
                 const img = new Image();
                 img.onload = () => resolve(img);
                 img.onerror = () => resolve(null);
-                img.src = `/frames/ezgif-frame-${frameNumber}.jpg`;
+                img.src = `/landingpage/ezgif-frame-${frameNumber}.jpg`;
             });
         };
 

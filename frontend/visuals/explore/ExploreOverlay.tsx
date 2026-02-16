@@ -1,31 +1,30 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionValue, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface ExploreOverlayProps {
-    progress: number;
+    progress: MotionValue<number>;
 }
 
 export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
     const [scene, setScene] = useState(1);
 
-    // Map progress to 6 scenes (UNCHANGED TIMING)
-    useEffect(() => {
-        // Scene 1: 0.00 - 0.15 (Emergence)
-        // Scene 2: 0.15 - 0.30 (Core Formation)
-        // Scene 3: 0.30 - 0.50 (Primary Structure)
-        // Scene 4: 0.50 - 0.70 (Internal Structure)
-        // Scene 5: 0.70 - 0.85 (Meaning & Intuition)
-        // Scene 6: 0.85 - 1.00 (Transition)
-        if (progress < 0.15) setScene(1);
-        else if (progress < 0.30) setScene(2);
-        else if (progress < 0.50) setScene(3);
-        else if (progress < 0.70) setScene(4);
-        else if (progress < 0.85) setScene(5);
-        else setScene(6);
-    }, [progress]);
+    // Map progress to 6 scenes using useMotionValueEvent to avoid frequent re-renders
+    useMotionValueEvent(progress, "change", (latest) => {
+        let newScene = 1;
+        if (latest < 0.15) newScene = 1;
+        else if (latest < 0.30) newScene = 2;
+        else if (latest < 0.50) newScene = 3;
+        else if (latest < 0.70) newScene = 4;
+        else if (latest < 0.85) newScene = 5;
+        else newScene = 6;
+
+        if (newScene !== scene) {
+            setScene(newScene);
+        }
+    });
 
     const fadeVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -301,21 +300,35 @@ export default function ExploreOverlay({ progress }: ExploreOverlayProps) {
                 )}
             </AnimatePresence>
 
-            {/* Persistent Scroll Indicator — FIXED: fades only at true end */}
-            <motion.div
-                className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-                animate={{ opacity: progress > 0.95 ? 0 : 0.6 }}
-                transition={{ duration: 0.5 }}
-            >
-                <span className="text-[10px] uppercase tracking-widest text-muted/40 font-light">
-                    Scroll to Explore
-                </span>
-                <motion.div
-                    animate={{ y: [0, 6, 0] }}
-                    transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                    className="w-px h-8 md:h-10 bg-gradient-to-b from-transparent via-muted/30 to-transparent"
-                />
-            </motion.div>
+            <OverlayScrollIndicator progress={progress} />
         </div>
+    );
+}
+
+function OverlayScrollIndicator({ progress }: { progress: MotionValue<number> }) {
+    const [isVisible, setIsVisible] = useState(true);
+
+    useMotionValueEvent(progress, "change", (latest) => {
+        const shouldBeVisible = latest <= 0.95;
+        if (shouldBeVisible !== isVisible) {
+            setIsVisible(shouldBeVisible);
+        }
+    });
+
+    return (
+        <motion.div
+            className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+            animate={{ opacity: isVisible ? 0.6 : 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <span className="text-[10px] uppercase tracking-widest text-muted/40 font-light">
+                Scroll to Explore
+            </span>
+            <motion.div
+                animate={{ y: [0, 6, 0] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                className="w-px h-8 md:h-10 bg-gradient-to-b from-transparent via-muted/30 to-transparent"
+            />
+        </motion.div>
     );
 }

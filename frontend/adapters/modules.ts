@@ -68,6 +68,14 @@ export const modules: Module[] = [
         description: 'Matplotlib, Seaborn, and plotting techniques',
         order: 4,
     },
+    {
+        id: 'advanced-python',
+        slug: 'advanced-python',
+        subjectSlug: 'programming',
+        title: 'Advanced Python',
+        description: 'Decorators, generators, and packaging fundamentals',
+        order: 5,
+    },
 
     // DATA HANDLING
     {
@@ -93,6 +101,14 @@ export const modules: Module[] = [
         title: 'Data Splitting',
         description: 'Train, validation, and test set strategies',
         order: 3,
+    },
+    {
+        id: 'feature-selection',
+        slug: 'feature-selection',
+        subjectSlug: 'data-handling',
+        title: 'Feature Selection',
+        description: 'Automated methods to select relevant features',
+        order: 4,
     },
 
     // MACHINE LEARNING
@@ -127,6 +143,22 @@ export const modules: Module[] = [
         title: 'Trees & Ensembles',
         description: 'Decision trees, random forests, and boosting',
         order: 4,
+    },
+    {
+        id: 'dimensionality-reduction',
+        slug: 'dimensionality-reduction',
+        subjectSlug: 'machine-learning',
+        title: 'Dimensionality Reduction',
+        description: 'PCA, t-SNE, and feature space compression',
+        order: 5,
+    },
+    {
+        id: 'probabilistic-models',
+        slug: 'probabilistic-models',
+        subjectSlug: 'machine-learning',
+        title: 'Probabilistic Models',
+        description: 'Naive Bayes and Bayesian networks',
+        order: 6,
     },
 
     // MODEL EVALUATION
@@ -188,6 +220,14 @@ export const modules: Module[] = [
         description: 'RNNs, LSTMs, and transformers',
         order: 4,
     },
+    {
+        id: 'generative-models',
+        slug: 'generative-models',
+        subjectSlug: 'deep-learning',
+        title: 'Generative Models',
+        description: 'GANs and variational autoencoders',
+        order: 5,
+    },
 
     // APPLIED DOMAINS
     {
@@ -213,5 +253,13 @@ export const modules: Module[] = [
         title: 'End-to-End Systems',
         description: 'ML pipelines and deployment',
         order: 3,
+    },
+    {
+        id: 'model-deployment',
+        slug: 'model-deployment',
+        subjectSlug: 'applied-domains',
+        title: 'Model Deployment',
+        description: 'Serving models via APIs and cloud services',
+        order: 4,
     },
 ];

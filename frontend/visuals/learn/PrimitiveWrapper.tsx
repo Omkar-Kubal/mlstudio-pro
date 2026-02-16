@@ -21,22 +21,17 @@ export function useMotionPreference() {
 // ============================================
 
 export function MotionPreferenceProvider({ children }: { children: ReactNode }) {
-    const [reducedMotion, setReducedMotion] = useState(false);
+    const [reducedMotion, setReducedMotion] = useState(() => {
+        if (typeof window === "undefined") return false;
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+        return prefersReduced || (connection?.saveData === true);
+    });
 
     useEffect(() => {
-        // Check for prefers-reduced-motion
         const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-        setReducedMotion(mediaQuery.matches);
-
         const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
         mediaQuery.addEventListener("change", handler);
-
-        // Also check for saveData (connection.saveData)
-        const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
-        if (connection?.saveData) {
-            setReducedMotion(true);
-        }
-
         return () => mediaQuery.removeEventListener("change", handler);
     }, []);
 
@@ -131,12 +126,13 @@ interface PrimitiveWrapperProps {
  * - Print mode handling
  */
 export function PrimitiveWrapper({ children, primitiveName, caption }: PrimitiveWrapperProps) {
-    const [isPrintMode, setIsPrintMode] = useState(false);
+    const [isPrintMode, setIsPrintMode] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return window.matchMedia("print").matches;
+    });
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("print");
-        setIsPrintMode(mediaQuery.matches);
-
         const handler = (e: MediaQueryListEvent) => setIsPrintMode(e.matches);
         mediaQuery.addEventListener("change", handler);
         return () => mediaQuery.removeEventListener("change", handler);

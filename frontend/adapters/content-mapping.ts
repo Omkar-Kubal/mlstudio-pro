@@ -100,11 +100,11 @@ export function hasContentFile(subjectSlug: string, moduleSlug: string): boolean
 export function getAvailableContentFiles(): string[] {
     return [
         's1m1.txt', 's1m2.txt', 's1m3.txt', 's1m4.txt',
-        's2m1.txt', 's2m2.txt', 's2m3.txt', 's2m4.txt',
-        's3m1.txt', 's3m2.txt',
-        's4m1.txt', 's4m2.txt', 's4m3.txt', 's4m4.txt',
+        's2m1.txt', 's2m2.txt', 's2m3.txt', 's2m4.txt', 's2m5.txt',
+        's3m1.txt', 's3m2.txt', 's3m3.txt', 's3m4.txt',
+        's4m1.txt', 's4m2.txt', 's4m3.txt', 's4m4.txt', 's4m5.txt', 's4m6.txt',
         's5m1.txt', 's5m2.txt', 's5m3.txt',
-        's6m1.txt', 's6m2.txt', 's6m3.txt',
-        's7m1.txt', 's7m2.txt'
+        's6m1.txt', 's6m2.txt', 's6m3.txt', 's6m4.txt', 's6m5.txt',
+        's7m1.txt', 's7m2.txt', 's7m3.txt', 's7m4.txt'
     ];
 }

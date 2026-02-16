@@ -42,6 +42,33 @@ export async function POST(request: Request) {
             typescript: '5.0.3',
         };
 
+        // Map language to backend runner if Python, otherwise use Piston
+        if (language === 'python') {
+            try {
+                const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+                const backendResponse = await fetch(`${backendUrl}/runner/run`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code, language }),
+                });
+
+                if (backendResponse.ok) {
+                    const result = await backendResponse.json();
+                    return NextResponse.json({
+                        output: result.stdout,
+                        error: result.stderr || undefined,
+                        exitCode: result.exit_code,
+                        image: result.image || undefined,
+                        executionTime: Date.now(),
+                    });
+                }
+                // If backend fails, fallback to Piston or return error
+                console.warn('Backend runner failed, falling back to Piston');
+            } catch (err) {
+                console.error('Error connecting to backend runner:', err);
+            }
+        }
+
         const version = languageVersions[language] || languageVersions.python;
 
         const pistonResponse = await fetch(PISTON_API, {

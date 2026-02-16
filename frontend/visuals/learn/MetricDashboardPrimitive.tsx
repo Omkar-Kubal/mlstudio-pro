@@ -29,11 +29,13 @@ export default function MetricDashboardPrimitive({ config }: Props) {
     const [showPRCurve, setShowPRCurve] = useState(secondaryToggle?.initial === 1);
 
     // Reduced motion preference
-    const [reducedMotion, setReducedMotion] = useState(false);
+    const [reducedMotion, setReducedMotion] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    });
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-        setReducedMotion(mediaQuery.matches);
         const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
         mediaQuery.addEventListener("change", handler);
         return () => mediaQuery.removeEventListener("change", handler);
@@ -268,8 +270,8 @@ export default function MetricDashboardPrimitive({ config }: Props) {
                                     key={option}
                                     onClick={() => setShowPRCurve(idx === 1)}
                                     className={`px-2 py-0.5 text-xs rounded transition-colors ${(showPRCurve ? 1 : 0) === idx
-                                            ? "bg-primary text-white"
-                                            : "bg-surface text-muted hover:text-foreground"
+                                        ? "bg-primary text-white"
+                                        : "bg-surface text-muted hover:text-foreground"
                                         }`}
                                 >
                                     {option}

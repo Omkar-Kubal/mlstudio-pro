@@ -16,7 +16,7 @@ export default function ModuleOverviewPage() {
     const subjectSlug = params.subject as string;
     const moduleSlug = params.module as string;
 
-    const [module, setModule] = useState<LearningModule | null>(null);
+    const [learningModule, setLearningModule] = useState<LearningModule | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +28,7 @@ export default function ModuleOverviewPage() {
             })
             .then((data: ContentResponse) => {
                 if (data._raw) {
-                    setModule(data._raw);
+                    setLearningModule(data._raw);
                 } else {
                     throw new Error("Structured content not available");
                 }
@@ -51,7 +51,7 @@ export default function ModuleOverviewPage() {
         );
     }
 
-    if (error || !module) {
+    if (error || !learningModule) {
         return (
             <div className="min-h-screen bg-background flex items-center justify-center">
                 <div className="text-center">
@@ -95,14 +95,14 @@ export default function ModuleOverviewPage() {
 
                     {/* Title */}
                     <h1 className="text-3xl md:text-4xl font-bold text-foreground capitalize tracking-tight">
-                        {module.meta.module.replace(/-/g, " ")}
+                        {learningModule.meta.module.replace(/-/g, " ")}
                     </h1>
                 </div>
             </header>
 
             {/* Content */}
             <div className="max-w-4xl mx-auto px-6 py-12">
-                <ModuleContent module={module} subjectSlug={subjectSlug} />
+                <ModuleContent module={learningModule} subjectSlug={subjectSlug} />
             </div>
 
             {/* Footer */}
