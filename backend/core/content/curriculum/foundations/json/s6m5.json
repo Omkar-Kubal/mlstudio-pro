@@ -1,0 +1,98 @@
+{
+    "meta": {
+        "subject": "deep-learning",
+        "module": "generative-models",
+        "level": "advanced",
+        "estimatedHours": 4
+    },
+    "overview": [
+        "Most machine learning is 'discriminative'—it learns to distinguish between types of data. Generative models, however, learn to create new data that looks like the real thing.",
+        "In this module, we explore the architectures behind AI-generated art and deepfakes: Variational Autoencoders (VAEs), Generative Adversarial Networks (GANs), and Diffusion Models."
+    ],
+    "topics": [
+        {
+            "title": "Variational Autoencoders (VAEs)",
+            "theory": [
+                "VAEs work by compressing data into a 'Latent Space'—a simplified representation of the data. Unlike regular autoencoders, VAEs learn a probability distribution (mean and variance) in the latent space.",
+                "By sampling from this distribution, we can generate brand-new examples that 'interpolate' between real ones. VAEs are the foundation of probabilistic generative modeling."
+            ],
+            "visualIntuition": [
+                "Imagine a machine that takes a photo of a face and distills it into just a few dials: 'Smile', 'Glasses', and 'Hair Color'. By turning these dials to new positions, the machine can draw a face that has never existed."
+            ],
+            "visualSuggestions": [
+                "Bottleneck diagram showing Input -> Encoder -> Latent Distribution -> Decoder -> Output.",
+                "Interactive grid showing faces 'blending' into each other in the latent space."
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "VAE Reparameterization Trick conceptually",
+                    "content": "import numpy as np\n\ndef sample_latent(mu, log_var):\n    # latent = mu + exp(0.5 * log_var) * epsilon\n    epsilon = np.random.normal(0, 1)\n    return mu + np.exp(0.5 * log_var) * epsilon\n\nprint(f\"Sampled Latent Vector: {sample_latent(mu=0, log_var=0.5)}\")"
+                }
+            ]
+        },
+        {
+            "title": "Generative Adversarial Networks (GANs)",
+            "theory": [
+                "GANs consist of two neural networks fighting each other. The 'Generator' tries to create fake data, while the 'Discriminator' tries to catch the fakes. As they compete, the Generator becomes an expert at fooling the Discriminator.",
+                "This adversarial process produces incredibly high-quality results but is notoriously unstable to train. When the generator wins, it can create images that are indistinguishable from real photos."
+            ],
+            "visualIntuition": [
+                "Think of an art forger (Generator) and an art detective (Discriminator). The detective catches every early forgery. To get better, the forger studies the detective's feedback until they can paint a masterpiece that the detective accepts as genuine."
+            ],
+            "visualSuggestions": [
+                "Dual-network flow diagram with a 'Feedback Loop' between Generator and Discriminator.",
+                "Comparison montage of Early training (noise) vs Mid-training vs Late training results."
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Concept of GAN Discriminator loss",
+                    "content": "def discriminator_loss(real_output, fake_output):\n    # Goal: Real output should be 1, Fake output should be 0\n    real_loss = cross_entropy(1, real_output)\n    fake_loss = cross_entropy(0, fake_output)\n    return real_loss + fake_loss\nprint(\"Discriminator objective: maximize total accuracy\")"
+                }
+            ]
+        },
+        {
+            "title": "Diffusion Models & Generative AI",
+            "theory": [
+                "Diffusion models are the current state-of-the-art for image generation (Stable Diffusion, Midjourney). They work by systematically adding noise to an image until it is pure static, then learning to reverse that process.",
+                "The model learns to 'de-noise' data step-by-step. By starting with random noise, the model can 'un-blur' a masterpiece out of nothing. This is mathematically more stable than the adversarial training of GANs."
+            ],
+            "visualIntuition": [
+                "Imagine you have a sandcastle and you blow on it until it's just a pile of sand. A diffusion model learns exactly how to blow the sand back into the shape of a castle. If you start with a random pile of sand, it will build you a new castle."
+            ],
+            "visualSuggestions": [
+                "Timeline visualization showing Image -> Noise -> Image (Denoising path).",
+                "Comparison of GAN (Fast/Unstable) vs Diffusion (Slow/High Quality) results."
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Simulating one step of denoising logic",
+                    "content": "def denoise_step(noised_image, estimated_noise, step_size):\n    # Clean = Noised - (Noise * StepSize)\n    return noised_image - (estimated_noise * step_size)\nprint(\"Diffusion models iteratively remove noise to reveal patterns.\")"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "What is the role of the 'Latent Space' in a Variational Autoencoder?",
+        "How do the Generator and Discriminator interact during GAN training?",
+        "Why are Diffusion models currently outperforming GANs in image generation tasks?",
+        "What is 'Mode Collapse' in the context of training GANs?"
+    ],
+    "references": [
+        {
+            "label": "Original GAN Paper (Ian Goodfellow)",
+            "url": "https://arxiv.org/abs/1406.2661"
+        },
+        {
+            "label": "OpenAI Blog - Diffusion Models for Image Generation",
+            "url": "https://openai.com/blog/diffusion-models/"
+        },
+        {
+            "label": "Lilian Weng - From Autoencoder to Beta-VAE",
+            "url": "https://lilianweng.github.io/posts/2018-08-12-vae/"
+        }
+    ],
+    "_contentWarnings": []
+}

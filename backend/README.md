@@ -15,4 +15,5 @@ Authority and source of truth for all content, execution, and contracts.
 ## API Setup
 1. Ensure Python 3.9+ is installed.
 2. Install dependencies: `pip install fastapi uvicorn pydantic`
-3. Run the server: `python -m uvicorn app.main:app --reload`
+3. cd into the `backend` directory: `cd backend`
+4. Run the server: `python -m uvicorn app.main:app --reload`

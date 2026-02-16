@@ -1,0 +1,98 @@
+{
+    "meta": {
+        "subject": "applied-domains",
+        "module": "model-deployment",
+        "level": "intermediate",
+        "estimatedHours": 3
+    },
+    "overview": [
+        "Model deployment is the 'last mile' of machine learning. It is the process of taking a trained model and making its predictions available to end users, applications, or other systems.",
+        "In this module, we cover the technical strategies for serving models: from simple REST APIs and Microservices to high-scale Containerization with Docker."
+    ],
+    "topics": [
+        {
+            "title": "Model Serving & APIs",
+            "theory": [
+                "The most common way to deploy a model is as a web service. When an application needs a prediction, it sends a JSON request to an API (e.g., built with FastAPI or Flask). The server loads the model, makes a prediction, and returns the result in milliseconds.",
+                "This allows the 'Frontend' (UI) to stay lean while the 'Backend' (Server) handles the heavy mathematical computations."
+            ],
+            "visualIntuition": [
+                "Think of a model as a master chef. Instead of inviting the whole city into the kitchen, you have a waiter (API) who takes orders (requests) at the table and brings out the food (predictions) once it's ready."
+            ],
+            "visualSuggestions": [
+                "Sequence diagram: User -> Request -> API -> Model -> Result -> User.",
+                "Code snippet showing a basic 'predict' endpoint."
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "A minimal FastAPI Model Server",
+                    "content": "# Pseudo-code style for clarity\n# from fastapi import FastAPI\n# app = FastAPI()\n# model = load_model('weights.pkl')\n\n# @app.post(\"/predict\")\n# def predict(data: dict):\n#     return {\"prediction\": model.predict(data['x'])}\nprint(\"Ready to serve at http://localhost:8000/predict\")"
+                }
+            ]
+        },
+        {
+            "title": "Batch vs Real-time Inference",
+            "theory": [
+                "Inference is the process of using a trained model to make predictions. 'Real-time' inference happens instantly for a single user (e.g., Netflix recommendations), while 'Batch' inference processes millions of records at once (e.g., monthly credit card fraud reports).",
+                "Real-time requires low latency (speed), while Batch requires high throughput (handling volume). Choosing the right strategy depends on the user's needs."
+            ],
+            "visualIntuition": [
+                "Batch inference is like a mail truck that delivers all the letters once a day. Real-time inference is like a text message that arrives the moment it is sent."
+            ],
+            "visualSuggestions": [
+                "Comparison table: Real-time (Low latency) vs Batch (High throughput).",
+                "Infographic showing a 'Streaming' data flow vs a 'Daily Cron' job."
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Simulating Batch Inference logic",
+                    "content": "def batch_predict(records):\n    results = []\n    for r in records: # In reality, vectorized with NumPy\n        results.append(model_predict(r))\n    return results\n\nprint(\"Processing 1,000,000 records in background...\")"
+                }
+            ]
+        },
+        {
+            "title": "Containerization (Docker)",
+            "theory": [
+                "A model that works on your computer might fail on a server due to different library versions. 'Docker' solves this by packaging the model, its dependencies, and the server into a 'Container'.",
+                "A container is a lightweight, isolated environment that runs exactly the same way on any machine—from your laptop to the world's largest cloud servers (AWS, Azure, GCP)."
+            ],
+            "visualIntuition": [
+                "Imagine a shipping container. You pack your goods (your code) inside it. No matter what ship (server) it goes on, your goods remain safe and untouched inside their own standard environment."
+            ],
+            "visualSuggestions": [
+                "Stack diagram: Application -> Runtime -> Operating System -> Hardware.",
+                "Icon of a Docker whale carrying 'Containers' of different ML models."
+            ],
+            "code": [
+                {
+                    "language": "python",
+                    "description": "Exemplary Dockerfile concept",
+                    "content": "# FROM python:3.9\n# COPY requirements.txt .\n# RUN pip install -r requirements.txt\n# COPY . .\n# CMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\"]\nprint(\"Dockerfile: Standardized environment for deployment.\")"
+                }
+            ]
+        }
+    ],
+    "quiz": [
+        "What is the advantage of using Docker for model deployment?",
+        "Compare REST APIs vs gRPC for high-performance model serving.",
+        "When would you choose Batch inference over Real-time inference?",
+        "Explain the role of a 'Load Balancer' in a deployed ML system."
+    ],
+    "references": [
+        {
+            "label": "Docker for Data Science",
+            "url": "https://www.docker.com/blog/containerized-python-development-part-1/"
+        },
+        {
+            "label": "FastAPI Documentation",
+            "url": "https://fastapi.tiangolo.com/"
+        },
+        {
+            "label": "Machine Learning Engineering (Andriy Burkov)",
+            "url": "http://mlebook.com/"
+        }
+    ],
+    "_contentWarnings": []
+}
