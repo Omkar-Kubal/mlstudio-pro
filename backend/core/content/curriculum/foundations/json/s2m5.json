@@ -75,10 +75,42 @@
         }
     ],
     "quiz": [
-        "What is the primary benefit of using a generator over a list for large datasets?",
-        "Explain the role of the `@` symbol in Python decorators.",
-        "What happens to a generator after it has yielded all its values?",
-        "How does a context manager handle unexpected errors during code execution?"
+        {
+            "id": "q1",
+            "question": "What is the purpose of a machine learning pipeline?",
+            "options": [
+                "To visualize data",
+                "To chain preprocessing, feature engineering, and model training into a reproducible, automated workflow",
+                "To deploy models",
+                "To store data"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Pipelines ensure that the same transformations applied during training are applied during prediction. They prevent data leakage, ensure reproducibility, and simplify deployment by bundling the entire workflow."
+        },
+        {
+            "id": "q2",
+            "question": "Why is reproducibility important in ML experiments?",
+            "options": [
+                "It's not important",
+                "Without reproducibility, you can't verify results, debug failures, or satisfy regulatory requirements",
+                "It only matters for research papers",
+                "It slows development"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Reproducibility means getting the same results with the same data and code. Without it, you can't distinguish real improvements from random variation, debug regressions, or explain decisions to stakeholders."
+        },
+        {
+            "id": "q3",
+            "question": "What is the role of a requirements.txt or environment file?",
+            "options": [
+                "It lists project features",
+                "It pins exact package versions to ensure consistent environments across development, testing, and production",
+                "It's optional documentation",
+                "It speeds up installation"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Package version differences cause subtle bugs. A requirements.txt with pinned versions (numpy==1.24.0) ensures everyone runs identical code. Docker further guarantees OS-level consistency."
+        }
     ],
     "references": [
         {

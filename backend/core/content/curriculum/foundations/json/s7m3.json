@@ -75,10 +75,54 @@
         }
     ],
     "quiz": [
-        "Why is model versioning more complex than traditional software versioning?",
-        "What is 'Concept Drift' and how can it be detected in production?",
-        "Describe the purpose of an ETL pipeline in a machine learning system.",
-        "Explain the importance of a 'Feature Store' in large-scale ML systems."
+        {
+            "id": "q1",
+            "question": "Why is model versioning more complex than traditional software versioning?",
+            "options": [
+                "It's not more complex",
+                "Models depend on code, data, hyperparameters, and environment — changing any one produces a different model",
+                "Models don't need versioning",
+                "Only the code matters"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Software versions depend on code. Model versions depend on code + training data + hyperparameters + random seeds + framework versions. Reproducibility requires tracking all these dimensions, not just code commits."
+        },
+        {
+            "id": "q2",
+            "question": "What is Concept Drift and how can it be detected?",
+            "options": [
+                "Model getting slow",
+                "The statistical relationship between features and target changes over time — detected via monitoring prediction distributions and performance metrics",
+                "Bugs in the code",
+                "It can't be detected"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Concept drift means the rules change: what predicted churn last year may not predict it now. Detection methods include monitoring prediction distributions, tracking performance metrics over time, and statistical tests on incoming data."
+        },
+        {
+            "id": "q3",
+            "question": "What is the purpose of an ETL pipeline in a machine learning system?",
+            "options": [
+                "To train models",
+                "To Extract data from sources, Transform it into usable format, and Load it into the feature store or training pipeline",
+                "To serve predictions",
+                "To monitor models"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ETL pipelines automate data ingestion: extracting from databases/APIs, transforming (cleaning, joining, feature engineering), and loading into storage ready for training. They ensure consistent, fresh, clean data flows to models."
+        },
+        {
+            "id": "q4",
+            "question": "Why are Feature Stores valuable in large-scale ML systems?",
+            "options": [
+                "They store model weights",
+                "They provide a centralized, versioned repository of curated features reusable across teams and models",
+                "They replace databases",
+                "They are only for real-time systems"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Feature Stores (Feast, Tecton) solve feature reuse: compute once, use everywhere. They ensure training and serving use identical features (avoiding skew), provide versioning, and handle both batch and real-time feature serving."
+        }
     ],
     "references": [
         {

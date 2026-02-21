@@ -112,6 +112,6 @@ export interface ParsedContent {
     title: string;
     sections: ContentSection[];
     codeSnippets: CodeSnippet[];
-    quiz: string[];
+    quiz: Array<string | QuizQuestion>;
     references: Reference[];
 }

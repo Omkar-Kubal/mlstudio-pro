@@ -1,148 +1,262 @@
 {
-    "meta": {
-        "subject": "programming",
-        "module": "visualization",
-        "level": "beginner",
-        "estimatedHours": 4
+  "meta": {
+    "subject": "programming",
+    "module": "visualization",
+    "level": "beginner",
+    "estimatedHours": 4
+  },
+  "overview": [
+    "Visualization is not about making charts look good — it is about thinking. Visualization is a cognitive tool, not an output artifact. It reveals what statistics cannot surface immediately, what models may hide, and what metrics may average away.",
+    "This module covers why visualization matters, Matplotlib basics, Seaborn statistical plots, and visualizing model results — essential skills for data exploration and model diagnosis."
+  ],
+  "topics": [
+    {
+      "title": "Why Visualization Matters",
+      "theory": [
+        "Humans are excellent at pattern recognition but poor at interpreting raw numbers. Visualization leverages spatial reasoning, color perception, and shape recognition to see trends, detect outliers, spot relationships, and identify errors.",
+        "Visualization appears at every stage: data acquisition (are values realistic?), EDA (what patterns exist?), feature engineering (which features matter?), model evaluation (where does the model fail?), and communication (can insights be trusted?).",
+        "Statistics quantifies and aggregates; visualization reveals structure and exposes anomalies. Example: Mean accuracy = 92% hides that one class is failing completely. Without visualization, models can lie convincingly.",
+        "Visualization prevents silent failures: data leakage, label imbalance, skewed distributions, train-test contamination. It exposes these early. The cost of skipping visualization is misleading metrics and fragile systems."
+      ],
+      "visualIntuition": [
+        "Anscombe's Quartet: four datasets with identical statistics but completely different patterns when visualized."
+      ],
+      "visualSuggestions": [
+        "Anscombe's Quartet demonstration",
+        "Same metric, different underlying distributions comparison"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Basic visualization workflow",
+          "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\n# Always visualize before modeling\ndata = np.random.randn(1000)\n\nplt.hist(data, bins=30)\nplt.title(\"Distribution Check\")\nplt.show()"
+        }
+      ]
     },
-    "overview": [
-        "Visualization is not about making charts look good — it is about thinking. Visualization is a cognitive tool, not an output artifact. It reveals what statistics cannot surface immediately, what models may hide, and what metrics may average away.",
-        "This module covers why visualization matters, Matplotlib basics, Seaborn statistical plots, and visualizing model results — essential skills for data exploration and model diagnosis."
-    ],
-    "topics": [
+    {
+      "title": "Matplotlib Basics",
+      "theory": [
+        "Matplotlib is fundamental because it is primitive — it gives full control over every visual element. Higher-level libraries (Seaborn, Plotly) sit on top of it and abstract decisions away.",
+        "Matplotlib follows a hierarchical model: Figure (canvas) → Axes (coordinate system) → Plot elements. Most confusion comes from mixing Figure and Axes concepts.",
+        "Pyplot interface (plt.plot()) is state-based — good for exploration but limited for complex layouts. Object-oriented interface (fig, ax = plt.subplots()) provides explicit control and is preferred for production.",
+        "Basic plot types serve different purposes: Line plots for trends/time series, scatter plots for relationships, bar plots for categorical comparison, histograms for distributions. Choose plot based on what question you're answering."
+      ],
+      "visualIntuition": [
+        "Figure hierarchy diagram: Figure contains Axes, which contains plot elements, labels, ticks, and legends."
+      ],
+      "visualSuggestions": [
+        "Anatomy of a Matplotlib figure",
+        "Same data shown with different plot types"
+      ],
+      "code": [
         {
-            "title": "Why Visualization Matters",
-            "theory": [
-                "Humans are excellent at pattern recognition but poor at interpreting raw numbers. Visualization leverages spatial reasoning, color perception, and shape recognition to see trends, detect outliers, spot relationships, and identify errors.",
-                "Visualization appears at every stage: data acquisition (are values realistic?), EDA (what patterns exist?), feature engineering (which features matter?), model evaluation (where does the model fail?), and communication (can insights be trusted?).",
-                "Statistics quantifies and aggregates; visualization reveals structure and exposes anomalies. Example: Mean accuracy = 92% hides that one class is failing completely. Without visualization, models can lie convincingly.",
-                "Visualization prevents silent failures: data leakage, label imbalance, skewed distributions, train-test contamination. It exposes these early. The cost of skipping visualization is misleading metrics and fragile systems."
-            ],
-            "visualIntuition": [
-                "Anscombe's Quartet: four datasets with identical statistics but completely different patterns when visualized."
-            ],
-            "visualSuggestions": [
-                "Anscombe's Quartet demonstration",
-                "Same metric, different underlying distributions comparison"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Basic visualization workflow",
-                    "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\n# Always visualize before modeling\ndata = np.random.randn(1000)\n\nplt.hist(data, bins=30)\nplt.title(\"Distribution Check\")\nplt.show()"
-                }
-            ]
+          "language": "python",
+          "description": "Object-oriented Matplotlib",
+          "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\nx = np.linspace(0, 10, 100)\ny = np.sin(x)\n\n# Object-oriented interface (preferred)\nfig, ax = plt.subplots()\nax.plot(x, y)\nax.set_xlabel(\"X\")\nax.set_ylabel(\"sin(X)\")\nax.set_title(\"Sine Wave\")\nplt.show()"
         },
         {
-            "title": "Matplotlib Basics",
-            "theory": [
-                "Matplotlib is fundamental because it is primitive — it gives full control over every visual element. Higher-level libraries (Seaborn, Plotly) sit on top of it and abstract decisions away.",
-                "Matplotlib follows a hierarchical model: Figure (canvas) → Axes (coordinate system) → Plot elements. Most confusion comes from mixing Figure and Axes concepts.",
-                "Pyplot interface (plt.plot()) is state-based — good for exploration but limited for complex layouts. Object-oriented interface (fig, ax = plt.subplots()) provides explicit control and is preferred for production.",
-                "Basic plot types serve different purposes: Line plots for trends/time series, scatter plots for relationships, bar plots for categorical comparison, histograms for distributions. Choose plot based on what question you're answering."
-            ],
-            "visualIntuition": [
-                "Figure hierarchy diagram: Figure contains Axes, which contains plot elements, labels, ticks, and legends."
-            ],
-            "visualSuggestions": [
-                "Anatomy of a Matplotlib figure",
-                "Same data shown with different plot types"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Object-oriented Matplotlib",
-                    "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\nx = np.linspace(0, 10, 100)\ny = np.sin(x)\n\n# Object-oriented interface (preferred)\nfig, ax = plt.subplots()\nax.plot(x, y)\nax.set_xlabel(\"X\")\nax.set_ylabel(\"sin(X)\")\nax.set_title(\"Sine Wave\")\nplt.show()"
-                },
-                {
-                    "language": "python",
-                    "description": "Common plot types",
-                    "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\nfig, axs = plt.subplots(2, 2, figsize=(10, 8))\n\n# Line plot\naxs[0, 0].plot([1, 2, 3, 4], [1, 4, 2, 3])\naxs[0, 0].set_title(\"Line Plot\")\n\n# Scatter plot\naxs[0, 1].scatter(np.random.randn(50), np.random.randn(50))\naxs[0, 1].set_title(\"Scatter Plot\")\n\n# Bar plot\naxs[1, 0].bar(['A', 'B', 'C'], [3, 7, 5])\naxs[1, 0].set_title(\"Bar Plot\")\n\n# Histogram\naxs[1, 1].hist(np.random.randn(1000), bins=30)\naxs[1, 1].set_title(\"Histogram\")\n\nplt.tight_layout()\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "Seaborn Statistical Plots",
-            "theory": [
-                "Matplotlib shows how to draw; Seaborn shows what to draw. Seaborn is built for statistical thinking and dataset-aware visualization. It encodes statistical defaults so users focus on meaning, not mechanics.",
-                "Seaborn expects a DataFrame with column names and semantic roles (x, y, hue). Visualization becomes declarative: what varies, what is compared, what is grouped.",
-                "Distribution plots (histplot, boxplot, violinplot) reveal spread, skewness, multimodality. Relationship plots (regplot, pairplot) show dependency and correlation. Categorical plots (countplot, barplot) compare groups.",
-                "Heatmaps compress large matrices into pattern perception — used for correlation analysis, confusion matrices, feature interactions. Faceting (FacetGrid) enables comparison across subsets without overplotting."
-            ],
-            "visualIntuition": [
-                "Seaborn's data-centric model: DataFrame columns map directly to visual properties (x, y, hue, size)."
-            ],
-            "visualSuggestions": [
-                "Pairplot showing all pairwise relationships",
-                "Correlation heatmap highlighting strong relationships"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Seaborn distribution and relationship plots",
-                    "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\n\n# Load example dataset\ndf = sns.load_dataset('tips')\n\n# Distribution with KDE\nsns.histplot(df['total_bill'], kde=True)\nplt.title(\"Bill Distribution\")\nplt.show()\n\n# Relationship with regression line\nsns.regplot(x='total_bill', y='tip', data=df)\nplt.show()\n\n# Categorical comparison\nsns.boxplot(x='day', y='total_bill', data=df)\nplt.show()"
-                },
-                {
-                    "language": "python",
-                    "description": "Heatmap and pairplot",
-                    "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\n\ndf = sns.load_dataset('iris')\n\n# Correlation heatmap\ncorr = df.corr()\nsns.heatmap(corr, annot=True, cmap='coolwarm')\nplt.title(\"Feature Correlations\")\nplt.show()\n\n# Pairplot for EDA\nsns.pairplot(df, hue='species')\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "Visualizing Model Results",
-            "theory": [
-                "Metrics compress behavior into numbers; visualization reveals behavior. A model with high accuracy can still fail on edge cases, be biased, overfit specific regions, and generalize poorly.",
-                "Regression diagnostics: Predicted vs Actual plot (perfect predictions on diagonal), Residual plot (reveals non-linearity, heteroscedasticity, missing features), Residual distribution (checks for bias and extreme errors).",
-                "Classification diagnostics: Confusion matrix (shows what the model confuses), Probability distribution (reveals overconfidence), ROC curve (threshold-independent performance), Precision-Recall curve (important for imbalanced classes).",
-                "Learning curves show bias-variance tradeoff and whether more data helps. Feature importance shows what the model relies on. Never tune hyperparameters before understanding failure modes through visualization."
-            ],
-            "visualIntuition": [
-                "Model diagnosis framework: predictions vs reality, error patterns, confidence calibration, failure mode analysis."
-            ],
-            "visualSuggestions": [
-                "Residual plot showing structured vs random residuals",
-                "Confusion matrix highlighting misclassification patterns"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Regression result visualization",
-                    "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\ny_true = np.array([3, -0.5, 2, 7])\ny_pred = np.array([2.5, 0.0, 2, 8])\nresiduals = y_true - y_pred\n\nfig, axs = plt.subplots(1, 2, figsize=(12, 4))\n\n# Predicted vs Actual\naxs[0].scatter(y_true, y_pred)\naxs[0].plot([min(y_true), max(y_true)], [min(y_true), max(y_true)], 'r--')\naxs[0].set_xlabel(\"Actual\")\naxs[0].set_ylabel(\"Predicted\")\naxs[0].set_title(\"Predicted vs Actual\")\n\n# Residual plot\naxs[1].scatter(y_pred, residuals)\naxs[1].axhline(0, color='r', linestyle='--')\naxs[1].set_xlabel(\"Predicted\")\naxs[1].set_ylabel(\"Residual\")\naxs[1].set_title(\"Residual Plot\")\n\nplt.tight_layout()\nplt.show()"
-                },
-                {
-                    "language": "python",
-                    "description": "Classification result visualization",
-                    "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\nfrom sklearn.metrics import confusion_matrix\nimport numpy as np\n\ny_true = np.array([0, 0, 1, 1, 1, 0])\ny_pred = np.array([0, 1, 1, 1, 0, 0])\n\ncm = confusion_matrix(y_true, y_pred)\nsns.heatmap(cm, annot=True, fmt='d', cmap='Blues')\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"Actual\")\nplt.title(\"Confusion Matrix\")\nplt.show()"
-                }
-            ]
+          "language": "python",
+          "description": "Common plot types",
+          "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\nfig, axs = plt.subplots(2, 2, figsize=(10, 8))\n\n# Line plot\naxs[0, 0].plot([1, 2, 3, 4], [1, 4, 2, 3])\naxs[0, 0].set_title(\"Line Plot\")\n\n# Scatter plot\naxs[0, 1].scatter(np.random.randn(50), np.random.randn(50))\naxs[0, 1].set_title(\"Scatter Plot\")\n\n# Bar plot\naxs[1, 0].bar(['A', 'B', 'C'], [3, 7, 5])\naxs[1, 0].set_title(\"Bar Plot\")\n\n# Histogram\naxs[1, 1].hist(np.random.randn(1000), bins=30)\naxs[1, 1].set_title(\"Histogram\")\n\nplt.tight_layout()\nplt.show()"
         }
-    ],
-    "quiz": [
-        "Why might a model with 92% accuracy still be problematic?",
-        "What is the difference between the pyplot and object-oriented Matplotlib interfaces?",
-        "When should you use a box plot vs a violin plot?",
-        "What does a non-random pattern in residuals indicate about a regression model?",
-        "Why are precision-recall curves important for imbalanced classification?"
-    ],
-    "references": [
+      ]
+    },
+    {
+      "title": "Seaborn Statistical Plots",
+      "theory": [
+        "Matplotlib shows how to draw; Seaborn shows what to draw. Seaborn is built for statistical thinking and dataset-aware visualization. It encodes statistical defaults so users focus on meaning, not mechanics.",
+        "Seaborn expects a DataFrame with column names and semantic roles (x, y, hue). Visualization becomes declarative: what varies, what is compared, what is grouped.",
+        "Distribution plots (histplot, boxplot, violinplot) reveal spread, skewness, multimodality. Relationship plots (regplot, pairplot) show dependency and correlation. Categorical plots (countplot, barplot) compare groups.",
+        "Heatmaps compress large matrices into pattern perception — used for correlation analysis, confusion matrices, feature interactions. Faceting (FacetGrid) enables comparison across subsets without overplotting."
+      ],
+      "visualIntuition": [
+        "Seaborn's data-centric model: DataFrame columns map directly to visual properties (x, y, hue, size)."
+      ],
+      "visualSuggestions": [
+        "Pairplot showing all pairwise relationships",
+        "Correlation heatmap highlighting strong relationships"
+      ],
+      "code": [
         {
-            "label": "Matplotlib Official Tutorials",
-            "url": "https://matplotlib.org/stable/tutorials/index.html"
+          "language": "python",
+          "description": "Seaborn distribution and relationship plots",
+          "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\n\n# Load example dataset\ndf = sns.load_dataset('tips')\n\n# Distribution with KDE\nsns.histplot(df['total_bill'], kde=True)\nplt.title(\"Bill Distribution\")\nplt.show()\n\n# Relationship with regression line\nsns.regplot(x='total_bill', y='tip', data=df)\nplt.show()\n\n# Categorical comparison\nsns.boxplot(x='day', y='total_bill', data=df)\nplt.show()"
         },
         {
-            "label": "Seaborn Documentation",
-            "url": "https://seaborn.pydata.org/"
-        },
-        {
-            "label": "Tukey - Exploratory Data Analysis",
-            "url": ""
+          "language": "python",
+          "description": "Heatmap and pairplot",
+          "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\n\ndf = sns.load_dataset('iris')\n\n# Correlation heatmap\ncorr = df.corr()\nsns.heatmap(corr, annot=True, cmap='coolwarm')\nplt.title(\"Feature Correlations\")\nplt.show()\n\n# Pairplot for EDA\nsns.pairplot(df, hue='species')\nplt.show()"
         }
-    ],
-    "_contentWarnings": [
-        "Content spans what appears to be two different module files (Visualization module)",
-        "Missing: Plotly interactive visualization",
-        "Missing: Dashboard creation concepts",
-        "Some code examples reference MLStudio Pro-specific features that don't exist yet"
-    ]
+      ]
+    },
+    {
+      "title": "Visualizing Model Results",
+      "theory": [
+        "Metrics compress behavior into numbers; visualization reveals behavior. A model with high accuracy can still fail on edge cases, be biased, overfit specific regions, and generalize poorly.",
+        "Regression diagnostics: Predicted vs Actual plot (perfect predictions on diagonal), Residual plot (reveals non-linearity, heteroscedasticity, missing features), Residual distribution (checks for bias and extreme errors).",
+        "Classification diagnostics: Confusion matrix (shows what the model confuses), Probability distribution (reveals overconfidence), ROC curve (threshold-independent performance), Precision-Recall curve (important for imbalanced classes).",
+        "Learning curves show bias-variance tradeoff and whether more data helps. Feature importance shows what the model relies on. Never tune hyperparameters before understanding failure modes through visualization."
+      ],
+      "visualIntuition": [
+        "Model diagnosis framework: predictions vs reality, error patterns, confidence calibration, failure mode analysis."
+      ],
+      "visualSuggestions": [
+        "Residual plot showing structured vs random residuals",
+        "Confusion matrix highlighting misclassification patterns"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Regression result visualization",
+          "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\ny_true = np.array([3, -0.5, 2, 7])\ny_pred = np.array([2.5, 0.0, 2, 8])\nresiduals = y_true - y_pred\n\nfig, axs = plt.subplots(1, 2, figsize=(12, 4))\n\n# Predicted vs Actual\naxs[0].scatter(y_true, y_pred)\naxs[0].plot([min(y_true), max(y_true)], [min(y_true), max(y_true)], 'r--')\naxs[0].set_xlabel(\"Actual\")\naxs[0].set_ylabel(\"Predicted\")\naxs[0].set_title(\"Predicted vs Actual\")\n\n# Residual plot\naxs[1].scatter(y_pred, residuals)\naxs[1].axhline(0, color='r', linestyle='--')\naxs[1].set_xlabel(\"Predicted\")\naxs[1].set_ylabel(\"Residual\")\naxs[1].set_title(\"Residual Plot\")\n\nplt.tight_layout()\nplt.show()"
+        },
+        {
+          "language": "python",
+          "description": "Classification result visualization",
+          "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\nfrom sklearn.metrics import confusion_matrix\nimport numpy as np\n\ny_true = np.array([0, 0, 1, 1, 1, 0])\ny_pred = np.array([0, 1, 1, 1, 0, 0])\n\ncm = confusion_matrix(y_true, y_pred)\nsns.heatmap(cm, annot=True, fmt='d', cmap='Blues')\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"Actual\")\nplt.title(\"Confusion Matrix\")\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Plotly Express — Interactive Charts",
+      "theory": "Plotly Express is a high-level API for creating interactive charts with minimal code. It supports scatter, bar, line, histogram, box, heatmap, and 3D plots with built-in tooltips, zooming, and panning.\n\n**Key features:** Color-coding by category, bubble charts (size parameter), log scales, hover data, and automatic legends. Templates like `plotly_white` and `plotly_dark` provide instant styling.\n\n**Chart types:** `px.scatter` (relationship), `px.bar` (comparison), `px.line` (trends), `px.histogram` (distribution), `px.box` (spread), `px.imshow` (heatmaps), `px.scatter_3d` (3D exploration).",
+      "code": [
+        {
+          "title": "Plotly Express — Scatter, Bar, Histogram, Heatmap",
+          "language": "python",
+          "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\ndf = pd.DataFrame({\n    'x': np.random.randn(200),\n    'y': np.random.randn(200),\n    'category': np.random.choice(['A','B','C'], 200),\n    'size': np.random.uniform(5, 50, 200)\n})\n\n# Scatter with color and size\nfig = px.scatter(df, x='x', y='y', color='category',\n    size='size', hover_data=['category'],\n    title='Interactive Scatter Plot')\nfig.show()\n\n# Histogram with marginal rug\nfig = px.histogram(df, x='x', color='category',\n    marginal='rug', barmode='overlay', opacity=0.7)\nfig.show()\n\n# Correlation heatmap\ncorr = df[['x','y','size']].corr()\nfig = px.imshow(corr, color_continuous_scale='RdBu_r',\n    zmin=-1, zmax=1, text_auto='.2f')\nfig.show()"
+        }
+      ],
+      "visualSuggestions": [
+        "Live Plotly chart embedded with interactive controls",
+        "Chart type selector showing the same data in different plot types"
+      ],
+      "visualIntuition": [
+        "Plotly Express is like Instagram filters for data — one line of code transforms raw numbers into an interactive, zoomable, tooltipped chart."
+      ]
+    },
+    {
+      "title": "Subplots and Layout Customisation",
+      "theory": "Plotly's `make_subplots` creates multi-panel figures with shared axes, mixed chart types, and precise layout control.\n\n**Key parameters:** `rows`/`cols` for grid, `shared_xaxes`/`shared_yaxes` for linked axes, `specs` for mixed types.\n\n**Layout features:** `hovermode='x unified'` links tooltips across subplots, `dragmode` controls interaction (zoom/pan/select/lasso), `template` sets visual theme.\n\n**Annotations & shapes:** `add_vline`, `add_hline`, `add_annotation` for marking important points, thresholds, or events.",
+      "code": [
+        {
+          "title": "Multi-panel Subplots with Shared Axes",
+          "language": "python",
+          "code": "from plotly.subplots import make_subplots\nimport plotly.graph_objects as go\nimport numpy as np\n\nx = np.arange(12)\ny1 = np.random.randint(100, 500, 12)\ny2 = np.random.randint(20, 100, 12)\n\nfig = make_subplots(rows=2, cols=1,\n    subplot_titles=['Revenue', 'Units Sold'],\n    shared_xaxes=True, vertical_spacing=0.12)\n\nfig.add_trace(go.Bar(x=x, y=y1, name='Revenue'), row=1, col=1)\nfig.add_trace(go.Scatter(x=x, y=y2, name='Units', fill='tozeroy'), row=2, col=1)\n\nfig.update_layout(title='Sales Dashboard',\n    hovermode='x unified', template='plotly_white', height=500)\nfig.add_hline(y=300, line_dash='dash', line_color='red',\n    annotation_text='Target', row=1, col=1)\nfig.show()"
+        }
+      ],
+      "visualSuggestions": [
+        "Dashboard mockup with multiple linked panels"
+      ],
+      "visualIntuition": [
+        "Subplots are like a newspaper layout — each panel tells a different aspect of the same story. Shared axes link them together."
+      ]
+    },
+    {
+      "title": "Interactive Controls and Export",
+      "theory": "Plotly supports buttons, dropdowns, range sliders, and range selectors for building dashboard-like interactivity without a web framework.\n\n**Range slider:** Essential for time series — `rangeslider_visible=True` adds a zoomable overview bar.\n\n**Update buttons:** `method='update'` changes trace visibility; `method='relayout'` changes axis properties (e.g., linear vs log scale).\n\n**Export:** `.write_html()` for interactive HTML, `.write_image()` for static PNG/PDF/SVG (requires kaleido).",
+      "code": [
+        {
+          "title": "Range Selectors, Dropdowns, and Export",
+          "language": "python",
+          "code": "import plotly.graph_objects as go\nimport numpy as np\nimport pandas as pd\n\ndates = pd.date_range('2023-01-01', periods=365, freq='D')\nvalues = np.cumsum(np.random.randn(365)) + 100\n\nfig = go.Figure(go.Scatter(x=dates, y=values, name='Price'))\n\nfig.update_xaxes(\n    rangeslider_visible=True,\n    rangeselector=dict(buttons=[\n        dict(count=7, label='1W', step='day', stepmode='backward'),\n        dict(count=1, label='1M', step='month', stepmode='backward'),\n        dict(count=3, label='3M', step='month', stepmode='backward'),\n        dict(step='all', label='All')\n    ]))\n\nfig.update_layout(\n    updatemenus=[dict(buttons=[\n        dict(label='Linear', method='relayout', args=[{'yaxis.type': 'linear'}]),\n        dict(label='Log', method='relayout', args=[{'yaxis.type': 'log'}])\n    ])],\n    title='Interactive Time Series', template='plotly_white')\nfig.show()"
+        }
+      ],
+      "visualSuggestions": [
+        "Time series with working range slider and scale toggle"
+      ],
+      "visualIntuition": [
+        "Interactive controls turn a static chart into a data exploration tool. The range slider is like a telescope — you control the zoom level and focal point."
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "Why does visualization matter before modeling?",
+      "options": [
+        "It makes reports look better",
+        "It reveals data patterns, outliers, and distributions that summary statistics miss",
+        "It's required by scikit-learn",
+        "It replaces feature engineering"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Anscombe's Quartet shows 4 datasets with identical summary statistics but vastly different patterns. Only visualization reveals the true structure. Always plot before computing."
+    },
+    {
+      "id": "q2",
+      "question": "When should you use Seaborn over Matplotlib?",
+      "options": [
+        "Always",
+        "When you need statistical plots with less code — Seaborn provides higher-level abstractions for common patterns",
+        "Seaborn is faster",
+        "Only for 3D plots"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Seaborn wraps Matplotlib with sensible defaults and specialized statistical plots (violin, pair, heatmap). Use Matplotlib for full control and custom layouts; Seaborn for quick, publication-quality statistical visualizations."
+    },
+    {
+      "id": "q3",
+      "question": "What does a correlation heatmap reveal?",
+      "options": [
+        "Causation between features",
+        "Pairwise linear relationships between features — useful for identifying redundancy and multicollinearity",
+        "The importance of each feature",
+        "Non-linear relationships"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Correlation heatmaps show Pearson or Spearman coefficients between all feature pairs. High correlation indicates redundancy (potentially drop one). But correlation ≠ causation, and it only captures linear relationships."
+    },
+    {
+      "id": "q4",
+      "question": "Why should you visualize model results, not just accuracy numbers?",
+      "options": [
+        "It's industry standard",
+        "Residual plots and confusion matrices reveal systematic errors that aggregate metrics hide",
+        "It improves model speed",
+        "Visualization is optional"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A model with 90% accuracy might systematically fail on a specific subgroup. Residual plots reveal non-random error patterns. Confusion matrices show exactly which classes are confused. Numbers alone hide these patterns."
+    },
+    {
+      "id": "q5",
+      "question": "Which Plotly Express function creates an interactive correlation heatmap?",
+      "options": [
+        "px.heatmap()",
+        "px.imshow()",
+        "px.corr()",
+        "px.matrix()"
+      ],
+      "correctAnswer": 1,
+      "explanation": "px.imshow() displays matrix data as a heatmap. With text_auto=True it creates an annotated correlation heatmap."
+    },
+    {
+      "id": "q6",
+      "question": "What does `hovermode='x unified'` do in Plotly?",
+      "options": [
+        "Shows only x-axis values on hover",
+        "Links tooltips across all traces at the same x position",
+        "Unifies all hover text into one line",
+        "Disables hover for the x-axis"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The 'x unified' hovermode shows a single consolidated tooltip for all traces at the same x-coordinate, making it easy to compare values."
+    }
+  ],
+  "references": [
+    {
+      "label": "Matplotlib Official Tutorials",
+      "url": "https://matplotlib.org/stable/tutorials/index.html"
+    },
+    {
+      "label": "Seaborn Documentation",
+      "url": "https://seaborn.pydata.org/"
+    },
+    {
+      "label": "Tukey - Exploratory Data Analysis",
+      "url": ""
+    }
+  ],
+  "_contentWarnings": []
 }

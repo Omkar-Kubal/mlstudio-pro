@@ -11,7 +11,7 @@
     ],
     "topics": [
         {
-            "title": "Bayes Theroem & Conditional Probability",
+            "title": "Bayes Theorem & Conditional Probability",
             "theory": [
                 "Bayes' Theorem is the mathematical formula for updating the probability of a hypothesis (Prior) in light of new evidence (Likelihood). P(A|B) = [P(B|A) * P(A)] / P(B).",
                 "It is the foundation of 'Bayesian' statistics, which views probability as a degree of belief that evolves as more data is collected."
@@ -75,10 +75,42 @@
         }
     ],
     "quiz": [
-        "What is the 'Naive' assumption in the Naive Bayes classifier?",
-        "How do you update your Prior belief using Bayes' Theorem?",
-        "Explain one real-world scenario where Naive Bayes is preferred over more complex models.",
-        "What is the difference between Discrete and Continuous probability distributions in ML?"
+        {
+            "id": "q1",
+            "question": "How does Bayes' Theorem update beliefs with evidence?",
+            "options": [
+                "It replaces the prior with the likelihood",
+                "Posterior = (Likelihood × Prior) / Evidence — new data updates prior belief to posterior",
+                "It ignores prior beliefs",
+                "It only works with normal distributions"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Bayes' Theorem provides a mathematical framework for belief updating. The prior (initial belief) is multiplied by the likelihood (how well evidence fits the hypothesis) and normalized by the evidence."
+        },
+        {
+            "id": "q2",
+            "question": "Why is Naive Bayes 'naive'?",
+            "options": [
+                "It's a simple algorithm",
+                "It assumes all features are conditionally independent given the class label",
+                "It ignores the training data",
+                "It can't handle categorical data"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The 'naive' assumption is that features are independent given the class. While rarely true in practice, this simplification makes computation tractable and the classifier often performs surprisingly well."
+        },
+        {
+            "id": "q3",
+            "question": "What are hidden variables in probabilistic models?",
+            "options": [
+                "Variables that are deleted",
+                "Unobserved variables that influence the observed data and must be inferred",
+                "Variables with missing values",
+                "Variables not included in the model"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Hidden (latent) variables represent unobserved states that generate the data we see. Examples: topic distributions in LDA, cluster assignments in GMMs, hidden states in HMMs."
+        }
     ],
     "references": [
         {

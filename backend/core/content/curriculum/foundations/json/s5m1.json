@@ -1,173 +1,258 @@
 {
-    "meta": {
-        "subject": "model-evaluation",
-        "module": "metrics",
-        "level": "intermediate",
-        "estimatedHours": 4
+  "meta": {
+    "subject": "model-evaluation",
+    "module": "metrics",
+    "level": "intermediate",
+    "estimatedHours": 4
+  },
+  "overview": [
+    "Model evaluation is a critical stage that ensures models perform reliably and meet real-world requirements. It guides model selection, tuning, and deployment by providing quantitative measures of performance.",
+    "Without proper evaluation, we risk deploying models that only work in ideal conditions, overlook bias, and cannot be explained to stakeholders. Rigorous evaluation helps answer: 'Is the model accurate enough?' and 'Does it align with business goals?'"
+  ],
+  "topics": [
+    {
+      "title": "Why Evaluation Matters",
+      "theory": [
+        "Evaluation ensures reliability by detecting overfitting or underperformance before deployment through train-test comparison.",
+        "Domain alignment requires choosing metrics that reflect real costs — e.g., false negatives in disease diagnosis may be far worse than false positives.",
+        "Accountability and trust come from quantitative scores (accuracy, error rates, AUC) providing transparency to stakeholders.",
+        "Evaluation guides iteration by showing where a model fails, helping prioritize improvements."
+      ],
+      "visualIntuition": [
+        "Interactive plot comparing training vs test error as model complexity increases (bias-variance tradeoff curve)."
+      ],
+      "visualSuggestions": [
+        "Overfitting curve animation",
+        "Slider controlling model complexity with error update"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Demonstrating overfitting with polynomial regression",
+          "content": "import numpy as np\nfrom sklearn.metrics import mean_squared_error\nfrom sklearn.model_selection import train_test_split\n\n# Generate noisy data\nrng = np.random.RandomState(0)\nX = rng.uniform(-3, 3, size=100)[:, np.newaxis]\ny = np.sin(X).ravel() + rng.normal(scale=0.3, size=100)\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)\n\n# Compare different polynomial degrees\ndegrees = [1, 3, 5, 9]\nfor d in degrees:\n    model = np.poly1d(np.polyfit(X_train.ravel(), y_train, d))\n    train_mse = mean_squared_error(y_train, model(X_train))\n    test_mse = mean_squared_error(y_test, model(X_test))\n    print(f\"Degree {d}: Train MSE={train_mse:.3f}, Test MSE={test_mse:.3f}\")"
+        }
+      ]
     },
-    "overview": [
-        "Model evaluation is a critical stage that ensures models perform reliably and meet real-world requirements. It guides model selection, tuning, and deployment by providing quantitative measures of performance.",
-        "Without proper evaluation, we risk deploying models that only work in ideal conditions, overlook bias, and cannot be explained to stakeholders. Rigorous evaluation helps answer: 'Is the model accurate enough?' and 'Does it align with business goals?'"
-    ],
-    "topics": [
+    {
+      "title": "Regression Metrics",
+      "theory": [
+        "MSE (Mean Squared Error) computes average squared difference. By squaring, it heavily penalizes large errors — important when big mistakes are costly.",
+        "MAE (Mean Absolute Error) penalizes errors linearly, more robust to outliers. Good for interpretability in original units.",
+        "R² (Coefficient of Determination) measures proportion of variance explained by the model. R²=1 means perfect fit, R²=0 means no better than predicting the mean.",
+        "Use MSE/RMSE when large errors are particularly undesirable. Use MAE when outlier robustness matters."
+      ],
+      "visualIntuition": [
+        "Scatter plot of actual vs predicted with ideal y=x line. Points close to line indicate low error. Coloring by error magnitude highlights worst predictions."
+      ],
+      "visualSuggestions": [
+        "Residual plot (residuals vs predicted)",
+        "Interactive noise slider showing metric changes"
+      ],
+      "code": [
         {
-            "title": "Why Evaluation Matters",
-            "theory": [
-                "Evaluation ensures reliability by detecting overfitting or underperformance before deployment through train-test comparison.",
-                "Domain alignment requires choosing metrics that reflect real costs — e.g., false negatives in disease diagnosis may be far worse than false positives.",
-                "Accountability and trust come from quantitative scores (accuracy, error rates, AUC) providing transparency to stakeholders.",
-                "Evaluation guides iteration by showing where a model fails, helping prioritize improvements."
-            ],
-            "visualIntuition": [
-                "Interactive plot comparing training vs test error as model complexity increases (bias-variance tradeoff curve)."
-            ],
-            "visualSuggestions": [
-                "Overfitting curve animation",
-                "Slider controlling model complexity with error update"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Demonstrating overfitting with polynomial regression",
-                    "content": "import numpy as np\nfrom sklearn.metrics import mean_squared_error\nfrom sklearn.model_selection import train_test_split\n\n# Generate noisy data\nrng = np.random.RandomState(0)\nX = rng.uniform(-3, 3, size=100)[:, np.newaxis]\ny = np.sin(X).ravel() + rng.normal(scale=0.3, size=100)\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)\n\n# Compare different polynomial degrees\ndegrees = [1, 3, 5, 9]\nfor d in degrees:\n    model = np.poly1d(np.polyfit(X_train.ravel(), y_train, d))\n    train_mse = mean_squared_error(y_train, model(X_train))\n    test_mse = mean_squared_error(y_test, model(X_test))\n    print(f\"Degree {d}: Train MSE={train_mse:.3f}, Test MSE={test_mse:.3f}\")"
-                }
-            ]
-        },
-        {
-            "title": "Regression Metrics",
-            "theory": [
-                "MSE (Mean Squared Error) computes average squared difference. By squaring, it heavily penalizes large errors — important when big mistakes are costly.",
-                "MAE (Mean Absolute Error) penalizes errors linearly, more robust to outliers. Good for interpretability in original units.",
-                "R² (Coefficient of Determination) measures proportion of variance explained by the model. R²=1 means perfect fit, R²=0 means no better than predicting the mean.",
-                "Use MSE/RMSE when large errors are particularly undesirable. Use MAE when outlier robustness matters."
-            ],
-            "visualIntuition": [
-                "Scatter plot of actual vs predicted with ideal y=x line. Points close to line indicate low error. Coloring by error magnitude highlights worst predictions."
-            ],
-            "visualSuggestions": [
-                "Residual plot (residuals vs predicted)",
-                "Interactive noise slider showing metric changes"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Computing regression metrics",
-                    "content": "from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score\nfrom sklearn.linear_model import LinearRegression\nimport numpy as np\n\n# Create linear data with noise\nrng = np.random.RandomState(42)\nX = 2 * rng.rand(100, 1) - 1\ny = 3 * X.ravel() + 2 + rng.normal(scale=0.5, size=100)\n\nmodel = LinearRegression().fit(X, y)\ny_pred = model.predict(X)\n\nmse = mean_squared_error(y, y_pred)\nmae = mean_absolute_error(y, y_pred)\nr2 = r2_score(y, y_pred)\n\nprint(f\"MSE: {mse:.3f}\")\nprint(f\"MAE: {mae:.3f}\")\nprint(f\"R²: {r2:.3f}\")"
-                }
-            ]
-        },
-        {
-            "title": "Classification Metrics",
-            "theory": [
-                "Accuracy is the fraction of correct predictions, but can be misleading with imbalanced classes — 99% accuracy by predicting majority class.",
-                "Precision = TP/(TP+FP): How many selected items are relevant? Recall = TP/(TP+FN): How many relevant items are selected?",
-                "F1 Score is the harmonic mean of precision and recall, balancing both into one metric.",
-                "Choose based on context: medical tests prioritize recall (catch all sick patients), spam filters prioritize precision (don't flag good emails)."
-            ],
-            "visualIntuition": [
-                "Bar chart comparing accuracy, precision, recall, F1 for different models. Radar chart for multi-metric comparison."
-            ],
-            "visualSuggestions": [
-                "Threshold slider showing precision-recall tradeoff",
-                "Per-class metric comparison"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Computing classification metrics",
-                    "content": "from sklearn.datasets import make_classification\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report\nfrom sklearn.model_selection import train_test_split\n\nX, y = make_classification(n_samples=200, n_features=4, n_informative=2, random_state=1)\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)\n\nclf = LogisticRegression(solver='liblinear').fit(X_train, y_train)\ny_pred = clf.predict(X_test)\n\nprint(f\"Accuracy: {accuracy_score(y_test, y_pred):.3f}\")\nprint(f\"Precision: {precision_score(y_test, y_pred):.3f}\")\nprint(f\"Recall: {recall_score(y_test, y_pred):.3f}\")\nprint(f\"F1: {f1_score(y_test, y_pred):.3f}\")\nprint(\"\\nClassification Report:\\n\", classification_report(y_test, y_pred))"
-                }
-            ]
-        },
-        {
-            "title": "Confusion Matrix",
-            "theory": [
-                "A confusion matrix summarizes classification performance with four cells: True Positives (TP), True Negatives (TN), False Positives (FP), False Negatives (FN).",
-                "From this, many metrics derive: accuracy = (TP+TN)/(TP+TN+FP+FN), precision = TP/(TP+FP), recall = TP/(TP+FN), specificity = TN/(TN+FP).",
-                "The confusion matrix shows which types of errors a model makes. For multi-class, it generalizes to N×N table where entry (i,j) counts instances of true class i predicted as j."
-            ],
-            "visualIntuition": [
-                "Heatmap with rows as true classes, columns as predicted. Interactive version highlights one cell and computes derived metrics on click."
-            ],
-            "visualSuggestions": [
-                "Threshold slider updating confusion matrix in real-time",
-                "Exploded view showing TP/FP/FN/TN regions"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Confusion matrix visualization",
-                    "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\nfrom sklearn.metrics import confusion_matrix\n\ncm = confusion_matrix(y_test, y_pred)\nlabels = ['Negative', 'Positive']\n\nplt.figure(figsize=(6, 4))\nsns.heatmap(cm, annot=True, fmt='d', cmap='Blues',\n            xticklabels=labels, yticklabels=labels)\nplt.xlabel('Predicted')\nplt.ylabel('True')\nplt.title('Confusion Matrix')\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "ROC and AUC",
-            "theory": [
-                "ROC (Receiver Operating Characteristic) plots True Positive Rate (TPR/recall) vs False Positive Rate (FPR) for all classification thresholds.",
-                "AUC (Area Under Curve) summarizes ROC into one number: probability that classifier ranks a random positive higher than a random negative. AUC=1.0 is perfect, 0.5 is random guessing.",
-                "ROC-AUC is useful for comparing models and when we care about ranking scores rather than a specific threshold. However, with heavy class imbalance, PR curves may be more informative."
-            ],
-            "visualIntuition": [
-                "ROC curve with diagonal random baseline. Interactive slider for threshold shows corresponding point on curve."
-            ],
-            "visualSuggestions": [
-                "Multi-model ROC comparison",
-                "Threshold selection on ROC curve"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "ROC curve and AUC",
-                    "content": "from sklearn.metrics import roc_curve, roc_auc_score\nimport matplotlib.pyplot as plt\n\ny_scores = clf.predict_proba(X_test)[:, 1]\nfpr, tpr, thresholds = roc_curve(y_test, y_scores)\nauc = roc_auc_score(y_test, y_scores)\n\nplt.figure(figsize=(6, 5))\nplt.plot(fpr, tpr, label=f'ROC (AUC = {auc:.3f})')\nplt.plot([0, 1], [0, 1], 'r--', label='Random (AUC = 0.5)')\nplt.xlabel('False Positive Rate')\nplt.ylabel('True Positive Rate')\nplt.title('ROC Curve')\nplt.legend()\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "Precision-Recall Curves",
-            "theory": [
-                "PR curve plots Precision vs Recall as threshold varies. Particularly informative for imbalanced datasets where positive class is rare.",
-                "The curve highlights precision-recall tradeoff: increasing recall typically lowers precision. Average Precision (AP) summarizes the curve.",
-                "PR curves help answer: 'At what threshold can we achieve desired precision or recall?' Useful when costs of FP vs FN differ significantly."
-            ],
-            "visualIntuition": [
-                "PR curve with shaded area showing Average Precision. Threshold slider moves point along curve and updates confusion matrix."
-            ],
-            "visualSuggestions": [
-                "PR curve vs ROC curve side-by-side for imbalanced data",
-                "Class distribution impact on PR curve shape"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Precision-Recall curve",
-                    "content": "from sklearn.metrics import precision_recall_curve, average_precision_score\nimport matplotlib.pyplot as plt\n\nprecision, recall, pr_thresholds = precision_recall_curve(y_test, y_scores)\nap = average_precision_score(y_test, y_scores)\n\nplt.figure(figsize=(6, 5))\nplt.step(recall, precision, where='post')\nplt.xlabel('Recall')\nplt.ylabel('Precision')\nplt.title(f'Precision-Recall Curve (AP = {ap:.3f})')\nplt.ylim([0.0, 1.05])\nplt.xlim([0.0, 1.0])\nplt.show()"
-                }
-            ]
+          "language": "python",
+          "description": "Computing regression metrics",
+          "content": "from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score\nfrom sklearn.linear_model import LinearRegression\nimport numpy as np\n\n# Create linear data with noise\nrng = np.random.RandomState(42)\nX = 2 * rng.rand(100, 1) - 1\ny = 3 * X.ravel() + 2 + rng.normal(scale=0.5, size=100)\n\nmodel = LinearRegression().fit(X, y)\ny_pred = model.predict(X)\n\nmse = mean_squared_error(y, y_pred)\nmae = mean_absolute_error(y, y_pred)\nr2 = r2_score(y, y_pred)\n\nprint(f\"MSE: {mse:.3f}\")\nprint(f\"MAE: {mae:.3f}\")\nprint(f\"R²: {r2:.3f}\")"
         }
-    ],
-    "quiz": [
-        "When might accuracy be a misleading metric?",
-        "What is the difference between MSE and MAE, and when would you prefer each?",
-        "How does the confusion matrix relate to precision and recall?",
-        "What does an AUC of 0.5 indicate about a classifier?",
-        "When should you prefer PR curves over ROC curves?",
-        "How does threshold selection affect precision and recall?"
-    ],
-    "references": [
+      ]
+    },
+    {
+      "title": "Classification Metrics",
+      "theory": [
+        "Accuracy is the fraction of correct predictions, but can be misleading with imbalanced classes — 99% accuracy by predicting majority class.",
+        "Precision = TP/(TP+FP): How many selected items are relevant? Recall = TP/(TP+FN): How many relevant items are selected?",
+        "F1 Score is the harmonic mean of precision and recall, balancing both into one metric.",
+        "Choose based on context: medical tests prioritize recall (catch all sick patients), spam filters prioritize precision (don't flag good emails)."
+      ],
+      "visualIntuition": [
+        "Bar chart comparing accuracy, precision, recall, F1 for different models. Radar chart for multi-metric comparison."
+      ],
+      "visualSuggestions": [
+        "Threshold slider showing precision-recall tradeoff",
+        "Per-class metric comparison"
+      ],
+      "code": [
         {
-            "label": "scikit-learn Model Evaluation",
-            "url": "https://scikit-learn.org/stable/modules/model_evaluation.html"
-        },
-        {
-            "label": "Google ML Crash Course - ROC and AUC",
-            "url": "https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc"
+          "language": "python",
+          "description": "Computing classification metrics",
+          "content": "from sklearn.datasets import make_classification\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report\nfrom sklearn.model_selection import train_test_split\n\nX, y = make_classification(n_samples=200, n_features=4, n_informative=2, random_state=1)\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)\n\nclf = LogisticRegression(solver='liblinear').fit(X_train, y_train)\ny_pred = clf.predict(X_test)\n\nprint(f\"Accuracy: {accuracy_score(y_test, y_pred):.3f}\")\nprint(f\"Precision: {precision_score(y_test, y_pred):.3f}\")\nprint(f\"Recall: {recall_score(y_test, y_pred):.3f}\")\nprint(f\"F1: {f1_score(y_test, y_pred):.3f}\")\nprint(\"\\nClassification Report:\\n\", classification_report(y_test, y_pred))"
         }
-    ],
-    "_contentWarnings": [
-        "Mathematical formulas were corrupted in original - converted to prose",
-        "References contained duplicates - deduplicated",
-        "Missing: multi-class metrics (macro/micro/weighted averaging)",
-        "Missing: calibration and Brier score"
-    ]
+      ]
+    },
+    {
+      "title": "Confusion Matrix",
+      "theory": [
+        "A confusion matrix summarizes classification performance with four cells: True Positives (TP), True Negatives (TN), False Positives (FP), False Negatives (FN).",
+        "From this, many metrics derive: accuracy = (TP+TN)/(TP+TN+FP+FN), precision = TP/(TP+FP), recall = TP/(TP+FN), specificity = TN/(TN+FP).",
+        "The confusion matrix shows which types of errors a model makes. For multi-class, it generalizes to N×N table where entry (i,j) counts instances of true class i predicted as j."
+      ],
+      "visualIntuition": [
+        "Heatmap with rows as true classes, columns as predicted. Interactive version highlights one cell and computes derived metrics on click."
+      ],
+      "visualSuggestions": [
+        "Threshold slider updating confusion matrix in real-time",
+        "Exploded view showing TP/FP/FN/TN regions"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Confusion matrix visualization",
+          "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\nfrom sklearn.metrics import confusion_matrix\n\ncm = confusion_matrix(y_test, y_pred)\nlabels = ['Negative', 'Positive']\n\nplt.figure(figsize=(6, 4))\nsns.heatmap(cm, annot=True, fmt='d', cmap='Blues',\n            xticklabels=labels, yticklabels=labels)\nplt.xlabel('Predicted')\nplt.ylabel('True')\nplt.title('Confusion Matrix')\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "ROC and AUC",
+      "theory": [
+        "ROC (Receiver Operating Characteristic) plots True Positive Rate (TPR/recall) vs False Positive Rate (FPR) for all classification thresholds.",
+        "AUC (Area Under Curve) summarizes ROC into one number: probability that classifier ranks a random positive higher than a random negative. AUC=1.0 is perfect, 0.5 is random guessing.",
+        "ROC-AUC is useful for comparing models and when we care about ranking scores rather than a specific threshold. However, with heavy class imbalance, PR curves may be more informative."
+      ],
+      "visualIntuition": [
+        "ROC curve with diagonal random baseline. Interactive slider for threshold shows corresponding point on curve."
+      ],
+      "visualSuggestions": [
+        "Multi-model ROC comparison",
+        "Threshold selection on ROC curve"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "ROC curve and AUC",
+          "content": "from sklearn.metrics import roc_curve, roc_auc_score\nimport matplotlib.pyplot as plt\n\ny_scores = clf.predict_proba(X_test)[:, 1]\nfpr, tpr, thresholds = roc_curve(y_test, y_scores)\nauc = roc_auc_score(y_test, y_scores)\n\nplt.figure(figsize=(6, 5))\nplt.plot(fpr, tpr, label=f'ROC (AUC = {auc:.3f})')\nplt.plot([0, 1], [0, 1], 'r--', label='Random (AUC = 0.5)')\nplt.xlabel('False Positive Rate')\nplt.ylabel('True Positive Rate')\nplt.title('ROC Curve')\nplt.legend()\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Precision-Recall Curves",
+      "theory": [
+        "PR curve plots Precision vs Recall as threshold varies. Particularly informative for imbalanced datasets where positive class is rare.",
+        "The curve highlights precision-recall tradeoff: increasing recall typically lowers precision. Average Precision (AP) summarizes the curve.",
+        "PR curves help answer: 'At what threshold can we achieve desired precision or recall?' Useful when costs of FP vs FN differ significantly."
+      ],
+      "visualIntuition": [
+        "PR curve with shaded area showing Average Precision. Threshold slider moves point along curve and updates confusion matrix."
+      ],
+      "visualSuggestions": [
+        "PR curve vs ROC curve side-by-side for imbalanced data",
+        "Class distribution impact on PR curve shape"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Precision-Recall curve",
+          "content": "from sklearn.metrics import precision_recall_curve, average_precision_score\nimport matplotlib.pyplot as plt\n\nprecision, recall, pr_thresholds = precision_recall_curve(y_test, y_scores)\nap = average_precision_score(y_test, y_scores)\n\nplt.figure(figsize=(6, 5))\nplt.step(recall, precision, where='post')\nplt.xlabel('Recall')\nplt.ylabel('Precision')\nplt.title(f'Precision-Recall Curve (AP = {ap:.3f})')\nplt.ylim([0.0, 1.05])\nplt.xlim([0.0, 1.0])\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Multi-class Classification Metrics",
+      "theory": "Multi-class metrics extend binary metrics using **averaging strategies:**\n\n- **Micro:** Pool all TP/FP/FN globally. Gives equal weight to each sample. Same as accuracy for single-label.\n- **Macro:** Compute metric per class, then average. Gives equal weight to each class. Sensitive to rare classes.\n- **Weighted:** Like macro but weighted by class support (number of samples). Accounts for class imbalance.\n\n**When to use each:**\n| Average | Best For | Weakness |\n|---|---|---|\n| micro | Overall performance, balanced datasets | Hides poor performance on small classes |\n| macro | Equal treatment of all classes | Affected by low-support classes |\n| weighted | Imbalanced datasets | May hide zero-performance on minority |\n\n**Top-k Accuracy:** Correct if the true label is among the model's top k predictions. Common in image classification (top-5 accuracy).\n\n**Per-class analysis:** Always look at the full `classification_report` to spot classes where the model struggles.",
+      "code": [
+        {
+          "title": "Multi-class Metrics and Averaging Strategies",
+          "language": "python",
+          "code": "from sklearn.datasets import make_classification\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import (classification_report, f1_score,\n    precision_score, recall_score, confusion_matrix, top_k_accuracy_score)\nimport numpy as np\n\n# Imbalanced multi-class\nX, y = make_classification(n_samples=1000, n_classes=4, n_features=15,\n    n_informative=10, weights=[0.5, 0.2, 0.2, 0.1], random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nclf = RandomForestClassifier(n_estimators=100, random_state=42)\nclf.fit(X_train, y_train)\ny_pred = clf.predict(X_test)\ny_proba = clf.predict_proba(X_test)\n\n# All averaging strategies\nfor avg in ['micro', 'macro', 'weighted']:\n    f1 = f1_score(y_test, y_pred, average=avg)\n    print(f'F1 ({avg:8s}): {f1:.4f}')\n\n# Full classification report\nprint(classification_report(y_test, y_pred, target_names=['ClassA','ClassB','ClassC','ClassD']))\n\n# Top-k accuracy\ntop1 = top_k_accuracy_score(y_test, y_proba, k=1)\ntop2 = top_k_accuracy_score(y_test, y_proba, k=2)\nprint(f'Top-1 accuracy: {top1:.4f}')\nprint(f'Top-2 accuracy: {top2:.4f}')"
+        }
+      ],
+      "visualSuggestions": [
+        "Confusion matrix heatmap with per-class precision/recall bars",
+        "Micro vs macro vs weighted comparison chart"
+      ],
+      "visualIntuition": [
+        "Micro averaging is like grading all exam answers in one big pile — each question counts equally. Macro averaging is like grading each subject separately and then averaging the subject scores — each subject counts equally, regardless of how many questions it had."
+      ]
+    },
+    {
+      "title": "Brier Score and Probability Scoring",
+      "theory": "The Brier Score measures the **accuracy of probabilistic predictions.** It is the mean squared error between predicted probabilities and actual outcomes.\n\n**Formula:** BS = (1/N) Σ (pᵢ - yᵢ)²\n\n**Interpretation:**\n- 0 = perfect predictions (all probabilities match outcomes)\n- 0.25 = no-skill baseline (always predicting 0.5 for balanced binary)\n- 1 = worst possible (confident and always wrong)\n\n**Multi-class extension:** BS = (1/N) Σᵢ Σⱼ (pᵢⱼ - yᵢⱼ)², where j indexes classes.\n\n**Decomposition:**\n- **Reliability:** How well predicted probabilities match observed frequencies\n- **Resolution:** How much predictions vary (better than constant prediction)\n- **Uncertainty:** Inherent uncertainty in the data\n\nBS = Reliability - Resolution + Uncertainty",
+      "code": [
+        {
+          "title": "Brier Score Computation and Comparison",
+          "language": "python",
+          "code": "from sklearn.metrics import brier_score_loss\nfrom sklearn.datasets import make_classification\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.svm import SVC\nfrom sklearn.calibration import CalibratedClassifierCV\nfrom sklearn.model_selection import train_test_split\nimport numpy as np\n\nX, y = make_classification(n_samples=1000, n_features=10, random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# Compare Brier Scores\nbaseline_mean = np.mean(y_train)\nbs_baseline = np.mean((baseline_mean - y_test)**2)\nprint(f'Baseline (mean): {bs_baseline:.4f}')\n\nlr = LogisticRegression(max_iter=1000); lr.fit(X_train, y_train)\nbs_lr = brier_score_loss(y_test, lr.predict_proba(X_test)[:,1])\nprint(f'Logistic Regression: {bs_lr:.4f}')\n\nsvm_raw = SVC(probability=True); svm_raw.fit(X_train, y_train)\nbs_svm = brier_score_loss(y_test, svm_raw.predict_proba(X_test)[:,1])\nprint(f'SVM (raw): {bs_svm:.4f}')\n\nsvm_cal = CalibratedClassifierCV(SVC(), cv=5, method='isotonic')\nsvm_cal.fit(X_train, y_train)\nbs_svm_cal = brier_score_loss(y_test, svm_cal.predict_proba(X_test)[:,1])\nprint(f'SVM (calibrated): {bs_svm_cal:.4f}')\n\n# Multi-class Brier Score\nfrom sklearn.preprocessing import label_binarize\nX_mc, y_mc = make_classification(n_samples=1000, n_classes=3, n_informative=8, random_state=42)\nX_tr, X_te, y_tr, y_te = train_test_split(X_mc, y_mc, test_size=0.2)\nlr_mc = LogisticRegression(max_iter=1000); lr_mc.fit(X_tr, y_tr)\ny_bin = label_binarize(y_te, classes=[0,1,2])\ny_proba = lr_mc.predict_proba(X_te)\nbs_mc = np.mean((y_proba - y_bin)**2)\nprint(f'Multi-class Brier Score: {bs_mc:.4f}')"
+        }
+      ],
+      "visualSuggestions": [
+        "Bar chart comparing Brier Scores across models",
+        "Probability distribution histogram showing model confidence"
+      ],
+      "visualIntuition": [
+        "Brier Score is like a quiz grade for your model's confidence. If the model says 'I'm 90% sure it's positive' and it is positive, the error is small (0.1² = 0.01). But if it's wrong, the penalty is huge (0.9² = 0.81). It rewards confident, correct predictions and punishes confident, wrong ones."
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What makes a neural network 'deep'?",
+      "options": [
+        "Using large datasets",
+        "Having multiple hidden layers between input and output",
+        "Using complex activation functions",
+        "Training for many epochs"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Depth refers to the number of hidden layers. Each layer learns increasingly abstract representations — early layers detect simple patterns, deeper layers combine them into complex features."
+    },
+    {
+      "id": "q2",
+      "question": "What is the role of activation functions in neural networks?",
+      "options": [
+        "They speed up training",
+        "They introduce non-linearity, allowing networks to learn complex patterns",
+        "They normalize inputs",
+        "They reduce overfitting"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Without activation functions, stacking linear layers just produces another linear transformation. Non-linear activations (ReLU, sigmoid, tanh) enable networks to approximate any continuous function."
+    },
+    {
+      "id": "q3",
+      "question": "Why does backpropagation use the chain rule?",
+      "options": [
+        "To compute derivatives faster",
+        "To propagate error gradients through composed functions layer by layer",
+        "To prevent overfitting",
+        "To initialize weights"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A neural network is a composition of functions (layers). The chain rule decomposes the gradient of the loss with respect to early weights into a product of local gradients, enabling efficient gradient computation."
+    },
+    {
+      "id": "q4",
+      "question": "Which averaging strategy treats all classes equally regardless of their support?",
+      "options": [
+        "Micro",
+        "Macro",
+        "Weighted",
+        "Binary"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Macro averaging computes the metric independently for each class and then takes the unweighted mean, giving equal importance to each class regardless of how many samples it has."
+    },
+    {
+      "id": "q5",
+      "question": "A Brier Score of 0.08 indicates what quality of probabilistic predictions?",
+      "options": [
+        "Very poor",
+        "No-skill baseline",
+        "Excellent",
+        "Moderate"
+      ],
+      "correctAnswer": 2,
+      "explanation": "A Brier Score of 0.08 is well below the 0.25 no-skill baseline and approaching 0 (perfect), indicating excellent probabilistic predictions."
+    }
+  ],
+  "references": [
+    {
+      "label": "scikit-learn Model Evaluation",
+      "url": "https://scikit-learn.org/stable/modules/model_evaluation.html"
+    },
+    {
+      "label": "Google ML Crash Course - ROC and AUC",
+      "url": "https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc"
+    }
+  ],
+  "_contentWarnings": []
 }

@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pydantic
+matplotlib
+scikit-learn
+numpy
+typing-extensions
+python-multipart
+scipy
+pandas
+xgboost
+lightgbm

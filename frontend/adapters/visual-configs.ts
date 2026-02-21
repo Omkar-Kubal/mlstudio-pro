@@ -493,12 +493,12 @@ export const visualConfigs: VisualConfigRegistry = {
     "Measures of Central Tendency": meanSensitivityConfig,
     "Imbalanced Datasets and Threshold Tuning": thresholdTuningConfig,
     "Underfitting vs Overfitting": polynomialFitConfig,
-    "Distributions and Data Shapes": distributionEvolutionConfig,
+    "Descriptive Statistics Overview": distributionEvolutionConfig,
     "Decision Boundaries": boundaryMorphingConfig,
-    "Model Evaluation Metrics": metricDashboardConfig,
-    "Clustering Algorithms": clusterFormationConfig,
-    "Neural Network Basics": networkForwardPassConfig,
-    "Backpropagation and Gradients": gradientBackflowConfig
+    "Classification Metrics": metricDashboardConfig,
+    "K-Means Clustering": clusterFormationConfig,
+    "Neural Network Architecture": networkForwardPassConfig,
+    "Forward and Backward Propagation": gradientBackflowConfig
 };
 
 /**

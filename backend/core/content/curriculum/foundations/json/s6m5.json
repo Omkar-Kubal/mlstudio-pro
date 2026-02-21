@@ -75,10 +75,42 @@
         }
     ],
     "quiz": [
-        "What is the role of the 'Latent Space' in a Variational Autoencoder?",
-        "How do the Generator and Discriminator interact during GAN training?",
-        "Why are Diffusion models currently outperforming GANs in image generation tasks?",
-        "What is 'Mode Collapse' in the context of training GANs?"
+        {
+            "id": "q1",
+            "question": "What is the role of experiment tracking in ML?",
+            "options": [
+                "It's optional documentation",
+                "It records hyperparameters, metrics, data versions, and code for every run — enabling reproducibility and comparison",
+                "It replaces version control",
+                "It's only for research"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Experiment tracking (MLflow, W&B) logs everything about each experiment: parameters, metrics, artifacts, data snapshots. This lets you reproduce any result, compare approaches, and understand what works and why."
+        },
+        {
+            "id": "q2",
+            "question": "Why is data versioning as important as code versioning?",
+            "options": [
+                "It isn't important",
+                "Changing data changes model behavior — without data versioning you can't reproduce results or debug regressions",
+                "Data doesn't change",
+                "Git handles data automatically"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A model's behavior depends equally on code AND data. If training data changes (new rows, corrected labels, schema changes) without versioning, you can't reproduce past results or understand why performance changed."
+        },
+        {
+            "id": "q3",
+            "question": "What is a model registry and when do you need one?",
+            "options": [
+                "A database of all models ever trained",
+                "A centralized catalog that tracks model versions, metadata, and deployment status — needed when multiple models serve production",
+                "It's just a file system",
+                "Only large companies need one"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A model registry (like MLflow Model Registry) provides a single source of truth for which model versions exist, their performance, approval status, and which version is serving production traffic."
+        }
     ],
     "references": [
         {

@@ -1,152 +1,238 @@
 {
-    "meta": {
-        "subject": "deep-learning",
-        "module": "neural-networks",
-        "level": "intermediate",
-        "estimatedHours": 5
+  "meta": {
+    "subject": "deep-learning",
+    "module": "neural-networks",
+    "level": "intermediate",
+    "estimatedHours": 5
+  },
+  "overview": [
+    "Neural networks are computational models inspired by biological neurons. They excel at learning complex, non-linear patterns that traditional algorithms struggle with.",
+    "This module covers why neural networks exist, the perceptron as building block, network architecture design, and practical training considerations."
+  ],
+  "topics": [
+    {
+      "title": "Why Neural Networks",
+      "theory": [
+        "Traditional linear models can only learn linear relationships. Real-world data contains complex, non-linear patterns. Neural networks, through activation functions and layers, can approximate any continuous function (Universal Approximation Theorem).",
+        "Unlike traditional ML requiring manual feature engineering, neural networks automatically learn hierarchical representations: Layer 1 detects edges, Layer 2 recognizes shapes, Layer 3 identifies parts, final layers recognize objects.",
+        "Neural networks scale with data — performance improves with more data, unlike traditional algorithms that plateau. Same architecture adapts to images (CNNs), sequences (RNNs), and other data types.",
+        "Limitations: Require large labeled datasets, computationally expensive, 'black box' nature makes interpretation challenging, prone to overfitting without regularization."
+      ],
+      "visualIntuition": [
+        "Complex dataset (spiral pattern) with decision boundaries: linear model (straight line fails), polynomial (limited), neural network (complex adaptive boundary)."
+      ],
+      "visualSuggestions": [
+        "Universal approximation demonstration",
+        "Hierarchical feature learning animation"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Comparing linear model vs neural network",
+          "content": "from sklearn.datasets import make_moons\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.neural_network import MLPClassifier\nfrom sklearn.model_selection import train_test_split\n\n# Non-linear dataset\nX, y = make_moons(n_samples=1000, noise=0.2, random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)\n\n# Compare models\nlinear = LogisticRegression().fit(X_train, y_train)\nnn = MLPClassifier(hidden_layer_sizes=(10, 10), max_iter=1000).fit(X_train, y_train)\n\nprint(f\"Linear Model Accuracy: {linear.score(X_test, y_test):.3f}\")\nprint(f\"Neural Network Accuracy: {nn.score(X_test, y_test):.3f}\")"
+        }
+      ]
     },
-    "overview": [
-        "Neural networks are computational models inspired by biological neurons. They excel at learning complex, non-linear patterns that traditional algorithms struggle with.",
-        "This module covers why neural networks exist, the perceptron as building block, network architecture design, and practical training considerations."
-    ],
-    "topics": [
+    {
+      "title": "Perceptron",
+      "theory": [
+        "The perceptron is the simplest artificial neuron and building block of neural networks. It computes a weighted sum of inputs, adds a bias, and applies a step activation function.",
+        "Components: Inputs (x), Weights (w) learned to indicate feature importance, Bias (b) shifts decision boundary. Weighted sum: z = w·x + b. Step activation: output = 1 if z ≥ 0, else 0.",
+        "Learning rule: For each training example, update weights w = w + α(y - ŷ)x where α is learning rate. Weights adjust to reduce classification errors.",
+        "Key limitation: Can only learn linearly separable patterns. Cannot solve XOR problem (proven by Minsky & Papert, 1969). This led to development of multi-layer networks."
+      ],
+      "visualIntuition": [
+        "2D scatter with draggable positive/negative points. Decision boundary (line) adjusts in real-time during training. Weight vectors shown as arrows from origin."
+      ],
+      "visualSuggestions": [
+        "XOR impossibility demonstration",
+        "Learning rate impact on convergence"
+      ],
+      "code": [
         {
-            "title": "Why Neural Networks",
-            "theory": [
-                "Traditional linear models can only learn linear relationships. Real-world data contains complex, non-linear patterns. Neural networks, through activation functions and layers, can approximate any continuous function (Universal Approximation Theorem).",
-                "Unlike traditional ML requiring manual feature engineering, neural networks automatically learn hierarchical representations: Layer 1 detects edges, Layer 2 recognizes shapes, Layer 3 identifies parts, final layers recognize objects.",
-                "Neural networks scale with data — performance improves with more data, unlike traditional algorithms that plateau. Same architecture adapts to images (CNNs), sequences (RNNs), and other data types.",
-                "Limitations: Require large labeled datasets, computationally expensive, 'black box' nature makes interpretation challenging, prone to overfitting without regularization."
-            ],
-            "visualIntuition": [
-                "Complex dataset (spiral pattern) with decision boundaries: linear model (straight line fails), polynomial (limited), neural network (complex adaptive boundary)."
-            ],
-            "visualSuggestions": [
-                "Universal approximation demonstration",
-                "Hierarchical feature learning animation"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Comparing linear model vs neural network",
-                    "content": "from sklearn.datasets import make_moons\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.neural_network import MLPClassifier\nfrom sklearn.model_selection import train_test_split\n\n# Non-linear dataset\nX, y = make_moons(n_samples=1000, noise=0.2, random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)\n\n# Compare models\nlinear = LogisticRegression().fit(X_train, y_train)\nnn = MLPClassifier(hidden_layer_sizes=(10, 10), max_iter=1000).fit(X_train, y_train)\n\nprint(f\"Linear Model Accuracy: {linear.score(X_test, y_test):.3f}\")\nprint(f\"Neural Network Accuracy: {nn.score(X_test, y_test):.3f}\")"
-                }
-            ]
-        },
-        {
-            "title": "Perceptron",
-            "theory": [
-                "The perceptron is the simplest artificial neuron and building block of neural networks. It computes a weighted sum of inputs, adds a bias, and applies a step activation function.",
-                "Components: Inputs (x), Weights (w) learned to indicate feature importance, Bias (b) shifts decision boundary. Weighted sum: z = w·x + b. Step activation: output = 1 if z ≥ 0, else 0.",
-                "Learning rule: For each training example, update weights w = w + α(y - ŷ)x where α is learning rate. Weights adjust to reduce classification errors.",
-                "Key limitation: Can only learn linearly separable patterns. Cannot solve XOR problem (proven by Minsky & Papert, 1969). This led to development of multi-layer networks."
-            ],
-            "visualIntuition": [
-                "2D scatter with draggable positive/negative points. Decision boundary (line) adjusts in real-time during training. Weight vectors shown as arrows from origin."
-            ],
-            "visualSuggestions": [
-                "XOR impossibility demonstration",
-                "Learning rate impact on convergence"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Perceptron implementation",
-                    "content": "import numpy as np\n\nclass Perceptron:\n    def __init__(self, lr=0.01, n_iter=1000):\n        self.lr = lr\n        self.n_iter = n_iter\n        \n    def fit(self, X, y):\n        self.weights = np.zeros(X.shape[1])\n        self.bias = 0\n        \n        for _ in range(self.n_iter):\n            for xi, yi in zip(X, y):\n                z = np.dot(xi, self.weights) + self.bias\n                y_pred = 1 if z >= 0 else 0\n                error = yi - y_pred\n                self.weights += self.lr * error * xi\n                self.bias += self.lr * error\n        return self\n    \n    def predict(self, X):\n        z = np.dot(X, self.weights) + self.bias\n        return np.where(z >= 0, 1, 0)\n\n# AND gate (linearly separable)\nX = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])\ny = np.array([0, 0, 0, 1])\n\nperceptron = Perceptron(lr=0.1).fit(X, y)\nprint(\"Predictions:\", perceptron.predict(X))\nprint(\"True labels: \", y)"
-                }
-            ]
-        },
-        {
-            "title": "Neural Network Architecture",
-            "theory": [
-                "Architecture defines structure and organization of neurons across layers. Input layer size = number of features (no computation). Output layer size depends on task (1 for binary, K for K-class).",
-                "Hidden layers perform feature transformation. Depth = number of hidden layers. Width = neurons per layer. Deep networks learn hierarchical features; wide networks have more parameters.",
-                "Notation: L = total layers (excluding input), n[l] = neurons in layer l. Example: [784, 128, 64, 10] has 784 input features, two hidden layers, 10 output classes.",
-                "Design considerations: Start with 1-2 hidden layers, often use decreasing sizes [256, 128, 64], neurons per layer between input and output size. More layers = more abstraction but harder to train."
-            ],
-            "visualIntuition": [
-                "Network diagram showing connected nodes. Drag and drop to add/remove layers. Parameter count updates dynamically."
-            ],
-            "visualSuggestions": [
-                "Forward pass animation with highlighted activations",
-                "Parameter count breakdown by layer"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Building network architectures with Keras",
-                    "content": "from tensorflow import keras\nfrom tensorflow.keras import layers\n\ndef create_network(architecture):\n    \"\"\"architecture: list like [784, 128, 64, 10]\"\"\"\n    model = keras.Sequential()\n    model.add(layers.Dense(architecture[1], activation='relu', \n                           input_shape=(architecture[0],)))\n    for size in architecture[2:-1]:\n        model.add(layers.Dense(size, activation='relu'))\n    model.add(layers.Dense(architecture[-1], activation='softmax'))\n    return model\n\n# Example architectures\nshallow = create_network([784, 64, 10])\ndeep = create_network([784, 128, 64, 32, 10])\n\nprint(\"Shallow network:\")\nshallow.summary()\n\nprint(\"\\nDeep network:\")\ndeep.summary()"
-                }
-            ]
-        },
-        {
-            "title": "Activation Functions",
-            "theory": [
-                "Activation functions introduce non-linearity. Without them, stacked linear layers collapse to single linear transformation.",
-                "Sigmoid: σ(z) = 1/(1+e^(-z)). Output (0,1), good for probability. Problem: saturates for large |z|, causing vanishing gradients.",
-                "ReLU: max(0, z). Simple, fast, avoids vanishing gradients for positive inputs. Problem: 'dying ReLU' for negative inputs (gradient = 0).",
-                "Softmax: Used in output layer for multi-class. Converts scores to probabilities that sum to 1. Cross-entropy loss pairs with softmax."
-            ],
-            "visualIntuition": [
-                "Plot of each activation function with derivative overlay. Highlight saturation regions for sigmoid/tanh."
-            ],
-            "visualSuggestions": [
-                "Interactive activation explorer",
-                "Gradient flow comparison"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Activation functions",
-                    "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nz = np.linspace(-5, 5, 100)\n\n# Sigmoid\nsigmoid = 1 / (1 + np.exp(-z))\n\n# ReLU\nrelu = np.maximum(0, z)\n\n# Tanh\ntanh = np.tanh(z)\n\nplt.figure(figsize=(12, 4))\n\nplt.subplot(1, 3, 1)\nplt.plot(z, sigmoid)\nplt.title('Sigmoid')\nplt.grid(True)\n\nplt.subplot(1, 3, 2)\nplt.plot(z, relu)\nplt.title('ReLU')\nplt.grid(True)\n\nplt.subplot(1, 3, 3)\nplt.plot(z, tanh)\nplt.title('Tanh')\nplt.grid(True)\n\nplt.tight_layout()\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "Forward and Backward Propagation",
-            "theory": [
-                "Forward propagation: Input flows through network layer by layer. Each layer computes z = Wx + b, applies activation a = σ(z), passes to next layer.",
-                "Loss function measures prediction error. Cross-entropy for classification: L = -Σ y·log(ŷ). MSE for regression: L = Σ(y - ŷ)².",
-                "Backward propagation: Chain rule computes gradients of loss with respect to each weight. Gradient flows from output back to input, updating weights along the way.",
-                "Gradient descent update: w = w - α·∂L/∂w where α is learning rate. Repeat forward-backward-update for each batch until convergence."
-            ],
-            "visualIntuition": [
-                "Forward pass: data flows left to right, activations highlighted. Backward pass: gradients flow right to left, weight updates shown."
-            ],
-            "visualSuggestions": [
-                "Step-through forward/backward animation",
-                "Gradient magnitude visualization by layer"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Training a neural network",
-                    "content": "from tensorflow import keras\nfrom tensorflow.keras import layers\n\n# Load MNIST\n(X_train, y_train), (X_test, y_test) = keras.datasets.mnist.load_data()\nX_train = X_train.reshape(-1, 784).astype('float32') / 255.0\nX_test = X_test.reshape(-1, 784).astype('float32') / 255.0\n\n# Build model\nmodel = keras.Sequential([\n    layers.Dense(128, activation='relu', input_shape=(784,)),\n    layers.Dense(64, activation='relu'),\n    layers.Dense(10, activation='softmax')\n])\n\nmodel.compile(\n    optimizer='adam',\n    loss='sparse_categorical_crossentropy',\n    metrics=['accuracy']\n)\n\n# Train (forward + backward + update happens automatically)\nhistory = model.fit(X_train, y_train, epochs=5, validation_split=0.2, verbose=1)\n\n# Evaluate\ntest_loss, test_acc = model.evaluate(X_test, y_test)\nprint(f\"Test accuracy: {test_acc:.4f}\")"
-                }
-            ]
+          "language": "python",
+          "description": "Perceptron implementation",
+          "content": "import numpy as np\n\nclass Perceptron:\n    def __init__(self, lr=0.01, n_iter=1000):\n        self.lr = lr\n        self.n_iter = n_iter\n        \n    def fit(self, X, y):\n        self.weights = np.zeros(X.shape[1])\n        self.bias = 0\n        \n        for _ in range(self.n_iter):\n            for xi, yi in zip(X, y):\n                z = np.dot(xi, self.weights) + self.bias\n                y_pred = 1 if z >= 0 else 0\n                error = yi - y_pred\n                self.weights += self.lr * error * xi\n                self.bias += self.lr * error\n        return self\n    \n    def predict(self, X):\n        z = np.dot(X, self.weights) + self.bias\n        return np.where(z >= 0, 1, 0)\n\n# AND gate (linearly separable)\nX = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])\ny = np.array([0, 0, 0, 1])\n\nperceptron = Perceptron(lr=0.1).fit(X, y)\nprint(\"Predictions:\", perceptron.predict(X))\nprint(\"True labels: \", y)"
         }
-    ],
-    "quiz": [
-        "Why can't a single perceptron solve the XOR problem?",
-        "What is the Universal Approximation Theorem?",
-        "Why are activation functions necessary in neural networks?",
-        "What causes vanishing gradients with sigmoid activation?",
-        "How does backpropagation compute gradients for weight updates?"
-    ],
-    "references": [
+      ]
+    },
+    {
+      "title": "Neural Network Architecture",
+      "theory": [
+        "Architecture defines structure and organization of neurons across layers. Input layer size = number of features (no computation). Output layer size depends on task (1 for binary, K for K-class).",
+        "Hidden layers perform feature transformation. Depth = number of hidden layers. Width = neurons per layer. Deep networks learn hierarchical features; wide networks have more parameters.",
+        "Notation: L = total layers (excluding input), n[l] = neurons in layer l. Example: [784, 128, 64, 10] has 784 input features, two hidden layers, 10 output classes.",
+        "Design considerations: Start with 1-2 hidden layers, often use decreasing sizes [256, 128, 64], neurons per layer between input and output size. More layers = more abstraction but harder to train."
+      ],
+      "visualIntuition": [
+        "Network diagram showing connected nodes. Drag and drop to add/remove layers. Parameter count updates dynamically."
+      ],
+      "visualSuggestions": [
+        "Forward pass animation with highlighted activations",
+        "Parameter count breakdown by layer"
+      ],
+      "code": [
         {
-            "label": "TensorFlow/Keras Documentation",
-            "url": "https://www.tensorflow.org/guide/keras"
-        },
-        {
-            "label": "Neural Networks and Deep Learning (Nielsen)",
-            "url": "http://neuralnetworksanddeeplearning.com/"
+          "language": "python",
+          "description": "Building network architectures with Keras",
+          "content": "from tensorflow import keras\nfrom tensorflow.keras import layers\n\ndef create_network(architecture):\n    \"\"\"architecture: list like [784, 128, 64, 10]\"\"\"\n    model = keras.Sequential()\n    model.add(layers.Dense(architecture[1], activation='relu', \n                           input_shape=(architecture[0],)))\n    for size in architecture[2:-1]:\n        model.add(layers.Dense(size, activation='relu'))\n    model.add(layers.Dense(architecture[-1], activation='softmax'))\n    return model\n\n# Example architectures\nshallow = create_network([784, 64, 10])\ndeep = create_network([784, 128, 64, 32, 10])\n\nprint(\"Shallow network:\")\nshallow.summary()\n\nprint(\"\\nDeep network:\")\ndeep.summary()"
         }
-    ],
-    "_contentWarnings": [
-        "File contained incomplete code blocks (truncated markdown)",
-        "Missing: dropout and regularization techniques",
-        "Missing: weight initialization strategies",
-        "Frontend suggestions reference specific technologies (D3, Three.js, TensorFlow.js)"
-    ]
+      ]
+    },
+    {
+      "title": "Activation Functions",
+      "theory": [
+        "Activation functions introduce non-linearity. Without them, stacked linear layers collapse to single linear transformation.",
+        "Sigmoid: σ(z) = 1/(1+e^(-z)). Output (0,1), good for probability. Problem: saturates for large |z|, causing vanishing gradients.",
+        "ReLU: max(0, z). Simple, fast, avoids vanishing gradients for positive inputs. Problem: 'dying ReLU' for negative inputs (gradient = 0).",
+        "Softmax: Used in output layer for multi-class. Converts scores to probabilities that sum to 1. Cross-entropy loss pairs with softmax."
+      ],
+      "visualIntuition": [
+        "Plot of each activation function with derivative overlay. Highlight saturation regions for sigmoid/tanh."
+      ],
+      "visualSuggestions": [
+        "Interactive activation explorer",
+        "Gradient flow comparison"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Activation functions",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nz = np.linspace(-5, 5, 100)\n\n# Sigmoid\nsigmoid = 1 / (1 + np.exp(-z))\n\n# ReLU\nrelu = np.maximum(0, z)\n\n# Tanh\ntanh = np.tanh(z)\n\nplt.figure(figsize=(12, 4))\n\nplt.subplot(1, 3, 1)\nplt.plot(z, sigmoid)\nplt.title('Sigmoid')\nplt.grid(True)\n\nplt.subplot(1, 3, 2)\nplt.plot(z, relu)\nplt.title('ReLU')\nplt.grid(True)\n\nplt.subplot(1, 3, 3)\nplt.plot(z, tanh)\nplt.title('Tanh')\nplt.grid(True)\n\nplt.tight_layout()\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Forward and Backward Propagation",
+      "theory": [
+        "Forward propagation: Input flows through network layer by layer. Each layer computes z = Wx + b, applies activation a = σ(z), passes to next layer.",
+        "Loss function measures prediction error. Cross-entropy for classification: L = -Σ y·log(ŷ). MSE for regression: L = Σ(y - ŷ)².",
+        "Backward propagation: Chain rule computes gradients of loss with respect to each weight. Gradient flows from output back to input, updating weights along the way.",
+        "Gradient descent update: w = w - α·∂L/∂w where α is learning rate. Repeat forward-backward-update for each batch until convergence."
+      ],
+      "visualIntuition": [
+        "Forward pass: data flows left to right, activations highlighted. Backward pass: gradients flow right to left, weight updates shown."
+      ],
+      "visualSuggestions": [
+        "Step-through forward/backward animation",
+        "Gradient magnitude visualization by layer"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Training a neural network",
+          "content": "from tensorflow import keras\nfrom tensorflow.keras import layers\n\n# Load MNIST\n(X_train, y_train), (X_test, y_test) = keras.datasets.mnist.load_data()\nX_train = X_train.reshape(-1, 784).astype('float32') / 255.0\nX_test = X_test.reshape(-1, 784).astype('float32') / 255.0\n\n# Build model\nmodel = keras.Sequential([\n    layers.Dense(128, activation='relu', input_shape=(784,)),\n    layers.Dense(64, activation='relu'),\n    layers.Dense(10, activation='softmax')\n])\n\nmodel.compile(\n    optimizer='adam',\n    loss='sparse_categorical_crossentropy',\n    metrics=['accuracy']\n)\n\n# Train (forward + backward + update happens automatically)\nhistory = model.fit(X_train, y_train, epochs=5, validation_split=0.2, verbose=1)\n\n# Evaluate\ntest_loss, test_acc = model.evaluate(X_test, y_test)\nprint(f\"Test accuracy: {test_acc:.4f}\")"
+        }
+      ]
+    },
+    {
+      "title": "Dropout Regularization",
+      "theory": "Dropout randomly **zeros out neurons** during training with probability p, forcing the network to learn redundant representations. At test time, all neurons are active but outputs are scaled by (1-p).\n\n**Why it works:**\n- Prevents co-adaptation — neurons can't rely on specific other neurons\n- Acts like an ensemble of 2^n sub-networks (implicit bagging)\n- Adds noise → better generalisation\n\n**Practical guidelines:**\n- p=0.2 for input layers, p=0.5 for hidden layers\n- Never use dropout on the output layer\n- Use inverted dropout (scale by 1/(1-p) during training) so no scaling needed at test time\n- Always call `model.eval()` before inference to disable dropout\n\n**Spatial Dropout (Dropout2D):** For CNNs, drops entire feature maps instead of individual pixels. More effective for convolutional layers.",
+      "code": [
+        {
+          "title": "Dropout — Standard, Spatial, and Alpha Dropout",
+          "language": "python",
+          "code": "import torch\nimport torch.nn as nn\n\n# Standard Dropout\nclass MLPWithDropout(nn.Module):\n    def __init__(self, input_dim, hidden_dim, output_dim, p=0.5):\n        super().__init__()\n        self.net = nn.Sequential(\n            nn.Linear(input_dim, hidden_dim),\n            nn.ReLU(),\n            nn.Dropout(p=p),           # drops individual neurons\n            nn.Linear(hidden_dim, hidden_dim),\n            nn.ReLU(),\n            nn.Dropout(p=p),\n            nn.Linear(hidden_dim, output_dim)  # no dropout on output\n        )\n    def forward(self, x):\n        return self.net(x)\n\nmodel = MLPWithDropout(784, 256, 10)\n\n# Training: dropout active\nmodel.train()\nx = torch.randn(32, 784)\nout1 = model(x)\nout2 = model(x)\nprint(f'Training: outputs differ: {not torch.allclose(out1, out2)}')\n\n# Inference: dropout disabled\nmodel.eval()\nwith torch.no_grad():\n    out3 = model(x)\n    out4 = model(x)\n    print(f'Eval: outputs same: {torch.allclose(out3, out4)}')\n\n# Spatial Dropout for CNNs\nprint(f'Dropout2d: nn.Dropout2d(p=0.25) — drops entire feature maps')\nprint(f'Alpha Dropout: nn.AlphaDropout(p=0.1) — for SELU activation')"
+        }
+      ],
+      "visualSuggestions": [
+        "Network diagram showing random neurons zeroed out during training vs all active during inference",
+        "Ensemble interpretation: multiple sub-networks overlaid"
+      ],
+      "visualIntuition": [
+        "Dropout is like a teacher randomly removing students during group study sessions. Each remaining group must figure things out without relying on any single member. Over many sessions, every student learns to be independently capable."
+      ]
+    },
+    {
+      "title": "Weight Initialization Strategies",
+      "theory": "Poor initialization leads to vanishing or exploding activations/gradients. Good initialization keeps activations and gradients in a healthy range across all layers.\n\n**Principle:** Output variance ≈ input variance at each layer.\n\n**Xavier/Glorot (for Sigmoid/Tanh):**\n- Uniform: W ~ U[-√(6/(fan_in+fan_out)), +√(6/(fan_in+fan_out))]\n- Normal: W ~ N(0, 2/(fan_in+fan_out))\n\n**He/Kaiming (for ReLU):**\n- Accounts for ReLU killing half the neurons (factor of 2)\n- Normal: W ~ N(0, 2/fan_in)\n\n**Orthogonal:** Preserves gradient norms exactly through matrix multiplication. Best for RNNs.\n\n| Activation | Init Method | Why |\n|---|---|---|\n| Sigmoid/Tanh | Xavier | Symmetric, keeps variance stable |\n| ReLU/LeakyReLU | Kaiming | Accounts for zero-ing half the values |\n| SELU | LeCun | Matches self-normalizing property |\n| Any (RNN) | Orthogonal | Preserves gradient through time |",
+      "code": [
+        {
+          "title": "Weight Initialization — Xavier, Kaiming, and Comparison",
+          "language": "python",
+          "code": "import torch\nimport torch.nn as nn\nimport numpy as np\n\ndef check_activations(model, x):\n    activations = []\n    def hook(module, inp, out):\n        activations.append(out.detach())\n    hooks = [layer.register_forward_hook(hook) for layer in model if isinstance(layer, nn.ReLU)]\n    with torch.no_grad():\n        model(x)\n    for h in hooks:\n        h.remove()\n    for i, act in enumerate(activations):\n        print(f'  Layer {i+1}: mean={act.mean():.4f}  std={act.std():.4f}  dead={( act==0).float().mean():.1%}')\n\n# Bad init: random normal with large variance\nmodel_bad = nn.Sequential(*[nn.Sequential(nn.Linear(256, 256), nn.ReLU()) for _ in range(5)])\nfor m in model_bad.modules():\n    if isinstance(m, nn.Linear):\n        m.weight.data.normal_(0, 1.0)  # too large!\n\nprint('Bad init (std=1.0):')\nx = torch.randn(64, 256)\ncheck_activations(model_bad, x)\n\n# Good init: Kaiming for ReLU\nmodel_good = nn.Sequential(*[nn.Sequential(nn.Linear(256, 256), nn.ReLU()) for _ in range(5)])\nfor m in model_good.modules():\n    if isinstance(m, nn.Linear):\n        nn.init.kaiming_normal_(m.weight, mode='fan_in', nonlinearity='relu')\n        nn.init.zeros_(m.bias)\n\nprint('\\nKaiming init:')\ncheck_activations(model_good, x)\n\nprint(f'\\nXavier: nn.init.xavier_uniform_(weight)')\nprint(f'Orthogonal: nn.init.orthogonal_(weight)')"
+        }
+      ],
+      "visualSuggestions": [
+        "Histogram of activations per layer: bad init (collapsing/exploding) vs good init (stable)",
+        "Gradient flow heatmap through layers for different init strategies"
+      ],
+      "visualIntuition": [
+        "Weight initialization is like tuning a guitar before playing. If the strings are too tight (large weights), they'll snap (exploding gradients). If too loose (small weights), they won't vibrate at all (vanishing activations). Kaiming and Xavier tuning give each layer the right tension."
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is the most common cause of ML project failure?",
+      "options": [
+        "Bad algorithms",
+        "Poor data quality and insufficient problem framing",
+        "Not enough compute power",
+        "Using the wrong programming language"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Most ML projects fail not from algorithm choice but from unclear problem definitions, bad data, or misalignment between what the model optimizes and what the business needs. Data quality is consistently the #1 issue."
+    },
+    {
+      "id": "q2",
+      "question": "Why is model interpretability important in production?",
+      "options": [
+        "It makes models faster",
+        "Stakeholders need to understand and trust predictions; regulators may require explainability",
+        "It improves accuracy",
+        "It's only important for research"
+      ],
+      "correctAnswer": 1,
+      "explanation": "In production, predictions affect real decisions. Doctors, loan officers, and judges need to understand why a model made a prediction. Regulations like GDPR may require explanations for automated decisions."
+    },
+    {
+      "id": "q3",
+      "question": "What is the difference between online and batch learning?",
+      "options": [
+        "Online uses the internet",
+        "Online learning updates continuously with new data; batch retrains on the full dataset periodically",
+        "Batch is always better",
+        "They produce identical models"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Batch learning retrains from scratch periodically. Online learning incrementally updates with each new data point, adapting quickly to changes but risking instability. The choice depends on data velocity and concept drift."
+    },
+    {
+      "id": "q4",
+      "question": "Why must you call model.eval() before inference when using Dropout?",
+      "options": [
+        "To reduce memory usage",
+        "To disable dropout so all neurons contribute to the prediction",
+        "To enable gradient computation",
+        "To reset the model weights"
+      ],
+      "correctAnswer": 1,
+      "explanation": "During training, dropout randomly zeros neurons. At inference, you want all neurons active (with scaled outputs). model.eval() disables dropout (and batch normalization updates) for deterministic predictions."
+    },
+    {
+      "id": "q5",
+      "question": "Why is Kaiming initialization preferred over Xavier for ReLU networks?",
+      "options": [
+        "Kaiming is always faster",
+        "Kaiming accounts for ReLU zeroing out approximately half the activations",
+        "Xavier doesn't work with any activation function",
+        "Kaiming uses smaller weights"
+      ],
+      "correctAnswer": 1,
+      "explanation": "ReLU zeros out ~50% of activations, effectively halving the variance at each layer. Kaiming initialization compensates with a factor of 2, maintaining stable variance through deep networks. Xavier assumes symmetric activations (tanh/sigmoid)."
+    }
+  ],
+  "references": [
+    {
+      "label": "TensorFlow/Keras Documentation",
+      "url": "https://www.tensorflow.org/guide/keras"
+    },
+    {
+      "label": "Neural Networks and Deep Learning (Nielsen)",
+      "url": "http://neuralnetworksanddeeplearning.com/"
+    }
+  ],
+  "_contentWarnings": []
 }

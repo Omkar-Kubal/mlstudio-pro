@@ -1,301 +1,340 @@
 {
-    "meta": {
-        "subject": "machine-learning",
-        "module": "regression",
-        "level": "intermediate",
-        "estimatedHours": 5
+  "meta": {
+    "subject": "machine-learning",
+    "module": "regression",
+    "level": "intermediate",
+    "estimatedHours": 5
+  },
+  "overview": [
+    "Regression is a supervised machine learning technique for predicting continuous target values from input features. We estimate how changes in input variables affect the output.",
+    "The ultimate goal is to fit a best-fit line or curve through the data that minimizes prediction error. This module covers linear regression, polynomial regression, regularization techniques, tree-based methods, and advanced regression algorithms."
+  ],
+  "topics": [
+    {
+      "title": "Linear Regression",
+      "theory": [
+        "Linear regression fits a straight line through data by optimizing coefficients. The prediction is ŷ = θ₀ + θ₁x₁ + ... + θₙxₙ, where θ₀ is the intercept (bias term) and θ₁...θₙ are the feature weights.",
+        "The parameters are typically found by the least squares solution: θ = (XᵀX)⁻¹Xᵀy, or via iterative methods like gradient descent.",
+        "After training, we evaluate performance using metrics like Mean Squared Error (MSE) or R². The coefficient of determination R² measures the proportion of variance in y explained by the model, while RMSE (root MSE) is on the same scale as the target."
+      ],
+      "visualIntuition": [
+        "Scatter plot displaying data points with an overlaid regression line. As model parameters update, the line animates to show the fitting process. Residual lines between points and the prediction line visualize error magnitude."
+      ],
+      "visualSuggestions": [
+        "Animated regression line that rotates and shifts during gradient descent optimization",
+        "Interactive scatter plot where users can drag points and watch the line refit in real-time"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Linear regression on the diabetes dataset",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.datasets import load_diabetes\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LinearRegression\n\n# Load diabetes data; use only BMI feature for simplicity\nX_full, y = load_diabetes(return_X_y=True)\nX = X_full[:, np.newaxis, 2]  # feature index 2 = BMI\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)\n\nmodel = LinearRegression()\nmodel.fit(X_train, y_train)\n\nprint(\"Coefficient (slope):\", model.coef_[0])\nprint(\"Intercept:\", model.intercept_)\n\ny_pred = model.predict(X_test)\nplt.scatter(X_test, y_test, color='skyblue', label='Data')\nplt.plot(X_test, y_pred, color='orange', linewidth=2, label='Fit')\nplt.xlabel(\"BMI (normalized)\")\nplt.ylabel(\"Disease Progression\")\nplt.title(\"Linear Regression Fit\")\nplt.legend()\nplt.show()"
+        }
+      ]
     },
-    "overview": [
-        "Regression is a supervised machine learning technique for predicting continuous target values from input features. We estimate how changes in input variables affect the output.",
-        "The ultimate goal is to fit a best-fit line or curve through the data that minimizes prediction error. This module covers linear regression, polynomial regression, regularization techniques, tree-based methods, and advanced regression algorithms."
-    ],
-    "topics": [
+    {
+      "title": "Polynomial Regression",
+      "theory": [
+        "When data relationships are non-linear, polynomial regression extends linear models by including higher-degree terms. For example, a degree-2 model is y = b₀ + b₁x + b₂x².",
+        "Adding polynomial features increases model flexibility, allowing it to fit curved trends. However, higher-degree polynomials can easily overfit the data (high variance) by chasing noise.",
+        "We typically control the degree with a hyperparameter. The tradeoff is underfitting (too simple) vs overfitting (too complex)."
+      ],
+      "visualIntuition": [
+        "A slider to vary the polynomial degree. As degree increases, the fitted curve becomes more flexible and follows data more closely. At high degrees, the curve starts to wiggle through noise, illustrating overfitting."
+      ],
+      "visualSuggestions": [
+        "Animated curve that morphs from straight line (degree 1) to wavy curve (degree 10+)",
+        "Split view showing train vs test error as polynomial degree increases"
+      ],
+      "code": [
         {
-            "title": "Linear Regression",
-            "theory": [
-                "Linear regression fits a straight line through data by optimizing coefficients. The prediction is ŷ = θ₀ + θ₁x₁ + ... + θₙxₙ, where θ₀ is the intercept (bias term) and θ₁...θₙ are the feature weights.",
-                "The parameters are typically found by the least squares solution: θ = (XᵀX)⁻¹Xᵀy, or via iterative methods like gradient descent.",
-                "After training, we evaluate performance using metrics like Mean Squared Error (MSE) or R². The coefficient of determination R² measures the proportion of variance in y explained by the model, while RMSE (root MSE) is on the same scale as the target."
-            ],
-            "visualIntuition": [
-                "Scatter plot displaying data points with an overlaid regression line. As model parameters update, the line animates to show the fitting process. Residual lines between points and the prediction line visualize error magnitude."
-            ],
-            "visualSuggestions": [
-                "Animated regression line that rotates and shifts during gradient descent optimization",
-                "Interactive scatter plot where users can drag points and watch the line refit in real-time"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Linear regression on the diabetes dataset",
-                    "content": "import numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.datasets import load_diabetes\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LinearRegression\n\n# Load diabetes data; use only BMI feature for simplicity\nX_full, y = load_diabetes(return_X_y=True)\nX = X_full[:, np.newaxis, 2]  # feature index 2 = BMI\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)\n\nmodel = LinearRegression()\nmodel.fit(X_train, y_train)\n\nprint(\"Coefficient (slope):\", model.coef_[0])\nprint(\"Intercept:\", model.intercept_)\n\ny_pred = model.predict(X_test)\nplt.scatter(X_test, y_test, color='skyblue', label='Data')\nplt.plot(X_test, y_pred, color='orange', linewidth=2, label='Fit')\nplt.xlabel(\"BMI (normalized)\")\nplt.ylabel(\"Disease Progression\")\nplt.title(\"Linear Regression Fit\")\nplt.legend()\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "Polynomial Regression",
-            "theory": [
-                "When data relationships are non-linear, polynomial regression extends linear models by including higher-degree terms. For example, a degree-2 model is y = b₀ + b₁x + b₂x².",
-                "Adding polynomial features increases model flexibility, allowing it to fit curved trends. However, higher-degree polynomials can easily overfit the data (high variance) by chasing noise.",
-                "We typically control the degree with a hyperparameter. The tradeoff is underfitting (too simple) vs overfitting (too complex)."
-            ],
-            "visualIntuition": [
-                "A slider to vary the polynomial degree. As degree increases, the fitted curve becomes more flexible and follows data more closely. At high degrees, the curve starts to wiggle through noise, illustrating overfitting."
-            ],
-            "visualSuggestions": [
-                "Animated curve that morphs from straight line (degree 1) to wavy curve (degree 10+)",
-                "Split view showing train vs test error as polynomial degree increases"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Polynomial regression with degree 2 on synthetic data",
-                    "content": "import numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.linear_model import LinearRegression\n\n# Generate synthetic data with quadratic trend\nnp.random.seed(0)\nX = np.linspace(-3, 3, 50)\ny = 0.5*X**2 + X + 2 + np.random.randn(50)*3\n\n# Prepare polynomial features\npoly = PolynomialFeatures(degree=2, include_bias=False)\nX_poly = poly.fit_transform(X.reshape(-1, 1))\n\nmodel = LinearRegression()\nmodel.fit(X_poly, y)\ny_pred = model.predict(X_poly)\n\nplt.scatter(X, y, color='lightgreen', label='Data')\nplt.plot(X, y_pred, color='red', linewidth=2, label='Degree 2 Fit')\nplt.xlabel(\"X\")\nplt.ylabel(\"y\")\nplt.title(\"Polynomial Regression\")\nplt.legend()\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "Regularization (Ridge & Lasso)",
-            "theory": [
-                "Complex models (high-degree polynomials or many features) can overfit. Regularization adds a penalty to discourage large coefficients.",
-                "Ridge regression (L2) adds λΣwᵢ² to the loss, shrinking weights evenly toward zero but never exactly to zero. This helps with multicollinearity.",
-                "Lasso regression (L1) adds λΣ|wᵢ|, which can set some weights exactly to zero, performing automatic feature selection.",
-                "The regularization strength λ is a hyperparameter: λ=0 yields ordinary regression, very large λ over-penalizes and underfits."
-            ],
-            "visualIntuition": [
-                "A feature-coefficient chart showing bars for each weight. As regularization strength α increases, observe weights shrinking. With Lasso, some weights snap to exactly zero."
-            ],
-            "visualSuggestions": [
-                "Coefficient bar chart that animates as regularization slider moves",
-                "Side-by-side comparison of Ridge vs Lasso showing which features survive"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Ridge and Lasso regression comparison",
-                    "content": "from sklearn.linear_model import Ridge, Lasso\nfrom sklearn.datasets import load_diabetes\nfrom sklearn.model_selection import train_test_split\n\nX, y = load_diabetes(return_X_y=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)\n\nridge = Ridge(alpha=10.0)\nlasso = Lasso(alpha=10.0)\n\nridge.fit(X_train, y_train)\nlasso.fit(X_train, y_train)\n\nprint(\"Ridge coefficients:\", ridge.coef_)\nprint(\"Lasso coefficients:\", lasso.coef_)\nprint(\"\\nNotice Lasso has some coefficients exactly zero!\")"
-                }
-            ]
-        },
-        {
-            "title": "Elastic Net Regression",
-            "theory": [
-                "Elastic Net combines L1 (Lasso) and L2 (Ridge) penalties: Loss = MSE + λ₁Σ|wᵢ| + λ₂Σwᵢ².",
-                "Why it exists: Lasso fails with correlated features (picks one arbitrarily), Ridge keeps all features. Elastic Net balances both approaches.",
-                "Used heavily in high-dimensional data domains like genomics, text analysis, and finance."
-            ],
-            "visualIntuition": [
-                "Weight bars representing features. Two sliders control alpha and l1_ratio. As l1_ratio approaches 1, some bars snap to zero (Lasso behavior). As l1_ratio approaches 0, bars shrink smoothly (Ridge behavior)."
-            ],
-            "visualSuggestions": [
-                "Animated coefficient bars showing the L1/L2 trade-off as sliders move",
-                "Comparison panel showing Lasso, Ridge, and Elastic Net on same dataset"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Elastic Net regression with tunable L1/L2 ratio",
-                    "content": "from sklearn.linear_model import ElasticNet\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(\n    n_samples=100,\n    n_features=10,\n    noise=10,\n    random_state=42\n)\n\nmodel = ElasticNet(alpha=0.1, l1_ratio=0.5)\nmodel.fit(X, y)\n\nprint(\"Coefficients:\", model.coef_)\nprint(\"\\nl1_ratio=0.5 balances L1 and L2 penalties\")"
-                }
-            ]
-        },
-        {
-            "title": "Decision Tree Regression",
-            "theory": [
-                "Decision trees split feature space into regions and predict constant values per region. They learn rules, not equations.",
-                "Pros: Interpretable, handles non-linearity naturally, no feature scaling required.",
-                "Cons: Extremely high variance, overfits easily, unstable to small data changes."
-            ],
-            "visualIntuition": [
-                "2D feature space with points plotted. As max_depth increases, axis-aligned split lines appear, subdividing regions. Each region is colored by its predicted value."
-            ],
-            "visualSuggestions": [
-                "Animated splits appearing one by one as tree depth increases",
-                "Interactive depth slider with train vs test error overlay"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Decision tree regression with depth control",
-                    "content": "from sklearn.tree import DecisionTreeRegressor\nfrom sklearn.datasets import make_regression\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\ntree = DecisionTreeRegressor(max_depth=3)\ntree.fit(X, y)\ny_pred = tree.predict(X)\n\n# Sort for plotting\nsorted_idx = X.flatten().argsort()\nplt.scatter(X, y, alpha=0.5, label='Data')\nplt.plot(X[sorted_idx], y_pred[sorted_idx], color='red', linewidth=2, label='Tree Prediction')\nplt.xlabel(\"X\")\nplt.ylabel(\"y\")\nplt.title(\"Decision Tree Regression (max_depth=3)\")\nplt.legend()\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "Random Forest Regression",
-            "theory": [
-                "Random Forest builds many trees trained on bootstrapped samples with random feature subsets. Predictions are averaged across all trees.",
-                "Effect: Lower variance, higher stability, but reduced interpretability compared to single trees.",
-                "Key hyperparameters: n_estimators (number of trees), max_depth, min_samples_split."
-            ],
-            "visualIntuition": [
-                "Multiple faint prediction lines (one per tree) overlaid with a bold average prediction line. As n_estimators increases, the variance band tightens and mean stabilizes."
-            ],
-            "visualSuggestions": [
-                "Overlay of individual tree predictions converging to ensemble mean",
-                "Variance reduction visualization as more trees are added"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Random forest regression with multiple trees",
-                    "content": "from sklearn.ensemble import RandomForestRegressor\nfrom sklearn.datasets import make_regression\nimport numpy as np\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\nrf = RandomForestRegressor(\n    n_estimators=100,\n    max_depth=5,\n    random_state=42\n)\nrf.fit(X, y)\n\ny_pred = rf.predict(X)\nprint(\"Random Forest R² score:\", rf.score(X, y))"
-                }
-            ]
-        },
-        {
-            "title": "Gradient Boosting Regression",
-            "theory": [
-                "Boosting trains models sequentially. Each model corrects the errors (residuals) of the previous one. This is functional gradient descent.",
-                "Effect: Very powerful, learns hard cases first, widely used in Kaggle competitions and industry.",
-                "Key hyperparameters: n_estimators, learning_rate (shrinks each correction), max_depth."
-            ],
-            "visualIntuition": [
-                "Residual view: Step 1 shows base prediction. Each subsequent step shows residuals plotted with a new weak learner fitting them. Prediction improves incrementally as residuals shrink."
-            ],
-            "visualSuggestions": [
-                "Step-by-step animation showing residual correction at each boosting stage",
-                "Warning indicator when overfitting (train error decreasing while test error increases)"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Gradient boosting regression with configurable parameters",
-                    "content": "from sklearn.ensemble import GradientBoostingRegressor\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\ngbr = GradientBoostingRegressor(\n    n_estimators=100,\n    learning_rate=0.1,\n    max_depth=3\n)\ngbr.fit(X, y)\n\ny_pred = gbr.predict(X)\nprint(\"Gradient Boosting R² score:\", gbr.score(X, y))"
-                }
-            ]
-        },
-        {
-            "title": "Support Vector Regression (SVR)",
-            "theory": [
-                "SVR fits a function inside an ε-insensitive tube. Errors inside ε are ignored—only points outside the tube matter (support vectors).",
-                "Key ideas: Margin (controlled by C), ε-tube width (controlled by epsilon), kernel trick for non-linear relationships.",
-                "Different kernels: linear, polynomial, RBF (Gaussian). RBF is most common for non-linear data."
-            ],
-            "visualIntuition": [
-                "Prediction curve with shaded ε-tube around it. Support vectors (points touching or outside the tube) are highlighted. As ε increases, the tube widens and fewer points become support vectors."
-            ],
-            "visualSuggestions": [
-                "Animated tube width as epsilon slider changes",
-                "Kernel comparison showing linear vs RBF curve shapes"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Support vector regression with RBF kernel",
-                    "content": "from sklearn.svm import SVR\nfrom sklearn.datasets import make_regression\nimport numpy as np\n\nX, y = make_regression(n_samples=100, n_features=1, noise=10, random_state=42)\n\nsvr = SVR(kernel=\"rbf\", C=10, epsilon=0.1)\nsvr.fit(X, y)\n\ny_pred = svr.predict(X)\nprint(\"Number of support vectors:\", len(svr.support_))\nprint(\"SVR R² score:\", svr.score(X, y))"
-                }
-            ]
-        },
-        {
-            "title": "K-Nearest Neighbors (KNN) Regression",
-            "theory": [
-                "KNN regression has no training phase. Prediction is simply the average of the k nearest neighbors in the training set.",
-                "Distance defines influence. Common distance metrics: Euclidean, Manhattan, Minkowski.",
-                "Issues: Sensitive to feature scaling, suffers from curse of dimensionality, slow prediction for large datasets."
-            ],
-            "visualIntuition": [
-                "Query point highlighted with k nearest neighbors glowing. The prediction is shown as their average. As k changes, the neighborhood expands/contracts and prediction shifts smoothly."
-            ],
-            "visualSuggestions": [
-                "Interactive k slider with neighbor highlighting",
-                "Distance metric comparison showing different neighborhood shapes"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "KNN regression with configurable neighbors",
-                    "content": "from sklearn.neighbors import KNeighborsRegressor\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(n_samples=100, n_features=1, noise=10, random_state=42)\n\nknn = KNeighborsRegressor(n_neighbors=5)\nknn.fit(X, y)\n\ny_pred = knn.predict(X)\nprint(\"KNN R² score:\", knn.score(X, y))"
-                }
-            ]
-        },
-        {
-            "title": "Gaussian Process Regression (GPR)",
-            "theory": [
-                "GPR is probabilistic regression: it learns a distribution over functions, not a single function. Outputs include both mean prediction and uncertainty (standard deviation).",
-                "The kernel defines smoothness and correlation structure. Common kernels: RBF, Matérn, periodic.",
-                "Used when: data is small, uncertainty quantification matters, need confidence intervals on predictions."
-            ],
-            "visualIntuition": [
-                "Mean prediction curve with shaded confidence band (±2σ). The band widens in regions with sparse data and narrows near observed points."
-            ],
-            "visualSuggestions": [
-                "Uncertainty band that updates as data points are added/removed",
-                "Kernel parameter slider showing how smoothness affects predictions"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Gaussian process regression with uncertainty estimation",
-                    "content": "from sklearn.gaussian_process import GaussianProcessRegressor\nfrom sklearn.gaussian_process.kernels import RBF\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Small dataset for GPR\nX = np.array([1, 3, 5, 6, 7]).reshape(-1, 1)\ny = np.array([1, 2, 3, 2.5, 2])\n\nkernel = RBF(length_scale=1.0)\ngpr = GaussianProcessRegressor(kernel=kernel, alpha=0.1)\ngpr.fit(X, y)\n\nX_test = np.linspace(0, 8, 100).reshape(-1, 1)\ny_mean, y_std = gpr.predict(X_test, return_std=True)\n\nplt.scatter(X, y, color='black', zorder=5, label='Training Data')\nplt.plot(X_test, y_mean, color='blue', label='Mean Prediction')\nplt.fill_between(X_test.flatten(), y_mean - 2*y_std, y_mean + 2*y_std, alpha=0.2, label='Uncertainty (±2σ)')\nplt.legend()\nplt.title(\"Gaussian Process Regression\")\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "Evaluation Metrics",
-            "theory": [
-                "Mean Squared Error (MSE) is the average of squared residuals. It penalizes large errors heavily due to squaring.",
-                "Root MSE (RMSE) is the square root of MSE, putting the error on the same scale as the target variable.",
-                "R-squared (R²) is the proportion of variance in the target explained by the model. R² = 1 indicates perfect fit, R² = 0 means the model is no better than predicting the mean.",
-                "Additional metrics: Mean Absolute Error (MAE) for robustness to outliers, Mean Absolute Percentage Error (MAPE) for relative error."
-            ],
-            "visualIntuition": [
-                "Residual lines between data points and prediction line, colored by magnitude. A histogram of residuals showing distribution of errors."
-            ],
-            "visualSuggestions": [
-                "Animated residual shrinking as model improves",
-                "Side-by-side comparison of different metrics on same model"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Computing regression evaluation metrics",
-                    "content": "from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error\nimport numpy as np\n\ny_true = np.array([3, -0.5, 2, 7])\ny_pred = np.array([2.5, 0.0, 2, 8])\n\nmse = mean_squared_error(y_true, y_pred)\nrmse = np.sqrt(mse)\nmae = mean_absolute_error(y_true, y_pred)\nr2 = r2_score(y_true, y_pred)\n\nprint(f\"MSE:  {mse:.4f}\")\nprint(f\"RMSE: {rmse:.4f}\")\nprint(f\"MAE:  {mae:.4f}\")\nprint(f\"R²:   {r2:.4f}\")"
-                }
-            ]
+          "language": "python",
+          "description": "Polynomial regression with degree 2 on synthetic data",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.linear_model import LinearRegression\n\n# Generate synthetic data with quadratic trend\nnp.random.seed(0)\nX = np.linspace(-3, 3, 50)\ny = 0.5*X**2 + X + 2 + np.random.randn(50)*3\n\n# Prepare polynomial features\npoly = PolynomialFeatures(degree=2, include_bias=False)\nX_poly = poly.fit_transform(X.reshape(-1, 1))\n\nmodel = LinearRegression()\nmodel.fit(X_poly, y)\ny_pred = model.predict(X_poly)\n\nplt.scatter(X, y, color='lightgreen', label='Data')\nplt.plot(X, y_pred, color='red', linewidth=2, label='Degree 2 Fit')\nplt.xlabel(\"X\")\nplt.ylabel(\"y\")\nplt.title(\"Polynomial Regression\")\nplt.legend()\nplt.show()"
         }
-    ],
-    "quiz": [
-        "What is the difference between Ridge (L2) and Lasso (L1) regularization?",
-        "Why might a high-degree polynomial model have low training error but high test error?",
-        "In what situation would you choose Elastic Net over pure Lasso?",
-        "How does increasing the number of trees in Random Forest affect bias and variance?",
-        "What is the ε-insensitive tube in Support Vector Regression?",
-        "When would you prefer Gaussian Process Regression over other regression methods?",
-        "Why is KNN regression slow for large datasets during prediction?"
-    ],
-    "references": [
+      ]
+    },
+    {
+      "title": "Regularization (Ridge & Lasso)",
+      "theory": [
+        "Complex models (high-degree polynomials or many features) can overfit. Regularization adds a penalty to discourage large coefficients.",
+        "Ridge regression (L2) adds λΣwᵢ² to the loss, shrinking weights evenly toward zero but never exactly to zero. This helps with multicollinearity.",
+        "Lasso regression (L1) adds λΣ|wᵢ|, which can set some weights exactly to zero, performing automatic feature selection.",
+        "The regularization strength λ is a hyperparameter: λ=0 yields ordinary regression, very large λ over-penalizes and underfits."
+      ],
+      "visualIntuition": [
+        "A feature-coefficient chart showing bars for each weight. As regularization strength α increases, observe weights shrinking. With Lasso, some weights snap to exactly zero."
+      ],
+      "visualSuggestions": [
+        "Coefficient bar chart that animates as regularization slider moves",
+        "Side-by-side comparison of Ridge vs Lasso showing which features survive"
+      ],
+      "code": [
         {
-            "label": "Built In - Regression in Machine Learning",
-            "url": "https://builtin.com/data-science/regression-machine-learning"
+          "language": "python",
+          "description": "Ridge and Lasso regression comparison",
+          "content": "from sklearn.linear_model import Ridge, Lasso\nfrom sklearn.datasets import load_diabetes\nfrom sklearn.model_selection import train_test_split\n\nX, y = load_diabetes(return_X_y=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)\n\nridge = Ridge(alpha=10.0)\nlasso = Lasso(alpha=10.0)\n\nridge.fit(X_train, y_train)\nlasso.fit(X_train, y_train)\n\nprint(\"Ridge coefficients:\", ridge.coef_)\nprint(\"Lasso coefficients:\", lasso.coef_)\nprint(\"\\nNotice Lasso has some coefficients exactly zero!\")"
         },
         {
-            "label": "NVIDIA Technical Blog - Regression Evaluation Metrics",
-            "url": "https://developer.nvidia.com/blog/a-comprehensive-overview-of-regression-evaluation-metrics/"
-        },
-        {
-            "label": "scikit-learn - Linear Models",
-            "url": "https://scikit-learn.org/stable/modules/linear_model.html"
-        },
-        {
-            "label": "scikit-learn - Ensemble Methods",
-            "url": "https://scikit-learn.org/stable/modules/ensemble.html"
-        },
-        {
-            "label": "scikit-learn - Gaussian Processes",
-            "url": "https://scikit-learn.org/stable/modules/gaussian_process.html"
-        },
-        {
-            "label": "scikit-learn - Support Vector Machines",
-            "url": "https://scikit-learn.org/stable/modules/svm.html"
+          "title": "GridSearchCV for Ridge Regression",
+          "language": "python",
+          "code": "from sklearn.datasets import fetch_california_housing\nfrom sklearn.model_selection import GridSearchCV, RandomizedSearchCV, train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import Ridge\nfrom sklearn.metrics import r2_score, mean_squared_error\nimport numpy as np\nimport scipy.stats as st\n\nX, y = fetch_california_housing(return_X_y=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\npipe = Pipeline([('scaler', StandardScaler()), ('ridge', Ridge())])\n\nparam_grid = {\n    'ridge__alpha': [0.001, 0.01, 0.1, 1.0, 10, 100, 1000],\n    'ridge__fit_intercept': [True, False]\n}\n\ngs = GridSearchCV(pipe, param_grid, cv=5,\n    scoring='neg_mean_squared_error', n_jobs=-1, refit=True)\ngs.fit(X_train, y_train)\n\nprint(f'Best params: {gs.best_params_}')\nprint(f'Best CV RMSE: {np.sqrt(-gs.best_score_):.4f}')\n\n# Test evaluation\ny_pred = gs.best_estimator_.predict(X_test)\nrmse = np.sqrt(mean_squared_error(y_test, y_pred))\nprint(f'Test RMSE: {rmse:.3f}')\nprint(f'Test R²: {r2_score(y_test, y_pred):.3f}')\n\n# RandomizedSearchCV (faster for large spaces)\nparam_dist = {'ridge__alpha': st.loguniform(1e-4, 1e4)}\nrs = RandomizedSearchCV(pipe, param_dist, n_iter=100, cv=5,\n    scoring='r2', n_jobs=-1, random_state=42)\nrs.fit(X_train, y_train)\nprint(f'RandomSearch best alpha: {rs.best_params_[\"ridge__alpha\"]:.4f}')"
         }
-    ],
-    "_contentWarnings": [
-        "Original file contained duplicate content (sections 11-17 appeared twice with slightly different formatting) - consolidated into single topics",
-        "Mathematical formulas were corrupted (Unicode garble) - converted to readable text notation",
-        "Frontend-specific code (React, Chart.js, Framer Motion) removed - conceptual descriptions preserved",
-        "Sandbox design sections converted to visualSuggestions",
-        "Some topics had minimal theory and heavy visualization focus - balanced with additional explanations",
-        "Missing: cross-validation examples, hyperparameter tuning code, real-world dataset examples beyond diabetes"
-    ]
+      ]
+    },
+    {
+      "title": "Elastic Net Regression",
+      "theory": [
+        "Elastic Net combines L1 (Lasso) and L2 (Ridge) penalties: Loss = MSE + λ₁Σ|wᵢ| + λ₂Σwᵢ².",
+        "Why it exists: Lasso fails with correlated features (picks one arbitrarily), Ridge keeps all features. Elastic Net balances both approaches.",
+        "Used heavily in high-dimensional data domains like genomics, text analysis, and finance."
+      ],
+      "visualIntuition": [
+        "Weight bars representing features. Two sliders control alpha and l1_ratio. As l1_ratio approaches 1, some bars snap to zero (Lasso behavior). As l1_ratio approaches 0, bars shrink smoothly (Ridge behavior)."
+      ],
+      "visualSuggestions": [
+        "Animated coefficient bars showing the L1/L2 trade-off as sliders move",
+        "Comparison panel showing Lasso, Ridge, and Elastic Net on same dataset"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Elastic Net regression with tunable L1/L2 ratio",
+          "content": "from sklearn.linear_model import ElasticNet\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(\n    n_samples=100,\n    n_features=10,\n    noise=10,\n    random_state=42\n)\n\nmodel = ElasticNet(alpha=0.1, l1_ratio=0.5)\nmodel.fit(X, y)\n\nprint(\"Coefficients:\", model.coef_)\nprint(\"\\nl1_ratio=0.5 balances L1 and L2 penalties\")"
+        }
+      ]
+    },
+    {
+      "title": "Decision Tree Regression",
+      "theory": [
+        "Decision trees split feature space into regions and predict constant values per region. They learn rules, not equations.",
+        "Pros: Interpretable, handles non-linearity naturally, no feature scaling required.",
+        "Cons: Extremely high variance, overfits easily, unstable to small data changes."
+      ],
+      "visualIntuition": [
+        "2D feature space with points plotted. As max_depth increases, axis-aligned split lines appear, subdividing regions. Each region is colored by its predicted value."
+      ],
+      "visualSuggestions": [
+        "Animated splits appearing one by one as tree depth increases",
+        "Interactive depth slider with train vs test error overlay"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Decision tree regression with depth control",
+          "content": "from sklearn.tree import DecisionTreeRegressor\nfrom sklearn.datasets import make_regression\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\ntree = DecisionTreeRegressor(max_depth=3)\ntree.fit(X, y)\ny_pred = tree.predict(X)\n\n# Sort for plotting\nsorted_idx = X.flatten().argsort()\nplt.scatter(X, y, alpha=0.5, label='Data')\nplt.plot(X[sorted_idx], y_pred[sorted_idx], color='red', linewidth=2, label='Tree Prediction')\nplt.xlabel(\"X\")\nplt.ylabel(\"y\")\nplt.title(\"Decision Tree Regression (max_depth=3)\")\nplt.legend()\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Random Forest Regression",
+      "theory": [
+        "Random Forest builds many trees trained on bootstrapped samples with random feature subsets. Predictions are averaged across all trees.",
+        "Effect: Lower variance, higher stability, but reduced interpretability compared to single trees.",
+        "Key hyperparameters: n_estimators (number of trees), max_depth, min_samples_split."
+      ],
+      "visualIntuition": [
+        "Multiple faint prediction lines (one per tree) overlaid with a bold average prediction line. As n_estimators increases, the variance band tightens and mean stabilizes."
+      ],
+      "visualSuggestions": [
+        "Overlay of individual tree predictions converging to ensemble mean",
+        "Variance reduction visualization as more trees are added"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Random forest regression with multiple trees",
+          "content": "from sklearn.ensemble import RandomForestRegressor\nfrom sklearn.datasets import make_regression\nimport numpy as np\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\nrf = RandomForestRegressor(\n    n_estimators=100,\n    max_depth=5,\n    random_state=42\n)\nrf.fit(X, y)\n\ny_pred = rf.predict(X)\nprint(\"Random Forest R² score:\", rf.score(X, y))"
+        }
+      ]
+    },
+    {
+      "title": "Gradient Boosting Regression",
+      "theory": [
+        "Boosting trains models sequentially. Each model corrects the errors (residuals) of the previous one. This is functional gradient descent.",
+        "Effect: Very powerful, learns hard cases first, widely used in Kaggle competitions and industry.",
+        "Key hyperparameters: n_estimators, learning_rate (shrinks each correction), max_depth."
+      ],
+      "visualIntuition": [
+        "Residual view: Step 1 shows base prediction. Each subsequent step shows residuals plotted with a new weak learner fitting them. Prediction improves incrementally as residuals shrink."
+      ],
+      "visualSuggestions": [
+        "Step-by-step animation showing residual correction at each boosting stage",
+        "Warning indicator when overfitting (train error decreasing while test error increases)"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Gradient boosting regression with configurable parameters",
+          "content": "from sklearn.ensemble import GradientBoostingRegressor\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\ngbr = GradientBoostingRegressor(\n    n_estimators=100,\n    learning_rate=0.1,\n    max_depth=3\n)\ngbr.fit(X, y)\n\ny_pred = gbr.predict(X)\nprint(\"Gradient Boosting R² score:\", gbr.score(X, y))"
+        }
+      ]
+    },
+    {
+      "title": "Support Vector Regression (SVR)",
+      "theory": [
+        "SVR fits a function inside an ε-insensitive tube. Errors inside ε are ignored—only points outside the tube matter (support vectors).",
+        "Key ideas: Margin (controlled by C), ε-tube width (controlled by epsilon), kernel trick for non-linear relationships.",
+        "Different kernels: linear, polynomial, RBF (Gaussian). RBF is most common for non-linear data."
+      ],
+      "visualIntuition": [
+        "Prediction curve with shaded ε-tube around it. Support vectors (points touching or outside the tube) are highlighted. As ε increases, the tube widens and fewer points become support vectors."
+      ],
+      "visualSuggestions": [
+        "Animated tube width as epsilon slider changes",
+        "Kernel comparison showing linear vs RBF curve shapes"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Support vector regression with RBF kernel",
+          "content": "from sklearn.svm import SVR\nfrom sklearn.datasets import make_regression\nimport numpy as np\n\nX, y = make_regression(n_samples=100, n_features=1, noise=10, random_state=42)\n\nsvr = SVR(kernel=\"rbf\", C=10, epsilon=0.1)\nsvr.fit(X, y)\n\ny_pred = svr.predict(X)\nprint(\"Number of support vectors:\", len(svr.support_))\nprint(\"SVR R² score:\", svr.score(X, y))"
+        }
+      ]
+    },
+    {
+      "title": "K-Nearest Neighbors (KNN) Regression",
+      "theory": [
+        "KNN regression has no training phase. Prediction is simply the average of the k nearest neighbors in the training set.",
+        "Distance defines influence. Common distance metrics: Euclidean, Manhattan, Minkowski.",
+        "Issues: Sensitive to feature scaling, suffers from curse of dimensionality, slow prediction for large datasets."
+      ],
+      "visualIntuition": [
+        "Query point highlighted with k nearest neighbors glowing. The prediction is shown as their average. As k changes, the neighborhood expands/contracts and prediction shifts smoothly."
+      ],
+      "visualSuggestions": [
+        "Interactive k slider with neighbor highlighting",
+        "Distance metric comparison showing different neighborhood shapes"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "KNN regression with configurable neighbors",
+          "content": "from sklearn.neighbors import KNeighborsRegressor\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(n_samples=100, n_features=1, noise=10, random_state=42)\n\nknn = KNeighborsRegressor(n_neighbors=5)\nknn.fit(X, y)\n\ny_pred = knn.predict(X)\nprint(\"KNN R² score:\", knn.score(X, y))"
+        }
+      ]
+    },
+    {
+      "title": "Gaussian Process Regression (GPR)",
+      "theory": [
+        "GPR is probabilistic regression: it learns a distribution over functions, not a single function. Outputs include both mean prediction and uncertainty (standard deviation).",
+        "The kernel defines smoothness and correlation structure. Common kernels: RBF, Matérn, periodic.",
+        "Used when: data is small, uncertainty quantification matters, need confidence intervals on predictions."
+      ],
+      "visualIntuition": [
+        "Mean prediction curve with shaded confidence band (±2σ). The band widens in regions with sparse data and narrows near observed points."
+      ],
+      "visualSuggestions": [
+        "Uncertainty band that updates as data points are added/removed",
+        "Kernel parameter slider showing how smoothness affects predictions"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Gaussian process regression with uncertainty estimation",
+          "content": "from sklearn.gaussian_process import GaussianProcessRegressor\nfrom sklearn.gaussian_process.kernels import RBF\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Small dataset for GPR\nX = np.array([1, 3, 5, 6, 7]).reshape(-1, 1)\ny = np.array([1, 2, 3, 2.5, 2])\n\nkernel = RBF(length_scale=1.0)\ngpr = GaussianProcessRegressor(kernel=kernel, alpha=0.1)\ngpr.fit(X, y)\n\nX_test = np.linspace(0, 8, 100).reshape(-1, 1)\ny_mean, y_std = gpr.predict(X_test, return_std=True)\n\nplt.scatter(X, y, color='black', zorder=5, label='Training Data')\nplt.plot(X_test, y_mean, color='blue', label='Mean Prediction')\nplt.fill_between(X_test.flatten(), y_mean - 2*y_std, y_mean + 2*y_std, alpha=0.2, label='Uncertainty (±2σ)')\nplt.legend()\nplt.title(\"Gaussian Process Regression\")\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Evaluation Metrics",
+      "theory": [
+        "Mean Squared Error (MSE) is the average of squared residuals. It penalizes large errors heavily due to squaring.",
+        "Root MSE (RMSE) is the square root of MSE, putting the error on the same scale as the target variable.",
+        "R-squared (R²) is the proportion of variance in the target explained by the model. R² = 1 indicates perfect fit, R² = 0 means the model is no better than predicting the mean.",
+        "Additional metrics: Mean Absolute Error (MAE) for robustness to outliers, Mean Absolute Percentage Error (MAPE) for relative error."
+      ],
+      "visualIntuition": [
+        "Residual lines between data points and prediction line, colored by magnitude. A histogram of residuals showing distribution of errors."
+      ],
+      "visualSuggestions": [
+        "Animated residual shrinking as model improves",
+        "Side-by-side comparison of different metrics on same model"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Computing regression evaluation metrics",
+          "content": "from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error\nimport numpy as np\n\ny_true = np.array([3, -0.5, 2, 7])\ny_pred = np.array([2.5, 0.0, 2, 8])\n\nmse = mean_squared_error(y_true, y_pred)\nrmse = np.sqrt(mse)\nmae = mean_absolute_error(y_true, y_pred)\nr2 = r2_score(y_true, y_pred)\n\nprint(f\"MSE:  {mse:.4f}\")\nprint(f\"RMSE: {rmse:.4f}\")\nprint(f\"MAE:  {mae:.4f}\")\nprint(f\"R²:   {r2:.4f}\")"
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is the bias-variance tradeoff?",
+      "options": [
+        "Choosing between fast and slow models",
+        "High bias = underfitting, high variance = overfitting; optimal models balance both",
+        "Bias and variance are independent",
+        "It only applies to linear models"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Bias measures systematic error (model too simple). Variance measures sensitivity to training data (model too complex). The optimal model minimizes total error = bias² + variance + irreducible noise."
+    },
+    {
+      "id": "q2",
+      "question": "Why is cross-validation better than a single train-test split?",
+      "options": [
+        "It's faster",
+        "It gives a more robust estimate of model performance by testing on multiple folds",
+        "It uses less data",
+        "It eliminates overfitting completely"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A single split can be lucky or unlucky. K-fold cross-validation trains K models on different splits, giving K performance estimates. The mean and variance of these estimates reveal true model capability."
+    },
+    {
+      "id": "q3",
+      "question": "What does regularization do to model parameters?",
+      "options": [
+        "It increases them",
+        "It penalizes large parameter values, preventing overfitting by constraining model complexity",
+        "It removes parameters",
+        "It only affects the bias term"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Regularization adds a penalty term (L1 or L2) to the loss function that discourages large weights. This prevents the model from fitting noise and improves generalization to unseen data."
+    },
+    {
+      "id": "q4",
+      "question": "What is the advantage of RandomizedSearchCV over GridSearchCV?",
+      "options": [
+        "It always finds better parameters",
+        "It samples random combinations, making it much faster for large parameter spaces",
+        "It doesn't require cross-validation",
+        "It only works with tree models"
+      ],
+      "correctAnswer": 1,
+      "explanation": "GridSearchCV tries every combination (exponential growth), while RandomizedSearchCV samples a fixed number of random combinations, making it practical for large or continuous parameter spaces."
+    }
+  ],
+  "references": [
+    {
+      "label": "Built In - Regression in Machine Learning",
+      "url": "https://builtin.com/data-science/regression-machine-learning"
+    },
+    {
+      "label": "NVIDIA Technical Blog - Regression Evaluation Metrics",
+      "url": "https://developer.nvidia.com/blog/a-comprehensive-overview-of-regression-evaluation-metrics/"
+    },
+    {
+      "label": "scikit-learn - Linear Models",
+      "url": "https://scikit-learn.org/stable/modules/linear_model.html"
+    },
+    {
+      "label": "scikit-learn - Ensemble Methods",
+      "url": "https://scikit-learn.org/stable/modules/ensemble.html"
+    },
+    {
+      "label": "scikit-learn - Gaussian Processes",
+      "url": "https://scikit-learn.org/stable/modules/gaussian_process.html"
+    },
+    {
+      "label": "scikit-learn - Support Vector Machines",
+      "url": "https://scikit-learn.org/stable/modules/svm.html"
+    }
+  ],
+  "_contentWarnings": []
 }

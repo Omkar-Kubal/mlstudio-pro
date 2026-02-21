@@ -191,12 +191,66 @@
         }
     ],
     "quiz": [
-        "What does a dot product of zero between two vectors mean geometrically?",
-        "Why do inner dimensions need to match for matrix multiplication?",
-        "When does a matrix inverse not exist, and what does this mean for ML?",
-        "What is the relationship between rank and the number of linearly independent features?",
-        "Why are eigenvectors called 'invariant directions' of a transformation?",
-        "How does SVD enable dimensionality reduction through low-rank approximation?"
+        {
+            "id": "q1",
+            "question": "What does the dot product of two vectors measure geometrically?",
+            "options": [
+                "The area between them",
+                "The projection of one onto the other",
+                "Their sum",
+                "The angle only"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The dot product a·b = |a||b|cos(θ) measures the projection of one vector onto another. In ML, this quantifies similarity between feature vectors."
+        },
+        {
+            "id": "q2",
+            "question": "Why is matrix multiplication non-commutative (A×B ≠ B×A)?",
+            "options": [
+                "It's a software limitation",
+                "The inner dimensions must match, which depends on order",
+                "Matrices are always square",
+                "It's commutative for all matrices"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Matrix multiplication requires inner dimensions to match: (m×n)(n×p) = (m×p). Reversing the order changes which dimensions must align, often making the operation undefined or producing different results."
+        },
+        {
+            "id": "q3",
+            "question": "What do eigenvalues represent in PCA?",
+            "options": [
+                "The number of features",
+                "The variance explained along each principal component",
+                "The mean of the data",
+                "The number of data points"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Eigenvalues in PCA represent the amount of variance captured by each principal component. Larger eigenvalues indicate directions of greater data spread, helping identify the most informative dimensions."
+        },
+        {
+            "id": "q4",
+            "question": "Why prefer np.linalg.solve(A,b) over np.linalg.inv(A)@b?",
+            "options": [
+                "It's slower but more accurate",
+                "It's numerically more stable and faster",
+                "It only works for square matrices",
+                "There's no difference"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Computing the inverse explicitly is numerically unstable and computationally expensive. np.linalg.solve uses optimized decompositions (like LU) that are faster and produce more accurate results."
+        },
+        {
+            "id": "q5",
+            "question": "What is the curse of dimensionality?",
+            "options": [
+                "Having too few features",
+                "High-dimensional spaces become sparse, making distances meaningless",
+                "Computers can't handle more than 3 dimensions",
+                "Features always correlate in high dimensions"
+            ],
+            "correctAnswer": 1,
+            "explanation": "As dimensions increase, data points become increasingly sparse. Distances between points converge, making nearest-neighbor methods unreliable and requiring exponentially more data to maintain statistical significance."
+        }
     ],
     "references": [
         {

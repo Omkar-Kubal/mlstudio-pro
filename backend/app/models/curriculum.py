@@ -1,5 +1,12 @@
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Union
+
+class QuizItem(BaseModel):
+    id: str
+    question: str
+    options: List[str]
+    correctAnswer: int
+    explanation: str
 
 class Meta(BaseModel):
     subject: str
@@ -29,6 +36,6 @@ class LearningModule(BaseModel):
     meta: Meta
     overview: List[str]
     topics: List[Topic]
-    quiz: List[str]
+    quiz: List[Union[QuizItem, str]]
     references: List[Reference]
     _contentWarnings: Optional[List[str]] = None

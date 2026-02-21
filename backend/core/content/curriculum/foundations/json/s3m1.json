@@ -1,115 +1,225 @@
 {
-    "meta": {
-        "subject": "data-preparation",
-        "module": "data-cleaning",
-        "level": "beginner",
-        "estimatedHours": 3
+  "meta": {
+    "subject": "data-handling",
+    "module": "data-cleaning",
+    "level": "beginner",
+    "estimatedHours": 3
+  },
+  "overview": [
+    "Data cleaning is where most real-world data science work happens. This module covers strategies for handling missing data, detecting and removing duplicates, and ensuring data quality before modeling.",
+    "Clean data enables reliable models. Dirty data produces misleading results regardless of how sophisticated the algorithm is."
+  ],
+  "topics": [
+    {
+      "title": "Missing Data Strategies",
+      "theory": [
+        "Missing data is not a bug — it's a signal. Values go missing because sensors fail, users skip fields, systems merge imperfectly, business rules change. Missingness itself often contains information.",
+        "Three types of missing data: MCAR (Missing Completely At Random — safe to drop, rare in practice), MAR (Missing At Random — depends on observed variables, very common), MNAR (Missing Not At Random — depends on the missing value itself, most dangerous).",
+        "Naive imputation (fillna with mean) is dangerous: it assumes missing values are average, missingness is random, and distribution shape is preserved. All three are often false. It shrinks variance, distorts correlations, and misleads models.",
+        "Strategies: Drop (only when MCAR, small fraction, large dataset), Simple imputation (mean/median/mode — preserves central tendency, destroys variance), Missingness indicator (create is_missing column — often boosts performance), Conditional imputation (impute within groups), Model-based imputation (KNN, MICE — uses multivariate structure)."
+      ],
+      "visualIntuition": [
+        "Distribution comparison: original data vs after dropping vs after mean imputation showing variance shrinkage."
+      ],
+      "visualSuggestions": [
+        "Missing pattern matrix visualization",
+        "Imputation strategy comparison on same dataset"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Missing data strategies",
+          "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({\n    'age': [25, np.nan, 30, 35, np.nan],\n    'income': [50000, 60000, np.nan, 80000, 90000],\n    'education': ['BS', 'MS', 'PhD', np.nan, 'BS']\n})\n\n# Check missing\nprint(df.isna().sum())\n\n# Strategy 1: Drop\ndf_dropped = df.dropna()\n\n# Strategy 2: Median imputation for numeric\ndf['age'] = df['age'].fillna(df['age'].median())\n\n# Strategy 3: Missingness indicator (powerful!)\ndf['income_missing'] = df['income'].isna().astype(int)\n\n# Strategy 4: Mode imputation for categorical\ndf['education'] = df['education'].fillna(df['education'].mode()[0])"
+        },
+        {
+          "language": "python",
+          "description": "Conditional imputation by group",
+          "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({\n    'education': ['BS', 'MS', 'BS', 'MS', 'PhD'],\n    'income': [50000, np.nan, 45000, 75000, np.nan]\n})\n\n# Impute income based on education group\ndf['income'] = df.groupby('education')['income'].transform(\n    lambda x: x.fillna(x.median())\n)\nprint(df)"
+        }
+      ]
     },
-    "overview": [
-        "Data cleaning is where most real-world data science work happens. This module covers strategies for handling missing data, detecting and removing duplicates, and ensuring data quality before modeling.",
-        "Clean data enables reliable models. Dirty data produces misleading results regardless of how sophisticated the algorithm is."
-    ],
-    "topics": [
+    {
+      "title": "Duplicate Data",
+      "theory": [
+        "Duplicate data does not just waste space — it changes reality. Duplicates inflate frequencies, bias statistics, distort class balance, skew model learning, and create false confidence.",
+        "Types of duplicates: Exact duplicates (rows identical across all columns — easy to detect), Logical/semantic duplicates (same entity with slight differences — harder to detect, more dangerous), Partial duplicates (subset of columns duplicates — context decides if valid).",
+        "Duplicates cause statistical distortion (mean shifts, variance shrinks), model bias (overfitting to repeated samples, minority classes drowned out), and evaluation leakage (train-test contamination).",
+        "Detection: Use df.duplicated() for exact duplicates, check subsets with df.duplicated(subset=['key_column']), use fuzzy matching for semantic duplicates. Always inspect before dropping."
+      ],
+      "visualIntuition": [
+        "Duplicate impact visualization: distribution before and after duplicate removal showing frequency distortion."
+      ],
+      "visualSuggestions": [
+        "Duplicate detection workflow diagram",
+        "Train-test leakage from duplicates illustration"
+      ],
+      "code": [
         {
-            "title": "Missing Data Strategies",
-            "theory": [
-                "Missing data is not a bug — it's a signal. Values go missing because sensors fail, users skip fields, systems merge imperfectly, business rules change. Missingness itself often contains information.",
-                "Three types of missing data: MCAR (Missing Completely At Random — safe to drop, rare in practice), MAR (Missing At Random — depends on observed variables, very common), MNAR (Missing Not At Random — depends on the missing value itself, most dangerous).",
-                "Naive imputation (fillna with mean) is dangerous: it assumes missing values are average, missingness is random, and distribution shape is preserved. All three are often false. It shrinks variance, distorts correlations, and misleads models.",
-                "Strategies: Drop (only when MCAR, small fraction, large dataset), Simple imputation (mean/median/mode — preserves central tendency, destroys variance), Missingness indicator (create is_missing column — often boosts performance), Conditional imputation (impute within groups), Model-based imputation (KNN, MICE — uses multivariate structure)."
-            ],
-            "visualIntuition": [
-                "Distribution comparison: original data vs after dropping vs after mean imputation showing variance shrinkage."
-            ],
-            "visualSuggestions": [
-                "Missing pattern matrix visualization",
-                "Imputation strategy comparison on same dataset"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Missing data strategies",
-                    "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({\n    'age': [25, np.nan, 30, 35, np.nan],\n    'income': [50000, 60000, np.nan, 80000, 90000],\n    'education': ['BS', 'MS', 'PhD', np.nan, 'BS']\n})\n\n# Check missing\nprint(df.isna().sum())\n\n# Strategy 1: Drop\ndf_dropped = df.dropna()\n\n# Strategy 2: Median imputation for numeric\ndf['age'] = df['age'].fillna(df['age'].median())\n\n# Strategy 3: Missingness indicator (powerful!)\ndf['income_missing'] = df['income'].isna().astype(int)\n\n# Strategy 4: Mode imputation for categorical\ndf['education'] = df['education'].fillna(df['education'].mode()[0])"
-                },
-                {
-                    "language": "python",
-                    "description": "Conditional imputation by group",
-                    "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({\n    'education': ['BS', 'MS', 'BS', 'MS', 'PhD'],\n    'income': [50000, np.nan, 45000, 75000, np.nan]\n})\n\n# Impute income based on education group\ndf['income'] = df.groupby('education')['income'].transform(\n    lambda x: x.fillna(x.median())\n)\nprint(df)"
-                }
-            ]
-        },
-        {
-            "title": "Duplicate Data",
-            "theory": [
-                "Duplicate data does not just waste space — it changes reality. Duplicates inflate frequencies, bias statistics, distort class balance, skew model learning, and create false confidence.",
-                "Types of duplicates: Exact duplicates (rows identical across all columns — easy to detect), Logical/semantic duplicates (same entity with slight differences — harder to detect, more dangerous), Partial duplicates (subset of columns duplicates — context decides if valid).",
-                "Duplicates cause statistical distortion (mean shifts, variance shrinks), model bias (overfitting to repeated samples, minority classes drowned out), and evaluation leakage (train-test contamination).",
-                "Detection: Use df.duplicated() for exact duplicates, check subsets with df.duplicated(subset=['key_column']), use fuzzy matching for semantic duplicates. Always inspect before dropping."
-            ],
-            "visualIntuition": [
-                "Duplicate impact visualization: distribution before and after duplicate removal showing frequency distortion."
-            ],
-            "visualSuggestions": [
-                "Duplicate detection workflow diagram",
-                "Train-test leakage from duplicates illustration"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Detecting and removing duplicates",
-                    "content": "import pandas as pd\n\ndf = pd.DataFrame({\n    'id': [1, 1, 2, 3, 3],\n    'name': ['Alice', 'Alice', 'Bob', 'Carol', 'Carol'],\n    'value': [100, 100, 200, 300, 300]\n})\n\n# Check for duplicates\nprint(\"Duplicated rows:\")\nprint(df[df.duplicated()])\n\n# Drop exact duplicates\ndf_clean = df.drop_duplicates()\n\n# Check duplicates on subset of columns\nprint(\"\\nDuplicates by ID:\")\nprint(df[df.duplicated(subset=['id'])])\n\n# Keep first occurrence only\ndf_unique = df.drop_duplicates(subset=['id'], keep='first')"
-                }
-            ]
-        },
-        {
-            "title": "Model Result Visualization for Data Quality",
-            "theory": [
-                "Visualizing model results is part of data quality assessment. Predictions vs reality comparison answers: Where does the model fail? Is error random or structured? Are failures acceptable?",
-                "Regression diagnostics: Predicted vs Actual plot (perfect predictions on diagonal), Residual plots (reveal non-linearity, heteroscedasticity), Residual distribution (checks symmetry and bias).",
-                "Classification diagnostics: Confusion matrix (what the model confuses), Probability distributions (calibration and confidence), ROC and PR curves (threshold-independent performance).",
-                "Error analysis by subgroup reveals bias, fairness issues, and model blind spots. Always visualize before optimization — understanding failure modes is prerequisite to improving models."
-            ],
-            "visualIntuition": [
-                "Residual analysis: random scatter = good fit, pattern = model misspecification, heavy tails = outliers."
-            ],
-            "visualSuggestions": [
-                "Residual plot comparison: good fit vs poor fit",
-                "Error analysis by demographic subgroup"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Model diagnostics for data quality",
-                    "content": "import matplotlib.pyplot as plt\nimport seaborn as sns\nimport numpy as np\n\n# Simulated predictions\ny_true = np.array([3, 1, 2, 7, 4, 5, 3, 6])\ny_pred = np.array([2.5, 1.5, 2, 8, 3.5, 4.5, 3.5, 6.5])\nresiduals = y_true - y_pred\n\n# Residual distribution\nsns.histplot(residuals, kde=True)\nplt.axvline(0, color='r', linestyle='--')\nplt.title(\"Residual Distribution\")\nplt.xlabel(\"Residual\")\nplt.show()\n\n# Check for bias (mean residual should be ~0)\nprint(f\"Mean residual: {residuals.mean():.4f}\")"
-                }
-            ]
+          "language": "python",
+          "description": "Detecting and removing duplicates",
+          "content": "import pandas as pd\n\ndf = pd.DataFrame({\n    'id': [1, 1, 2, 3, 3],\n    'name': ['Alice', 'Alice', 'Bob', 'Carol', 'Carol'],\n    'value': [100, 100, 200, 300, 300]\n})\n\n# Check for duplicates\nprint(\"Duplicated rows:\")\nprint(df[df.duplicated()])\n\n# Drop exact duplicates\ndf_clean = df.drop_duplicates()\n\n# Check duplicates on subset of columns\nprint(\"\\nDuplicates by ID:\")\nprint(df[df.duplicated(subset=['id'])])\n\n# Keep first occurrence only\ndf_unique = df.drop_duplicates(subset=['id'], keep='first')"
         }
-    ],
-    "quiz": [
-        "What is the difference between MCAR, MAR, and MNAR missing data?",
-        "Why is naive mean imputation dangerous for missing data?",
-        "Why might creating a missingness indicator column improve model performance?",
-        "How can duplicate data cause train-test leakage?",
-        "What does a non-random pattern in residuals indicate about data quality?"
-    ],
-    "references": [
+      ]
+    },
+    {
+      "title": "Model Result Visualization for Data Quality",
+      "theory": [
+        "Visualizing model results is part of data quality assessment. Predictions vs reality comparison answers: Where does the model fail? Is error random or structured? Are failures acceptable?",
+        "Regression diagnostics: Predicted vs Actual plot (perfect predictions on diagonal), Residual plots (reveal non-linearity, heteroscedasticity), Residual distribution (checks symmetry and bias).",
+        "Classification diagnostics: Confusion matrix (what the model confuses), Probability distributions (calibration and confidence), ROC and PR curves (threshold-independent performance).",
+        "Error analysis by subgroup reveals bias, fairness issues, and model blind spots. Always visualize before optimization — understanding failure modes is prerequisite to improving models."
+      ],
+      "visualIntuition": [
+        "Residual analysis: random scatter = good fit, pattern = model misspecification, heavy tails = outliers."
+      ],
+      "visualSuggestions": [
+        "Residual plot comparison: good fit vs poor fit",
+        "Error analysis by demographic subgroup"
+      ],
+      "code": [
         {
-            "label": "Little & Rubin - Statistical Analysis with Missing Data",
-            "url": ""
-        },
-        {
-            "label": "scikit-learn Imputation Guide",
-            "url": "https://scikit-learn.org/stable/modules/impute.html"
-        },
-        {
-            "label": "Pandas Documentation - Missing Data",
-            "url": "https://pandas.pydata.org/docs/user_guide/missing_data.html"
+          "language": "python",
+          "description": "Model diagnostics for data quality",
+          "content": "import matplotlib.pyplot as plt\nimport seaborn as sns\nimport numpy as np\n\n# Simulated predictions\ny_true = np.array([3, 1, 2, 7, 4, 5, 3, 6])\ny_pred = np.array([2.5, 1.5, 2, 8, 3.5, 4.5, 3.5, 6.5])\nresiduals = y_true - y_pred\n\n# Residual distribution\nsns.histplot(residuals, kde=True)\nplt.axvline(0, color='r', linestyle='--')\nplt.title(\"Residual Distribution\")\nplt.xlabel(\"Residual\")\nplt.show()\n\n# Check for bias (mean residual should be ~0)\nprint(f\"Mean residual: {residuals.mean():.4f}\")"
         }
-    ],
-    "_contentWarnings": [
-        "File contained mixed topics from Visualization and Data Cleaning modules",
-        "Missing: outlier detection and treatment strategies",
-        "Missing: data validation and schema enforcement",
-        "Missing: feature encoding (one-hot, label encoding)"
-    ]
+      ]
+    },
+    {
+      "title": "Outlier Detection (IQR & Z-score)",
+      "theory": "Outliers are data points that lie far from the bulk of the distribution. They can distort statistics, bias models, and cause poor generalisation.\n\n**IQR Method (Non-parametric):**\n- Q1, Q3 = 25th and 75th percentiles\n- IQR = Q3 - Q1\n- Outlier if x < Q1 - 1.5·IQR or x > Q3 + 1.5·IQR\n- Robust to extreme values, works on skewed distributions\n\n**Z-score Method (Parametric):**\n- z = (x - μ) / σ\n- Outlier if |z| > 3 (beyond ±3 standard deviations)\n- Assumes approximately normal distribution\n- Affected by outliers themselves (mean and std are sensitive)\n\n**Modified Z-score (Robust):**\n- Uses Median Absolute Deviation (MAD) instead of std\n- z_mod = 0.6745 · (x - median) / MAD\n- Not affected by the outliers being detected\n\n| Method | Assumption | Robustness | Best For |\n|---|---|---|---|\n| IQR | None | High | Skewed distributions |\n| Z-score | Normal | Low | Symmetric data |\n| Modified Z | None | Very High | Any distribution |",
+      "code": [
+        {
+          "title": "IQR and Z-score Outlier Detection",
+          "language": "python",
+          "code": "import numpy as np\nfrom scipy import stats\nimport pandas as pd\n\ndata = np.array([10, 12, 11, 13, 100, 12, 11, 14, 13, -50, 12, 11])\n\n# IQR Method\nQ1 = np.percentile(data, 25)\nQ3 = np.percentile(data, 75)\nIQR = Q3 - Q1\nlower = Q1 - 1.5 * IQR\nupper = Q3 + 1.5 * IQR\noutliers_iqr = data[(data < lower) | (data > upper)]\nprint(f'IQR outliers: {outliers_iqr}')   # [100, -50]\n\n# Z-score Method\nz_scores = np.abs(stats.zscore(data))\noutliers_z = data[z_scores > 3]\nprint(f'Z-score outliers: {outliers_z}')\n\n# Modified Z-score (robust)\nmedian = np.median(data)\nmad = np.median(np.abs(data - median))\nmodified_z = 0.6745 * (data - median) / (mad + 1e-10)\noutliers_mz = data[np.abs(modified_z) > 3.5]\nprint(f'Modified Z outliers: {outliers_mz}')\n\n# Pandas-based IQR\ndf = pd.DataFrame({'value': data})\nQ1 = df['value'].quantile(0.25)\nQ3 = df['value'].quantile(0.75)\nIQR = Q3 - Q1\ndf_clean = df[~((df['value'] < Q1 - 1.5*IQR) | (df['value'] > Q3 + 1.5*IQR))]\nprint(f'Clean data: {df_clean[\"value\"].values}')"
+        }
+      ],
+      "visualSuggestions": [
+        "Toggle between IQR and Z-score: show which points each method flags as outliers",
+        "Box plot with fence lines and quartile labels"
+      ],
+      "visualIntuition": [
+        "Think of outlier detection as setting up a fence around your data. The IQR method builds the fence based on the middle 50% of the data, so extreme values can't move the fence. The Z-score method uses the average distance, so extreme values can pull the fence outward, potentially hiding themselves."
+      ]
+    },
+    {
+      "title": "Data Validation",
+      "theory": "Data validation ensures the dataset meets expected schema, types, ranges, and integrity constraints before modelling.\n\n**Key checks:**\n- **Required columns** — verify expected columns exist\n- **Data types** — numeric columns should be numeric, dates should parse\n- **Value ranges** — age ∈ [0, 150], percentages ∈ [0, 100]\n- **Duplicate detection** — duplicate IDs, near-duplicate rows\n- **Null rate thresholds** — flag columns with >30% missing values\n\nValidation should run at the start of every pipeline and after every data transformation.",
+      "code": [
+        {
+          "title": "Schema and Data Validation Function",
+          "language": "python",
+          "code": "import pandas as pd\n\ndef validate_dataframe(df):\n    errors = []\n    # Check required columns\n    required = ['id', 'age', 'income', 'date']\n    missing = set(required) - set(df.columns)\n    if missing:\n        errors.append(f'Missing columns: {missing}')\n    # Check data types\n    if 'age' in df and not pd.api.types.is_numeric_dtype(df['age']):\n        errors.append(\"'age' must be numeric\")\n    # Check value ranges\n    if 'age' in df:\n        invalid = df[(df['age'] < 0) | (df['age'] > 150)]\n        if len(invalid) > 0:\n            errors.append(f'{len(invalid)} rows with invalid age')\n    # Check for duplicates\n    dupes = df.duplicated('id').sum() if 'id' in df.columns else 0\n    if dupes > 0:\n        errors.append(f'{dupes} duplicate IDs')\n    # Check null rates\n    null_rates = df.isnull().mean()\n    high_null = null_rates[null_rates > 0.3]\n    if len(high_null) > 0:\n        errors.append(f'High null rate in: {high_null.index.tolist()}')\n    return errors\n\n# Example usage\ndf = pd.DataFrame({'id': [1,2,2], 'age': [25, -5, 200], 'income': [50000, None, None], 'date': ['2024-01-01']*3})\nerrors = validate_dataframe(df)\nfor e in errors:\n    print(f'  {e}')"
+        }
+      ],
+      "visualSuggestions": [
+        "Validation dashboard showing pass/fail for each check",
+        "Null rate heatmap across all columns"
+      ],
+      "visualIntuition": [
+        "Data validation is like airport security for your pipeline. Before data gets on the 'flight' to modeling, it must pass through checks — is the passport (column) present? Is the weight (range) legal? Are there duplicates in the manifest?"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is the difference between MCAR, MAR, and MNAR missing data?",
+      "options": [
+        "They differ in the amount of missing data",
+        "MCAR is random, MAR depends on observed values, MNAR depends on the missing value itself",
+        "They are different imputation methods",
+        "MCAR is worst, MNAR is best"
+      ],
+      "correctAnswer": 1,
+      "explanation": "MCAR: missingness is purely random. MAR: missingness depends on other observed columns. MNAR: missingness depends on the value that's missing (e.g., high earners skip income fields). MNAR is hardest to handle."
+    },
+    {
+      "id": "q2",
+      "question": "Why is naive mean imputation dangerous for missing data?",
+      "options": [
+        "It's computationally expensive",
+        "It assumes missingness is random, shrinks variance, and distorts correlations",
+        "It removes too many rows",
+        "It only works for categorical data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Mean imputation replaces missing values with the average, which shrinks the distribution's variance, distorts correlations between features, and assumes MCAR — all of which can mislead models."
+    },
+    {
+      "id": "q3",
+      "question": "Why might creating a missingness indicator column improve model performance?",
+      "options": [
+        "It increases the number of features",
+        "The pattern of missingness itself often contains predictive signal",
+        "It replaces the missing values",
+        "It's required by scikit-learn"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A binary is_missing column encodes that a value was missing. If missingness correlates with the target (e.g., patients skipping health questions), this signal helps the model learn patterns."
+    },
+    {
+      "id": "q4",
+      "question": "How can duplicate data cause train-test leakage?",
+      "options": [
+        "Duplicates slow down training",
+        "The same data point appears in both train and test sets, inflating metrics",
+        "Duplicates change the data types",
+        "Leakage only occurs with missing data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "If duplicates exist across train and test splits, the model has effectively 'seen' test data during training. This inflates accuracy metrics and gives false confidence in model performance."
+    },
+    {
+      "id": "q5",
+      "question": "What does a non-random pattern in residuals indicate about data quality?",
+      "options": [
+        "The model is perfect",
+        "The model is missing a systematic pattern — possible data quality issues or model misspecification",
+        "Residuals should always show patterns",
+        "The data needs more features"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Random residuals indicate a good fit. Structured patterns (curves, clusters, heteroscedasticity) suggest the model is missing something — either a non-linear relationship, a missing feature, or data quality problems."
+    },
+    {
+      "id": "q6",
+      "question": "Why is the IQR method more robust than Z-score for outlier detection?",
+      "options": [
+        "IQR uses more data points",
+        "IQR uses percentiles which are not affected by extreme values",
+        "IQR requires a normal distribution",
+        "IQR always detects more outliers"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The IQR method uses Q1 and Q3 (25th/75th percentiles) which are resistant to extreme outliers. Z-score uses mean and std which are pulled by outliers, potentially masking them."
+    },
+    {
+      "id": "q7",
+      "question": "What should you check during data validation?",
+      "options": [
+        "Only null values",
+        "Required columns, data types, value ranges, duplicates, and null rates",
+        "Only data types",
+        "Only duplicate rows"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Comprehensive data validation checks multiple dimensions: schema presence, type correctness, value range constraints, duplicate detection, and null rate thresholds."
+    }
+  ],
+  "references": [
+    {
+      "label": "Little & Rubin - Statistical Analysis with Missing Data",
+      "url": ""
+    },
+    {
+      "label": "scikit-learn Imputation Guide",
+      "url": "https://scikit-learn.org/stable/modules/impute.html"
+    },
+    {
+      "label": "Pandas Documentation - Missing Data",
+      "url": "https://pandas.pydata.org/docs/user_guide/missing_data.html"
+    }
+  ],
+  "_contentWarnings": []
 }

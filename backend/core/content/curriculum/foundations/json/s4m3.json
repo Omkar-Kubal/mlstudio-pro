@@ -1,181 +1,265 @@
 {
-    "meta": {
-        "subject": "machine-learning",
-        "module": "clustering",
-        "level": "intermediate",
-        "estimatedHours": 4
+  "meta": {
+    "subject": "machine-learning",
+    "module": "clustering",
+    "level": "intermediate",
+    "estimatedHours": 4
+  },
+  "overview": [
+    "Clustering is an unsupervised learning task that organizes data into groups where similar objects end up in the same cluster and dissimilar objects end up in different clusters.",
+    "Unlike supervised learning, clustering does not use labeled examples — the algorithm discovers the grouping structure directly from feature patterns. Clustering is inherently exploratory and iterative."
+  ],
+  "topics": [
+    {
+      "title": "Clustering Fundamentals and Distance Metrics",
+      "theory": [
+        "Clustering groups data points so those in the same cluster are 'similar' while those in different clusters are 'dissimilar'. There is no single definition of 'cluster' — different algorithms capture different notions (compact vs connected vs dense).",
+        "Distance metrics quantify how 'far apart' two points are. Euclidean distance (L2) is the straight-line distance. Manhattan distance (L1, 'taxicab') sums absolute differences along each axis.",
+        "Minkowski distance generalizes these with parameter p (p=2 gives Euclidean, p=1 gives Manhattan). The choice of metric affects cluster shapes — Euclidean makes roughly spherical clusters, Manhattan produces diamond-shaped neighborhoods.",
+        "Other metrics: Cosine similarity (angle-based, common for text), Jaccard distance (for binary/categorical data). Preprocessing note: Euclidean distance is sensitive to scale, so data often needs normalization."
+      ],
+      "visualIntuition": [
+        "Distance contours: circle (Euclidean) vs diamond (Manhattan) showing 'distance = constant'. Point neighborhoods highlight how metric choice affects connectivity."
+      ],
+      "visualSuggestions": [
+        "Minkowski slider showing unit ball shape change",
+        "Similarity matrix heatmap for different metrics"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Distance metrics comparison",
+          "content": "import numpy as np\n\np = np.array([1, 2])\nq = np.array([4, 0])\n\neuclid = np.linalg.norm(p - q)\nmanhattan = np.sum(np.abs(p - q))\n\nprint(f\"Euclidean: {euclid:.2f}\")\nprint(f\"Manhattan: {manhattan:.2f}\")"
+        }
+      ]
     },
-    "overview": [
-        "Clustering is an unsupervised learning task that organizes data into groups where similar objects end up in the same cluster and dissimilar objects end up in different clusters.",
-        "Unlike supervised learning, clustering does not use labeled examples — the algorithm discovers the grouping structure directly from feature patterns. Clustering is inherently exploratory and iterative."
-    ],
-    "topics": [
+    {
+      "title": "K-Means Clustering",
+      "theory": [
+        "K-means is a centroid-based algorithm that partitions n points into k clusters by iteratively improving cluster centers to minimize within-cluster variance.",
+        "Algorithm: 1) Initialize k random centroids (or use k-means++), 2) Assign each point to nearest centroid, 3) Recompute centroids as mean of assigned points, 4) Repeat until convergence.",
+        "K-means minimizes within-cluster sum of squared distances (WCSS/inertia). It converges quickly but may find only local optima. Results depend on initial centroids.",
+        "Limitations: Requires specifying k in advance, assumes roughly spherical clusters of similar size, sensitive to outliers."
+      ],
+      "visualIntuition": [
+        "Animation of k-means iterations: points reassign colors, centroids move toward cluster means. Voronoi regions show how boundaries shift."
+      ],
+      "visualSuggestions": [
+        "Step-through k-means iteration animation",
+        "Centroid dragging interaction"
+      ],
+      "code": [
         {
-            "title": "Clustering Fundamentals and Distance Metrics",
-            "theory": [
-                "Clustering groups data points so those in the same cluster are 'similar' while those in different clusters are 'dissimilar'. There is no single definition of 'cluster' — different algorithms capture different notions (compact vs connected vs dense).",
-                "Distance metrics quantify how 'far apart' two points are. Euclidean distance (L2) is the straight-line distance. Manhattan distance (L1, 'taxicab') sums absolute differences along each axis.",
-                "Minkowski distance generalizes these with parameter p (p=2 gives Euclidean, p=1 gives Manhattan). The choice of metric affects cluster shapes — Euclidean makes roughly spherical clusters, Manhattan produces diamond-shaped neighborhoods.",
-                "Other metrics: Cosine similarity (angle-based, common for text), Jaccard distance (for binary/categorical data). Preprocessing note: Euclidean distance is sensitive to scale, so data often needs normalization."
-            ],
-            "visualIntuition": [
-                "Distance contours: circle (Euclidean) vs diamond (Manhattan) showing 'distance = constant'. Point neighborhoods highlight how metric choice affects connectivity."
-            ],
-            "visualSuggestions": [
-                "Minkowski slider showing unit ball shape change",
-                "Similarity matrix heatmap for different metrics"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Distance metrics comparison",
-                    "content": "import numpy as np\n\np = np.array([1, 2])\nq = np.array([4, 0])\n\neuclid = np.linalg.norm(p - q)\nmanhattan = np.sum(np.abs(p - q))\n\nprint(f\"Euclidean: {euclid:.2f}\")\nprint(f\"Manhattan: {manhattan:.2f}\")"
-                }
-            ]
-        },
-        {
-            "title": "K-Means Clustering",
-            "theory": [
-                "K-means is a centroid-based algorithm that partitions n points into k clusters by iteratively improving cluster centers to minimize within-cluster variance.",
-                "Algorithm: 1) Initialize k random centroids (or use k-means++), 2) Assign each point to nearest centroid, 3) Recompute centroids as mean of assigned points, 4) Repeat until convergence.",
-                "K-means minimizes within-cluster sum of squared distances (WCSS/inertia). It converges quickly but may find only local optima. Results depend on initial centroids.",
-                "Limitations: Requires specifying k in advance, assumes roughly spherical clusters of similar size, sensitive to outliers."
-            ],
-            "visualIntuition": [
-                "Animation of k-means iterations: points reassign colors, centroids move toward cluster means. Voronoi regions show how boundaries shift."
-            ],
-            "visualSuggestions": [
-                "Step-through k-means iteration animation",
-                "Centroid dragging interaction"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "K-Means clustering",
-                    "content": "from sklearn.datasets import make_blobs\nfrom sklearn.cluster import KMeans\n\n# Generate 2D data with 3 clusters\nX, _ = make_blobs(n_samples=200, centers=3, random_state=42)\n\n# Run K-Means\nkmeans = KMeans(n_clusters=3, random_state=42)\nkmeans.fit(X)\n\nprint(\"Centroids:\\n\", kmeans.cluster_centers_)\nprint(\"Labels:\", kmeans.labels_[:10])"
-                }
-            ]
-        },
-        {
-            "title": "Choosing k: Elbow Method and Silhouette",
-            "theory": [
-                "Choosing k is a practical challenge — no one-size-fits-all rule. Common techniques: Elbow Method (plot inertia vs k, look for 'knee'), Silhouette Score (measures cluster cohesion vs separation).",
-                "Elbow Method: Inertia always decreases as k increases, but there's often a 'knee' where decrease rate sharply changes. Choose k near the elbow for balance.",
-                "Silhouette Score: For each point, silhouette = (b-a)/max(a,b) where a = avg distance to own cluster, b = avg distance to nearest other cluster. Ranges -1 to +1, higher is better. Average silhouette > 0.5 is generally good.",
-                "Other methods: Gap Statistic (compare to random), Davies-Bouldin Index (lower is better), Calinski-Harabasz Index (higher is better)."
-            ],
-            "visualIntuition": [
-                "Elbow plot with highlighted knee point. Silhouette plot showing bars for each point's score colored by cluster."
-            ],
-            "visualSuggestions": [
-                "Interactive k slider with elbow plot update",
-                "Silhouette width animation as k changes"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Elbow method and silhouette score",
-                    "content": "from sklearn.cluster import KMeans\nfrom sklearn.metrics import silhouette_score\nimport matplotlib.pyplot as plt\n\n# Elbow method\ninertias = []\nK_range = range(1, 8)\nfor k in K_range:\n    km = KMeans(n_clusters=k, random_state=0).fit(X)\n    inertias.append(km.inertia_)\n\nplt.plot(list(K_range), inertias, marker='o')\nplt.xlabel('k')\nplt.ylabel('Inertia')\nplt.title('Elbow Method')\nplt.show()\n\n# Silhouette score for k=3\nlabels = KMeans(n_clusters=3, random_state=0).fit_predict(X)\nprint(f\"Silhouette score (k=3): {silhouette_score(X, labels):.3f}\")"
-                }
-            ]
-        },
-        {
-            "title": "Hierarchical Clustering",
-            "theory": [
-                "Hierarchical clustering builds a tree of clusters (dendrogram) rather than a single flat partition. Does not require specifying k upfront.",
-                "Agglomerative (bottom-up): Start with each point as its own cluster, iteratively merge the two closest clusters until all form one big cluster. Most common approach.",
-                "Linkage criteria determine merge decisions: Single-linkage (min distance between clusters — forms chains), Complete-linkage (max distance — tighter blobs), Ward's method (minimize variance increase).",
-                "The dendrogram visualizes the hierarchy. Cutting at a chosen height yields flat clustering. Useful for nested clusters and hierarchical relationships."
-            ],
-            "visualIntuition": [
-                "Dendrogram building animation: points start separate, branches form as clusters merge. Sliding cut line shows how number of clusters changes."
-            ],
-            "visualSuggestions": [
-                "Linkage comparison showing different dendrogram shapes",
-                "Interactive dendrogram with cut height slider"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Hierarchical clustering",
-                    "content": "from sklearn.cluster import AgglomerativeClustering\nfrom scipy.cluster.hierarchy import dendrogram, linkage\nimport matplotlib.pyplot as plt\n\n# Agglomerative clustering\nmodel = AgglomerativeClustering(n_clusters=3, linkage='ward')\nlabels = model.fit_predict(X)\nprint(\"Labels:\", labels[:10])\n\n# Dendrogram\nZ = linkage(X, method='ward')\nplt.figure(figsize=(10, 4))\ndendrogram(Z, truncate_mode='lastp', p=10)\nplt.title('Hierarchical Clustering Dendrogram')\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "DBSCAN: Density-Based Clustering",
-            "theory": [
-                "DBSCAN (Density-Based Spatial Clustering of Applications with Noise) groups points in high-density regions and marks isolated points as outliers.",
-                "Parameters: ε (eps) — neighborhood radius, minPts — minimum points for dense region. Core points have ≥minPts neighbors within ε. Points reachable from core points form clusters.",
-                "DBSCAN does not require specifying k — finds however many dense regions exist. Can find arbitrary-shaped clusters and naturally identifies noise.",
-                "Limitations: Struggles with clusters of very different densities. Sensitive to parameter choice — too small ε makes everything noise, too large merges clusters."
-            ],
-            "visualIntuition": [
-                "Neighborhood circles around each point. Core points (many neighbors in circle) link to form clusters. Isolated points marked as noise."
-            ],
-            "visualSuggestions": [
-                "Interactive ε and minPts sliders with cluster update",
-                "Point status animation (noise → border → core)"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "DBSCAN clustering",
-                    "content": "from sklearn.cluster import DBSCAN\nfrom sklearn.datasets import make_moons\n\n# Non-globular data (two half-moons)\nX_moons, _ = make_moons(n_samples=200, noise=0.05, random_state=0)\n\n# DBSCAN\ndb = DBSCAN(eps=0.2, min_samples=5)\nlabels = db.fit_predict(X_moons)\n\n# -1 indicates noise\nprint(\"Unique labels:\", set(labels))\nprint(f\"Noise points: {(labels == -1).sum()}\")"
-                }
-            ]
-        },
-        {
-            "title": "Clustering Evaluation",
-            "theory": [
-                "Evaluating clustering is challenging without ground truth. Internal metrics use only data and labels; external metrics compare to known labels.",
-                "Internal: Silhouette coefficient (cohesion vs separation), Davies-Bouldin Index (lower is better — compactness vs separation), Calinski-Harabasz Index (higher is better).",
-                "External (when ground truth available): Adjusted Rand Index (ARI) measures agreement, adjusting for chance. ARI = 1 for perfect match, ~0 for random.",
-                "Density-based methods (DBSCAN) find arbitrary shapes and identify noise. Distance/centroid-based methods (K-Means) yield compact, convex clusters. Choose based on data structure."
-            ],
-            "visualIntuition": [
-                "Side-by-side comparison: K-Means on two moons (fails) vs DBSCAN (succeeds). Metric dashboard updating with algorithm and parameter changes."
-            ],
-            "visualSuggestions": [
-                "Live metric panel comparing different clusterings",
-                "Algorithm toggle with boundary animation"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Clustering evaluation metrics",
-                    "content": "from sklearn.metrics import silhouette_score, davies_bouldin_score, adjusted_rand_score\n\n# Assuming X and true labels y are available\nlabels = KMeans(n_clusters=3, random_state=42).fit_predict(X)\n\nsil = silhouette_score(X, labels)\ndbi = davies_bouldin_score(X, labels)\n# ari = adjusted_rand_score(y_true, labels)  # if ground truth available\n\nprint(f\"Silhouette Score: {sil:.3f}\")\nprint(f\"Davies-Bouldin Index: {dbi:.3f}\")"
-                }
-            ]
+          "language": "python",
+          "description": "K-Means clustering",
+          "content": "from sklearn.datasets import make_blobs\nfrom sklearn.cluster import KMeans\n\n# Generate 2D data with 3 clusters\nX, _ = make_blobs(n_samples=200, centers=3, random_state=42)\n\n# Run K-Means\nkmeans = KMeans(n_clusters=3, random_state=42)\nkmeans.fit(X)\n\nprint(\"Centroids:\\n\", kmeans.cluster_centers_)\nprint(\"Labels:\", kmeans.labels_[:10])"
         }
-    ],
-    "quiz": [
-        "How does Euclidean distance differ from Manhattan distance geometrically?",
-        "Why might K-Means find different results with different random seeds?",
-        "How do you use the elbow method to choose k?",
-        "When is hierarchical clustering preferable to K-Means?",
-        "What do the ε and minPts parameters control in DBSCAN?",
-        "Why might K-Means fail on non-globular (e.g., crescent-shaped) clusters?"
-    ],
-    "references": [
+      ]
+    },
+    {
+      "title": "Choosing k: Elbow Method and Silhouette",
+      "theory": [
+        "Choosing k is a practical challenge — no one-size-fits-all rule. Common techniques: Elbow Method (plot inertia vs k, look for 'knee'), Silhouette Score (measures cluster cohesion vs separation).",
+        "Elbow Method: Inertia always decreases as k increases, but there's often a 'knee' where decrease rate sharply changes. Choose k near the elbow for balance.",
+        "Silhouette Score: For each point, silhouette = (b-a)/max(a,b) where a = avg distance to own cluster, b = avg distance to nearest other cluster. Ranges -1 to +1, higher is better. Average silhouette > 0.5 is generally good.",
+        "Other methods: Gap Statistic (compare to random), Davies-Bouldin Index (lower is better), Calinski-Harabasz Index (higher is better)."
+      ],
+      "visualIntuition": [
+        "Elbow plot with highlighted knee point. Silhouette plot showing bars for each point's score colored by cluster."
+      ],
+      "visualSuggestions": [
+        "Interactive k slider with elbow plot update",
+        "Silhouette width animation as k changes"
+      ],
+      "code": [
         {
-            "label": "scikit-learn Clustering Guide",
-            "url": "https://scikit-learn.org/stable/modules/clustering.html"
-        },
-        {
-            "label": "Wikipedia - Cluster Analysis",
-            "url": "https://en.wikipedia.org/wiki/Cluster_analysis"
-        },
-        {
-            "label": "Wikipedia - DBSCAN",
-            "url": "https://en.wikipedia.org/wiki/DBSCAN"
+          "language": "python",
+          "description": "Elbow method and silhouette score",
+          "content": "from sklearn.cluster import KMeans\nfrom sklearn.metrics import silhouette_score\nimport matplotlib.pyplot as plt\n\n# Elbow method\ninertias = []\nK_range = range(1, 8)\nfor k in K_range:\n    km = KMeans(n_clusters=k, random_state=0).fit(X)\n    inertias.append(km.inertia_)\n\nplt.plot(list(K_range), inertias, marker='o')\nplt.xlabel('k')\nplt.ylabel('Inertia')\nplt.title('Elbow Method')\nplt.show()\n\n# Silhouette score for k=3\nlabels = KMeans(n_clusters=3, random_state=0).fit_predict(X)\nprint(f\"Silhouette score (k=3): {silhouette_score(X, labels):.3f}\")"
         }
-    ],
-    "_contentWarnings": [
-        "Mathematical formulas were corrupted in original - converted to prose",
-        "Many duplicate Wikipedia citations in original file - deduplicated",
-        "Missing: Gaussian Mixture Models (GMM)",
-        "Missing: spectral clustering",
-        "Frontend visualization suggestions reference specific technologies (D3, Framer Motion)"
-    ]
+      ]
+    },
+    {
+      "title": "Hierarchical Clustering",
+      "theory": [
+        "Hierarchical clustering builds a tree of clusters (dendrogram) rather than a single flat partition. Does not require specifying k upfront.",
+        "Agglomerative (bottom-up): Start with each point as its own cluster, iteratively merge the two closest clusters until all form one big cluster. Most common approach.",
+        "Linkage criteria determine merge decisions: Single-linkage (min distance between clusters — forms chains), Complete-linkage (max distance — tighter blobs), Ward's method (minimize variance increase).",
+        "The dendrogram visualizes the hierarchy. Cutting at a chosen height yields flat clustering. Useful for nested clusters and hierarchical relationships."
+      ],
+      "visualIntuition": [
+        "Dendrogram building animation: points start separate, branches form as clusters merge. Sliding cut line shows how number of clusters changes."
+      ],
+      "visualSuggestions": [
+        "Linkage comparison showing different dendrogram shapes",
+        "Interactive dendrogram with cut height slider"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Hierarchical clustering",
+          "content": "from sklearn.cluster import AgglomerativeClustering\nfrom scipy.cluster.hierarchy import dendrogram, linkage\nimport matplotlib.pyplot as plt\n\n# Agglomerative clustering\nmodel = AgglomerativeClustering(n_clusters=3, linkage='ward')\nlabels = model.fit_predict(X)\nprint(\"Labels:\", labels[:10])\n\n# Dendrogram\nZ = linkage(X, method='ward')\nplt.figure(figsize=(10, 4))\ndendrogram(Z, truncate_mode='lastp', p=10)\nplt.title('Hierarchical Clustering Dendrogram')\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "DBSCAN: Density-Based Clustering",
+      "theory": [
+        "DBSCAN (Density-Based Spatial Clustering of Applications with Noise) groups points in high-density regions and marks isolated points as outliers.",
+        "Parameters: ε (eps) — neighborhood radius, minPts — minimum points for dense region. Core points have ≥minPts neighbors within ε. Points reachable from core points form clusters.",
+        "DBSCAN does not require specifying k — finds however many dense regions exist. Can find arbitrary-shaped clusters and naturally identifies noise.",
+        "Limitations: Struggles with clusters of very different densities. Sensitive to parameter choice — too small ε makes everything noise, too large merges clusters."
+      ],
+      "visualIntuition": [
+        "Neighborhood circles around each point. Core points (many neighbors in circle) link to form clusters. Isolated points marked as noise."
+      ],
+      "visualSuggestions": [
+        "Interactive ε and minPts sliders with cluster update",
+        "Point status animation (noise → border → core)"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "DBSCAN clustering",
+          "content": "from sklearn.cluster import DBSCAN\nfrom sklearn.datasets import make_moons\n\n# Non-globular data (two half-moons)\nX_moons, _ = make_moons(n_samples=200, noise=0.05, random_state=0)\n\n# DBSCAN\ndb = DBSCAN(eps=0.2, min_samples=5)\nlabels = db.fit_predict(X_moons)\n\n# -1 indicates noise\nprint(\"Unique labels:\", set(labels))\nprint(f\"Noise points: {(labels == -1).sum()}\")"
+        }
+      ]
+    },
+    {
+      "title": "Clustering Evaluation",
+      "theory": [
+        "Evaluating clustering is challenging without ground truth. Internal metrics use only data and labels; external metrics compare to known labels.",
+        "Internal: Silhouette coefficient (cohesion vs separation), Davies-Bouldin Index (lower is better — compactness vs separation), Calinski-Harabasz Index (higher is better).",
+        "External (when ground truth available): Adjusted Rand Index (ARI) measures agreement, adjusting for chance. ARI = 1 for perfect match, ~0 for random.",
+        "Density-based methods (DBSCAN) find arbitrary shapes and identify noise. Distance/centroid-based methods (K-Means) yield compact, convex clusters. Choose based on data structure."
+      ],
+      "visualIntuition": [
+        "Side-by-side comparison: K-Means on two moons (fails) vs DBSCAN (succeeds). Metric dashboard updating with algorithm and parameter changes."
+      ],
+      "visualSuggestions": [
+        "Live metric panel comparing different clusterings",
+        "Algorithm toggle with boundary animation"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Clustering evaluation metrics",
+          "content": "from sklearn.metrics import silhouette_score, davies_bouldin_score, adjusted_rand_score\n\n# Assuming X and true labels y are available\nlabels = KMeans(n_clusters=3, random_state=42).fit_predict(X)\n\nsil = silhouette_score(X, labels)\ndbi = davies_bouldin_score(X, labels)\n# ari = adjusted_rand_score(y_true, labels)  # if ground truth available\n\nprint(f\"Silhouette Score: {sil:.3f}\")\nprint(f\"Davies-Bouldin Index: {dbi:.3f}\")"
+        }
+      ]
+    },
+    {
+      "title": "Gaussian Mixture Models (GMM)",
+      "theory": "GMM is a **soft/probabilistic clustering** method that models data as a mixture of K Gaussian distributions, each with its own mean (μk), covariance (Σk), and weight (πk).\n\n**Key differences from K-Means:**\n- K-Means assigns hard labels (1 cluster); GMM gives soft probabilities (60% cluster A, 40% cluster B)\n- K-Means assumes spherical clusters; GMM handles elliptical clusters via full covariance\n- K-Means uses Euclidean distance; GMM uses Mahalanobis distance (accounts for shape)\n\n**EM Algorithm (Expectation-Maximisation):**\n1. **E-step:** Compute responsibilities — P(cluster k | data point i)\n2. **M-step:** Update μk, Σk, πk using weighted data\n3. Repeat until convergence (log-likelihood stops improving)\n\n**Covariance types:** 'full' (any ellipse, most flexible), 'tied' (all clusters share one covariance), 'diag' (axis-aligned ellipses), 'spherical' (equivalent to K-Means).\n\n**Model selection:** Use BIC (Bayesian Information Criterion) or AIC to choose K. Lower = better.",
+      "code": [
+        {
+          "title": "GMM Clustering with BIC Model Selection",
+          "language": "python",
+          "code": "from sklearn.mixture import GaussianMixture\nfrom sklearn.datasets import make_blobs\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Create elliptical clusters\nnp.random.seed(42)\nX, y_true = make_blobs(n_samples=500, centers=3,\n    cluster_std=[1.0, 1.5, 0.5], random_state=42)\nX[:, 1] = X[:, 1] * 2  # stretch to make elliptical\n\n# Fit GMM\ngmm = GaussianMixture(n_components=3, covariance_type='full',\n    n_init=10, random_state=42)\ny_gmm = gmm.fit_predict(X)\n\n# Soft probabilities\nproba = gmm.predict_proba(X)  # shape: (500, 3)\nprint(f'Sample 0 probabilities: {proba[0].round(3)}')\n\n# Log-likelihood and BIC\nprint(f'Log-likelihood: {gmm.score(X):.2f}')\nprint(f'BIC: {gmm.bic(X):.0f}')\nprint(f'AIC: {gmm.aic(X):.0f}')\n\n# BIC for model selection: choose best k\nbics = []\nfor k in range(1, 8):\n    g = GaussianMixture(n_components=k, n_init=5, random_state=42)\n    g.fit(X)\n    bics.append(g.bic(X))\n\nplt.plot(range(1, 8), bics, 'bo-')\nplt.xlabel('Number of components (k)')\nplt.ylabel('BIC (lower = better)')\nplt.title('GMM Model Selection via BIC')\nplt.show()\nprint(f'Best k by BIC: {np.argmin(bics)+1}')"
+        }
+      ],
+      "visualSuggestions": [
+        "Elliptical cluster contours with transparency showing uncertainty regions",
+        "EM algorithm animation: Gaussian ellipses reshaping each iteration"
+      ],
+      "visualIntuition": [
+        "K-Means sees every data point as belonging to exactly one group — like assigning students to one and only one house. GMM is more like real life: a student might be 70% Gryffindor and 30% Ravenclaw. GMM captures this uncertainty by modeling each cluster as a bell curve that can be stretched and rotated."
+      ]
+    },
+    {
+      "title": "Spectral Clustering",
+      "theory": "Spectral Clustering uses the **eigenvalues (spectrum) of a similarity graph's Laplacian** to find clusters. It can discover non-convex, nested, and interleaving clusters that K-Means cannot.\n\n**Algorithm:**\n1. Build similarity graph (k-NN or RBF kernel)\n2. Compute graph Laplacian: L = D - W\n3. Find k smallest eigenvectors of L\n4. Embed data into k-dimensional space\n5. Apply K-Means in the new space\n\n**When to use:** Concentric circles, Swiss roll, interleaving moons — any non-globular shape.\n\n**Limitations:** O(n³) complexity for eigendecomposition, doesn't scale beyond ~10K points without approximation.",
+      "code": [
+        {
+          "title": "Spectral Clustering on Non-Convex Data",
+          "language": "python",
+          "code": "from sklearn.cluster import SpectralClustering, KMeans\nfrom sklearn.datasets import make_moons, make_circles\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Create non-convex shapes\nX_moons, y_moons = make_moons(n_samples=500, noise=0.05, random_state=42)\nX_circles, y_circles = make_circles(n_samples=500, noise=0.05, factor=0.3, random_state=42)\n\nfig, axes = plt.subplots(2, 2, figsize=(10, 8))\n\nfor i, (X, name) in enumerate([(X_moons, 'Moons'), (X_circles, 'Circles')]):\n    # K-Means fails\n    km = KMeans(n_clusters=2, random_state=42)\n    y_km = km.fit_predict(X)\n    axes[i, 0].scatter(X[:,0], X[:,1], c=y_km, cmap='Set1', s=10)\n    axes[i, 0].set_title(f'K-Means on {name}')\n    \n    # Spectral Clustering succeeds\n    sc = SpectralClustering(n_clusters=2, affinity='nearest_neighbors',\n        n_neighbors=10, random_state=42)\n    y_sc = sc.fit_predict(X)\n    axes[i, 1].scatter(X[:,0], X[:,1], c=y_sc, cmap='Set1', s=10)\n    axes[i, 1].set_title(f'Spectral on {name}')\n\nplt.tight_layout()\nplt.show()"
+        }
+      ],
+      "visualSuggestions": [
+        "Side-by-side K-Means vs Spectral on concentric circles — K-Means fails, Spectral succeeds",
+        "Graph Laplacian eigenvector embedding animation"
+      ],
+      "visualIntuition": [
+        "Imagine two concentric circles (like a bullseye). K-Means draws a straight line through the middle — it can't wrap around curves. Spectral Clustering first transforms the data using the graph structure, turning the circles into two separable blobs, then applies K-Means in that transformed space."
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is the geometric interpretation of SVM?",
+      "options": [
+        "Finding the average of all points",
+        "Finding the maximum-margin hyperplane that separates classes",
+        "Clustering similar points",
+        "Minimizing the number of features"
+      ],
+      "correctAnswer": 1,
+      "explanation": "SVM finds the hyperplane that maximizes the margin (distance) between the closest points of each class (support vectors). Maximum margin provides better generalization to unseen data."
+    },
+    {
+      "id": "q2",
+      "question": "What does the kernel trick enable in SVM?",
+      "options": [
+        "Faster training",
+        "Computing similarities in high-dimensional space without explicitly transforming data",
+        "Reducing the number of features",
+        "Handling missing data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The kernel trick computes dot products in a higher-dimensional space implicitly. This allows SVMs to find non-linear decision boundaries without the computational cost of actually transforming the data."
+    },
+    {
+      "id": "q3",
+      "question": "When is KNN preferred over parametric models?",
+      "options": [
+        "Always",
+        "When the decision boundary is complex, data is clean, and the dataset is small to medium",
+        "When you need fast predictions",
+        "When features are high-dimensional"
+      ],
+      "correctAnswer": 1,
+      "explanation": "KNN makes no assumptions about data distribution and can capture arbitrarily complex boundaries. However, it struggles with high dimensions (curse of dimensionality), noisy data, and large datasets (slow prediction)."
+    },
+    {
+      "id": "q4",
+      "question": "How does GMM differ from K-Means in cluster assignment?",
+      "options": [
+        "GMM is always more accurate",
+        "GMM gives soft probabilistic assignments while K-Means gives hard assignments",
+        "GMM only works on 2D data",
+        "K-Means uses Gaussian distributions too"
+      ],
+      "correctAnswer": 1,
+      "explanation": "GMM assigns each data point a probability of belonging to each cluster (soft assignment), while K-Means assigns each point to exactly one cluster (hard assignment)."
+    },
+    {
+      "id": "q5",
+      "question": "Why can Spectral Clustering find non-convex clusters that K-Means cannot?",
+      "options": [
+        "It uses more iterations",
+        "It transforms data using graph Laplacian eigenvectors before clustering",
+        "It uses a different distance metric",
+        "It doesn't use centroids"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Spectral Clustering builds a similarity graph, computes its Laplacian eigenvectors, and embeds data into a new space where non-convex clusters become linearly separable."
+    }
+  ],
+  "references": [
+    {
+      "label": "scikit-learn Clustering Guide",
+      "url": "https://scikit-learn.org/stable/modules/clustering.html"
+    },
+    {
+      "label": "Wikipedia - Cluster Analysis",
+      "url": "https://en.wikipedia.org/wiki/Cluster_analysis"
+    },
+    {
+      "label": "Wikipedia - DBSCAN",
+      "url": "https://en.wikipedia.org/wiki/DBSCAN"
+    }
+  ],
+  "_contentWarnings": []
 }

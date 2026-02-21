@@ -1,152 +1,268 @@
 {
-    "meta": {
-        "subject": "applied-domains",
-        "module": "computer-vision",
-        "level": "intermediate",
-        "estimatedHours": 5
+  "meta": {
+    "subject": "applied-domains",
+    "module": "computer-vision",
+    "level": "intermediate",
+    "estimatedHours": 5
+  },
+  "overview": [
+    "Computer Vision enables machines to interpret and understand visual information. This module covers image representation fundamentals and image classification — the foundational CV task.",
+    "Understanding how computers 'see' images is essential before building vision models. We explore color models, image formats, preprocessing, and the complete classification pipeline."
+  ],
+  "topics": [
+    {
+      "title": "Image Representation",
+      "theory": [
+        "Digital images are 3D tensors of shape (Height, Width, Channels). A 1920×1080 RGB image has shape (1080, 1920, 3) with 6.2 million values.",
+        "RGB color model: each pixel has Red, Green, Blue values 0-255. White=(255,255,255), Black=(0,0,0). Grayscale uses single channel with weighted average: Gray = 0.299R + 0.587G + 0.114B.",
+        "Other color spaces: HSV (Hue, Saturation, Value) — better for color-based segmentation. LAB (Lightness, A, B) — perceptually uniform. YCbCr — used in JPEG compression.",
+        "Normalization: Scale 0-255 to 0-1 for neural networks. Standardization: (x - mean) / std for zero mean, unit variance. Critical for model training."
+      ],
+      "visualIntuition": [
+        "Interactive pixel explorer: hover to see RGB values. Channel separation showing R, G, B as separate grayscale images. 3D tensor visualization."
+      ],
+      "visualSuggestions": [
+        "Color space converter with live preview",
+        "Resolution pyramid showing quality vs size tradeoff"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Exploring image representation",
+          "content": "import numpy as np\nfrom PIL import Image\nimport cv2\n\n# Load image\nimg = np.array(Image.open('sample.jpg'))  # Shape: (H, W, 3)\n\nprint(f\"Shape: {img.shape}\")\nprint(f\"Data type: {img.dtype}\")\nprint(f\"Value range: [{img.min()}, {img.max()}]\")\nprint(f\"Memory: {img.nbytes / 1024:.2f} KB\")\n\n# RGB channels\nred, green, blue = img[:,:,0], img[:,:,1], img[:,:,2]\n\n# Grayscale conversion\ngray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)\n\n# Normalization\nnormalized = img.astype('float32') / 255.0\nstandardized = (img - img.mean()) / img.std()"
+        }
+      ]
     },
-    "overview": [
-        "Computer Vision enables machines to interpret and understand visual information. This module covers image representation fundamentals and image classification — the foundational CV task.",
-        "Understanding how computers 'see' images is essential before building vision models. We explore color models, image formats, preprocessing, and the complete classification pipeline."
-    ],
-    "topics": [
+    {
+      "title": "Image Preprocessing",
+      "theory": [
+        "Resizing: Neural networks often require fixed input size (e.g., 224×224). Methods: nearest neighbor (fast, blocky), bilinear (smooth), bicubic (highest quality).",
+        "Data augmentation artificially expands training data: random flips, rotations, crops, brightness/contrast changes. Reduces overfitting and improves generalization.",
+        "Batch processing: Images processed in batches for efficiency. Tensor shape becomes (Batch, Height, Width, Channels) — e.g., (32, 224, 224, 3).",
+        "File formats: JPEG (lossy, smaller files), PNG (lossless, larger), TIFF (professional). Bit depth: 8-bit (256 levels) standard, 16-bit for medical/scientific."
+      ],
+      "visualIntuition": [
+        "Augmentation showcase: original image surrounded by augmented versions (flipped, rotated, color-jittered)."
+      ],
+      "visualSuggestions": [
+        "Interactive augmentation toggler",
+        "Interpolation comparison at different scales"
+      ],
+      "code": [
         {
-            "title": "Image Representation",
-            "theory": [
-                "Digital images are 3D tensors of shape (Height, Width, Channels). A 1920×1080 RGB image has shape (1080, 1920, 3) with 6.2 million values.",
-                "RGB color model: each pixel has Red, Green, Blue values 0-255. White=(255,255,255), Black=(0,0,0). Grayscale uses single channel with weighted average: Gray = 0.299R + 0.587G + 0.114B.",
-                "Other color spaces: HSV (Hue, Saturation, Value) — better for color-based segmentation. LAB (Lightness, A, B) — perceptually uniform. YCbCr — used in JPEG compression.",
-                "Normalization: Scale 0-255 to 0-1 for neural networks. Standardization: (x - mean) / std for zero mean, unit variance. Critical for model training."
-            ],
-            "visualIntuition": [
-                "Interactive pixel explorer: hover to see RGB values. Channel separation showing R, G, B as separate grayscale images. 3D tensor visualization."
-            ],
-            "visualSuggestions": [
-                "Color space converter with live preview",
-                "Resolution pyramid showing quality vs size tradeoff"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Exploring image representation",
-                    "content": "import numpy as np\nfrom PIL import Image\nimport cv2\n\n# Load image\nimg = np.array(Image.open('sample.jpg'))  # Shape: (H, W, 3)\n\nprint(f\"Shape: {img.shape}\")\nprint(f\"Data type: {img.dtype}\")\nprint(f\"Value range: [{img.min()}, {img.max()}]\")\nprint(f\"Memory: {img.nbytes / 1024:.2f} KB\")\n\n# RGB channels\nred, green, blue = img[:,:,0], img[:,:,1], img[:,:,2]\n\n# Grayscale conversion\ngray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)\n\n# Normalization\nnormalized = img.astype('float32') / 255.0\nstandardized = (img - img.mean()) / img.std()"
-                }
-            ]
-        },
-        {
-            "title": "Image Preprocessing",
-            "theory": [
-                "Resizing: Neural networks often require fixed input size (e.g., 224×224). Methods: nearest neighbor (fast, blocky), bilinear (smooth), bicubic (highest quality).",
-                "Data augmentation artificially expands training data: random flips, rotations, crops, brightness/contrast changes. Reduces overfitting and improves generalization.",
-                "Batch processing: Images processed in batches for efficiency. Tensor shape becomes (Batch, Height, Width, Channels) — e.g., (32, 224, 224, 3).",
-                "File formats: JPEG (lossy, smaller files), PNG (lossless, larger), TIFF (professional). Bit depth: 8-bit (256 levels) standard, 16-bit for medical/scientific."
-            ],
-            "visualIntuition": [
-                "Augmentation showcase: original image surrounded by augmented versions (flipped, rotated, color-jittered)."
-            ],
-            "visualSuggestions": [
-                "Interactive augmentation toggler",
-                "Interpolation comparison at different scales"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Image preprocessing and augmentation",
-                    "content": "from tensorflow.keras.preprocessing.image import ImageDataGenerator\nimport cv2\n\n# Resize image\nresized = cv2.resize(img, (224, 224), interpolation=cv2.INTER_AREA)\n\n# Data augmentation generator\ndatagen = ImageDataGenerator(\n    rotation_range=15,\n    horizontal_flip=True,\n    width_shift_range=0.1,\n    height_shift_range=0.1,\n    brightness_range=[0.8, 1.2],\n    zoom_range=0.1\n)\n\n# Generate augmented versions\nimg_batch = img.reshape(1, *img.shape)  # Add batch dimension\naugmented = datagen.flow(img_batch, batch_size=1)"
-                }
-            ]
-        },
-        {
-            "title": "Image Classification Pipeline",
-            "theory": [
-                "Classification assigns a label from predefined categories to an entire image. Input: image tensor. Output: probability distribution over classes.",
-                "Pipeline: Input → Preprocessing (resize, normalize) → Feature Extraction (CNN layers) → Classification (dense + softmax) → Output probabilities.",
-                "Loss function: Categorical cross-entropy measures prediction error. For true class c with predicted probability p_c: Loss = -log(p_c). Punishes confident wrong predictions.",
-                "Common architectures: Simple CNN (for learning), VGG (simple but many params), ResNet (deep with skip connections), MobileNet (efficient), EfficientNet (state-of-art)."
-            ],
-            "visualIntuition": [
-                "Classification pipeline animation: image flows through network layers, feature maps shown, final bar chart of class probabilities."
-            ],
-            "visualSuggestions": [
-                "Forward pass step-through",
-                "Probability distribution visualization"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Building an image classifier",
-                    "content": "from tensorflow import keras\nfrom tensorflow.keras import layers, models\n\ndef build_classifier(input_shape=(224, 224, 3), num_classes=10):\n    model = models.Sequential([\n        # Feature extraction\n        layers.Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=input_shape),\n        layers.BatchNormalization(),\n        layers.MaxPooling2D((2, 2)),\n        layers.Conv2D(64, (3, 3), activation='relu', padding='same'),\n        layers.BatchNormalization(),\n        layers.MaxPooling2D((2, 2)),\n        layers.Conv2D(128, (3, 3), activation='relu', padding='same'),\n        layers.GlobalAveragePooling2D(),\n        \n        # Classification\n        layers.Dense(256, activation='relu'),\n        layers.Dropout(0.5),\n        layers.Dense(num_classes, activation='softmax')\n    ])\n    \n    model.compile(\n        optimizer='adam',\n        loss='categorical_crossentropy',\n        metrics=['accuracy']\n    )\n    return model"
-                }
-            ]
-        },
-        {
-            "title": "Evaluation and Metrics",
-            "theory": [
-                "Accuracy: Correct predictions / Total predictions. Misleading for imbalanced classes. Use balanced accuracy or per-class metrics.",
-                "Confusion matrix: N×N table for N classes. Entry (i,j) = count of class i predicted as j. Reveals which classes are confused.",
-                "Precision (per class): Of predicted positives, how many are correct? Recall: Of actual positives, how many found? F1: Harmonic mean of precision and recall.",
-                "Top-K accuracy: True label in top K predictions? Essential for large class sets (ImageNet: 1000 classes, Top-5 used)."
-            ],
-            "visualIntuition": [
-                "Interactive confusion matrix heatmap. Click cell to see example misclassified images."
-            ],
-            "visualSuggestions": [
-                "Per-class precision/recall bars",
-                "t-SNE/UMAP feature visualization colored by class"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Evaluating classifier performance",
-                    "content": "from sklearn.metrics import confusion_matrix, classification_report\nimport numpy as np\n\n# After training...\ny_pred = model.predict(x_test)\ny_pred_classes = np.argmax(y_pred, axis=1)\ny_true = np.argmax(y_test, axis=1)  # If one-hot encoded\n\n# Confusion matrix\ncm = confusion_matrix(y_true, y_pred_classes)\nprint(\"Confusion Matrix:\\n\", cm)\n\n# Classification report\nprint(\"\\nClassification Report:\")\nprint(classification_report(y_true, y_pred_classes, target_names=class_names))\n\n# Top-K accuracy (manual)\ndef top_k_accuracy(y_true, y_pred_probs, k=5):\n    top_k_preds = np.argsort(y_pred_probs, axis=1)[:, -k:]\n    return np.mean([y_true[i] in top_k_preds[i] for i in range(len(y_true))])"
-                }
-            ]
-        },
-        {
-            "title": "Transfer Learning",
-            "theory": [
-                "Training from scratch requires massive data and compute. Transfer learning leverages pretrained models (trained on ImageNet with 1.2M images).",
-                "Process: Load pretrained model → Remove final classification layer → Add new layer for your classes → Fine-tune on your data.",
-                "Feature extraction: Freeze pretrained layers, only train new classification head. Fast, works with small datasets.",
-                "Fine-tuning: Unfreeze some/all pretrained layers, train with low learning rate. Better accuracy but needs more data. Risk of catastrophic forgetting."
-            ],
-            "visualIntuition": [
-                "Pretrained network with locked layers (blue) and trainable classifier (green). Data flowing through frozen feature extractor."
-            ],
-            "visualSuggestions": [
-                "Layer freezing toggle",
-                "Fine-tuning learning rate comparison"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Transfer learning with pretrained models",
-                    "content": "from tensorflow.keras.applications import ResNet50\nfrom tensorflow.keras import layers, models\n\n# Load pretrained ResNet50 (without top classification layer)\nbase_model = ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3))\n\n# Freeze pretrained layers\nbase_model.trainable = False\n\n# Add custom classification head\nmodel = models.Sequential([\n    base_model,\n    layers.GlobalAveragePooling2D(),\n    layers.Dense(256, activation='relu'),\n    layers.Dropout(0.5),\n    layers.Dense(num_classes, activation='softmax')\n])\n\nmodel.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])\n\n# Train only the new layers\nmodel.fit(train_data, epochs=10)\n\n# Optional: Fine-tune by unfreezing some layers\nbase_model.trainable = True\nfor layer in base_model.layers[:-20]:  # Freeze all except last 20 layers\n    layer.trainable = False\n\nmodel.compile(optimizer=keras.optimizers.Adam(1e-5), loss='categorical_crossentropy')"
-                }
-            ]
+          "language": "python",
+          "description": "Image preprocessing and augmentation",
+          "content": "from tensorflow.keras.preprocessing.image import ImageDataGenerator\nimport cv2\n\n# Resize image\nresized = cv2.resize(img, (224, 224), interpolation=cv2.INTER_AREA)\n\n# Data augmentation generator\ndatagen = ImageDataGenerator(\n    rotation_range=15,\n    horizontal_flip=True,\n    width_shift_range=0.1,\n    height_shift_range=0.1,\n    brightness_range=[0.8, 1.2],\n    zoom_range=0.1\n)\n\n# Generate augmented versions\nimg_batch = img.reshape(1, *img.shape)  # Add batch dimension\naugmented = datagen.flow(img_batch, batch_size=1)"
         }
-    ],
-    "quiz": [
-        "What is the shape of an RGB image tensor?",
-        "Why is normalization important for neural network training?",
-        "What is the purpose of data augmentation?",
-        "How does categorical cross-entropy work?",
-        "When would you use feature extraction vs fine-tuning in transfer learning?"
-    ],
-    "references": [
+      ]
+    },
+    {
+      "title": "Image Classification Pipeline",
+      "theory": [
+        "Classification assigns a label from predefined categories to an entire image. Input: image tensor. Output: probability distribution over classes.",
+        "Pipeline: Input → Preprocessing (resize, normalize) → Feature Extraction (CNN layers) → Classification (dense + softmax) → Output probabilities.",
+        "Loss function: Categorical cross-entropy measures prediction error. For true class c with predicted probability p_c: Loss = -log(p_c). Punishes confident wrong predictions.",
+        "Common architectures: Simple CNN (for learning), VGG (simple but many params), ResNet (deep with skip connections), MobileNet (efficient), EfficientNet (state-of-art)."
+      ],
+      "visualIntuition": [
+        "Classification pipeline animation: image flows through network layers, feature maps shown, final bar chart of class probabilities."
+      ],
+      "visualSuggestions": [
+        "Forward pass step-through",
+        "Probability distribution visualization"
+      ],
+      "code": [
         {
-            "label": "TensorFlow Image Classification Tutorial",
-            "url": "https://www.tensorflow.org/tutorials/images/classification"
-        },
-        {
-            "label": "Keras Applications (Pretrained Models)",
-            "url": "https://keras.io/api/applications/"
+          "language": "python",
+          "description": "Building an image classifier",
+          "content": "from tensorflow import keras\nfrom tensorflow.keras import layers, models\n\ndef build_classifier(input_shape=(224, 224, 3), num_classes=10):\n    model = models.Sequential([\n        # Feature extraction\n        layers.Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=input_shape),\n        layers.BatchNormalization(),\n        layers.MaxPooling2D((2, 2)),\n        layers.Conv2D(64, (3, 3), activation='relu', padding='same'),\n        layers.BatchNormalization(),\n        layers.MaxPooling2D((2, 2)),\n        layers.Conv2D(128, (3, 3), activation='relu', padding='same'),\n        layers.GlobalAveragePooling2D(),\n        \n        # Classification\n        layers.Dense(256, activation='relu'),\n        layers.Dropout(0.5),\n        layers.Dense(num_classes, activation='softmax')\n    ])\n    \n    model.compile(\n        optimizer='adam',\n        loss='categorical_crossentropy',\n        metrics=['accuracy']\n    )\n    return model"
         }
-    ],
-    "_contentWarnings": [
-        "Original file very long - condensed to core concepts",
-        "Missing: Object Detection (separate topic)",
-        "Missing: Image Segmentation (separate topic)",
-        "Missing: GradCAM and model interpretability"
-    ]
+      ]
+    },
+    {
+      "title": "Evaluation and Metrics",
+      "theory": [
+        "Accuracy: Correct predictions / Total predictions. Misleading for imbalanced classes. Use balanced accuracy or per-class metrics.",
+        "Confusion matrix: N×N table for N classes. Entry (i,j) = count of class i predicted as j. Reveals which classes are confused.",
+        "Precision (per class): Of predicted positives, how many are correct? Recall: Of actual positives, how many found? F1: Harmonic mean of precision and recall.",
+        "Top-K accuracy: True label in top K predictions? Essential for large class sets (ImageNet: 1000 classes, Top-5 used)."
+      ],
+      "visualIntuition": [
+        "Interactive confusion matrix heatmap. Click cell to see example misclassified images."
+      ],
+      "visualSuggestions": [
+        "Per-class precision/recall bars",
+        "t-SNE/UMAP feature visualization colored by class"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Evaluating classifier performance",
+          "content": "from sklearn.metrics import confusion_matrix, classification_report\nimport numpy as np\n\n# After training...\ny_pred = model.predict(x_test)\ny_pred_classes = np.argmax(y_pred, axis=1)\ny_true = np.argmax(y_test, axis=1)  # If one-hot encoded\n\n# Confusion matrix\ncm = confusion_matrix(y_true, y_pred_classes)\nprint(\"Confusion Matrix:\\n\", cm)\n\n# Classification report\nprint(\"\\nClassification Report:\")\nprint(classification_report(y_true, y_pred_classes, target_names=class_names))\n\n# Top-K accuracy (manual)\ndef top_k_accuracy(y_true, y_pred_probs, k=5):\n    top_k_preds = np.argsort(y_pred_probs, axis=1)[:, -k:]\n    return np.mean([y_true[i] in top_k_preds[i] for i in range(len(y_true))])"
+        }
+      ]
+    },
+    {
+      "title": "Transfer Learning",
+      "theory": [
+        "Training from scratch requires massive data and compute. Transfer learning leverages pretrained models (trained on ImageNet with 1.2M images).",
+        "Process: Load pretrained model → Remove final classification layer → Add new layer for your classes → Fine-tune on your data.",
+        "Feature extraction: Freeze pretrained layers, only train new classification head. Fast, works with small datasets.",
+        "Fine-tuning: Unfreeze some/all pretrained layers, train with low learning rate. Better accuracy but needs more data. Risk of catastrophic forgetting."
+      ],
+      "visualIntuition": [
+        "Pretrained network with locked layers (blue) and trainable classifier (green). Data flowing through frozen feature extractor."
+      ],
+      "visualSuggestions": [
+        "Layer freezing toggle",
+        "Fine-tuning learning rate comparison"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Transfer learning with pretrained models",
+          "content": "from tensorflow.keras.applications import ResNet50\nfrom tensorflow.keras import layers, models\n\n# Load pretrained ResNet50 (without top classification layer)\nbase_model = ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3))\n\n# Freeze pretrained layers\nbase_model.trainable = False\n\n# Add custom classification head\nmodel = models.Sequential([\n    base_model,\n    layers.GlobalAveragePooling2D(),\n    layers.Dense(256, activation='relu'),\n    layers.Dropout(0.5),\n    layers.Dense(num_classes, activation='softmax')\n])\n\nmodel.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])\n\n# Train only the new layers\nmodel.fit(train_data, epochs=10)\n\n# Optional: Fine-tune by unfreezing some layers\nbase_model.trainable = True\nfor layer in base_model.layers[:-20]:  # Freeze all except last 20 layers\n    layer.trainable = False\n\nmodel.compile(optimizer=keras.optimizers.Adam(1e-5), loss='categorical_crossentropy')"
+        }
+      ]
+    },
+    {
+      "title": "YOLO Object Detection",
+      "theory": "**YOLO (You Only Look Once)** is a single-stage object detector that processes the entire image in one forward pass — no region proposal stage. This makes it extremely fast, suitable for real-time applications.\n\n**Key concepts:**\n- Divides image into S×S grid cells\n- Each cell predicts B bounding boxes (x, y, w, h, confidence) + class probabilities\n- Uses anchor boxes: predefined aspect ratios that guide initial predictions\n- Loss = localization loss + confidence loss + classification loss\n\n**YOLOv8 (Ultralytics):** State-of-art. Keypoints, segmentation, classification, and detection in one framework.\n\n**Real-time performance:** YOLOv8-nano runs at 100+ FPS on consumer GPUs.\n\n**mAP (Mean Average Precision):** Standard metric for object detection. mAP@50 uses IoU threshold 0.5; mAP@50:95 averages over IoU thresholds 0.5 to 0.95.",
+      "code": [
+        {
+          "title": "YOLOv8 Object Detection with Ultralytics",
+          "language": "python",
+          "code": "from ultralytics import YOLO\nimport numpy as np\n\n# Load pretrained YOLOv8\nmodel = YOLO('yolov8n.pt')  # nano model (fastest)\n\n# Inference on an image\n# results = model('image.jpg', conf=0.25, iou=0.45)\n# for r in results:\n#     boxes = r.boxes.xyxy.cpu().numpy()  # [x1,y1,x2,y2]\n#     scores = r.boxes.conf.cpu().numpy()\n#     classes = r.boxes.cls.cpu().numpy()\n#     for box, score, cls in zip(boxes, scores, classes):\n#         print(f'{r.names[int(cls)]}: {score:.2f} at {box}')\n\n# Training on custom dataset\n# model.train(data='dataset.yaml', epochs=100, imgsz=640, batch=16)\n\n# Evaluation\n# metrics = model.val(data='dataset.yaml')\n# print(f'mAP@50: {metrics.box.map50:.4f}')\n# print(f'mAP@50:95: {metrics.box.map:.4f}')\n\nprint('YOLOv8 models: nano(n), small(s), medium(m), large(l), xlarge(x)')\nprint('Tasks: detect, segment, classify, pose')"
+        }
+      ],
+      "visualSuggestions": [
+        "Grid overlay on image showing which cells are responsible for which detections",
+        "IoU visualization: predicted vs ground truth box overlap"
+      ],
+      "visualIntuition": [
+        "Two-stage detectors (like R-CNN) work like an artist who first sketches potential object locations, then carefully paints each one. YOLO is like a speed painter who captures everything in one stroke — less refined but incredibly fast."
+      ]
+    },
+    {
+      "title": "U-Net Semantic Segmentation",
+      "theory": "**U-Net** is an encoder-decoder architecture with **skip connections** for pixel-wise segmentation. It was designed for medical imaging but is now the standard for any dense prediction task.\n\n**Architecture:**\n1. **Encoder (contracting path):** Repeated Conv-ReLU-Pool blocks → increasing channels, decreasing resolution\n2. **Bottleneck:** Deepest convolution block at lowest resolution\n3. **Decoder (expanding path):** Repeated Upsample-Conv blocks → decreasing channels, increasing resolution\n4. **Skip connections:** Concatenate encoder features to decoder features at matching resolutions\n\n**Why skip connections matter:** The encoder loses fine spatial detail through pooling. Skip connections give the decoder access to high-resolution features for precise boundary localisation.\n\n**Loss functions:**\n- Cross-entropy (per-pixel classification)\n- Dice Loss (overlap-based, handles class imbalance)\n- Focal Loss (emphasises hard examples)",
+      "code": [
+        {
+          "title": "U-Net Architecture Implementation",
+          "language": "python",
+          "code": "import torch\nimport torch.nn as nn\n\nclass DoubleConv(nn.Module):\n    def __init__(self, in_ch, out_ch):\n        super().__init__()\n        self.block = nn.Sequential(\n            nn.Conv2d(in_ch, out_ch, 3, padding=1),\n            nn.BatchNorm2d(out_ch),\n            nn.ReLU(inplace=True),\n            nn.Conv2d(out_ch, out_ch, 3, padding=1),\n            nn.BatchNorm2d(out_ch),\n            nn.ReLU(inplace=True))\n    def forward(self, x):\n        return self.block(x)\n\nclass UNet(nn.Module):\n    def __init__(self, in_ch=3, out_ch=1, features=[64, 128, 256, 512]):\n        super().__init__()\n        self.encoders = nn.ModuleList()\n        self.decoders = nn.ModuleList()\n        self.pool = nn.MaxPool2d(2, 2)\n        \n        # Encoder\n        for f in features:\n            self.encoders.append(DoubleConv(in_ch, f))\n            in_ch = f\n        \n        # Bottleneck\n        self.bottleneck = DoubleConv(features[-1], features[-1] * 2)\n        \n        # Decoder\n        for f in reversed(features):\n            self.decoders.append(nn.ConvTranspose2d(f*2, f, 2, stride=2))\n            self.decoders.append(DoubleConv(f*2, f))\n        \n        self.final = nn.Conv2d(features[0], out_ch, 1)\n    \n    def forward(self, x):\n        skip_connections = []\n        for enc in self.encoders:\n            x = enc(x)\n            skip_connections.append(x)\n            x = self.pool(x)\n        x = self.bottleneck(x)\n        skip_connections = skip_connections[::-1]\n        for i in range(0, len(self.decoders), 2):\n            x = self.decoders[i](x)  # upsample\n            skip = skip_connections[i // 2]\n            x = torch.cat([skip, x], dim=1)  # skip connection\n            x = self.decoders[i+1](x)  # double conv\n        return self.final(x)\n\nmodel = UNet(in_ch=3, out_ch=1)\nx = torch.randn(1, 3, 256, 256)\nprint(f'Input:  {x.shape}')\nprint(f'Output: {model(x).shape}')  # [1, 1, 256, 256]"
+        }
+      ],
+      "visualSuggestions": [
+        "U-shaped diagram showing encoder-decoder with skip connection arrows",
+        "Feature map resolution progression through the U-shape"
+      ],
+      "visualIntuition": [
+        "U-Net is shaped like the letter U. The left side zooms out — abstracting 'what is in the image'. The right side zooms back in — locating 'where exactly'. The skip connections are like stepping stones across the U, carrying fine details from the zoom-out to the zoom-in side."
+      ]
+    },
+    {
+      "title": "GradCAM — Visual Explanations",
+      "theory": "**GradCAM (Gradient-weighted Class Activation Mapping)** visualizes which regions of an input image are most important for a specific prediction. It produces a heatmap overlay showing where the model 'looks'.\n\n**Algorithm:**\n1. Forward pass → get class prediction\n2. Backward pass → compute gradients of class score w.r.t. final conv layer activations\n3. Global average pool the gradients → importance weight per channel (αk)\n4. Weight the activation maps by αk and sum → raw heatmap\n5. Apply ReLU (only positive influence) → resize to input dimensions\n\n**Key insight:** Each channel in the final conv layer represents a different learned pattern (edges, textures, object parts). The gradient tells you how much each pattern contributed to the specific class prediction.\n\n**Use cases:** Debugging model mistakes, validating that models focus on correct features, building trust in clinical/safety-critical applications.",
+      "code": [
+        {
+          "title": "GradCAM Implementation from Scratch",
+          "language": "python",
+          "code": "import torch\nimport torch.nn as nn\nimport torchvision.models as models\nimport torchvision.transforms as T\nimport numpy as np\n\ndef grad_cam(model, input_tensor, target_class, target_layer):\n    \"\"\"Compute GradCAM heatmap.\"\"\"\n    activations, gradients = {}, {}\n    \n    def fwd_hook(module, inp, out):\n        activations['value'] = out.detach()\n    def bwd_hook(module, grad_in, grad_out):\n        gradients['value'] = grad_out[0].detach()\n    \n    fwd_h = target_layer.register_forward_hook(fwd_hook)\n    bwd_h = target_layer.register_full_backward_hook(bwd_hook)\n    \n    output = model(input_tensor)\n    model.zero_grad()\n    \n    one_hot = torch.zeros_like(output)\n    one_hot[0, target_class] = 1\n    output.backward(gradient=one_hot)\n    \n    fwd_h.remove(); bwd_h.remove()\n    \n    # Global average pool of gradients -> channel weights\n    weights = gradients['value'].mean(dim=[2, 3], keepdim=True)  # (1, C, 1, 1)\n    \n    # Weighted sum of activations\n    cam = (weights * activations['value']).sum(dim=1, keepdim=True)\n    cam = torch.relu(cam)  # only positive influence\n    cam = cam / (cam.max() + 1e-8)  # normalize\n    \n    return cam.squeeze().cpu().numpy()\n\n# Usage\nmodel = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V2)\nmodel.eval()\ntarget_layer = model.layer4[-1]  # last conv block\n\nx = torch.randn(1, 3, 224, 224)  # dummy input\nheatmap = grad_cam(model, x, target_class=243, target_layer=target_layer)\nprint(f'Heatmap shape: {heatmap.shape}')  # (7, 7)\nprint(f'Heatmap range: [{heatmap.min():.2f}, {heatmap.max():.2f}]')"
+        }
+      ],
+      "visualSuggestions": [
+        "Heatmap overlay on original image showing model attention",
+        "Side-by-side GradCAM for correct vs incorrect predictions"
+      ],
+      "visualIntuition": [
+        "GradCAM is like asking the model 'show me what you're looking at'. It lights up the parts of the image that most influenced the prediction — red for high importance, blue for low. If the model classifies a dog but the heatmap highlights the background, something's wrong."
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is the ethical concern with biased training data?",
+      "options": [
+        "It slows training",
+        "Models amplify and perpetuate societal biases present in historical data",
+        "It only affects accuracy",
+        "Bias is always intentional"
+      ],
+      "correctAnswer": 1,
+      "explanation": "ML models learn patterns from data, including discriminatory ones. If historical data reflects bias (e.g., hiring data favoring certain demographics), the model will perpetuate and potentially amplify these biases."
+    },
+    {
+      "id": "q2",
+      "question": "What is the difference between fairness and accuracy?",
+      "options": [
+        "They are the same",
+        "A model can be accurate overall but unfairly discriminate against specific groups",
+        "Fairness always reduces accuracy",
+        "Accuracy guarantees fairness"
+      ],
+      "correctAnswer": 1,
+      "explanation": "High overall accuracy can mask poor performance on minorities. A model might be 95% accurate overall but 70% accurate for a specific demographic group, creating unfair disparate impact."
+    },
+    {
+      "id": "q3",
+      "question": "Why is model transparency important for accountability?",
+      "options": [
+        "It makes models faster",
+        "It enables auditing decisions, identifying errors, and building trust with affected populations",
+        "It's only required by law",
+        "Transparency reduces performance"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Transparent models allow stakeholders to verify that decisions are made for legitimate reasons, identify and correct errors, comply with regulations, and maintain public trust in automated systems."
+    },
+    {
+      "id": "q4",
+      "question": "Why is YOLO faster than two-stage detectors like R-CNN?",
+      "options": [
+        "YOLO uses a smaller image resolution",
+        "YOLO processes the entire image in a single forward pass without region proposals",
+        "YOLO only detects one object class",
+        "YOLO doesn't use neural networks"
+      ],
+      "correctAnswer": 1,
+      "explanation": "YOLO (You Only Look Once) predicts all bounding boxes and class probabilities in a single forward pass. Two-stage detectors first propose regions, then classify each one — two separate passes make them slower."
+    },
+    {
+      "id": "q5",
+      "question": "What role do skip connections play in U-Net?",
+      "options": [
+        "They speed up training",
+        "They carry high-resolution encoder features to the decoder for precise boundary localisation",
+        "They reduce the number of parameters",
+        "They prevent overfitting"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Skip connections concatenate encoder features with decoder features at matching resolutions. This gives the decoder access to fine spatial details that were lost during the encoder's downsampling, enabling precise pixel-level segmentation."
+    },
+    {
+      "id": "q6",
+      "question": "What does GradCAM use to determine which image regions are important?",
+      "options": [
+        "The input pixel values",
+        "The gradients of the class score flowing back to the final convolutional layer",
+        "The model's training data",
+        "Random sampling of image patches"
+      ],
+      "correctAnswer": 1,
+      "explanation": "GradCAM computes the gradient of a target class score with respect to the feature maps of a convolutional layer. These gradients are globally averaged to produce importance weights for each feature map channel."
+    }
+  ],
+  "references": [
+    {
+      "label": "TensorFlow Image Classification Tutorial",
+      "url": "https://www.tensorflow.org/tutorials/images/classification"
+    },
+    {
+      "label": "Keras Applications (Pretrained Models)",
+      "url": "https://keras.io/api/applications/"
+    }
+  ],
+  "_contentWarnings": []
 }

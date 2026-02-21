@@ -18,9 +18,12 @@ class CurriculumLoader:
         if not file_path.exists():
             return None
         
-        with open(file_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            return LearningModule(**data)
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                return LearningModule(**data)
+        except Exception:
+            return None
 
     def load_module_by_id(self, lesson_id: str) -> Optional[LearningModule]:
         # lesson_id expected in format "s1m1"

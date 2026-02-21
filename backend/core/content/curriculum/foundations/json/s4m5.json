@@ -75,10 +75,42 @@
         }
     ],
     "quiz": [
-        "What is the difference between a 'linear' and 'non-linear' dimensionality reduction technique?",
-        "Explain what a Principal Component represents in PCA.",
-        "Why is t-SNE considered a visualization tool rather than a general dimensionality reduction tool?",
-        "How do you determine the optimal number of components in PCA using a Scree Plot?"
+        {
+            "id": "q1",
+            "question": "What does dimensionality reduction preserve?",
+            "options": [
+                "All original features",
+                "The most important variance or structure in fewer dimensions",
+                "The exact data values",
+                "The number of data points"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Dimensionality reduction (PCA, t-SNE) projects data into fewer dimensions while preserving the most important patterns — variance for PCA, local neighborhood structure for t-SNE."
+        },
+        {
+            "id": "q2",
+            "question": "When should you use PCA vs t-SNE?",
+            "options": [
+                "Always use t-SNE",
+                "PCA for linear relationships and preprocessing; t-SNE for visualization of non-linear structure",
+                "They are interchangeable",
+                "PCA for small datasets, t-SNE for large"
+            ],
+            "correctAnswer": 1,
+            "explanation": "PCA finds linear projections maximizing variance — good for preprocessing and feature reduction. t-SNE preserves local non-linear structure — excellent for 2D visualization but not for preprocessing."
+        },
+        {
+            "id": "q3",
+            "question": "Why can't t-SNE be used for feature engineering in production?",
+            "options": [
+                "It's too slow",
+                "It's non-deterministic, non-parametric, and can't transform new data points",
+                "It only works with images",
+                "It requires too much memory"
+            ],
+            "correctAnswer": 1,
+            "explanation": "t-SNE is a visualization tool, not a feature reducer. It has no parametric mapping (can't transform new points), results change between runs, and the axes have no interpretable meaning."
+        }
     ],
     "references": [
         {

@@ -75,10 +75,42 @@
         }
     ],
     "quiz": [
-        "What is the 'Vanishing Gradient' problem and why does it affect RNNs?",
-        "How do Gates in an LSTM prevent memory loss over long sequences?",
-        "What is the difference between an RNN and a Transformer in terms of how they process sequences?",
-        "Describe the purpose of the 'Forget Gate' in an LSTM."
+        {
+            "id": "q1",
+            "question": "What is feature drift vs concept drift?",
+            "options": [
+                "They are the same",
+                "Feature drift: input distribution changes; concept drift: the relationship between inputs and target changes",
+                "Feature drift is worse",
+                "Concept drift only happens with time series"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Feature drift means inputs change (e.g., customer demographics shift). Concept drift means the underlying pattern changes (e.g., fraud tactics evolve). Both degrade model performance but require different detection and response strategies."
+        },
+        {
+            "id": "q2",
+            "question": "Why is shadow deployment useful before full rollout?",
+            "options": [
+                "It saves compute resources",
+                "It runs the new model in parallel without serving its predictions, allowing comparison against the production model",
+                "It replaces A/B testing",
+                "It's only for testing speed"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Shadow mode routes real traffic to both old and new models, but only serves old model predictions. You compare outputs without risking real users. This catches problems before they affect anyone."
+        },
+        {
+            "id": "q3",
+            "question": "What metrics should you monitor for a deployed model?",
+            "options": [
+                "Only accuracy",
+                "Prediction distribution, latency, error rates, feature distributions, data quality, and business KPIs",
+                "Only server uptime",
+                "Only confusion matrix"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Monitoring must cover: data quality (missing values, schema changes), feature distributions (drift detection), model behavior (prediction distribution, latency), and business impact (revenue, user engagement)."
+        }
     ],
     "references": [
         {

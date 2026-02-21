@@ -75,10 +75,42 @@
         }
     ],
     "quiz": [
-        "Why is sub-word tokenization preferred over word-level tokenization in modern LLMs?",
-        "Explain the semantic significance of word distance in an embedding space.",
-        "What is 'Self-Attention' and how does it solve the limitations of sequential models (RNNs)?",
-        "What is the difference between Lemmatization and Stemming?"
+        {
+            "id": "q1",
+            "question": "What is differential privacy?",
+            "options": [
+                "Encrypting model weights",
+                "A mathematical guarantee that individual data points cannot be identified from model outputs",
+                "Anonymizing names in datasets",
+                "Using private cloud servers"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Differential privacy adds calibrated noise to computations, providing mathematical guarantees that the output of an analysis is essentially the same whether or not any individual's data is included."
+        },
+        {
+            "id": "q2",
+            "question": "What is federated learning?",
+            "options": [
+                "Training one large model",
+                "Training models on decentralized data without sharing raw data — models travel to data, not data to models",
+                "Using multiple GPUs",
+                "A type of transfer learning"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Federated learning trains models across multiple devices/organizations. Each participant trains locally and shares only model updates (gradients), keeping raw data private. Used by Google Keyboard, Apple Siri."
+        },
+        {
+            "id": "q3",
+            "question": "Why is data anonymization insufficient for privacy?",
+            "options": [
+                "It's too complex to implement",
+                "Re-identification attacks can combine 'anonymous' datasets with external data to identify individuals",
+                "It removes too much useful data",
+                "It's always sufficient"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Research shows that 87% of Americans can be uniquely identified by ZIP code, birth date, and gender alone. Anonymized datasets can be cross-referenced with public data for re-identification."
+        }
     ],
     "references": [
         {

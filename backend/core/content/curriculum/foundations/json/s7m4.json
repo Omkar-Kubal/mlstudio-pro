@@ -75,10 +75,54 @@
         }
     ],
     "quiz": [
-        "What is the advantage of using Docker for model deployment?",
-        "Compare REST APIs vs gRPC for high-performance model serving.",
-        "When would you choose Batch inference over Real-time inference?",
-        "Explain the role of a 'Load Balancer' in a deployed ML system."
+        {
+            "id": "q1",
+            "question": "What is the advantage of using Docker for model deployment?",
+            "options": [
+                "It makes models more accurate",
+                "It packages the model with its exact dependencies and environment, ensuring consistent behavior everywhere",
+                "It replaces Kubernetes",
+                "It's only for Python"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Docker containers bundle the model, code, libraries, and OS dependencies into an isolated, reproducible unit. The same container runs identically on a developer's laptop, CI/CD, and production servers."
+        },
+        {
+            "id": "q2",
+            "question": "When would you choose batch inference over real-time inference?",
+            "options": [
+                "Never",
+                "When predictions aren't time-sensitive (daily recommendations, weekly reports) and you want lower infrastructure cost",
+                "Batch is always faster",
+                "When you need sub-second latency"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Batch inference processes accumulated data periodically. It's cheaper (no always-on servers), simpler, and efficient for non-urgent predictions. Real-time is needed only when decisions must be immediate."
+        },
+        {
+            "id": "q3",
+            "question": "Compare REST APIs vs gRPC for model serving.",
+            "options": [
+                "REST is always better",
+                "REST is simpler and widely supported; gRPC offers better performance through binary serialization and HTTP/2",
+                "They are identical",
+                "gRPC doesn't support ML"
+            ],
+            "correctAnswer": 1,
+            "explanation": "REST uses JSON/HTTP — easy to debug and universal. gRPC uses Protocol Buffers (binary, smaller) and HTTP/2 (multiplexing, streaming) — 2-10x faster for high-throughput ML serving. Choose based on performance needs."
+        },
+        {
+            "id": "q4",
+            "question": "What is the role of a load balancer in a deployed ML system?",
+            "options": [
+                "To train multiple models",
+                "To distribute prediction requests across multiple model server instances, ensuring availability and performance",
+                "To balance the dataset",
+                "To reduce model size"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Load balancers distribute incoming prediction requests across multiple server replicas. This prevents any single server from being overwhelmed, enables horizontal scaling, and provides failover if a server crashes."
+        }
     ],
     "references": [
         {

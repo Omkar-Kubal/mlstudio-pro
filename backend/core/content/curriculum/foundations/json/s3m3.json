@@ -75,10 +75,42 @@
         }
     ],
     "quiz": [
-        "What is 'Data Leakage' and how does it affect model evaluation?",
-        "When is it more appropriate to use K-Fold Cross-Validation instead of a simple train/test split?",
-        "Explain the importance of stratified splitting for imbalanced datasets.",
-        "What is the role of the validation set compared to the test set?"
+        {
+            "id": "q1",
+            "question": "What is exploratory data analysis (EDA) and why does it precede modeling?",
+            "options": [
+                "It's optional",
+                "EDA reveals data quality issues, distributions, and relationships before you waste time on a model that will fail",
+                "It replaces modeling",
+                "It's the same as feature engineering"
+            ],
+            "correctAnswer": 1,
+            "explanation": "EDA discovers the data's story: Are there outliers? Skewed distributions? Correlated features? Missing patterns? These findings directly inform preprocessing decisions and model choices."
+        },
+        {
+            "id": "q2",
+            "question": "When should you use Spearman over Pearson correlation?",
+            "options": [
+                "Always",
+                "When relationships are monotonic but not necessarily linear, or data contains outliers",
+                "Only for categorical data",
+                "Pearson is always better"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Pearson measures linear correlation and is sensitive to outliers. Spearman measures monotonic rank correlation — it captures 'as X increases, Y increases' regardless of linearity and is robust to outliers."
+        },
+        {
+            "id": "q3",
+            "question": "What does a box plot reveal that a histogram might miss?",
+            "options": [
+                "The exact data values",
+                "Quartiles, median, and outliers in a compact format — making it easy to compare distributions across groups",
+                "The distribution shape",
+                "Nothing different"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Box plots show the median, IQR, and outliers compactly. They excel at comparing distributions across groups (side-by-side boxes). Histograms show shape better but are harder to compare across many groups."
+        }
     ],
     "references": [
         {

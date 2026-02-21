@@ -75,10 +75,54 @@
         }
     ],
     "quiz": [
-        "What does the gradient vector represent in the context of an objective function?",
-        "Why is selecting an appropriate learning rate critical for model training?",
-        "What is the difference between Gradient Descent and Stochastic Gradient Descent (SGD)?",
-        "Explain how the Chain Rule is used in backpropagation."
+        {
+            "id": "q1",
+            "question": "What does the gradient vector represent in the context of an objective function?",
+            "options": [
+                "The minimum value of the function",
+                "The direction of steepest increase and its magnitude",
+                "The second derivative",
+                "The learning rate"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The gradient is a vector of partial derivatives pointing in the direction of steepest ascent. Its magnitude indicates how steep the slope is. Gradient descent moves in the opposite direction to minimize the loss."
+        },
+        {
+            "id": "q2",
+            "question": "Why is selecting an appropriate learning rate critical for model training?",
+            "options": [
+                "It only affects training speed",
+                "Too high → overshooting minima; too low → extremely slow convergence or getting stuck",
+                "It determines the model architecture",
+                "Learning rate doesn't affect convergence"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Learning rate controls step size. Too large: steps overshoot the minimum, causing divergence. Too small: training takes forever or gets trapped in shallow local minima. Adaptive methods (Adam) help but don't eliminate the need for tuning."
+        },
+        {
+            "id": "q3",
+            "question": "What is the difference between Gradient Descent and Stochastic Gradient Descent?",
+            "options": [
+                "They are identical",
+                "GD uses the full dataset per update; SGD uses one sample, trading accuracy for speed and noise",
+                "SGD is always better",
+                "GD is faster"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Full-batch GD computes exact gradients (stable but slow). SGD uses single samples (fast, noisy). The noise in SGD can actually help escape local minima. Mini-batch SGD is the practical compromise."
+        },
+        {
+            "id": "q4",
+            "question": "How is the Chain Rule used in backpropagation?",
+            "options": [
+                "To compute the loss function",
+                "To decompose gradients of composed functions, propagating error from output back through each layer",
+                "To initialize weights",
+                "To regularize parameters"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Neural networks are compositions of functions (layers). The chain rule breaks dL/dw into a product of local derivatives: dL/dy × dy/dz × dz/dw, enabling efficient gradient computation through the entire network."
+        }
     ],
     "references": [
         {

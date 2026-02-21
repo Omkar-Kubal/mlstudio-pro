@@ -196,12 +196,66 @@
         }
     ],
     "quiz": [
-        "Why is Python's dynamic typing both a benefit and a risk in data science?",
-        "What is the difference between a list and a tuple, and when would you use each?",
-        "Why is copy vs reference behavior critical in data pipelines?",
-        "When should you use a while loop instead of a for loop?",
-        "What is the difference between a pure function and an impure function?",
-        "Why should you avoid except: pass in data science code?"
+        {
+            "id": "q1",
+            "question": "What is the difference between a Python list and a NumPy array?",
+            "options": [
+                "Lists are faster for math operations",
+                "NumPy arrays enforce homogeneous types and support vectorized operations",
+                "Lists support broadcasting",
+                "There is no difference"
+            ],
+            "correctAnswer": 1,
+            "explanation": "NumPy arrays store elements of a single type contiguously in memory, enabling vectorized operations that are orders of magnitude faster than Python loops over lists."
+        },
+        {
+            "id": "q2",
+            "question": "Why should you avoid Python loops when working with NumPy?",
+            "options": [
+                "Loops are not supported in Python",
+                "Vectorized operations are 10-100x faster due to C-level execution",
+                "Loops produce different results",
+                "NumPy doesn't work with loops"
+            ],
+            "correctAnswer": 1,
+            "explanation": "NumPy's vectorized operations execute in optimized C code, avoiding Python's interpreter overhead. A loop over 1M elements might take seconds; the equivalent vectorized operation takes milliseconds."
+        },
+        {
+            "id": "q3",
+            "question": "What does broadcasting do in NumPy?",
+            "options": [
+                "It copies arrays to match sizes for element-wise operations",
+                "It broadcasts data over a network",
+                "It increases array dimensions randomly",
+                "It only works with same-shaped arrays"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Broadcasting automatically expands smaller arrays to match larger ones for element-wise operations, following specific rules about compatible dimensions. This avoids explicit copying and saves memory."
+        },
+        {
+            "id": "q4",
+            "question": "What does array.shape tell you?",
+            "options": [
+                "The data type of elements",
+                "The dimensions and size along each axis",
+                "The total memory used",
+                "The number of unique values"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Shape returns a tuple indicating the size along each axis. For example, (100, 4) means 100 rows and 4 columns. Understanding shape is critical for debugging dimension mismatches in ML pipelines."
+        },
+        {
+            "id": "q5",
+            "question": "Why is slicing preferred over copying in NumPy?",
+            "options": [
+                "Slicing creates a new array",
+                "Slicing returns a view (no copy), saving memory",
+                "Slicing is slower",
+                "Copying preserves data types better"
+            ],
+            "correctAnswer": 1,
+            "explanation": "NumPy slices return views — references to the same memory. This is fast and memory-efficient but means modifying a slice modifies the original. Use .copy() when you need independence."
+        }
     ],
     "references": [
         {

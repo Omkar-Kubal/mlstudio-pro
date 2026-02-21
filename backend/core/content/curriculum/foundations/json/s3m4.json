@@ -75,10 +75,42 @@
         }
     ],
     "quiz": [
-        "What is the main disadvantage of Wrapper methods compared to Filter methods?",
-        "Explain how L1 Regularization (Lasso) achieves automatic feature selection.",
-        "Why might a model perform WORSE if too many irrelevant features are included?",
-        "What is 'Mutual Information' and when would you use it over Pearson correlation?"
+        {
+            "id": "q1",
+            "question": "What is the purpose of a train-validation-test split?",
+            "options": [
+                "To use less data",
+                "Train for learning, validation for hyperparameter tuning, test for final unbiased evaluation",
+                "To make training faster",
+                "All three are used for training"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The train set fits the model. The validation set tunes hyperparameters without touching test data. The test set provides a final, unbiased performance estimate. Using test data for tuning invalidates your evaluation."
+        },
+        {
+            "id": "q2",
+            "question": "Why is stratified splitting important for imbalanced datasets?",
+            "options": [
+                "It's faster",
+                "It preserves the class distribution in each split, preventing folds with no minority class samples",
+                "It only matters for regression",
+                "It increases dataset size"
+            ],
+            "correctAnswer": 1,
+            "explanation": "With 5% positive class, a random split might create folds with 0% or 10% positives. Stratified splitting ensures each fold has ~5% positives, giving reliable performance estimates for minority classes."
+        },
+        {
+            "id": "q3",
+            "question": "What is time-series cross-validation and when is it needed?",
+            "options": [
+                "Standard k-fold on time data",
+                "A forward-walking split where training only uses past data, respecting temporal order",
+                "It's the same as random splitting",
+                "Only for stock prediction"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Time series data has temporal dependencies. Standard k-fold would use future data to predict past (leakage). Time-series CV uses expanding or sliding windows: train on past, validate on future, mimicking real deployment."
+        }
     ],
     "references": [
         {

@@ -1,180 +1,523 @@
 {
-    "meta": {
-        "subject": "programming",
-        "module": "pandas",
-        "level": "beginner",
-        "estimatedHours": 4
+  "meta": {
+    "subject": "programming",
+    "module": "pandas",
+    "level": "beginner",
+    "estimatedHours": 4
+  },
+  "overview": [
+    "Pandas is the workhorse of data manipulation in Python. This module covers the essential operations: reading data, indexing and filtering, grouping and aggregation, merging datasets, and handling missing data.",
+    "Pandas builds on NumPy arrays to provide labeled, flexible data structures. DataFrames and Series make data manipulation intuitive, readable, and efficient — essential skills for every data scientist."
+  ],
+  "topics": [
+    {
+      "title": "Reading & Writing Data",
+      "theory": [
+        "How datasets enter your workflow matters. Formats (CSV, Excel, JSON, Parquet) are not equivalent — they influence structure and types differently.",
+        "Schema inference can be wrong. Explicit dtypes prevent downstream bugs. If data is wrong at load time, everything after is compromised.",
+        "This topic teaches how formats influence structure, how data integrity can be lost at ingestion, and why explicit type specification matters.",
+        "\n",
+        "\n",
+        "*",
+        "*",
+        "F",
+        "i",
+        "l",
+        "e",
+        " ",
+        "F",
+        "o",
+        "r",
+        "m",
+        "a",
+        "t",
+        " ",
+        "C",
+        "o",
+        "m",
+        "p",
+        "a",
+        "r",
+        "i",
+        "s",
+        "o",
+        "n",
+        ":",
+        "*",
+        "*",
+        "\n",
+        "|",
+        " ",
+        "F",
+        "e",
+        "a",
+        "t",
+        "u",
+        "r",
+        "e",
+        " ",
+        "|",
+        " ",
+        "C",
+        "S",
+        "V",
+        " ",
+        "|",
+        " ",
+        "P",
+        "a",
+        "r",
+        "q",
+        "u",
+        "e",
+        "t",
+        " ",
+        "|",
+        " ",
+        "J",
+        "S",
+        "O",
+        "N",
+        " ",
+        "|",
+        "\n",
+        "|",
+        "-",
+        "-",
+        "-",
+        "|",
+        "-",
+        "-",
+        "-",
+        "|",
+        "-",
+        "-",
+        "-",
+        "|",
+        "-",
+        "-",
+        "-",
+        "|",
+        "\n",
+        "|",
+        " ",
+        "S",
+        "i",
+        "z",
+        "e",
+        " ",
+        "|",
+        " ",
+        "L",
+        "a",
+        "r",
+        "g",
+        "e",
+        " ",
+        "|",
+        " ",
+        "5",
+        "-",
+        "1",
+        "0",
+        "×",
+        " ",
+        "s",
+        "m",
+        "a",
+        "l",
+        "l",
+        "e",
+        "r",
+        " ",
+        "|",
+        " ",
+        "M",
+        "e",
+        "d",
+        "i",
+        "u",
+        "m",
+        " ",
+        "|",
+        "\n",
+        "|",
+        " ",
+        "R",
+        "e",
+        "a",
+        "d",
+        " ",
+        "s",
+        "p",
+        "e",
+        "e",
+        "d",
+        " ",
+        "|",
+        " ",
+        "S",
+        "l",
+        "o",
+        "w",
+        " ",
+        "|",
+        " ",
+        "1",
+        "0",
+        "-",
+        "5",
+        "0",
+        "×",
+        " ",
+        "f",
+        "a",
+        "s",
+        "t",
+        "e",
+        "r",
+        " ",
+        "|",
+        " ",
+        "M",
+        "e",
+        "d",
+        "i",
+        "u",
+        "m",
+        " ",
+        "|",
+        "\n",
+        "|",
+        " ",
+        "C",
+        "o",
+        "l",
+        "u",
+        "m",
+        "n",
+        " ",
+        "p",
+        "r",
+        "u",
+        "n",
+        "i",
+        "n",
+        "g",
+        " ",
+        "|",
+        " ",
+        "N",
+        "o",
+        " ",
+        "|",
+        " ",
+        "Y",
+        "e",
+        "s",
+        " ",
+        "|",
+        " ",
+        "N",
+        "o",
+        " ",
+        "|",
+        "\n",
+        "|",
+        " ",
+        "S",
+        "c",
+        "h",
+        "e",
+        "m",
+        "a",
+        " ",
+        "i",
+        "n",
+        "f",
+        "o",
+        " ",
+        "|",
+        " ",
+        "N",
+        "o",
+        " ",
+        "|",
+        " ",
+        "Y",
+        "e",
+        "s",
+        " ",
+        "|",
+        " ",
+        "N",
+        "o",
+        " ",
+        "|",
+        "\n",
+        "|",
+        " ",
+        "N",
+        "e",
+        "s",
+        "t",
+        "e",
+        "d",
+        " ",
+        "d",
+        "a",
+        "t",
+        "a",
+        " ",
+        "|",
+        " ",
+        "N",
+        "o",
+        " ",
+        "|",
+        " ",
+        "Y",
+        "e",
+        "s",
+        " ",
+        "|",
+        " ",
+        "Y",
+        "e",
+        "s",
+        " ",
+        "|"
+      ],
+      "visualIntuition": [
+        "Pipeline view: Raw Files → Read & Validate → Select & Filter → Group & Summarize → Merge Context → Handle Missingness → Clean Dataset → ML/Visualization"
+      ],
+      "visualSuggestions": [
+        "Format comparison showing same data in CSV vs JSON vs Parquet",
+        "Type inference failure example"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Reading data with explicit types",
+          "content": "import pandas as pd\n\n# Read with explicit dtypes\ndf = pd.read_csv('data.csv', dtype={'age': 'int32', 'income': 'float64'})\n\n# Specify date parsing\ndf = pd.read_csv('data.csv', parse_dates=['date_column'])"
+        },
+        {
+          "title": "Parquet and JSON File I/O",
+          "language": "python",
+          "code": "import pandas as pd\n\n# Reading Parquet (columnar, fast, compressed)\ndf = pd.read_parquet('data.parquet',\n    engine='pyarrow',\n    columns=['name', 'score'],           # push-down projection\n    filters=[('score', '>', 80)])        # push-down predicate\n\ndf.to_parquet('output.parquet',\n    engine='pyarrow',\n    compression='snappy',\n    partition_cols=['year', 'month'])     # Hive-style partitioning\n\n# Reading/Writing JSON\ndf = pd.read_json('data.json', orient='records', lines=True)\ndf.to_json('output.json', orient='records', indent=2)\n\n# Chunked CSV reading for large files\nchunk_size = 50_000\nresults = []\nfor chunk in pd.read_csv('big.csv', chunksize=chunk_size):\n    results.append(chunk[chunk['score'] > 80])\ndf = pd.concat(results, ignore_index=True)\n\n# SQL\nimport sqlite3\nconn = sqlite3.connect('database.db')\ndf = pd.read_sql('SELECT * FROM users WHERE score > 80', conn)\ndf.to_sql('results', conn, if_exists='replace', index=False)"
+        }
+      ]
     },
-    "overview": [
-        "Pandas is the workhorse of data manipulation in Python. This module covers the essential operations: reading data, indexing and filtering, grouping and aggregation, merging datasets, and handling missing data.",
-        "Everything converges from NumPy: arrays become vectors and matrices, shapes have dimensional meaning, broadcasting enables efficient operations. Machine Learning = Linear Algebra executed at scale."
-    ],
-    "topics": [
+    {
+      "title": "Indexing & Filtering",
+      "theory": [
+        "Difference between label-based (loc) and position-based (iloc) access is critical. Pandas forces explicit intent to prevent silent mistakes.",
+        "Boolean masks provide vectorized filtering — replacing loops with declarative expressions. Index alignment is more important than row numbers.",
+        "Selection is a semantic operation, not a positional one. This mindset prevents many common bugs."
+      ],
+      "visualIntuition": [
+        "Boolean mask visualization: condition creates True/False array, which filters rows when applied to DataFrame."
+      ],
+      "visualSuggestions": [
+        "loc vs iloc comparison with index labels",
+        "Boolean mask filtering step-by-step"
+      ],
+      "code": [
         {
-            "title": "Linear Algebra with NumPy",
-            "theory": [
-                "In NumPy: 1D arrays are vectors, 2D arrays are matrices. But interpretation matters: (n,) ≠ (n, 1) ≠ (1, n). Shape defines semantics — always inspect shapes before operations.",
-                "Dot product (np.dot(a, b)) measures similarity, projection, and contribution weighting. Used in linear models, cosine similarity, and attention mechanisms. Matrix multiplication (X @ W) is the engine of linear models — inner dimensions must match.",
-                "Transpose (X.T) is required for normal equations, covariance matrices, and gradient calculations. It swaps rows and columns — a semantic change, not just cosmetic.",
-                "For solving linear systems, prefer np.linalg.solve(A, b) over np.linalg.inv(A) @ b — it's more stable, faster, and numerically safer. Matrix rank tells you how much independent information exists and whether solutions are unique.",
-                "Eigenvalues/eigenvectors (np.linalg.eig(A)) measure directional importance and define principal directions. SVD (np.linalg.svd) enables dimensionality reduction, noise removal, and low-rank approximation. PCA = SVD on centered data."
-            ],
-            "visualIntuition": [
-                "Geometry of linear algebra in ML: Data as points in space, weights as directions, dot product as projection, matrix multiplication as space transformation. Training a model means rotating and scaling space until patterns align."
-            ],
-            "visualSuggestions": [
-                "Matrix multiplication as space transformation animation",
-                "SVD decomposition showing rotate → scale → rotate"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Basic linear algebra operations",
-                    "content": "import numpy as np\n\nv = np.array([1, 2, 3])      # vector\nX = np.array([[1, 2],\n              [3, 4]])       # matrix\n\n# Dot product\nprint(np.dot(v, v))  # 14\n\n# Matrix multiplication\nW = np.array([[1, 0], [0, 1]])\nprint(X @ W)\n\n# Transpose\nprint(X.T)"
-                },
-                {
-                    "language": "python",
-                    "description": "Solving linear systems and linear regression",
-                    "content": "import numpy as np\n\n# Linear regression in pure NumPy\nx = np.array([1, 2, 3, 4, 5])\ny = np.array([2, 4, 5, 4, 5])\n\n# Design matrix with bias column\nX = np.c_[np.ones(len(x)), x]\n\n# Solve using normal equation (stable version)\ntheta = np.linalg.solve(X.T @ X, X.T @ y)\nprint(\"Intercept and slope:\", theta)"
-                }
-            ]
-        },
-        {
-            "title": "Reading & Writing Data",
-            "theory": [
-                "How datasets enter your workflow matters. Formats (CSV, Excel, JSON, Parquet) are not equivalent — they influence structure and types differently.",
-                "Schema inference can be wrong. Explicit dtypes prevent downstream bugs. If data is wrong at load time, everything after is compromised.",
-                "This topic teaches how formats influence structure, how data integrity can be lost at ingestion, and why explicit type specification matters."
-            ],
-            "visualIntuition": [
-                "Pipeline view: Raw Files → Read & Validate → Select & Filter → Group & Summarize → Merge Context → Handle Missingness → Clean Dataset → ML/Visualization"
-            ],
-            "visualSuggestions": [
-                "Format comparison showing same data in CSV vs JSON vs Parquet",
-                "Type inference failure example"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Reading data with explicit types",
-                    "content": "import pandas as pd\n\n# Read with explicit dtypes\ndf = pd.read_csv('data.csv', dtype={'age': 'int32', 'income': 'float64'})\n\n# Specify date parsing\ndf = pd.read_csv('data.csv', parse_dates=['date_column'])"
-                }
-            ]
-        },
-        {
-            "title": "Indexing & Filtering",
-            "theory": [
-                "Difference between label-based (loc) and position-based (iloc) access is critical. Pandas forces explicit intent to prevent silent mistakes.",
-                "Boolean masks provide vectorized filtering — replacing loops with declarative expressions. Index alignment is more important than row numbers.",
-                "Selection is a semantic operation, not a positional one. This mindset prevents many common bugs."
-            ],
-            "visualIntuition": [
-                "Boolean mask visualization: condition creates True/False array, which filters rows when applied to DataFrame."
-            ],
-            "visualSuggestions": [
-                "loc vs iloc comparison with index labels",
-                "Boolean mask filtering step-by-step"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Label vs position-based indexing",
-                    "content": "import pandas as pd\n\ndf = pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]}, index=['x', 'y', 'z'])\n\n# Label-based (use column names and index labels)\nprint(df.loc['x', 'A'])\n\n# Position-based (use integer positions)\nprint(df.iloc[0, 0])\n\n# Boolean filtering\nfiltered = df[df['A'] > 1]\nprint(filtered)"
-                }
-            ]
-        },
-        {
-            "title": "GroupBy & Aggregation",
-            "theory": [
-                "Split → Apply → Combine pattern is the heart of analytics. Groups define context, aggregations define questions, results define insight.",
-                "GroupBy is asking the same question repeatedly for different slices of data. This turns rows into insights."
-            ],
-            "visualIntuition": [
-                "Split-Apply-Combine diagram: DataFrame splits into groups, function applies to each, results combine into summary table."
-            ],
-            "visualSuggestions": [
-                "Step-by-step groupby animation",
-                "Multiple aggregation functions on same group"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "GroupBy and aggregation",
-                    "content": "import pandas as pd\n\ndf = pd.DataFrame({\n    'category': ['A', 'A', 'B', 'B'],\n    'value': [10, 20, 30, 40]\n})\n\n# Basic groupby\nprint(df.groupby('category')['value'].mean())\n\n# Multiple aggregations\nprint(df.groupby('category')['value'].agg(['mean', 'sum', 'count']))"
-                }
-            ]
-        },
-        {
-            "title": "Merging & Joining",
-            "theory": [
-                "Reconstructing reality from fragmented data requires understanding how relational data combines. Keys matter more than rows — wrong join = wrong dataset.",
-                "A join is a claim about how two datasets relate. Cardinality awareness is critical to avoid duplication and data leakage.",
-                "Join types: inner (matching only), left (keep all left), right (keep all right), outer (keep all)."
-            ],
-            "visualIntuition": [
-                "Venn diagram showing different join types and which rows are kept from each table."
-            ],
-            "visualSuggestions": [
-                "Join type comparison with same example data",
-                "Cardinality warning when one-to-many becomes many-to-many"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Merging DataFrames",
-                    "content": "import pandas as pd\n\ndf1 = pd.DataFrame({'key': ['A', 'B', 'C'], 'value1': [1, 2, 3]})\ndf2 = pd.DataFrame({'key': ['A', 'B', 'D'], 'value2': [4, 5, 6]})\n\n# Inner join (matching keys only)\ninner = pd.merge(df1, df2, on='key', how='inner')\n\n# Left join (keep all from left)\nleft = pd.merge(df1, df2, on='key', how='left')\n\nprint(\"Inner:\\n\", inner)\nprint(\"Left:\\n\", left)"
-                }
-            ]
-        },
-        {
-            "title": "Handling Missing Data",
-            "theory": [
-                "Missingness is information, not error. Missing ≠ zero, missing ≠ bug. How you handle missing data encodes assumptions.",
-                "Dropping vs imputing has consequences. NaNs propagate intentionally in Pandas. Imputation strategy depends on whether data is MCAR, MAR, or MNAR.",
-                "Common anti-patterns: chaining operations without inspecting output, relying on default behavior, ignoring index alignment, joining without checking row counts, dropping NaNs blindly."
-            ],
-            "visualIntuition": [
-                "Distribution comparison: original data vs after dropping missing vs after mean imputation — showing how imputation shrinks variance."
-            ],
-            "visualSuggestions": [
-                "Missing pattern visualization (matrix of NaN locations)",
-                "Imputation strategy comparison"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Handling missing data",
-                    "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'A': [1, np.nan, 3], 'B': [4, 5, np.nan]})\n\n# Check for missing\nprint(df.isna().sum())\n\n# Drop rows with any missing\nprint(df.dropna())\n\n# Fill with median\nprint(df.fillna(df.median()))\n\n# Create missingness indicator\ndf['A_missing'] = df['A'].isna().astype(int)"
-                }
-            ]
+          "language": "python",
+          "description": "Label vs position-based indexing",
+          "content": "import pandas as pd\n\ndf = pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]}, index=['x', 'y', 'z'])\n\n# Label-based (use column names and index labels)\nprint(df.loc['x', 'A'])\n\n# Position-based (use integer positions)\nprint(df.iloc[0, 0])\n\n# Boolean filtering\nfiltered = df[df['A'] > 1]\nprint(filtered)"
         }
-    ],
-    "quiz": [
-        "Why use np.linalg.solve instead of np.linalg.inv for solving linear systems?",
-        "What is the difference between loc and iloc in Pandas?",
-        "What does the Split-Apply-Combine pattern mean in GroupBy?",
-        "Why is cardinality awareness important when merging DataFrames?",
-        "When is dropping missing data acceptable vs dangerous?",
-        "What is the difference between MCAR, MAR, and MNAR missing data?"
-    ],
-    "references": [
+      ]
+    },
+    {
+      "title": "GroupBy & Aggregation",
+      "theory": [
+        "Split → Apply → Combine pattern is the heart of analytics. Groups define context, aggregations define questions, results define insight.",
+        "GroupBy is asking the same question repeatedly for different slices of data. This turns rows into insights."
+      ],
+      "visualIntuition": [
+        "Split-Apply-Combine diagram: DataFrame splits into groups, function applies to each, results combine into summary table."
+      ],
+      "visualSuggestions": [
+        "Step-by-step groupby animation",
+        "Multiple aggregation functions on same group"
+      ],
+      "code": [
         {
-            "label": "NumPy Linear Algebra Documentation",
-            "url": "https://numpy.org/doc/stable/reference/routines.linalg.html"
-        },
-        {
-            "label": "Pandas Documentation",
-            "url": "https://pandas.pydata.org/docs/"
-        },
-        {
-            "label": "MIT OCW - Linear Algebra",
-            "url": "https://ocw.mit.edu"
+          "language": "python",
+          "description": "GroupBy and aggregation",
+          "content": "import pandas as pd\n\ndf = pd.DataFrame({\n    'category': ['A', 'A', 'B', 'B'],\n    'value': [10, 20, 30, 40]\n})\n\n# Basic groupby\nprint(df.groupby('category')['value'].mean())\n\n# Multiple aggregations\nprint(df.groupby('category')['value'].agg(['mean', 'sum', 'count']))"
         }
-    ],
-    "_contentWarnings": [
-        "File contained mixed content: NumPy linear algebra + Pandas overview topics",
-        "Pandas topics are conceptual overviews without detailed code examples",
-        "Missing: detailed Pandas reading/writing examples with different file formats",
-        "Missing: time series handling in Pandas"
-    ]
+      ]
+    },
+    {
+      "title": "Merging & Joining",
+      "theory": [
+        "Reconstructing reality from fragmented data requires understanding how relational data combines. Keys matter more than rows — wrong join = wrong dataset.",
+        "A join is a claim about how two datasets relate. Cardinality awareness is critical to avoid duplication and data leakage.",
+        "Join types: inner (matching only), left (keep all left), right (keep all right), outer (keep all)."
+      ],
+      "visualIntuition": [
+        "Venn diagram showing different join types and which rows are kept from each table."
+      ],
+      "visualSuggestions": [
+        "Join type comparison with same example data",
+        "Cardinality warning when one-to-many becomes many-to-many"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Merging DataFrames",
+          "content": "import pandas as pd\n\ndf1 = pd.DataFrame({'key': ['A', 'B', 'C'], 'value1': [1, 2, 3]})\ndf2 = pd.DataFrame({'key': ['A', 'B', 'D'], 'value2': [4, 5, 6]})\n\n# Inner join (matching keys only)\ninner = pd.merge(df1, df2, on='key', how='inner')\n\n# Left join (keep all from left)\nleft = pd.merge(df1, df2, on='key', how='left')\n\nprint(\"Inner:\\n\", inner)\nprint(\"Left:\\n\", left)"
+        }
+      ]
+    },
+    {
+      "title": "Handling Missing Data",
+      "theory": [
+        "Missingness is information, not error. Missing ≠ zero, missing ≠ bug. How you handle missing data encodes assumptions.",
+        "Dropping vs imputing has consequences. NaNs propagate intentionally in Pandas. Imputation strategy depends on whether data is MCAR, MAR, or MNAR.",
+        "Common anti-patterns: chaining operations without inspecting output, relying on default behavior, ignoring index alignment, joining without checking row counts, dropping NaNs blindly."
+      ],
+      "visualIntuition": [
+        "Distribution comparison: original data vs after dropping missing vs after mean imputation — showing how imputation shrinks variance."
+      ],
+      "visualSuggestions": [
+        "Missing pattern visualization (matrix of NaN locations)",
+        "Imputation strategy comparison"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Handling missing data",
+          "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'A': [1, np.nan, 3], 'B': [4, 5, np.nan]})\n\n# Check for missing\nprint(df.isna().sum())\n\n# Drop rows with any missing\nprint(df.dropna())\n\n# Fill with median\nprint(df.fillna(df.median()))\n\n# Create missingness indicator\ndf['A_missing'] = df['A'].isna().astype(int)"
+        }
+      ]
+    },
+    {
+      "title": "Time Series Handling",
+      "theory": "Pandas provides powerful tools for time series data: datetime parsing, resampling, rolling windows, and exponentially weighted moving averages.\n\n**Datetime Parsing:** Use `pd.to_datetime()` with explicit format strings for speed. Set datetime as index and always sort.\n\n**Resampling:** Change frequency — `resample('ME')` for monthly, `'D'` for daily. Use `.sum()`, `.mean()`, `.ohlc()` for aggregation.\n\n**Rolling Windows:** `.rolling(7).mean()` for 7-day moving average. Use `min_periods=1` to avoid NaN at start.\n\n**EWM (Exponentially Weighted):** `.ewm(span=7).mean()` gives more weight to recent observations. Higher alpha = more recency bias.\n\n**Key operations:** `shift(1)` for lag, `diff(1)` for day-over-day change, `pct_change()` for percentage change.",
+      "code": [
+        {
+          "title": "Datetime Parsing and Component Extraction",
+          "language": "python",
+          "code": "import pandas as pd\nimport numpy as np\n\n# Create sample time series\ndates = pd.date_range('2024-01-01', periods=365, freq='D')\ndf = pd.DataFrame({'date': dates, 'sales': np.random.randint(50, 200, 365)})\ndf['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')\ndf = df.set_index('date').sort_index()\n\n# Extract date components\ndf['year'] = df.index.year\ndf['month'] = df.index.month\ndf['dayofweek'] = df.index.dayofweek  # 0=Monday\ndf['quarter'] = df.index.quarter\n\n# Date arithmetic\ndf['lag_1d'] = df['sales'].shift(1)       # 1-day lag\ndf['diff_1d'] = df['sales'].diff(1)       # day-over-day change\ndf['pct_chg'] = df['sales'].pct_change()  # percentage change\nprint(df.head())"
+        },
+        {
+          "title": "Resampling, Rolling Windows, and EWM",
+          "language": "python",
+          "code": "import pandas as pd\nimport numpy as np\n\ndates = pd.date_range('2024-01-01', periods=365, freq='D')\ndf = pd.DataFrame({'sales': np.random.randint(50, 200, 365)}, index=dates)\n\n# Resample: daily -> monthly\nmonthly = df['sales'].resample('ME').agg(['sum', 'mean', 'min', 'max'])\nprint(monthly.head())\n\n# Rolling windows\ndf['ma_7'] = df['sales'].rolling(7).mean()       # 7-day moving average\ndf['ma_30'] = df['sales'].rolling(30).mean()      # 30-day MA\ndf['std_7'] = df['sales'].rolling(7).std()        # rolling std dev\ndf['ma_safe'] = df['sales'].rolling(7, min_periods=1).mean()  # avoid NaN\n\n# Exponentially Weighted Moving Average\ndf['ema_7'] = df['sales'].ewm(span=7).mean()      # span-based\ndf['ema_alpha'] = df['sales'].ewm(alpha=0.3).mean()  # alpha directly\n\n# Expanding (cumulative) window\ndf['cum_mean'] = df['sales'].expanding().mean()\n\nprint(df[['sales', 'ma_7', 'ema_7', 'cum_mean']].tail(10))"
+        }
+      ],
+      "visualSuggestions": [
+        "Time series chart with toggleable MA/EMA overlays and adjustable window size",
+        "Resampling animation: daily bars collapsing into monthly aggregates"
+      ],
+      "visualIntuition": [
+        "A rolling window is like looking at data through a moving magnifying glass. As the window slides forward in time, old data drops out and new data enters. The EWM is like a magnifying glass that gets weaker for older data — recent observations are always sharper."
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is the difference between loc and iloc in Pandas?",
+      "options": [
+        "loc is faster than iloc",
+        "loc uses labels, iloc uses integer positions",
+        "They are identical",
+        "iloc uses labels, loc uses positions"
+      ],
+      "correctAnswer": 1,
+      "explanation": "loc selects by label names (e.g., df.loc['row_a', 'col_b']), while iloc selects by integer position (e.g., df.iloc[0, 1]). This distinction prevents silent indexing bugs."
+    },
+    {
+      "id": "q2",
+      "question": "What does the Split-Apply-Combine pattern mean in GroupBy?",
+      "options": [
+        "Split data randomly, apply any function, combine results",
+        "Split data into groups by key, apply aggregation to each group, combine into summary",
+        "Split columns, apply filters, combine rows",
+        "It only works with numerical data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "GroupBy splits the DataFrame into groups based on key columns, applies a function (mean, sum, count) to each group independently, then combines results into a new DataFrame."
+    },
+    {
+      "id": "q3",
+      "question": "Why is cardinality awareness important when merging DataFrames?",
+      "options": [
+        "It affects sort order",
+        "A one-to-many join can unexpectedly duplicate rows, inflating your dataset",
+        "It only matters for large datasets",
+        "Cardinality doesn't affect merges"
+      ],
+      "correctAnswer": 1,
+      "explanation": "If you merge on a key that has duplicates in one table, rows multiply. A 1000-row table merged with a table having 3 rows per key can silently become 3000 rows, leading to incorrect aggregations."
+    },
+    {
+      "id": "q4",
+      "question": "When is dropping missing data acceptable vs dangerous?",
+      "options": [
+        "Always acceptable",
+        "Only when data is MCAR and the missing fraction is small",
+        "Only for categorical columns",
+        "Never acceptable"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Dropping is safe only when data is Missing Completely At Random (MCAR) and the fraction is small. If missingness depends on the value itself (MNAR), dropping introduces systematic bias."
+    },
+    {
+      "id": "q5",
+      "question": "What does NaN propagation mean in Pandas?",
+      "options": [
+        "NaN values are automatically removed",
+        "NaN in any operation produces NaN in the result",
+        "NaN is treated as zero",
+        "NaN stops program execution"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Pandas propagates NaN through operations intentionally: NaN + 5 = NaN, mean([1, NaN, 3]) = NaN (without skipna). This forces you to handle missing data explicitly rather than silently computing wrong results."
+    },
+    {
+      "id": "q6",
+      "question": "Why is Parquet typically 10-50× faster to read than CSV?",
+      "options": [
+        "Parquet files are always smaller",
+        "Parquet uses columnar storage with push-down projection and predicate filtering",
+        "Parquet skips header rows",
+        "Parquet uses binary encoding only"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Parquet's columnar format allows reading only needed columns (projection pushdown) and skipping irrelevant row groups (predicate pushdown), plus it stores schema metadata and uses efficient compression."
+    },
+    {
+      "id": "q7",
+      "question": "What does `df['sales'].ewm(span=7).mean()` compute?",
+      "options": [
+        "A simple 7-day average",
+        "A 7-day minimum",
+        "An exponentially weighted moving average giving more weight to recent values",
+        "A cumulative sum over 7 days"
+      ],
+      "correctAnswer": 2,
+      "explanation": "EWM (Exponentially Weighted Moving average) assigns exponentially decreasing weights to older observations. The span parameter controls how quickly old data is 'forgotten'."
+    }
+  ],
+  "references": [
+    {
+      "label": "Pandas Documentation",
+      "url": "https://pandas.pydata.org/docs/"
+    },
+    {
+      "label": "Pandas User Guide - Indexing",
+      "url": "https://pandas.pydata.org/docs/user_guide/indexing.html"
+    },
+    {
+      "label": "Pandas User Guide - GroupBy",
+      "url": "https://pandas.pydata.org/docs/user_guide/groupby.html"
+    }
+  ],
+  "_contentWarnings": []
 }

@@ -1,190 +1,296 @@
 {
-    "meta": {
-        "subject": "foundations",
-        "module": "probability",
-        "level": "beginner",
-        "estimatedHours": 4
+  "meta": {
+    "subject": "foundations",
+    "module": "probability",
+    "level": "beginner",
+    "estimatedHours": 4
+  },
+  "overview": [
+    "Machine Learning models do not learn fixed values — they learn uncertainty. Probability theory provides the language to describe uncertainty, starting with random variables and probability distributions.",
+    "This module covers random variables, common probability distributions, conditional probability, Bayes' theorem, and the Law of Large Numbers — all essential foundations for understanding how ML models learn from data."
+  ],
+  "topics": [
+    {
+      "title": "Random Variables & Probability Distributions",
+      "theory": [
+        "A random variable is a numerical outcome of a random process. It is not random itself — it maps randomness to numbers.",
+        "Discrete random variables take countable values (dice rolls, number of clicks, class labels). Continuous random variables take uncountably infinite values (height, time, loss values). Key distinction: Discrete uses probabilities, Continuous uses probability densities.",
+        "A probability distribution describes how likely different outcomes are. For discrete distributions, we use a Probability Mass Function (PMF) where P(X=x) gives exact probabilities. For continuous distributions, we use a Probability Density Function (PDF) where probability exists over ranges, not points.",
+        "Expected Value E[X] is the long-run average — the target most ML models optimize toward. Variance Var(X) measures uncertainty, risk, and model instability."
+      ],
+      "visualIntuition": [
+        "Show randomness becoming structure: random points are generated appearing chaotic, then samples accumulate and a histogram shape emerges, finally a smooth distribution curve overlays the histogram showing randomness becoming order."
+      ],
+      "visualSuggestions": [
+        "Button to add samples one by one, watching histogram emerge from chaos",
+        "Toggle between PMF (discrete bars) and PDF (continuous curve) for same underlying concept"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Sampling from distributions",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nsamples = np.random.normal(loc=0, scale=1, size=10000)\n\nplt.hist(samples, bins=50, density=True)\nplt.title(\"Normal Distribution\")\nplt.show()"
+        },
+        {
+          "language": "python",
+          "description": "Discrete vs continuous probability",
+          "content": "from scipy.stats import bernoulli, norm\n\n# Discrete: probability mass\nprint(\"Bernoulli P(X=1):\", bernoulli.pmf(1, p=0.3))\n\n# Continuous: probability density\nprint(\"Normal density at 0:\", norm.pdf(0))"
+        }
+      ]
     },
-    "overview": [
-        "Machine Learning models do not learn fixed values — they learn uncertainty. Probability theory provides the language to describe uncertainty, starting with random variables and probability distributions.",
-        "This module covers random variables, common probability distributions, conditional probability, Bayes' theorem, and the Law of Large Numbers — all essential foundations for understanding how ML models learn from data."
-    ],
-    "topics": [
+    {
+      "title": "Common Probability Distributions",
+      "theory": [
+        "Bernoulli Distribution models a single binary trial: X ∈ {0, 1}, P(X=1) = p. Examples: click/no click, fraud/no fraud, pass/fail. Mean = p, Variance = p(1-p). In ML: Binary classification labels use Bernoulli, and cross-entropy loss is derived from Bernoulli likelihood.",
+        "Binomial Distribution models the number of successes in N independent Bernoulli trials: X ~ Binomial(n, p). Examples: number of users clicking an ad, defective items in a batch. Mean = np, Variance = np(1-p).",
+        "Normal Distribution is the most important continuous distribution: X ~ N(μ, σ²). Most values cluster around the mean; extreme values are rare but possible. Examples: measurement noise, model errors, aggregated natural processes. The Central Limit Theorem explains why it appears everywhere.",
+        "Central Limit Theorem: Regardless of the original distribution, the mean of samples converges to a normal distribution as sample size increases. This justifies using normal assumptions and explains why averages behave predictably."
+      ],
+      "visualIntuition": [
+        "Distribution selector allowing users to switch between Bernoulli (single dot flipping), Binomial (histogram forming as trials increase), and Normal (bell curve). Parameter sliders for p, n, μ, σ to see distribution shapes change."
+      ],
+      "visualSuggestions": [
+        "CLT demonstration: sample from skewed distribution, plot means, watch histogram become normal",
+        "Parameter sliders showing how mean and variance affect distribution shape"
+      ],
+      "code": [
         {
-            "title": "Random Variables & Probability Distributions",
-            "theory": [
-                "A random variable is a numerical outcome of a random process. It is not random itself — it maps randomness to numbers.",
-                "Discrete random variables take countable values (dice rolls, number of clicks, class labels). Continuous random variables take uncountably infinite values (height, time, loss values). Key distinction: Discrete uses probabilities, Continuous uses probability densities.",
-                "A probability distribution describes how likely different outcomes are. For discrete distributions, we use a Probability Mass Function (PMF) where P(X=x) gives exact probabilities. For continuous distributions, we use a Probability Density Function (PDF) where probability exists over ranges, not points.",
-                "Expected Value E[X] is the long-run average — the target most ML models optimize toward. Variance Var(X) measures uncertainty, risk, and model instability."
-            ],
-            "visualIntuition": [
-                "Show randomness becoming structure: random points are generated appearing chaotic, then samples accumulate and a histogram shape emerges, finally a smooth distribution curve overlays the histogram showing randomness becoming order."
-            ],
-            "visualSuggestions": [
-                "Button to add samples one by one, watching histogram emerge from chaos",
-                "Toggle between PMF (discrete bars) and PDF (continuous curve) for same underlying concept"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Sampling from distributions",
-                    "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nsamples = np.random.normal(loc=0, scale=1, size=10000)\n\nplt.hist(samples, bins=50, density=True)\nplt.title(\"Normal Distribution\")\nplt.show()"
-                },
-                {
-                    "language": "python",
-                    "description": "Discrete vs continuous probability",
-                    "content": "from scipy.stats import bernoulli, norm\n\n# Discrete: probability mass\nprint(\"Bernoulli P(X=1):\", bernoulli.pmf(1, p=0.3))\n\n# Continuous: probability density\nprint(\"Normal density at 0:\", norm.pdf(0))"
-                }
-            ]
+          "language": "python",
+          "description": "Bernoulli sampling",
+          "content": "import numpy as np\n\n# Bernoulli: single binary trial\nsamples = np.random.binomial(1, 0.7, size=10)\nprint(\"Bernoulli samples:\", samples)"
         },
         {
-            "title": "Common Probability Distributions",
-            "theory": [
-                "Bernoulli Distribution models a single binary trial: X ∈ {0, 1}, P(X=1) = p. Examples: click/no click, fraud/no fraud, pass/fail. Mean = p, Variance = p(1-p). In ML: Binary classification labels use Bernoulli, and cross-entropy loss is derived from Bernoulli likelihood.",
-                "Binomial Distribution models the number of successes in N independent Bernoulli trials: X ~ Binomial(n, p). Examples: number of users clicking an ad, defective items in a batch. Mean = np, Variance = np(1-p).",
-                "Normal Distribution is the most important continuous distribution: X ~ N(μ, σ²). Most values cluster around the mean; extreme values are rare but possible. Examples: measurement noise, model errors, aggregated natural processes. The Central Limit Theorem explains why it appears everywhere.",
-                "Central Limit Theorem: Regardless of the original distribution, the mean of samples converges to a normal distribution as sample size increases. This justifies using normal assumptions and explains why averages behave predictably."
-            ],
-            "visualIntuition": [
-                "Distribution selector allowing users to switch between Bernoulli (single dot flipping), Binomial (histogram forming as trials increase), and Normal (bell curve). Parameter sliders for p, n, μ, σ to see distribution shapes change."
-            ],
-            "visualSuggestions": [
-                "CLT demonstration: sample from skewed distribution, plot means, watch histogram become normal",
-                "Parameter sliders showing how mean and variance affect distribution shape"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Bernoulli sampling",
-                    "content": "import numpy as np\n\n# Bernoulli: single binary trial\nsamples = np.random.binomial(1, 0.7, size=10)\nprint(\"Bernoulli samples:\", samples)"
-                },
-                {
-                    "language": "python",
-                    "description": "Binomial distribution visualization",
-                    "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\ndata = np.random.binomial(20, 0.4, 1000)\nplt.hist(data, bins=20)\nplt.title(\"Binomial Distribution (n=20, p=0.4)\")\nplt.show()"
-                },
-                {
-                    "language": "python",
-                    "description": "Normal distribution",
-                    "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.random.normal(0, 1, 10000)\nplt.hist(x, bins=50, density=True)\nplt.title(\"Normal Distribution\")\nplt.show()"
-                }
-            ]
+          "language": "python",
+          "description": "Binomial distribution visualization",
+          "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\ndata = np.random.binomial(20, 0.4, 1000)\nplt.hist(data, bins=20)\nplt.title(\"Binomial Distribution (n=20, p=0.4)\")\nplt.show()"
         },
         {
-            "title": "Conditional Probability & Bayes' Theorem",
-            "theory": [
-                "Conditional probability answers: How likely is an event given that something else already happened? P(A|B) = P(A∩B) / P(B). Conditional probability shrinks the universe — instead of asking how often A happens, you ask how often A happens inside the world where B is already true.",
-                "Independence vs Dependence: If P(A|B) = P(A), events are independent — knowing B tells you nothing about A. If P(A|B) ≠ P(A), events are dependent — B changes your belief about A. Machine Learning assumes dependence; if features were independent of labels, learning would be impossible.",
-                "Bayes' Theorem: P(A|B) = P(B|A) × P(A) / P(B). P(A) is the prior belief, P(B|A) is the likelihood, P(B) is the evidence, and P(A|B) is the posterior (updated belief). Bayes' theorem is belief updating: start with a belief, see evidence, update belief.",
-                "In ML: Bayes explains why models output probabilities, why predictions change with new data, why uncertainty matters. Applications include spam filtering, medical diagnosis, recommendation systems, and Naive Bayes classifiers."
-            ],
-            "visualIntuition": [
-                "Belief updating visualization: Prior probability bar, evidence arrives and likelihood is applied, posterior shifts. Users see belief movement as parameters change."
-            ],
-            "visualSuggestions": [
-                "Venn diagram showing how conditioning shrinks the sample space",
-                "Interactive prior slider showing how posterior changes with different priors"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Bayesian update for medical diagnosis",
-                    "content": "# Prior belief\nP_disease = 0.01\n\n# Test accuracy\nP_positive_given_disease = 0.95\nP_positive_given_no_disease = 0.05\n\n# Evidence (total probability of positive test)\nP_positive = (\n    P_positive_given_disease * P_disease +\n    P_positive_given_no_disease * (1 - P_disease)\n)\n\n# Posterior (Bayes' theorem)\nP_disease_given_positive = (\n    P_positive_given_disease * P_disease\n) / P_positive\n\nprint(f\"P(disease | positive test): {P_disease_given_positive:.4f}\")\nprint(\"Key lesson: Even accurate tests produce low confidence if priors are low!\")"
-                }
-            ]
-        },
-        {
-            "title": "Law of Large Numbers",
-            "theory": [
-                "The Law of Large Numbers states: As the number of observations increases, the average of the results converges to the expected value. It does not say outcomes become predictable or randomness disappears — it says aggregates stabilize and estimates improve with data.",
-                "Formal statement: Let X₁, X₂, ..., Xₙ be independent, identically distributed random variables with expected value μ. Then (1/n)Σᵢ Xᵢ → μ as n → ∞. Translation: The sample mean approaches the true mean as sample size grows.",
-                "Why small samples lie: With small samples, variance dominates, random streaks appear meaningful, and models overfit noise. This is why early metrics fluctuate wildly and overconfidence is dangerous.",
-                "In ML: LLN explains why training improves with more data, why validation metrics stabilize, why ensemble averaging works, and why stochastic gradient descent converges."
-            ],
-            "visualIntuition": [
-                "Running mean chart: Early samples show aggressive jumps with high volatility, as samples grow fluctuations reduce and mean stabilizes, finally the curve flattens as noise averages out."
-            ],
-            "visualSuggestions": [
-                "Button to add samples one by one, watching running mean converge to true value",
-                "Comparison view: small sample volatility vs large sample stability"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Law of Large Numbers simulation",
-                    "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nsamples = []\nmeans = []\n\nfor i in range(1, 5001):\n    samples.append(np.random.binomial(1, 0.7))\n    means.append(np.mean(samples))\n\nplt.plot(means)\nplt.axhline(0.7, color=\"red\", label=\"True probability\")\nplt.title(\"Law of Large Numbers\")\nplt.xlabel(\"Number of Samples\")\nplt.ylabel(\"Running Mean\")\nplt.legend()\nplt.show()"
-                }
-            ]
-        },
-        {
-            "title": "Scalars, Vectors & Spaces (Linear Algebra Introduction)",
-            "theory": [
-                "Machine Learning is not about equations — it is about geometry. Every ML system operates in a space: data points are vectors, models define surfaces, learning is movement through space.",
-                "A scalar is a single numerical value (learning rate, bias term, loss value). Scalars control scale, strength, and magnitude but don't have direction. In ML: scalars tune behavior, measure error, and modulate updates.",
-                "A vector is an ordered list of numbers: x = [x₁, x₂, ..., xₙ]. A vector represents a data point, feature set, state, or direction. Each row in a dataset is a vector in feature space. Magnitude (length) represents size; direction represents meaning. ML cares more about direction than size.",
-                "A vector space is a set of vectors where you can add vectors, scale vectors, and the result stays in the same space. It is the world your data lives in. Each feature adds one dimension: 2 features = 2D plane, 100 features = 100D space, 768 features = transformer embedding. High dimensions increase expressiveness but create sparsity problems (curse of dimensionality)."
-            ],
-            "visualIntuition": [
-                "Scalars shown as single slider controlling scale. Vectors shown as arrows from origin where direction changes with feature values. Spaces shown as multiple points forming clouds with dimension toggle (2D → 3D projection)."
-            ],
-            "visualSuggestions": [
-                "Interactive 2D vector plot with sliders for x and y components",
-                "3D point cloud showing how features create multi-dimensional space"
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Vector representation and magnitude",
-                    "content": "import numpy as np\n\nx = np.array([2, 3])\ny = np.array([1, -1])\n\nprint(\"Vector x:\", x)\nprint(\"Magnitude of x:\", np.linalg.norm(x))"
-                },
-                {
-                    "language": "python",
-                    "description": "Dataset as vector space",
-                    "content": "from sklearn.datasets import load_iris\n\nX, y = load_iris(return_X_y=True)\n\nprint(\"Shape:\", X.shape)  # (samples, dimensions)\nprint(\"Each row is a vector in 4D feature space\")"
-                }
-            ]
+          "language": "python",
+          "description": "Normal distribution",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.random.normal(0, 1, 10000)\nplt.hist(x, bins=50, density=True)\nplt.title(\"Normal Distribution\")\nplt.show()"
         }
-    ],
-    "quiz": [
-        "What is the difference between a probability mass function (PMF) and probability density function (PDF)?",
-        "Why does cross-entropy loss relate to Bernoulli distribution?",
-        "Given P(A) = 0.1 and a test with 90% accuracy, what is P(A|positive test)?",
-        "Why does the Law of Large Numbers matter for training ML models?",
-        "What does it mean for two events to be independent?",
-        "Why does ML care more about vector direction than magnitude?"
-    ],
-    "references": [
+      ]
+    },
+    {
+      "title": "Conditional Probability & Bayes' Theorem",
+      "theory": [
+        "Conditional probability answers: How likely is an event given that something else already happened? P(A|B) = P(A∩B) / P(B). Conditional probability shrinks the universe — instead of asking how often A happens, you ask how often A happens inside the world where B is already true.",
+        "Independence vs Dependence: If P(A|B) = P(A), events are independent — knowing B tells you nothing about A. If P(A|B) ≠ P(A), events are dependent — B changes your belief about A. Machine Learning assumes dependence; if features were independent of labels, learning would be impossible.",
+        "Bayes' Theorem: P(A|B) = P(B|A) × P(A) / P(B). P(A) is the prior belief, P(B|A) is the likelihood, P(B) is the evidence, and P(A|B) is the posterior (updated belief). Bayes' theorem is belief updating: start with a belief, see evidence, update belief.",
+        "In ML: Bayes explains why models output probabilities, why predictions change with new data, why uncertainty matters. Applications include spam filtering, medical diagnosis, recommendation systems, and Naive Bayes classifiers."
+      ],
+      "visualIntuition": [
+        "Belief updating visualization: Prior probability bar, evidence arrives and likelihood is applied, posterior shifts. Users see belief movement as parameters change."
+      ],
+      "visualSuggestions": [
+        "Venn diagram showing how conditioning shrinks the sample space",
+        "Interactive prior slider showing how posterior changes with different priors"
+      ],
+      "code": [
         {
-            "label": "Khan Academy - Statistics and Probability",
-            "url": "https://www.khanacademy.org/math/statistics-probability"
-        },
-        {
-            "label": "NIST Engineering Statistics Handbook",
-            "url": "https://www.itl.nist.gov/div898/handbook/"
-        },
-        {
-            "label": "SciPy Statistics Documentation",
-            "url": "https://docs.scipy.org/doc/scipy/reference/stats.html"
-        },
-        {
-            "label": "scikit-learn - Naive Bayes",
-            "url": "https://scikit-learn.org/stable/modules/naive_bayes.html"
-        },
-        {
-            "label": "Khan Academy - Linear Algebra",
-            "url": "https://www.khanacademy.org/math/linear-algebra"
-        },
-        {
-            "label": "NumPy Linear Algebra Documentation",
-            "url": "https://numpy.org/doc/stable/reference/routines.linalg.html"
+          "language": "python",
+          "description": "Bayesian update for medical diagnosis",
+          "content": "# Prior belief\nP_disease = 0.01\n\n# Test accuracy\nP_positive_given_disease = 0.95\nP_positive_given_no_disease = 0.05\n\n# Evidence (total probability of positive test)\nP_positive = (\n    P_positive_given_disease * P_disease +\n    P_positive_given_no_disease * (1 - P_disease)\n)\n\n# Posterior (Bayes' theorem)\nP_disease_given_positive = (\n    P_positive_given_disease * P_disease\n) / P_positive\n\nprint(f\"P(disease | positive test): {P_disease_given_positive:.4f}\")\nprint(\"Key lesson: Even accurate tests produce low confidence if priors are low!\")"
         }
-    ],
-    "_contentWarnings": [
-        "Mathematical formulas were corrupted in original file - converted to readable text notation",
-        "D3.js visualization code removed - replaced with conceptual descriptions",
-        "Topic on Scalars/Vectors/Spaces seems misplaced in Probability module - may belong in separate Linear Algebra module",
-        "Missing: Poisson distribution, Exponential distribution, Uniform distribution details",
-        "Quiz section needs multiple-choice format with answers"
-    ]
+      ]
+    },
+    {
+      "title": "Law of Large Numbers",
+      "theory": [
+        "The Law of Large Numbers states: As the number of observations increases, the average of the results converges to the expected value. It does not say outcomes become predictable or randomness disappears — it says aggregates stabilize and estimates improve with data.",
+        "Formal statement: Let X₁, X₂, ..., Xₙ be independent, identically distributed random variables with expected value μ. Then (1/n)Σᵢ Xᵢ → μ as n → ∞. Translation: The sample mean approaches the true mean as sample size grows.",
+        "Why small samples lie: With small samples, variance dominates, random streaks appear meaningful, and models overfit noise. This is why early metrics fluctuate wildly and overconfidence is dangerous.",
+        "In ML: LLN explains why training improves with more data, why validation metrics stabilize, why ensemble averaging works, and why stochastic gradient descent converges."
+      ],
+      "visualIntuition": [
+        "Running mean chart: Early samples show aggressive jumps with high volatility, as samples grow fluctuations reduce and mean stabilizes, finally the curve flattens as noise averages out."
+      ],
+      "visualSuggestions": [
+        "Button to add samples one by one, watching running mean converge to true value",
+        "Comparison view: small sample volatility vs large sample stability"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Law of Large Numbers simulation",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nsamples = []\nmeans = []\n\nfor i in range(1, 5001):\n    samples.append(np.random.binomial(1, 0.7))\n    means.append(np.mean(samples))\n\nplt.plot(means)\nplt.axhline(0.7, color=\"red\", label=\"True probability\")\nplt.title(\"Law of Large Numbers\")\nplt.xlabel(\"Number of Samples\")\nplt.ylabel(\"Running Mean\")\nplt.legend()\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Poisson Distribution",
+      "content": "The Poisson distribution models the **number of discrete events** occurring in a fixed interval of time or space, given that events happen at a known constant mean rate λ (lambda) and independently of each other.\n\n**PMF:** P(X = k) = (λ^k · e^{-λ}) / k!\n\n**Key properties:** Mean = λ, Variance = λ (unique: mean equals variance), Skewness = 1/√λ.\n\n**ML Use Cases:** Count-based NLP models (word frequency), anomaly detection for rare events (network intrusions), recommendation systems (click/purchase counts), and queueing theory (server requests).\n\nFor small λ (e.g., 1), the PMF is heavily right-skewed — most mass at 0 and 1. As λ increases toward 10+, the distribution becomes bell-shaped and symmetric, approaching a Normal distribution.",
+      "code": [
+        {
+          "title": "Poisson Distribution — PMF, CDF, and Visualization",
+          "language": "python",
+          "code": "from scipy import stats\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Create Poisson distribution with lambda=4\nrv = stats.poisson(mu=4)\n\n# PMF: probability of exactly k=3 events\nprint(rv.pmf(3))         # 0.1954\n\n# CDF: probability of k <= 5 events\nprint(rv.cdf(5))         # 0.7851\n\n# Descriptive statistics\nprint(rv.mean())         # 4.0\nprint(rv.var())          # 4.0  (always equals lambda)\nprint(rv.std())          # 2.0\n\n# Generate random samples\nsamples = rv.rvs(size=1000, random_state=42)\nprint(np.mean(samples))  # ≈ 4.0\n\n# Plot PMF\nk = np.arange(0, 15)\nplt.bar(k, rv.pmf(k), color='steelblue', alpha=0.7)\nplt.xlabel('k (events)')\nplt.ylabel('P(X=k)')\nplt.title('Poisson PMF (λ=4)')\nplt.show()\n\n# Compare different lambdas\nfor lam in [1, 4, 10]:\n    rv_l = stats.poisson(mu=lam)\n    plt.plot(k, rv_l.pmf(k), marker='o', label=f'λ={lam}')\nplt.legend()\nplt.show()"
+        }
+      ],
+      "visualSuggestions": [
+        "Interactive PMF bar chart with λ slider — watch distribution shape shift from right-skewed to symmetric",
+        "Sample generator: click to add random events, histogram builds toward theoretical PMF"
+      ],
+      "visualIntuition": [
+        "Imagine counting how many emails you receive per hour. Some hours you get 0, some hours 5. The Poisson distribution describes this pattern — given an average rate λ, it tells you the probability of any specific count."
+      ]
+    },
+    {
+      "title": "Exponential Distribution",
+      "content": "The Exponential distribution models the **time between consecutive events** in a Poisson process. It is the continuous counterpart to the Poisson distribution.\n\n**PDF:** f(x) = λ · e^{-λx} for x ≥ 0\n\n**Key property — Memorylessness:** P(X > s + t | X > s) = P(X > t). The probability of waiting an additional time t is the same regardless of how long you've already waited. This is the *only* continuous distribution with this property.\n\n**Parameters:** λ (rate) = events per unit time; scale = 1/λ = mean waiting time (scipy convention).\n\n**Key properties:** Mean = 1/λ, Variance = 1/λ², Std Dev = 1/λ (std equals mean).\n\n**ML Use Cases:** Survival analysis and customer churn modelling, time-to-failure predictions in reliability engineering, fraud detection (inter-transaction times), and prior distribution in Bayesian models for positive quantities.",
+      "code": [
+        {
+          "title": "Exponential Distribution — Memorylessness Verification",
+          "language": "python",
+          "code": "from scipy import stats\nimport numpy as np\n\n# Exponential with rate=0.5 (mean = 1/0.5 = 2)\nrv = stats.expon(scale=2)  # scipy uses scale = 1/rate\n\n# PDF at a specific point\nprint(rv.pdf(3))           # 0.1116\n\n# CDF: P(X <= 4)\nprint(rv.cdf(4))           # 0.8647\n\n# Survival function: P(X > 4)\nprint(rv.sf(4))            # 0.1353  (= 1 - CDF)\n\n# Mean and std\nprint(rv.mean())           # 2.0\nprint(rv.std())            # 2.0  (always equals mean)\n\n# Quantiles\nprint(rv.ppf(0.5))         # 1.386 (median)\nprint(rv.ppf(0.95))        # 5.991 (95th percentile)\n\n# Generate samples\nsamples = rv.rvs(size=1000, random_state=42)\n\n# Memorylessness verification\n# P(X > 5 | X > 3) should equal P(X > 2)\nprint(rv.sf(5) / rv.sf(3)) # ≈ 0.3679\nprint(rv.sf(2))            # ≈ 0.3679  — they match!\n\n# Maximum Likelihood Estimate of lambda\ndata = rv.rvs(size=500)\nlambda_mle = 1 / np.mean(data)\nprint(f'Estimated lambda: {lambda_mle:.3f}')  # ≈ 0.5"
+        }
+      ],
+      "visualSuggestions": [
+        "PDF curve with λ slider — heavier tail (slower decay) for smaller λ",
+        "Memorylessness demo: progress bar resets, showing waiting time is independent of elapsed time"
+      ],
+      "visualIntuition": [
+        "Imagine waiting for a bus that arrives randomly. The Exponential distribution tells you the probability of waiting a certain amount of time. Its memoryless property means that if you've already waited 10 minutes, the expected additional wait is still the same — the bus doesn't 'owe' you an arrival."
+      ]
+    },
+    {
+      "title": "Uniform Distribution",
+      "content": "The Uniform distribution assigns **equal probability** to all outcomes in an interval [a, b]. Every value is equally likely.\n\n**PDF:** f(x) = 1/(b-a) for a ≤ x ≤ b, else 0\n\n**Key properties:** Mean = (a+b)/2, Variance = (b-a)²/12, Entropy is maximised among all distributions with the same support.\n\n**ML Use Cases:**\n- **Weight initialisation** in neural networks (small symmetric interval around 0)\n- **Hyperparameter search** — defining search bounds for random/grid search\n- **Data augmentation** — random rotation angles, brightness shifts\n- **Monte Carlo sampling** — base distribution for inverse transform sampling\n\n**Summary Comparison:**\n| Property | Poisson | Exponential | Uniform |\n|---|---|---|---|\n| Type | Discrete | Continuous | Continuous |\n| Domain | k = 0,1,2,… | x ∈ [0,∞) | x ∈ [a,b] |\n| Mean | λ | 1/λ | (a+b)/2 |\n| Variance | λ | 1/λ² | (b-a)²/12 |",
+      "code": [
+        {
+          "title": "Uniform Distribution — ML Applications",
+          "language": "python",
+          "code": "from scipy import stats\nimport numpy as np\n\n# Uniform between 2 and 8 (loc=a, scale=b-a)\nrv = stats.uniform(loc=2, scale=6)\n\n# PDF (constant within range)\nprint(rv.pdf(5))           # 0.1667 (= 1/6)\nprint(rv.pdf(1))           # 0.0    (outside range)\n\n# Mean and variance\nprint(rv.mean())           # 5.0\nprint(rv.var())            # 3.0  (= 36/12)\n\n# CDF\nprint(rv.cdf(4))           # 0.333 (= (4-2)/6)\n\n# 1. Neural network weight initialisation\ndef uniform_init(shape, a=-0.1, b=0.1):\n    return np.random.uniform(a, b, shape)\n\nW = uniform_init((128, 64))\nprint(W.min(), W.max())    # ≈ -0.1, 0.1\n\n# 2. Inverse transform sampling\n# To sample from Exponential using Uniform:\nu = np.random.uniform(0, 1, 1000)\nexp_samples = -np.log(1 - u) / 0.5  # lambda=0.5"
+        }
+      ],
+      "visualSuggestions": [
+        "Flat PDF rectangle with [a,b] sliders — CDF shows linear ramp",
+        "Inverse transform sampling demo: uniform draws on y-axis mapped through CDF inverse to target distribution"
+      ],
+      "visualIntuition": [
+        "Think of a perfectly fair spinner on a circular dial. No matter where the needle lands between a and b, every position is equally likely. The probability is simply 1/(b-a) everywhere in the interval — a perfectly flat, democratic distribution."
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is the key difference between a PMF and a PDF?",
+      "options": [
+        "PMF is for continuous, PDF for discrete",
+        "PMF gives exact probabilities, PDF gives densities over ranges",
+        "PMF uses integrals, PDF uses sums",
+        "They are the same thing"
+      ],
+      "correctAnswer": 1,
+      "explanation": "A PMF (Probability Mass Function) assigns exact probabilities to discrete outcomes like P(X=3). A PDF (Probability Density Function) describes continuous distributions where probability exists only over ranges, not individual points."
+    },
+    {
+      "id": "q2",
+      "question": "Why does cross-entropy loss relate to the Bernoulli distribution?",
+      "options": [
+        "Both use normal distributions",
+        "Cross-entropy measures the log-likelihood of Bernoulli outcomes",
+        "They share the same variance formula",
+        "Cross-entropy only works with continuous data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Binary classification labels follow a Bernoulli distribution (0 or 1). Cross-entropy loss is derived from the negative log-likelihood of this Bernoulli model, measuring how well predicted probabilities match actual binary outcomes."
+    },
+    {
+      "id": "q3",
+      "question": "Given P(disease)=0.01 and a test with 95% sensitivity and 5% false positive rate, what is approximately P(disease|positive)?",
+      "options": [
+        "95%",
+        "50%",
+        "16%",
+        "1%"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Using Bayes' theorem: P(D|+) = (0.95 × 0.01) / (0.95×0.01 + 0.05×0.99) ≈ 0.16 or 16%. Even with an accurate test, rare conditions produce surprisingly low posterior probabilities."
+    },
+    {
+      "id": "q4",
+      "question": "Why does the Law of Large Numbers matter for training ML models?",
+      "options": [
+        "It guarantees perfect predictions",
+        "Sample statistics converge to true parameters with more data",
+        "It eliminates all bias",
+        "It only applies to normal distributions"
+      ],
+      "correctAnswer": 1,
+      "explanation": "LLN ensures that as training data grows, sample statistics (means, variances) converge to true population parameters. This is why models improve with more data and why validation metrics stabilize."
+    },
+    {
+      "id": "q5",
+      "question": "What does it mean for two events to be independent?",
+      "options": [
+        "They never occur together",
+        "P(A|B) = P(A) — knowing B tells you nothing about A",
+        "They have the same probability",
+        "They are mutually exclusive"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Independence means P(A|B) = P(A). Knowing that B occurred doesn't change your belief about A. This is different from mutual exclusivity, where events cannot co-occur."
+    },
+    {
+      "id": "q6",
+      "question": "What unique property does the Poisson distribution have regarding its mean and variance?",
+      "options": [
+        "Mean is always twice the variance",
+        "Mean equals the variance",
+        "Variance is always zero",
+        "Mean is always greater than variance"
+      ],
+      "correctAnswer": 1,
+      "explanation": "For a Poisson distribution with parameter λ, both the mean and variance equal λ. This is a unique identifying property."
+    },
+    {
+      "id": "q7",
+      "question": "What does the memorylessness property of the Exponential distribution mean?",
+      "options": [
+        "The distribution has no parameters to remember",
+        "Past waiting time does not affect future waiting probability",
+        "The distribution forgets its mean after each sample",
+        "Samples are always independent"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Memorylessness means P(X > s+t | X > s) = P(X > t). If you've already waited s units, the probability of waiting an additional t units is the same as starting fresh."
+    },
+    {
+      "id": "q8",
+      "question": "Which ML application commonly uses the Uniform distribution?",
+      "options": [
+        "Computing loss functions",
+        "Neural network weight initialisation",
+        "Gradient descent step size",
+        "Batch normalization"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Uniform distribution is commonly used for neural network weight initialisation (e.g., Xavier uniform), where weights are sampled from a small symmetric interval around 0."
+    }
+  ],
+  "references": [
+    {
+      "label": "Khan Academy - Statistics and Probability",
+      "url": "https://www.khanacademy.org/math/statistics-probability"
+    },
+    {
+      "label": "NIST Engineering Statistics Handbook",
+      "url": "https://www.itl.nist.gov/div898/handbook/"
+    },
+    {
+      "label": "SciPy Statistics Documentation",
+      "url": "https://docs.scipy.org/doc/scipy/reference/stats.html"
+    },
+    {
+      "label": "scikit-learn - Naive Bayes",
+      "url": "https://scikit-learn.org/stable/modules/naive_bayes.html"
+    },
+    {
+      "label": "Khan Academy - Linear Algebra",
+      "url": "https://www.khanacademy.org/math/linear-algebra"
+    }
+  ],
+  "_contentWarnings": []
 }
