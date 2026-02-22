@@ -165,63 +165,51 @@
   "quiz": [
     {
       "id": "q1",
-      "question": "What is the most common cause of ML project failure?",
+      "question": "What does the Universal Approximation Theorem state about neural networks?",
       "options": [
-        "Bad algorithms",
-        "Poor data quality and insufficient problem framing",
-        "Not enough compute power",
-        "Using the wrong programming language"
+        "They can only learn linear functions",
+        "With enough neurons, they can approximate any continuous function",
+        "They always find the global minimum",
+        "They are modeled exactly after human brains"
       ],
       "correctAnswer": 1,
-      "explanation": "Most ML projects fail not from algorithm choice but from unclear problem definitions, bad data, or misalignment between what the model optimizes and what the business needs. Data quality is consistently the #1 issue."
+      "explanation": "The theorem states that a feed-forward network with a single hidden layer containing a finite number of neurons can approximate continuous functions on compact subsets of R^n, given appropriate activation functions."
     },
     {
       "id": "q2",
-      "question": "Why is model interpretability important in production?",
+      "question": "Which problem led to the 'AI winter' for perceptrons in 1969?",
       "options": [
-        "It makes models faster",
-        "Stakeholders need to understand and trust predictions; regulators may require explainability",
-        "It improves accuracy",
-        "It's only important for research"
+        "Inability to handle images",
+        "High computational cost",
+        "Inability to solve the XOR problem (non-linearly separable data)",
+        "Slow convergence speed"
       ],
-      "correctAnswer": 1,
-      "explanation": "In production, predictions affect real decisions. Doctors, loan officers, and judges need to understand why a model made a prediction. Regulations like GDPR may require explanations for automated decisions."
+      "correctAnswer": 2,
+      "explanation": "Minsky and Papert proved that single-layer perceptrons could not solve the XOR problem, which require non-linear decision boundaries. This stalled neural network research until backpropagation became popular."
     },
     {
       "id": "q3",
-      "question": "What is the difference between online and batch learning?",
+      "question": "Why is ReLU often preferred over Sigmoid in deep networks?",
       "options": [
-        "Online uses the internet",
-        "Online learning updates continuously with new data; batch retrains on the full dataset periodically",
-        "Batch is always better",
-        "They produce identical models"
+        "It is more biologically accurate",
+        "It prevents vanishing gradients by having a constant gradient of 1 for positive inputs",
+        "It limits the output between -1 and 1",
+        "It uses less memory"
       ],
       "correctAnswer": 1,
-      "explanation": "Batch learning retrains from scratch periodically. Online learning incrementally updates with each new data point, adapting quickly to changes but risking instability. The choice depends on data velocity and concept drift."
+      "explanation": "Sigmoid saturates at 0 and 1, where the gradient is near zero. ReLU avoids this for positive inputs, allowing deeper networks to train more effectively without the gradient vanishing."
     },
     {
       "id": "q4",
-      "question": "Why must you call model.eval() before inference when using Dropout?",
+      "question": "What happens during the backward propagation phase?",
       "options": [
-        "To reduce memory usage",
-        "To disable dropout so all neurons contribute to the prediction",
-        "To enable gradient computation",
-        "To reset the model weights"
+        "The model makes a prediction",
+        "The weights are randomly reset",
+        "The chain rule is used to compute gradients of the loss with respect to weights",
+        "The input data is reversed"
       ],
-      "correctAnswer": 1,
-      "explanation": "During training, dropout randomly zeros neurons. At inference, you want all neurons active (with scaled outputs). model.eval() disables dropout (and batch normalization updates) for deterministic predictions."
-    },
-    {
-      "id": "q5",
-      "question": "Why is Kaiming initialization preferred over Xavier for ReLU networks?",
-      "options": [
-        "Kaiming is always faster",
-        "Kaiming accounts for ReLU zeroing out approximately half the activations",
-        "Xavier doesn't work with any activation function",
-        "Kaiming uses smaller weights"
-      ],
-      "correctAnswer": 1,
-      "explanation": "ReLU zeros out ~50% of activations, effectively halving the variance at each layer. Kaiming initialization compensates with a factor of 2, maintaining stable variance through deep networks. Xavier assumes symmetric activations (tanh/sigmoid)."
+      "correctAnswer": 2,
+      "explanation": "Backpropagation computes the gradient of the loss function with respect to each weight by applying the chain rule, flowing from the output layer back toward the input layer."
     }
   ],
   "references": [

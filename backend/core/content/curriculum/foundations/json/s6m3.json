@@ -165,39 +165,39 @@
   "quiz": [
     {
       "id": "q1",
-      "question": "What is the purpose of a REST API for model serving?",
+      "question": "What is the primary benefit of 'parameter sharing' in CNNs?",
       "options": [
-        "To train models",
-        "To expose model predictions as HTTP endpoints that any application can call",
-        "To store training data",
-        "To visualize predictions"
+        "It makes the network deeper",
+        "It allows the same filter to detect a pattern anywhere in the image",
+        "It increases the memory usage",
+        "It replaces the activation function"
       ],
       "correctAnswer": 1,
-      "explanation": "REST APIs wrap model inference behind standard HTTP endpoints. Any application (web, mobile, IoT) can send data and receive predictions without knowing the model's internals, enabling clean separation of concerns."
+      "explanation": "Parameter sharing means the same weights (the filter) are applied across the entire image. If a vertical edge is important in the top-left, the same filter can detect it in the bottom-right, dramatically reducing parameters."
     },
     {
       "id": "q2",
-      "question": "What is model latency and why does it matter?",
+      "question": "What does a pooling layer primarily achieve?",
       "options": [
-        "Time to train a model",
-        "The time between sending a prediction request and receiving a response — critical for real-time applications",
-        "The model's accuracy",
-        "The model's size on disk"
+        "It increases the depth of feature maps",
+        "It reduces spatial dimensions while retaining important features",
+        "It normalizes the pixel values to [0, 1]",
+        "It learns new weights for categorization"
       ],
       "correctAnswer": 1,
-      "explanation": "Latency directly impacts user experience. A recommendation model that takes 5 seconds loses users. Fraud detection with 3-second latency lets transactions through. Optimization involves model size, hardware, batching, and caching."
+      "explanation": "Pooling (like Max Pooling) reduces the spatial resolution of feature maps. This reduces computation and helps prevent overfitting."
     },
     {
       "id": "q3",
-      "question": "When should you use batch processing vs real-time inference?",
+      "question": "What is the result of using a 'Stride' of 2 in a convolution operation?",
       "options": [
-        "Always use real-time",
-        "Batch for non-time-sensitive predictions (daily reports); real-time for immediate decisions (fraud detection)",
-        "Batch is always cheaper",
-        "They produce different results"
+        "The kernel slides 2 pixels at a time, resulting in a smaller output",
+        "The kernel size is doubled",
+        "The number of channels is halved",
+        "The activation function is applied twice"
       ],
-      "correctAnswer": 1,
-      "explanation": "Batch processing runs predictions periodically on accumulated data — cheaper and simpler. Real-time inference responds instantly to each request — necessary when decisions can't wait (fraud, recommendations, autonomous driving)."
+      "correctAnswer": 0,
+      "explanation": "Stride is the step size. A stride of 2 means the filter skips every other pixel, effectively downsampling the image."
     },
     {
       "id": "q4",
@@ -209,7 +209,7 @@
         "Resolution loss"
       ],
       "correctAnswer": 1,
-      "explanation": "Transposed convolutions with certain stride/kernel combinations produce visible checkerboard grid patterns due to uneven overlap of kernel contributions. Using bilinear upsampling + standard conv avoids this."
+      "explanation": "Transposed convolutions with certain stride/kernel combinations produce visible checkerboard grid patterns due to uneven overlap of kernel contributions."
     },
     {
       "id": "q5",
@@ -221,7 +221,7 @@
         "They don't need GPU computation"
       ],
       "correctAnswer": 1,
-      "explanation": "Dilated convolutions increase the effective receptive field by inserting gaps between kernel elements, without requiring pooling or strided convolutions that reduce spatial resolution. This is critical for dense prediction tasks like segmentation."
+      "explanation": "Dilated convolutions increase the effective receptive field by inserting gaps between kernel elements, without requiring pooling that reduce spatial resolution."
     }
   ],
   "references": [

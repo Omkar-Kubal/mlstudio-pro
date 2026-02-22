@@ -77,39 +77,39 @@
     "quiz": [
         {
             "id": "q1",
-            "question": "What is feature drift vs concept drift?",
+            "question": "What is the 'memory' in a standard Recurrent Neural Network (RNN)?",
             "options": [
-                "They are the same",
-                "Feature drift: input distribution changes; concept drift: the relationship between inputs and target changes",
-                "Feature drift is worse",
-                "Concept drift only happens with time series"
+                "A separate hard drive storage",
+                "The hidden state (h_t) which is passed from one time step to the next",
+                "The list of all previous inputs",
+                "A specialized database"
             ],
             "correctAnswer": 1,
-            "explanation": "Feature drift means inputs change (e.g., customer demographics shift). Concept drift means the underlying pattern changes (e.g., fraud tactics evolve). Both degrade model performance but require different detection and response strategies."
+            "explanation": "RNNs process sequences by passing the hidden state from the previous time step as an input to the current time step. This hidden state acts as a summary of all information seen so far in the sequence."
         },
         {
             "id": "q2",
-            "question": "Why is shadow deployment useful before full rollout?",
+            "question": "What is the 'vanishing gradient problem' in RNNs?",
             "options": [
-                "It saves compute resources",
-                "It runs the new model in parallel without serving its predictions, allowing comparison against the production model",
-                "It replaces A/B testing",
-                "It's only for testing speed"
+                "The model runs out of memory",
+                "Gradients become extremely small as they backpropagate through many time steps, making it hard to learn long-term dependencies",
+                "The error becomes zero instantly",
+                "The model gets stuck in a local minimum"
             ],
             "correctAnswer": 1,
-            "explanation": "Shadow mode routes real traffic to both old and new models, but only serves old model predictions. You compare outputs without risking real users. This catches problems before they affect anyone."
+            "explanation": "Because weights are multiplied repeatedly across time steps, gradients often shrink exponentially during backpropagation through time. This prevents the model from learning relationships between words or events that are far apart in a sequence."
         },
         {
             "id": "q3",
-            "question": "What metrics should you monitor for a deployed model?",
+            "question": "Which component of an LSTM allows it to keep information for a long time without it being erased?",
             "options": [
-                "Only accuracy",
-                "Prediction distribution, latency, error rates, feature distributions, data quality, and business KPIs",
-                "Only server uptime",
-                "Only confusion matrix"
+                "The Forget Gate",
+                "The Cell State highway",
+                "The Softmax output",
+                "The Weight matrix"
             ],
             "correctAnswer": 1,
-            "explanation": "Monitoring must cover: data quality (missing values, schema changes), feature distributions (drift detection), model behavior (prediction distribution, latency), and business impact (revenue, user engagement)."
+            "explanation": "The Cell State acts like a long-term memory highway. It has very few non-linearities, allowing information to flow virtually unchanged across many time steps unless a gate explicitly decides to modify it."
         }
     ],
     "references": [

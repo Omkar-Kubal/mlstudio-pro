@@ -185,39 +185,39 @@
   "quiz": [
     {
       "id": "q1",
-      "question": "What makes a neural network 'deep'?",
+      "question": "Which metric is most affected by large outliers in a regression problem?",
       "options": [
-        "Using large datasets",
-        "Having multiple hidden layers between input and output",
-        "Using complex activation functions",
-        "Training for many epochs"
+        "MAE",
+        "MSE",
+        "R²",
+        "Accuracy"
       ],
       "correctAnswer": 1,
-      "explanation": "Depth refers to the number of hidden layers. Each layer learns increasingly abstract representations — early layers detect simple patterns, deeper layers combine them into complex features."
+      "explanation": "MSE (Mean Squared Error) squares the errors, meaning a large error (outlier) has a disproportionately huge impact on the final score compared to MAE."
     },
     {
       "id": "q2",
-      "question": "What is the role of activation functions in neural networks?",
+      "question": "In a medical test for a rare but dangerous disease, which metric is usually prioritized?",
       "options": [
-        "They speed up training",
-        "They introduce non-linearity, allowing networks to learn complex patterns",
-        "They normalize inputs",
-        "They reduce overfitting"
+        "Precision",
+        "Recall",
+        "Specificity",
+        "Accuracy"
       ],
       "correctAnswer": 1,
-      "explanation": "Without activation functions, stacking linear layers just produces another linear transformation. Non-linear activations (ReLU, sigmoid, tanh) enable networks to approximate any continuous function."
+      "explanation": "Recall (Sensitivity) is prioritized because the cost of a False Negative (missing a sick patient) is much higher than a False Positive (extra testing for a healthy person)."
     },
     {
       "id": "q3",
-      "question": "Why does backpropagation use the chain rule?",
+      "question": "What does an AUC of 0.5 represent in an ROC curve?",
       "options": [
-        "To compute derivatives faster",
-        "To propagate error gradients through composed functions layer by layer",
-        "To prevent overfitting",
-        "To initialize weights"
+        "A perfect classifier",
+        "A classifier that is always wrong",
+        "A classifier no better than random guessing",
+        "A classifier with 100% recall"
       ],
-      "correctAnswer": 1,
-      "explanation": "A neural network is a composition of functions (layers). The chain rule decomposes the gradient of the loss with respect to early weights into a product of local gradients, enabling efficient gradient computation."
+      "correctAnswer": 2,
+      "explanation": "AUC = 0.5 corresponds to the diagonal line on the ROC plot, which represents the performance of a model that makes predictions by random guessing."
     },
     {
       "id": "q4",

@@ -1,9 +1,89 @@
 "use client";
 
 import type { Topic as LearningTopic, CodeSnippet } from "@/lib/content-types";
-import type { FitProgressionConfig, ParameterSensitivityConfig, DistributionEvolutionConfig, BoundaryMorphingConfig, MetricDashboardConfig, ClusterFormationConfig, NetworkForwardPassConfig, GradientBackflowConfig } from "@/lib/visual-types";
+import type {
+    FitProgressionConfig, ParameterSensitivityConfig, DistributionEvolutionConfig,
+    BoundaryMorphingConfig, MetricDashboardConfig, ClusterFormationConfig,
+    NetworkForwardPassConfig, GradientBackflowConfig, DescriptiveStatisticsConfig,
+    PopulationSampleConfig, CentralTendencyConfig, DispersionConfig,
+    ProbabilityDistributionsConfig, CommonDistributionsConfig, ConditionalProbabilityConfig,
+    LawOfLargeNumbersConfig, PoissonDistributionConfig, ExponentialDistributionConfig,
+    UniformDistributionConfig, VectorOperationsConfig, MatrixTransformationConfig,
+    MatrixPropertiesConfig, LinearIndependenceConfig, EigenvectorsConfig, SVDConfig,
+    ObjectiveFunctionConfig,
+    GradientChainRuleConfig,
+    NumpyArraysConfig,
+    BroadcastingConfig,
+    FancyBooleanIndexingConfig,
+    MemoryLayoutConfig,
+    GroupByConfig,
+    RollingAverageConfig,
+    MatplotlibSeabornConfig,
+    ModelResultsConfig,
+    DecoratorsConfig,
+    GeneratorsConfig,
+    ContextManagersConfig,
+    MLPipelinesConfig,
+    FeatureSelectionConfig,
+    DomainFeaturesConfig,
+    TFIDFConfig,
+    CNNFeaturesConfig,
+    LinearRegressionConfig,
+    RegularizationConfig,
+    DecisionTreeConfig,
+    RandomForestConfig,
+    GradientBoostingConfig,
+    SVRConfig,
+    KNNRegressionConfig,
+    RegressionMetricsConfig,
+    LogisticRegressionConfig,
+    DecisionTreeClassificationConfig,
+    SVMConfig,
+    NaiveBayesConfig,
+    KNNClassificationConfig,
+    ConfusionMatrixConfig,
+    ROCAUCConfig,
+    EnsembleMethodsConfig,
+    NeuralNetworkConfig,
+    ActivationFunctionsConfig,
+    CNNConfig,
+    RNNConfig,
+    AttentionConfig,
+    TransformerConfig,
+    DropoutBNConfig,
+    TransferLearningConfig,
+    NLPPipelineConfig,
+    WordEmbeddingConfig,
+    TimeSeriesConfig,
+    AnomalyDetectionConfig,
+    RecommenderConfig,
+    ClusteringConfig,
+    MLOpsConfig,
+    AIEthicsConfig
+} from "@/lib/visual-types";
 import { getVisualConfig } from "@/lib/visual-configs";
 import CodeEditor from "./CodeEditor";
+import { PrimitiveWrapper, isPrimitiveRegistered, type RegisteredPrimitiveType } from "./PrimitiveWrapper";
+import GradientBoostingPrimitive from "./GradientBoostingPrimitive";
+import SVRPrimitive from "./SVRPrimitive";
+import KNNRegressionPrimitive from "./KNNRegressionPrimitive";
+import RegressionMetricsPrimitive from "./RegressionMetricsPrimitive";
+import LogisticRegressionPrimitive from "./LogisticRegressionPrimitive";
+import DecisionTreeClassificationPrimitive from "./DecisionTreeClassificationPrimitive";
+import SVMPrimitive from "./SVMPrimitive";
+import NaiveBayesPrimitive from "./NaiveBayesPrimitive";
+import KNNClassificationPrimitive from "./KNNClassificationPrimitive";
+import ConfusionMatrixPrimitive from "./ConfusionMatrixPrimitive";
+import ROCAUCPrimitive from "./ROCAUCPrimitive";
+import EnsembleMethodsPrimitive from "./EnsembleMethodsPrimitive";
+import NeuralNetworkPrimitive from "./NeuralNetworkPrimitive";
+import ActivationFunctionPrimitive from "./ActivationFunctionPrimitive";
+import CNNPrimitive from "./CNNPrimitive";
+import RNNPrimitive from "./RNNPrimitive";
+import AttentionPrimitive from "./AttentionPrimitive";
+import TransformerPrimitive from "./TransformerPrimitive";
+import DropoutBNPrimitive from "./DropoutBNPrimitive";
+import TransferLearningPrimitive from "./TransferLearningPrimitive";
 import ParameterSensitivityPrimitive from "./ParameterSensitivityPrimitive";
 import FitProgressionPrimitive from "./FitProgressionPrimitive";
 import DistributionEvolutionPrimitive from "./DistributionEvolutionPrimitive";
@@ -12,7 +92,62 @@ import MetricDashboardPrimitive from "./MetricDashboardPrimitive";
 import ClusterFormationPrimitive from "./ClusterFormationPrimitive";
 import NetworkForwardPassPrimitive from "./NetworkForwardPassPrimitive";
 import GradientBackflowPrimitive from "./GradientBackflowPrimitive";
-import { PrimitiveWrapper, isPrimitiveRegistered } from "./PrimitiveWrapper";
+import GradientDescentOptimizer from "./GradientDescentOptimizer";
+import DescriptiveStatisticsPrimitive from "./DescriptiveStatisticsPrimitive";
+import PopulationSamplePrimitive from "./PopulationSamplePrimitive";
+import CentralTendencyPrimitive from "./CentralTendencyPrimitive";
+import DispersionPrimitive from "./DispersionPrimitive";
+import ProbabilityDistributionsPrimitive from "./ProbabilityDistributionsPrimitive";
+import CommonDistributionsPrimitive from "./CommonDistributionsPrimitive";
+import ConditionalProbabilityPrimitive from "./ConditionalProbabilityPrimitive";
+import LawOfLargeNumbersPrimitive from "./LawOfLargeNumbersPrimitive";
+import PoissonDistributionPrimitive from "./PoissonDistributionPrimitive";
+import ExponentialDistributionPrimitive from "./ExponentialDistributionPrimitive";
+import UniformDistributionPrimitive from "./UniformDistributionPrimitive";
+import VectorOperationsPrimitive from "@/components/learn/VectorOperationsPrimitive";
+import MatrixTransformationPrimitive from "@/components/learn/MatrixTransformationPrimitive";
+import MatrixPropertiesPrimitive from "@/components/learn/MatrixPropertiesPrimitive";
+import LinearIndependencePrimitive from "@/components/learn/LinearIndependencePrimitive";
+import EigenvectorsPrimitive from "@/components/learn/EigenvectorsPrimitive";
+import SVDPrimitive from "@/components/learn/SVDPrimitive";
+import ObjectiveFunctionPrimitive from "@/components/learn/ObjectiveFunctionPrimitive";
+import GradientChainRulePrimitive from "@/components/learn/GradientChainRulePrimitive";
+import NumpyArraysPrimitive from "@/components/learn/NumpyArraysPrimitive";
+import BroadcastingPrimitive from "@/components/learn/BroadcastingPrimitive";
+import FancyBooleanIndexingPrimitive from "@/components/learn/FancyBooleanIndexingPrimitive";
+import MemoryLayoutPrimitive from "@/components/learn/MemoryLayoutPrimitive";
+import GroupByPrimitive from "@/components/learn/GroupByPrimitive";
+import RollingAveragePrimitive from "@/components/learn/RollingAveragePrimitive";
+import MatplotlibSeabornPrimitive from "@/components/learn/MatplotlibSeabornPrimitive";
+import ModelResultsPrimitive from "@/components/learn/ModelResultsPrimitive";
+import DecoratorsPrimitive from "@/components/learn/DecoratorsPrimitive";
+import GeneratorsPrimitive from "@/components/learn/GeneratorsPrimitive";
+import ContextManagersPrimitive from "@/components/learn/ContextManagersPrimitive";
+import MLPipelinesPrimitive from "@/components/learn/MLPipelinesPrimitive";
+import OutlierDetectionPrimitive from "@/components/learn/OutlierDetectionPrimitive";
+import DataValidationPrimitive from "@/components/learn/DataValidationPrimitive";
+import CategoricalEncodingPrimitive from "@/components/learn/CategoricalEncodingPrimitive";
+import FeatureScalingPrimitive from "@/components/learn/FeatureScalingPrimitive";
+import PolynomialFeaturesPrimitive from "@/components/learn/PolynomialFeaturesPrimitive";
+import MissingDataPrimitive from "@/components/learn/MissingDataPrimitive";
+import DuplicateDataPrimitive from "@/components/learn/DuplicateDataPrimitive";
+import ResidualAnalysisPrimitive from "@/components/learn/ResidualAnalysisPrimitive";
+import FeatureSelectionPrimitive from "@/components/learn/FeatureSelectionPrimitive";
+import DomainFeaturesPrimitive from "@/components/learn/DomainFeaturesPrimitive";
+import TFIDFPrimitive from "@/components/learn/TFIDFPrimitive";
+import CNNFeaturesPrimitive from "@/components/learn/CNNFeaturesPrimitive";
+import LinearRegressionPrimitive from "@/components/learn/LinearRegressionPrimitive";
+import RegularizationPrimitive from "@/components/learn/RegularizationPrimitive";
+import DecisionTreePrimitive from "@/components/learn/DecisionTreePrimitive";
+import RandomForestPrimitive from "./RandomForestPrimitive";
+import NLPPipelinePrimitive from "./NLPPipelinePrimitive";
+import WordEmbeddingPrimitive from "./WordEmbeddingPrimitive";
+import TimeSeriesPrimitive from "./TimeSeriesPrimitive";
+import AnomalyDetectionPrimitive from "./AnomalyDetectionPrimitive";
+import RecommenderPrimitive from "./RecommenderPrimitive";
+import ClusteringPrimitive from "./ClusteringPrimitive";
+import MLOpsPrimitive from "./MLOpsPrimitive";
+import AIEthicsPrimitive from "./AIEthicsPrimitive";
 
 interface TopicRendererProps {
     topic: LearningTopic;
@@ -208,7 +343,7 @@ function VisualIntuitionWithAnimation({
     config: NonNullable<ReturnType<typeof getVisualConfig>>;
 }) {
     // Determine which primitive to render based on config type
-    const primitiveType = "primitiveType" in config ? config.primitiveType : "parameter-sensitivity";
+    const primitiveType = ("primitiveType" in config ? config.primitiveType : "parameter-sensitivity") as RegisteredPrimitiveType;
 
     // Validate primitive is registered
     if (!isPrimitiveRegistered(primitiveType)) {
@@ -233,6 +368,158 @@ function VisualIntuitionWithAnimation({
                     <NetworkForwardPassPrimitive config={config as NetworkForwardPassConfig} />
                 ) : primitiveType === "gradient-backflow" ? (
                     <GradientBackflowPrimitive config={config as GradientBackflowConfig} />
+                ) : primitiveType === "gradient-descent-optimizer" ? (
+                    <GradientDescentOptimizer />
+                ) : primitiveType === "descriptive-statistics" ? (
+                    <DescriptiveStatisticsPrimitive />
+                ) : primitiveType === "population-sample" ? (
+                    <PopulationSamplePrimitive />
+                ) : primitiveType === "central-tendency" ? (
+                    <CentralTendencyPrimitive />
+                ) : primitiveType === "dispersion" ? (
+                    <DispersionPrimitive />
+                ) : primitiveType === "probability-distributions" ? (
+                    <ProbabilityDistributionsPrimitive />
+                ) : primitiveType === "common-distributions" ? (
+                    <CommonDistributionsPrimitive />
+                ) : primitiveType === "conditional-probability" ? (
+                    <ConditionalProbabilityPrimitive />
+                ) : primitiveType === "law-of-large-numbers" ? (
+                    <LawOfLargeNumbersPrimitive />
+                ) : primitiveType === "poisson-distribution" ? (
+                    <PoissonDistributionPrimitive />
+                ) : primitiveType === "exponential-distribution" ? (
+                    <ExponentialDistributionPrimitive />
+                ) : primitiveType === "uniform-distribution" ? (
+                    <UniformDistributionPrimitive />
+                ) : primitiveType === "vector-operations" ? (
+                    <VectorOperationsPrimitive />
+                ) : primitiveType === "matrix-transformation" ? (
+                    <MatrixTransformationPrimitive />
+                ) : primitiveType === "matrix-properties" ? (
+                    <MatrixPropertiesPrimitive />
+                ) : primitiveType === "linear-independence" ? (
+                    <LinearIndependencePrimitive />
+                ) : primitiveType === "eigen-vectors" ? (
+                    <EigenvectorsPrimitive />
+                ) : primitiveType === "svd" ? (
+                    <SVDPrimitive />
+                ) : primitiveType === "objective-function" ? (
+                    <ObjectiveFunctionPrimitive />
+                ) : primitiveType === "gradient-chain-rule" ? (
+                    <GradientChainRulePrimitive />
+                ) : primitiveType === "numpy-arrays" ? (
+                    <NumpyArraysPrimitive />
+                ) : primitiveType === "broadcasting" ? (
+                    <BroadcastingPrimitive />
+                ) : primitiveType === "fancy-boolean-indexing" ? (
+                    <FancyBooleanIndexingPrimitive />
+                ) : primitiveType === "memory-layout" ? (
+                    <MemoryLayoutPrimitive />
+                ) : primitiveType === "groupby" ? (
+                    <GroupByPrimitive />
+                ) : primitiveType === "rolling-average" ? (
+                    <RollingAveragePrimitive />
+                ) : primitiveType === "matplotlib-seaborn" ? (
+                    <MatplotlibSeabornPrimitive />
+                ) : primitiveType === "model-results" ? (
+                    <ModelResultsPrimitive />
+                ) : primitiveType === "decorators" ? (
+                    <DecoratorsPrimitive />
+                ) : primitiveType === "generators" ? (
+                    <GeneratorsPrimitive />
+                ) : primitiveType === "context-managers" ? (
+                    <ContextManagersPrimitive />
+                ) : primitiveType === "ml-pipelines" ? (
+                    <MLPipelinesPrimitive />
+                ) : primitiveType === "outlier-detection" ? (
+                    <OutlierDetectionPrimitive />
+                ) : primitiveType === "data-validation" ? (
+                    <DataValidationPrimitive />
+                ) : primitiveType === "categorical-encoding" ? (
+                    <CategoricalEncodingPrimitive />
+                ) : primitiveType === "feature-scaling" ? (
+                    <FeatureScalingPrimitive />
+                ) : primitiveType === "polynomial-features" ? (
+                    <PolynomialFeaturesPrimitive />
+                ) : primitiveType === "missing-data" ? (
+                    <MissingDataPrimitive />
+                ) : primitiveType === "duplicate-data" ? (
+                    <DuplicateDataPrimitive />
+                ) : primitiveType === "residual-analysis" ? (
+                    <ResidualAnalysisPrimitive />
+                ) : primitiveType === "feature-selection" ? (
+                    <FeatureSelectionPrimitive />
+                ) : primitiveType === "domain-features" ? (
+                    <DomainFeaturesPrimitive />
+                ) : primitiveType === "tfidf" ? (
+                    <TFIDFPrimitive />
+                ) : primitiveType === "cnn-features" ? (
+                    <CNNFeaturesPrimitive />
+                ) : primitiveType === "linear-regression" ? (
+                    <LinearRegressionPrimitive />
+                ) : primitiveType === "regularization" ? (
+                    <RegularizationPrimitive />
+                ) : primitiveType === "decision-tree" ? (
+                    <DecisionTreePrimitive />
+                ) : primitiveType === "random-forest" ? (
+                    <RandomForestPrimitive />
+                ) : primitiveType === "gradient-boosting" ? (
+                    <GradientBoostingPrimitive />
+                ) : primitiveType === "svr" ? (
+                    <SVRPrimitive />
+                ) : primitiveType === "knn-regression" ? (
+                    <KNNRegressionPrimitive />
+                ) : primitiveType === "regression-metrics" ? (
+                    <RegressionMetricsPrimitive />
+                ) : primitiveType === "logistic-regression" ? (
+                    <LogisticRegressionPrimitive />
+                ) : primitiveType === "decision-tree-classification" ? (
+                    <DecisionTreeClassificationPrimitive />
+                ) : primitiveType === "svm" ? (
+                    <SVMPrimitive />
+                ) : primitiveType === "naive-bayes" ? (
+                    <NaiveBayesPrimitive />
+                ) : primitiveType === "knn-classification" ? (
+                    <KNNClassificationPrimitive />
+                ) : primitiveType === "confusion-matrix" ? (
+                    <ConfusionMatrixPrimitive />
+                ) : primitiveType === "roc-auc" ? (
+                    <ROCAUCPrimitive />
+                ) : primitiveType === "ensemble-methods" ? (
+                    <EnsembleMethodsPrimitive />
+                ) : primitiveType === "neural-network" ? (
+                    <NeuralNetworkPrimitive />
+                ) : primitiveType === "activation-functions" ? (
+                    <ActivationFunctionPrimitive />
+                ) : primitiveType === "cnn" ? (
+                    <CNNPrimitive />
+                ) : primitiveType === "rnn" ? (
+                    <RNNPrimitive />
+                ) : primitiveType === "attention" ? (
+                    <AttentionPrimitive />
+                ) : primitiveType === "transformer" ? (
+                    <TransformerPrimitive />
+                ) : primitiveType === "dropout-bn" ? (
+                    <DropoutBNPrimitive />
+                ) : primitiveType === "transfer-learning" ? (
+                    <TransferLearningPrimitive />
+                ) : primitiveType === "nlp-pipeline" ? (
+                    <NLPPipelinePrimitive />
+                ) : primitiveType === "word-embedding" ? (
+                    <WordEmbeddingPrimitive />
+                ) : primitiveType === "time-series" ? (
+                    <TimeSeriesPrimitive />
+                ) : primitiveType === "anomaly-detection" ? (
+                    <AnomalyDetectionPrimitive />
+                ) : primitiveType === "recommender" ? (
+                    <RecommenderPrimitive />
+                ) : primitiveType === "clustering" ? (
+                    <ClusteringPrimitive />
+                ) : primitiveType === "mlops" ? (
+                    <MLOpsPrimitive />
+                ) : primitiveType === "ai-ethics" ? (
+                    <AIEthicsPrimitive />
                 ) : (
                     <ParameterSensitivityPrimitive config={config as ParameterSensitivityConfig} />
                 )}
