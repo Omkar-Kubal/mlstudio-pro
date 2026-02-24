@@ -3,21 +3,31 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ParsedContent } from "@/types/learning";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { ParsedContent, QuizQuestion } from "@/adapters/content-types";
+import { usePyodide } from "@/hooks/usePyodide";
+import { Visualizer } from "@/components/Visualizer";
 
-export default function TopicPage() {
-    const params = useParams();
-    const subjectSlug = params.subject as string;
-    const moduleSlug = params.module as string;
-    const topicSlug = params.topic as string;
+export default function TopicPage({
+    params,
+}: {
+    params: { subject: string; module: string; topic: string };
+}) {
+    const subjectSlug = params.subject;
+    const moduleSlug = params.module;
+    const topicSlug = params.topic;
 
     const [content, setContent] = useState<ParsedContent | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [code, setCode] = useState("");
-    const [isRunning, setIsRunning] = useState(false);
-    const [output, setOutput] = useState<{ text: string; error?: boolean } | null>(null);
     const [activeFile, setActiveFile] = useState("script.py");
+    // Quiz state
+    const [selectedOption, setSelectedOption] = useState<number | null>(null);
+    const [isAnswerChecked, setIsAnswerChecked] = useState(false);
+    const [quizIndex, setQuizIndex] = useState(0);
+
+    const { runCode, isReady: isPyodideReady, isRunning, output } = usePyodide();
 
     useEffect(() => {
         fetch(`/api/content?subject=${subjectSlug}&module=${moduleSlug}`)
@@ -39,23 +49,33 @@ export default function TopicPage() {
     }, [subjectSlug, moduleSlug]);
 
     const handleRunCode = async () => {
-        setIsRunning(true);
-        setOutput(null);
+        runCode(code);
+    };
+
+    const handleFinishTopic = async () => {
         try {
-            const res = await fetch("/api/run-code", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ language: "python", code }),
-            });
-            const data = await res.json();
-            setOutput({
-                text: data.output || data.error || "No output",
-                error: !!data.error,
+            await fetch(`/api/content/progress/${moduleSlug}/${topicSlug}`, {
+                method: "POST"
             });
         } catch (e) {
-            setOutput({ text: String(e), error: true });
+            console.error("Failed to update progress", e);
         }
-        setIsRunning(false);
+    };
+
+    const handleCheckAnswer = () => {
+        setIsAnswerChecked(true);
+        // If it's the last question, automatically trigger progress update
+        if (content && quizIndex === content.quiz.length - 1) {
+            handleFinishTopic();
+        }
+    };
+
+    const handleNextQuestion = () => {
+        if (content && quizIndex < content.quiz.length - 1) {
+            setQuizIndex(quizIndex + 1);
+            setSelectedOption(null);
+            setIsAnswerChecked(false);
+        }
     };
 
     if (loading) {
@@ -83,8 +103,15 @@ export default function TopicPage() {
     }
 
     // Get theory paragraphs (filter out headings for main content)
-    const theoryParagraphs = content.sections.filter(s => s.type === "paragraph").slice(0, 3);
-    const headings = content.sections.filter(s => s.type === "heading");
+    const theoryParagraphs = content.sections.filter((s: any) => s.type === "paragraph").slice(0, 3);
+    const headings = content.sections.filter((s: any) => s.type === "heading");
+
+    const currentQuiz = content.quiz[quizIndex];
+    const isStructuredQuiz = typeof currentQuiz !== "string";
+    const structuredQuiz = isStructuredQuiz ? (currentQuiz as QuizQuestion) : null;
+    const questionText = structuredQuiz ? structuredQuiz.question : (currentQuiz as string);
+    const options = structuredQuiz ? structuredQuiz.options : ["Option A", "Option B", "Option C"];
+
 
     return (
         <main className="w-full flex flex-col">
@@ -154,20 +181,8 @@ export default function TopicPage() {
                         <div className="bg-background rounded-xl border border-border shadow-2xl shadow-black relative overflow-hidden group aspect-square lg:aspect-[4/3] flex items-center justify-center">
                             <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" />
                             {/* Visual representation of data concept */}
-                            <div className="w-full h-full p-6 flex flex-col items-center justify-center gap-4">
-                                {/* Animated bars representing data */}
-                                <div className="flex items-end gap-2 h-24">
-                                    <div className="w-6 bg-primary/30 rounded-t animate-pulse" style={{ height: '40%' }} />
-                                    <div className="w-6 bg-primary/50 rounded-t animate-pulse" style={{ height: '70%', animationDelay: '0.1s' }} />
-                                    <div className="w-6 bg-primary/70 rounded-t animate-pulse" style={{ height: '55%', animationDelay: '0.2s' }} />
-                                    <div className="w-6 bg-primary rounded-t animate-pulse" style={{ height: '85%', animationDelay: '0.3s' }} />
-                                    <div className="w-6 bg-primary/60 rounded-t animate-pulse" style={{ height: '45%', animationDelay: '0.4s' }} />
-                                    <div className="w-6 bg-primary/40 rounded-t animate-pulse" style={{ height: '65%', animationDelay: '0.5s' }} />
-                                </div>
-                                <span className="text-xs text-muted font-mono uppercase tracking-widest">Concept Visualization</span>
-                                <span className="text-[10px] text-muted/50 max-w-[200px] text-center">
-                                    Interactive visualizations help build intuition for {moduleSlug.replace(/-/g, " ")}
-                                </span>
+                            <div className="w-full h-full p-2 flex flex-col items-center justify-center gap-4">
+                                <Visualizer subject={subjectSlug} module={moduleSlug} type={content.visualSuggestions?.[0] || ""} />
                             </div>
                         </div>
                         <p className="text-center text-xs text-muted font-mono pt-2">Fig 1.1: {content.title || "Data Distribution"} Visualization</p>
@@ -215,12 +230,14 @@ export default function TopicPage() {
                             Reset Lab
                         </button>
                         <button
-                            className="px-4 py-2 rounded-lg bg-foreground text-background border border-foreground text-xs font-bold uppercase tracking-wider hover:bg-white transition-colors shadow-lg shadow-white/10 flex items-center gap-2"
+                            className="px-4 py-2 rounded-lg bg-foreground text-background border border-foreground text-xs font-bold uppercase tracking-wider hover:bg-white transition-colors shadow-lg shadow-white/10 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={handleRunCode}
-                            disabled={isRunning}
+                            disabled={isRunning || !isPyodideReady}
                         >
-                            <span className="material-symbols-outlined text-sm">play_arrow</span>
-                            {isRunning ? "Running..." : "Run Solution"}
+                            <span className="material-symbols-outlined text-sm">
+                                {!isPyodideReady ? "downloading" : isRunning ? "sync" : "play_arrow"}
+                            </span>
+                            {!isPyodideReady ? "Initializing..." : isRunning ? "Running..." : "Run Solution"}
                         </button>
                     </div>
                 </div>
@@ -312,12 +329,29 @@ export default function TopicPage() {
                             <div className="flex-1" />
                         </div>
                         <div className="flex-1 p-4 font-mono text-xs overflow-y-auto space-y-4">
-                            {output ? (
+                            {!isPyodideReady ? (
+                                <div className="text-muted text-center py-12">
+                                    <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4" />
+                                    <p>Initializing Python Environment...</p>
+                                </div>
+                            ) : output ? (
                                 <>
                                     <div className="text-gray-400">$ python3 script.py</div>
                                     <pre className={`whitespace-pre-wrap ${output.error ? "text-red-400" : "text-foreground"}`}>
                                         {output.text}
                                     </pre>
+                                    {output.image && (
+                                        <div className="mt-4 p-2 bg-white rounded-lg overflow-hidden border border-border group relative">
+                                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 text-white text-[10px] px-2 py-1 rounded backdrop-blur">
+                                                Matplotlib Output
+                                            </div>
+                                            <img 
+                                                src={`data:image/png;base64,${output.image}`} 
+                                                alt="Plot" 
+                                                className="w-full h-auto"
+                                            />
+                                        </div>
+                                    )}
                                     <div className={`p-2 rounded text-[10px] ${output.error ? "bg-red-500/5 border border-red-500/20 text-red-400" : "bg-green-500/5 border border-green-500/20 text-green-400"}`}>
                                         Process finished with exit code {output.error ? "1" : "0"}
                                     </div>
@@ -345,23 +379,95 @@ export default function TopicPage() {
                                 </div>
                                 <h3 className="text-lg font-bold text-foreground uppercase tracking-wide">Knowledge Check</h3>
                                 <span className="ml-auto text-xs text-muted font-mono bg-background px-2 py-1 rounded border border-border">
-                                    Q 1/{content.quiz.length}
+                                    Q {quizIndex + 1}/{content.quiz.length}
                                 </span>
                             </div>
-                            <h4 className="text-xl md:text-2xl font-bold mb-8">{content.quiz[0]}</h4>
+                            <h4 className="text-xl md:text-2xl font-bold mb-8">{questionText}</h4>
                             <div className="space-y-3">
-                                {["Option A", "Option B", "Option C"].map((opt, i) => (
-                                    <label key={i} className="flex items-center gap-4 p-4 rounded-lg border border-border bg-background hover:bg-surface hover:border-muted transition-all cursor-pointer group">
-                                        <input type="radio" name="quiz" className="text-primary bg-background border-border focus:ring-primary/50" />
-                                        <span className="text-muted group-hover:text-foreground transition-colors">{opt}</span>
-                                    </label>
-                                ))}
+                                {options.map((opt: string, i: number) => {
+                                    const isCorrect = structuredQuiz && i === structuredQuiz.correctAnswer;
+                                    const isSelected = selectedOption === i;
+                                    const showFeedback = isAnswerChecked;
+                                    
+                                    let borderColor = "border-border";
+                                    let bgColor = "bg-background";
+                                    
+                                    if (showFeedback) {
+                                        if (isCorrect) {
+                                            borderColor = "border-emerald-500/50";
+                                            bgColor = "bg-emerald-500/10";
+                                        } else if (isSelected) {
+                                            borderColor = "border-rose-500/50";
+                                            bgColor = "bg-rose-500/10";
+                                        }
+                                    } else if (isSelected) {
+                                        borderColor = "border-primary";
+                                        bgColor = "bg-primary/5";
+                                    }
+
+                                    return (
+                                        <label 
+                                            key={i} 
+                                            className={`flex items-center gap-4 p-4 rounded-lg border ${borderColor} ${bgColor} hover:border-muted transition-all cursor-pointer group`}
+                                        >
+                                            <input 
+                                                type="radio" 
+                                                name="quiz" 
+                                                className="text-primary bg-background border-border focus:ring-primary/50" 
+                                                checked={isSelected}
+                                                onChange={() => !isAnswerChecked && setSelectedOption(i)}
+                                            />
+                                            <span className={`${isSelected || (showFeedback && isCorrect) ? "text-foreground" : "text-muted"} group-hover:text-foreground transition-colors`}>
+                                                {opt}
+                                            </span>
+                                            {showFeedback && isCorrect && (
+                                                <span className="material-symbols-outlined text-emerald-500 ml-auto">check_circle</span>
+                                            )}
+                                            {showFeedback && isSelected && !isCorrect && (
+                                                <span className="material-symbols-outlined text-rose-500 ml-auto">cancel</span>
+                                            )}
+                                        </label>
+                                    );
+                                })}
                             </div>
+                            
+                            {isAnswerChecked && structuredQuiz && structuredQuiz.explanation && (
+                                <div className="mt-6 p-4 rounded-lg bg-white/5 border border-white/10 animate-fade-in text-sm text-muted leading-relaxed">
+                                    <strong className="text-foreground">Explanation:</strong> {structuredQuiz.explanation}
+                                </div>
+                            )}
+
                             <div className="mt-8 pt-6 border-t border-border flex justify-between items-center">
-                                <span className="text-xs text-muted">Select the best answer to proceed.</span>
-                                <button className="px-6 py-2.5 bg-foreground text-background font-bold text-sm rounded-lg hover:bg-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-                                    Check Answer
-                                </button>
+                                <span className="text-xs text-muted">
+                                    {isAnswerChecked 
+                                        ? (quizIndex < content.quiz.length - 1 ? "Great job! Try the next one." : "Quiz completed!")
+                                        : "Select the best answer to proceed."}
+                                </span>
+                                {isAnswerChecked ? (
+                                    quizIndex < content.quiz.length - 1 ? (
+                                        <button 
+                                            onClick={handleNextQuestion}
+                                            className="px-6 py-2.5 bg-foreground text-background font-bold text-sm rounded-lg hover:bg-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                                        >
+                                            Next Question
+                                        </button>
+                                    ) : (
+                                        <Link 
+                                            href={`/learn/${subjectSlug}/${moduleSlug}`}
+                                            className="px-6 py-2.5 bg-emerald-600 text-white font-bold text-sm rounded-lg hover:bg-emerald-500 hover:scale-105 transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                                        >
+                                            Finish Module
+                                        </Link>
+                                    )
+                                ) : (
+                                    <button 
+                                        onClick={handleCheckAnswer}
+                                        disabled={selectedOption === null}
+                                        className="px-6 py-2.5 bg-foreground text-background font-bold text-sm rounded-lg hover:bg-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Check Answer
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>

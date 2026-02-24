@@ -114,4 +114,5 @@ export interface ParsedContent {
     codeSnippets: CodeSnippet[];
     quiz: Array<string | QuizQuestion>;
     references: Reference[];
+    visualSuggestions?: string[];
 }

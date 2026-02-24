@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { ClusterFormationConfig } from "@/lib/visual-types";
+import type { ClusterFormationConfig } from "@/adapters/visual-types";
 
 interface Props {
     config: ClusterFormationConfig;
@@ -318,3 +318,4 @@ function runKMeans(
 
     return { centroids, assignments, inertia };
 }
+

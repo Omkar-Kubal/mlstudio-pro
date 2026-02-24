@@ -90,6 +90,7 @@
         "Heatmap with rows as true classes, columns as predicted. Interactive version highlights one cell and computes derived metrics on click."
       ],
       "visualSuggestions": [
+        "metrics",
         "Threshold slider updating confusion matrix in real-time",
         "Exploded view showing TP/FP/FN/TN regions"
       ],

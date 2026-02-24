@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { MLPipelinesConfig } from "@/lib/visual-types";
+import { MLPipelinesConfig } from "@/adapters/visual-types";
 
 // ─── Canvas dims ───────────────────────────────────────────────────────────────
 const W = 560, H = 120;
@@ -162,3 +162,4 @@ export default function MLPipelinesPrimitive({ config }: Props) {
         </div>
     );
 }
+

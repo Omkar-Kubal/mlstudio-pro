@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { LearningModule, Reference, QuizQuestion } from "@/lib/content-types";
-import { progressTracker } from "@/lib/progress";
+import type { LearningModule, Reference, QuizQuestion } from "@/adapters/content-types";
+import { progressTracker } from "@/adapters/progress";
 import TopicRenderer from "./TopicRenderer";
 
 interface ModuleContentProps {
@@ -331,3 +331,4 @@ function ReferencesSection({ references }: { references: Reference[] }) {
         </section>
     );
 }
+

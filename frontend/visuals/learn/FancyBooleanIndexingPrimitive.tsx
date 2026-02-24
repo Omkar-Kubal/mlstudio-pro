@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { FancyBooleanIndexingConfig } from "@/lib/visual-types";
+import { FancyBooleanIndexingConfig } from "@/adapters/visual-types";
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 const GRID_DATA = [
@@ -244,3 +244,4 @@ export default function FancyBooleanIndexingPrimitive({ config }: Props) {
         </div>
     );
 }
+

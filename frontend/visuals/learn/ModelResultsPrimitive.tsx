@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { ModelResultsConfig } from "@/lib/visual-types";
+import { ModelResultsConfig } from "@/adapters/visual-types";
 
 // ─── Canvas dims ───────────────────────────────────────────────────────────────
 const W = 480, H = 260;
@@ -182,3 +182,4 @@ export default function ModelResultsPrimitive({ config }: Props) {
         </div>
     );
 }
+

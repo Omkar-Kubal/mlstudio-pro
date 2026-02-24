@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import type { LearningModule } from "@/lib/content-types";
-import ModuleContent from "@/components/learn/ModuleContent";
+import type { LearningModule } from "@/adapters/content-types";
+import ModuleContent from "@/visuals/learn/ModuleContent";
 
 interface ContentResponse {
     _raw?: LearningModule;

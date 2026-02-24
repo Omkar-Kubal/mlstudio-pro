@@ -8,7 +8,17 @@ class CodeRunner:
     def run_python(self, code: str) -> Dict[str, Any]:
         """
         Runs Python code locally and returns stdout, stderr, and optional image.
+        Includes basic security checks to mitigate RCE.
         """
+        # Basic security check
+        is_safe, error_msg = self._is_safe(code)
+        if not is_safe:
+            return {
+                "stdout": "",
+                "stderr": f"Security Error: {error_msg}",
+                "exit_code": -1
+            }
+
         # Inject code to handle matplotlib if it's imported
         wrapped_code = self._wrap_code(code)
         
@@ -60,6 +70,24 @@ class CodeRunner:
             # Clean up the temporary file
             if os.path.exists(temp_file_path):
                 os.remove(temp_file_path)
+
+    def _is_safe(self, code: str) -> tuple[bool, str]:
+        """
+        Performs basic keyword filtering to prevent common RCE patterns.
+        NOTE: This is a basic check and not a substitute for proper sandboxing.
+        """
+        blacklisted = [
+            "os.", "sys.", "subprocess", "eval(", "exec(", "open(", 
+            "shutil", "importlib", "socket", "requests", "urllib",
+            "builtins", "__import__", "pickle", "marshal"
+        ]
+        
+        # Check for blacklisted keywords
+        for word in blacklisted:
+            if word in code:
+                return False, f"Use of '{word}' is restricted in this environment."
+        
+        return True, ""
 
     def _wrap_code(self, code: str) -> str:
         """

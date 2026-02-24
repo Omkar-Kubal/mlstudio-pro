@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { GeneratorsConfig } from "@/lib/visual-types";
+import { GeneratorsConfig } from "@/adapters/visual-types";
 
 const TOTAL = 20;
 type Mode = "list" | "generator";
@@ -187,3 +187,4 @@ export default function GeneratorsPrimitive({ config }: Props) {
         </div>
     );
 }
+

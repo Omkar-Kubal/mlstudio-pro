@@ -91,8 +91,9 @@
         "2×2 grid sliding over feature map showing max selection. Before/after comparison showing spatial reduction."
       ],
       "visualSuggestions": [
-        "Interactive pooling demonstration",
-        "Max vs average pooling comparison"
+        "neural",
+        "Unrolled RNN diagram showing state flow over time",
+        "Attention weights heatmap for a sequence"
       ],
       "code": [
         {

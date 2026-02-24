@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { NumpyArraysConfig } from "@/lib/visual-types";
+import { NumpyArraysConfig } from "@/adapters/visual-types";
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 const VALUES = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -315,3 +315,4 @@ export default function NumpyArraysPrimitive({ config }: Props) {
         </div>
     );
 }
+

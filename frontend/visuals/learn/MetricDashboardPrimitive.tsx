@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import type { MetricDashboardConfig } from "@/lib/visual-types";
+import type { MetricDashboardConfig } from "@/adapters/visual-types";
 
 interface Props {
     config: MetricDashboardConfig;
@@ -463,3 +463,4 @@ function generateCurvePath(points: Array<{ x: number; y: number }>) {
     }
     return path;
 }
+

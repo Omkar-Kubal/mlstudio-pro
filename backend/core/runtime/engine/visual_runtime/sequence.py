@@ -130,7 +130,7 @@ class SequenceVisual(VisualPrimitive):
             "dimension_mismatch",
             "invalid_sequence_type",
         ],
-        supported_modes=[RenderingMode.JSON],
+        supported_modes=[RenderingMode.JSON, RenderingMode.SVG],
     )
     
     def __init__(self, seed: int = 42):
@@ -266,8 +266,67 @@ class SequenceVisual(VisualPrimitive):
                 },
                 deterministic=True,
             )
+            
+        if mode == RenderingMode.SVG:
+            svg_content = self._render_svg(data)
+            return VisualOutput(
+                visual_id=f"sequence_{data['sequence_type']}_{data['sequence_length']}",
+                visual_type=self.VISUAL_TYPE,
+                mode=mode,
+                data=svg_content,
+                metadata={
+                    "seed": self.seed,
+                    "sequence_type": data["sequence_type"],
+                },
+                deterministic=True,
+            )
         
         raise VisualValidationError(
             f"Unsupported rendering mode: {mode}",
             visual_id=self.VISUAL_TYPE,
         )
+
+    def _render_svg(self, data: Dict[str, Any]) -> str:
+        """Render sequence unrolled diagram as SVG."""
+        seq_len = data["sequence_length"]
+        # steps = data["steps"]
+        sequence_type = data["sequence_type"]
+        
+        box_width = 60
+        box_height = 40
+        spacing = 40
+        margin_left = 50
+        margin_top = 60
+        
+        width = margin_left + seq_len * (box_width + spacing)
+        height = margin_top + box_height + 100
+        
+        svg = [f'<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" xmlns="http://www.w3.org/2000/svg">']
+        svg.append('<rect width="100%" height="100%" fill="#fcfcfc" />')
+        
+        # Arrowhead definition
+        svg.append('<defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6b7280" /></marker></defs>')
+
+        for i in range(seq_len):
+            x = margin_left + i * (box_width + spacing)
+            y = margin_top
+            
+            # Draw block
+            color = "#3b82f6" if sequence_type == "rnn" else "#10b981" if sequence_type == "lstm" else "#f59e0b"
+            svg.append(f'<rect x="{x}" y="{y}" width="{box_width}" height="{box_height}" rx="4" fill="{color}" opacity="0.8" stroke="#1e40af" stroke-width="1" />')
+            svg.append(f'<text x="{x + box_width/2}" y="{y + box_height/2 + 4}" text-anchor="middle" fill="white" font-family="monospace" font-size="10" font-weight="bold">{sequence_type.upper()}</text>')
+            
+            # Input arrow (bottom to top)
+            svg.append(f'<line x1="{x + box_width/2}" y1="{y + box_height + 30}" x2="{x + box_width/2}" y2="{y + box_height + 2}" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)" />')
+            svg.append(f'<text x="{x + box_width/2}" y="{y + box_height + 42}" text-anchor="middle" fill="#6b7280" font-family="monospace" font-size="8">x_{i}</text>')
+            
+            # Output arrow (bottom to top)
+            svg.append(f'<line x1="{x + box_width/2}" y1="{y}" x2="{x + box_width/2}" y2="{y - 28}" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)" />')
+            svg.append(f'<text x="{x + box_width/2}" y="{y - 35}" text-anchor="middle" fill="#6b7280" font-family="monospace" font-size="8">h_{i}</text>')
+            
+            # Horizontal state arrow (if not last)
+            if i < seq_len - 1:
+                svg.append(f'<line x1="{x + box_width}" y1="{y + box_height/2}" x2="{x + box_width + spacing - 2}" y2="{y + box_height/2}" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)" />')
+
+        svg.append('</svg>')
+        return "\n".join(svg)

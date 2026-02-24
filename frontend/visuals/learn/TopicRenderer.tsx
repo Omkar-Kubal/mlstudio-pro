@@ -1,6 +1,6 @@
 "use client";
 
-import type { Topic as LearningTopic, CodeSnippet } from "@/lib/content-types";
+import type { Topic as LearningTopic, CodeSnippet } from "@/adapters/content-types";
 import type {
     FitProgressionConfig, ParameterSensitivityConfig, DistributionEvolutionConfig,
     BoundaryMorphingConfig, MetricDashboardConfig, ClusterFormationConfig,
@@ -60,8 +60,8 @@ import type {
     ClusteringConfig,
     MLOpsConfig,
     AIEthicsConfig
-} from "@/lib/visual-types";
-import { getVisualConfig } from "@/lib/visual-configs";
+} from "@/adapters/visual-types";
+import { getVisualConfig } from "@/adapters/visual-configs";
 import CodeEditor from "./CodeEditor";
 import { PrimitiveWrapper, isPrimitiveRegistered, type RegisteredPrimitiveType } from "./PrimitiveWrapper";
 import GradientBoostingPrimitive from "./GradientBoostingPrimitive";
@@ -104,41 +104,41 @@ import LawOfLargeNumbersPrimitive from "./LawOfLargeNumbersPrimitive";
 import PoissonDistributionPrimitive from "./PoissonDistributionPrimitive";
 import ExponentialDistributionPrimitive from "./ExponentialDistributionPrimitive";
 import UniformDistributionPrimitive from "./UniformDistributionPrimitive";
-import VectorOperationsPrimitive from "@/components/learn/VectorOperationsPrimitive";
-import MatrixTransformationPrimitive from "@/components/learn/MatrixTransformationPrimitive";
-import MatrixPropertiesPrimitive from "@/components/learn/MatrixPropertiesPrimitive";
-import LinearIndependencePrimitive from "@/components/learn/LinearIndependencePrimitive";
-import EigenvectorsPrimitive from "@/components/learn/EigenvectorsPrimitive";
-import SVDPrimitive from "@/components/learn/SVDPrimitive";
-import ObjectiveFunctionPrimitive from "@/components/learn/ObjectiveFunctionPrimitive";
-import GradientChainRulePrimitive from "@/components/learn/GradientChainRulePrimitive";
-import NumpyArraysPrimitive from "@/components/learn/NumpyArraysPrimitive";
-import BroadcastingPrimitive from "@/components/learn/BroadcastingPrimitive";
-import FancyBooleanIndexingPrimitive from "@/components/learn/FancyBooleanIndexingPrimitive";
-import MemoryLayoutPrimitive from "@/components/learn/MemoryLayoutPrimitive";
-import GroupByPrimitive from "@/components/learn/GroupByPrimitive";
-import RollingAveragePrimitive from "@/components/learn/RollingAveragePrimitive";
-import MatplotlibSeabornPrimitive from "@/components/learn/MatplotlibSeabornPrimitive";
-import ModelResultsPrimitive from "@/components/learn/ModelResultsPrimitive";
-import DecoratorsPrimitive from "@/components/learn/DecoratorsPrimitive";
-import GeneratorsPrimitive from "@/components/learn/GeneratorsPrimitive";
-import ContextManagersPrimitive from "@/components/learn/ContextManagersPrimitive";
-import MLPipelinesPrimitive from "@/components/learn/MLPipelinesPrimitive";
-import OutlierDetectionPrimitive from "@/components/learn/OutlierDetectionPrimitive";
-import DataValidationPrimitive from "@/components/learn/DataValidationPrimitive";
-import CategoricalEncodingPrimitive from "@/components/learn/CategoricalEncodingPrimitive";
-import FeatureScalingPrimitive from "@/components/learn/FeatureScalingPrimitive";
-import PolynomialFeaturesPrimitive from "@/components/learn/PolynomialFeaturesPrimitive";
-import MissingDataPrimitive from "@/components/learn/MissingDataPrimitive";
-import DuplicateDataPrimitive from "@/components/learn/DuplicateDataPrimitive";
-import ResidualAnalysisPrimitive from "@/components/learn/ResidualAnalysisPrimitive";
-import FeatureSelectionPrimitive from "@/components/learn/FeatureSelectionPrimitive";
-import DomainFeaturesPrimitive from "@/components/learn/DomainFeaturesPrimitive";
-import TFIDFPrimitive from "@/components/learn/TFIDFPrimitive";
-import CNNFeaturesPrimitive from "@/components/learn/CNNFeaturesPrimitive";
-import LinearRegressionPrimitive from "@/components/learn/LinearRegressionPrimitive";
-import RegularizationPrimitive from "@/components/learn/RegularizationPrimitive";
-import DecisionTreePrimitive from "@/components/learn/DecisionTreePrimitive";
+import VectorOperationsPrimitive from "./VectorOperationsPrimitive";
+import MatrixTransformationPrimitive from "./MatrixTransformationPrimitive";
+import MatrixPropertiesPrimitive from "./MatrixPropertiesPrimitive";
+import LinearIndependencePrimitive from "./LinearIndependencePrimitive";
+import EigenvectorsPrimitive from "./EigenvectorsPrimitive";
+import SVDPrimitive from "./SVDPrimitive";
+import ObjectiveFunctionPrimitive from "./ObjectiveFunctionPrimitive";
+import GradientChainRulePrimitive from "./GradientChainRulePrimitive";
+import NumpyArraysPrimitive from "./NumpyArraysPrimitive";
+import BroadcastingPrimitive from "./BroadcastingPrimitive";
+import FancyBooleanIndexingPrimitive from "./FancyBooleanIndexingPrimitive";
+import MemoryLayoutPrimitive from "./MemoryLayoutPrimitive";
+import GroupByPrimitive from "./GroupByPrimitive";
+import RollingAveragePrimitive from "./RollingAveragePrimitive";
+import MatplotlibSeabornPrimitive from "./MatplotlibSeabornPrimitive";
+import ModelResultsPrimitive from "./ModelResultsPrimitive";
+import DecoratorsPrimitive from "./DecoratorsPrimitive";
+import GeneratorsPrimitive from "./GeneratorsPrimitive";
+import ContextManagersPrimitive from "./ContextManagersPrimitive";
+import MLPipelinesPrimitive from "./MLPipelinesPrimitive";
+import OutlierDetectionPrimitive from "./OutlierDetectionPrimitive";
+import DataValidationPrimitive from "./DataValidationPrimitive";
+import CategoricalEncodingPrimitive from "./CategoricalEncodingPrimitive";
+import FeatureScalingPrimitive from "./FeatureScalingPrimitive";
+import PolynomialFeaturesPrimitive from "./PolynomialFeaturesPrimitive";
+import MissingDataPrimitive from "./MissingDataPrimitive";
+import DuplicateDataPrimitive from "./DuplicateDataPrimitive";
+import ResidualAnalysisPrimitive from "./ResidualAnalysisPrimitive";
+import FeatureSelectionPrimitive from "./FeatureSelectionPrimitive";
+import DomainFeaturesPrimitive from "./DomainFeaturesPrimitive";
+import TFIDFPrimitive from "./TFIDFPrimitive";
+import CNNFeaturesPrimitive from "./CNNFeaturesPrimitive";
+import LinearRegressionPrimitive from "./LinearRegressionPrimitive";
+import RegularizationPrimitive from "./RegularizationPrimitive";
+import DecisionTreePrimitive from "./DecisionTreePrimitive";
 import RandomForestPrimitive from "./RandomForestPrimitive";
 import NLPPipelinePrimitive from "./NLPPipelinePrimitive";
 import WordEmbeddingPrimitive from "./WordEmbeddingPrimitive";
@@ -567,3 +567,4 @@ function VisualIntuitionPlaceholder({ topic }: { topic: LearningTopic }) {
         </div>
     );
 }
+

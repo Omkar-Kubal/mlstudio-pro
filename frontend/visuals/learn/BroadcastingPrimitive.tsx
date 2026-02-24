@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { BroadcastingConfig } from "@/lib/visual-types";
+import { BroadcastingConfig } from "@/adapters/visual-types";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 type Phase = "initial" | "broadcast" | "result";
@@ -292,3 +292,4 @@ export default function BroadcastingPrimitive({ config }: Props) {
         </div>
     );
 }
+

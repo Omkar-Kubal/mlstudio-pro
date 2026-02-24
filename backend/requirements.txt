@@ -10,3 +10,4 @@ scipy
 pandas
 xgboost
 lightgbm
+supabase

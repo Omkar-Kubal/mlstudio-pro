@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { DecoratorsConfig } from "@/lib/visual-types";
+import { DecoratorsConfig } from "@/adapters/visual-types";
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 const DECORATORS = [
@@ -135,3 +135,4 @@ export default function DecoratorsPrimitive({ config }: Props) {
         </div>
     );
 }
+

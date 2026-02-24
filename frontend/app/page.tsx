@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useRef, useState, useEffect } from "react";
 import { useScroll, motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
-import SystemScrollCanvas from "@/components/SystemScrollCanvas";
-import SectionTextOverlay from "@/components/SectionTextOverlay";
-import Footer from "@/components/Footer";
+import Navbar from "@/visuals/Navbar";
+import SystemScrollCanvas from "@/visuals/SystemScrollCanvas";
+import SectionTextOverlay from "@/visuals/SectionTextOverlay";
+import Footer from "@/visuals/Footer";
 
 export default function HomePage() {
     const scrollContainerRef = useRef<HTMLDivElement>(null);

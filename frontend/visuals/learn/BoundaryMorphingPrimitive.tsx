@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import type { BoundaryMorphingConfig } from "@/lib/visual-types";
+import type { BoundaryMorphingConfig } from "@/adapters/visual-types";
 
 interface Props {
     config: BoundaryMorphingConfig;
@@ -314,3 +314,4 @@ function computeBoundaryPath(grid: GridCell[][], gridSize: number): string {
 
     return paths.join(" ");
 }
+

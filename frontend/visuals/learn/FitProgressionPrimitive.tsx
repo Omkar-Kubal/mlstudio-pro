@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { FitProgressionConfig } from "@/lib/visual-types";
+import type { FitProgressionConfig } from "@/adapters/visual-types";
 
 interface Props {
     config: FitProgressionConfig;
@@ -424,3 +424,4 @@ function solveLinearSystem(A: number[][], b: number[]): number[] {
 
     return x;
 }
+

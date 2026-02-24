@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { RollingAverageConfig } from "@/lib/visual-types";
+import { RollingAverageConfig } from "@/adapters/visual-types";
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 const W = 560, H = 260;
@@ -211,3 +211,4 @@ export default function RollingAveragePrimitive({ config }: Props) {
         </div>
     );
 }
+

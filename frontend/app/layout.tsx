@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -39,7 +40,9 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground font-sans selection:bg-primary/30 selection:text-white`}>
-        {children}
+        <AuthProvider> {/* Wrapped children with AuthProvider */}
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

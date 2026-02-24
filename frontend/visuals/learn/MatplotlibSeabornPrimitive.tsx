@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { MatplotlibSeabornConfig } from "@/lib/visual-types";
+import { MatplotlibSeabornConfig } from "@/adapters/visual-types";
 
 // ─── Canvas constants ──────────────────────────────────────────────────────────
 const W = 500, H = 280;
@@ -236,3 +236,4 @@ export default function MatplotlibSeabornPrimitive({ config }: Props) {
         </div>
     );
 }
+

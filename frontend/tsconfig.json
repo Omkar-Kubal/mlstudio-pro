@@ -26,18 +26,6 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "@/components/*": [
-        "./visuals/*"
-      ],
-      "@/data/*": [
-        "./adapters/*"
-      ],
-      "@/types/*": [
-        "./adapters/*"
-      ],
-      "@/lib/*": [
-        "./adapters/*"
       ]
     }
   },

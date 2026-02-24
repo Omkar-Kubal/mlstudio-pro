@@ -71,3 +71,4 @@ function renderHeading(section: ContentSection, index: number) {
             return <h3 key={index} className={`text-xl ${baseClass} mt-5 mb-2`}>{section.content}</h3>;
     }
 }
+

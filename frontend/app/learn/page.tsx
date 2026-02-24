@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { subjects, subjectMeta } from "@/data/subjects";
+import { subjects, subjectMeta } from "@/adapters/subjects";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 // Progress Ring component
 function ProgressRing({ progress, size = 40 }: { progress: number; size?: number }) {
@@ -68,25 +70,24 @@ const difficultyColors: Record<string, string> = {
     "Advanced": "text-rose-400",
 };
 
-// Sample progress data (preview only — connects to user account in full version)
-const subjectProgress: Record<string, number> = {
-    "foundations": 0,
-    "programming": 0,
-    "data-handling": 0,
-    "machine-learning": 0,
-    "model-evaluation": 0,
-    "deep-learning": 0,
-    "applied-domains": 0,
-};
 
 export default function LearnPage() {
+    const [progressData, setProgressData] = useState<any>(null);
+
+    useEffect(() => {
+        fetch("/api/content/progress")
+            .then(res => res.json())
+            .then(data => setProgressData(data))
+            .catch(err => console.error("Failed to fetch progress", err));
+    }, []);
+
     // Sort subjects by order
     const sortedSubjects = [...subjects].sort((a, b) => a.order - b.order);
 
-    // Featured subject (first one with progress < 100, or first subject)
+    // Filter to find the first unfinished subject that isn't locked
     const featuredSubject = sortedSubjects.find(s => {
-        const progress = subjectProgress[s.slug] || 0;
-        return progress > 0 && progress < 100;
+        const isUnlocked = progressData?.unlocked_subjects?.includes(s.order) || s.order === 1;
+        return isUnlocked;
     }) || sortedSubjects[0];
 
     // Empty state check
@@ -143,7 +144,6 @@ export default function LearnPage() {
                         <h3 className="text-white font-semibold mb-1">New to Data Science?</h3>
                         <p className="text-sm text-[#a0a0a0] leading-relaxed">
                             Start with <Link href="/learn/foundations" className="text-emerald-400 hover:underline font-medium">Foundations</Link> — it builds the mathematical intuition you'll need for everything else.
-                            No prior experience required. You can also start with <Link href="/learn/programming" className="text-emerald-400 hover:underline font-medium">Programming</Link> if you prefer hands-on code first.
                         </p>
                     </div>
                 </div>
@@ -167,21 +167,13 @@ export default function LearnPage() {
                                 {subjectIcons[featuredSubject.slug] || "school"}
                             </span>
                         </div>
-                        <ProgressRing progress={subjectProgress[featuredSubject.slug] || 0} size={56} />
+                        <ProgressRing progress={0} size={56} />
                     </div>
                     <div className="mt-8 z-10">
                         {/* Metadata row */}
                         <div className="flex flex-wrap items-center gap-2 mb-3">
-                            <span className={`text-xs font-medium ${difficultyColors[subjectMeta[featuredSubject.slug]?.difficulty] || 'text-[#737373]'}`}>
-                                {subjectMeta[featuredSubject.slug]?.difficulty}
-                            </span>
-                            <span className="text-[#404040]">•</span>
-                            <span className="text-xs text-[#737373]">
-                                {subjectMeta[featuredSubject.slug]?.modules} modules
-                            </span>
-                            <span className="text-[#404040]">•</span>
-                            <span className="text-xs text-[#737373]">
-                                ~{subjectMeta[featuredSubject.slug]?.hours} hrs
+                            <span className="text-xs font-medium text-emerald-400">
+                                {subjectMeta[featuredSubject.slug]?.difficulty || "Beginner"}
                             </span>
                         </div>
 
@@ -192,52 +184,38 @@ export default function LearnPage() {
                             {featuredSubject.description}
                         </p>
 
-                        {/* Format indicators */}
-                        <div className="flex items-center gap-3 mb-6">
-                            {subjectMeta[featuredSubject.slug]?.format.map((f) => (
-                                <span key={f} className="flex items-center gap-1 text-xs text-[#525252]" title={f}>
-                                    <span className="material-symbols-outlined text-sm">{formatIcons[f]}</span>
-                                    <span className="capitalize">{f}</span>
-                                </span>
-                            ))}
-                        </div>
-
                         <span className="flex items-center gap-2 bg-[#e0e0e0] hover:bg-white text-black text-sm font-semibold px-5 py-2.5 rounded-full transition-colors w-fit">
-                            <span>{subjectProgress[featuredSubject.slug] > 0 ? 'Continue Learning' : 'Start Subject'}</span>
+                            <span>Start Subject</span>
                             <span className="material-symbols-outlined text-sm">arrow_forward</span>
                         </span>
-                        <p className="text-xs text-[#525252] mt-3">
-                            Opens module list with {subjectMeta[featuredSubject.slug]?.modules} learning modules
-                        </p>
                     </div>
                 </Link>
 
                 {/* Other Subject Cards */}
                 {sortedSubjects.filter(s => s.slug !== featuredSubject.slug).map((subject) => {
-                    const progress = subjectProgress[subject.slug] || 0;
-                    const isCompleted = progress === 100;
+                    const isUnlocked = progressData?.unlocked_subjects?.includes(subject.order) || subject.order === 1;
+                    const isLocked = !isUnlocked;
                     const meta = subjectMeta[subject.slug];
-                    const isLocked = false; // Lock logic not yet implemented
 
                     return (
                         <Link
                             key={subject.id}
-                            href={`/learn/${subject.slug}`}
-                            className={`glass-card rounded-2xl p-6 flex flex-col justify-between group focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black transition-all ${isLocked ? 'opacity-60 hover:opacity-100' : ''}`}
+                            href={isLocked ? '#' : `/learn/${subject.slug}`}
+                            className={`glass-card rounded-2xl p-6 flex flex-col justify-between group focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black transition-all ${isLocked ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}`}
                         >
                             <div className="flex justify-between items-start">
-                                <div className={`size-10 rounded-lg bg-[#141414] border border-[#262626] flex items-center justify-center ${isLocked ? 'text-[#525252]' : 'text-white'}`}>
+                                <div className={`size-10 rounded-lg bg-[#141414] border border-[#262626] flex items-center justify-center ${isLocked ? 'text-[#333]' : 'text-white'}`}>
                                     <span className="material-symbols-outlined">
                                         {subjectIcons[subject.slug] || "school"}
                                     </span>
                                 </div>
                                 {isLocked ? (
-                                    <div className="flex items-center gap-1 text-[#525252] text-xs font-mono uppercase tracking-wider border border-[#262626] px-2 py-1 rounded">
+                                    <div className="flex items-center gap-1 text-[#444] text-xs font-mono uppercase tracking-wider border border-[#262626] px-2 py-1 rounded">
                                         <span className="material-symbols-outlined text-[12px]">lock</span>
                                         Locked
                                     </div>
                                 ) : (
-                                    <ProgressRing progress={progress} />
+                                    <ProgressRing progress={0} />
                                 )}
                             </div>
                             <div className="mt-4">
@@ -252,30 +230,18 @@ export default function LearnPage() {
                                     </span>
                                 </div>
 
-                                <h3 className={`text-xl font-bold mb-2 tracking-tight ${isLocked ? 'text-[#737373]' : 'text-white group-hover:text-primary transition-colors'}`}>
+                                <h3 className={`text-xl font-bold mb-2 tracking-tight ${isLocked ? 'text-[#444]' : 'text-white group-hover:text-primary transition-colors'}`}>
                                     {subject.title}
                                 </h3>
-                                <p className={`text-sm mb-4 leading-relaxed ${isLocked ? 'text-[#525252]' : 'text-[#a0a0a0]'}`}>
-                                    {subject.description}
+                                <p className={`text-sm mb-4 leading-relaxed ${isLocked ? 'text-[#333]' : 'text-[#a0a0a0]'}`}>
+                                    {isLocked ? "Complete previous subjects to unlock." : subject.description}
                                 </p>
 
-                                {/* Format indicators */}
-                                <div className="flex items-center gap-2 mb-4">
-                                    {meta?.format.map((f) => (
-                                        <span key={f} className="text-[#404040]" title={f}>
-                                            <span className="material-symbols-outlined text-sm">{formatIcons[f]}</span>
-                                        </span>
-                                    ))}
-                                    <span className="text-xs text-[#404040] ml-1">~{meta?.hours} hrs</span>
-                                </div>
-
-                                <span className={`w-full flex items-center justify-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-all ${isCompleted
-                                    ? 'bg-[#262626] hover:bg-[#333] text-white'
-                                    : isLocked
-                                        ? 'border border-[#262626] text-[#404040] cursor-not-allowed'
+                                <span className={`w-full flex items-center justify-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-all ${isLocked
+                                        ? 'border border-[#262626] text-[#333]'
                                         : 'border border-[#404040] hover:border-white hover:text-white text-[#a0a0a0]'
                                     }`}>
-                                    <span>{isCompleted ? 'Review Subject' : isLocked ? 'Locked' : 'View Modules'}</span>
+                                    <span>{isLocked ? 'Locked' : 'View Modules'}</span>
                                 </span>
                             </div>
                         </Link>

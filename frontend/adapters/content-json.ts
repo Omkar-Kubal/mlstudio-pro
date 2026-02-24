@@ -105,5 +105,6 @@ export function toParsedContent(module: LearningModule): ParsedContent {
         codeSnippets,
         quiz: module.quiz,
         references: module.references,
+        visualSuggestions: module.topics[0]?.visualSuggestions || [],
     };
 }

@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import type { NetworkForwardPassConfig } from "@/lib/visual-types";
+import type { NetworkForwardPassConfig } from "@/adapters/visual-types";
 
 interface Props {
     config: NetworkForwardPassConfig;
@@ -238,3 +238,4 @@ export default function NetworkForwardPassPrimitive({ config }: Props) {
         </div>
     );
 }
+

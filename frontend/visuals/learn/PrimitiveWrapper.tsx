@@ -252,3 +252,4 @@ export type RegisteredPrimitiveType = typeof REGISTERED_PRIMITIVES[number];
 export function isPrimitiveRegistered(type: string): type is RegisteredPrimitiveType {
     return REGISTERED_PRIMITIVES.includes(type as RegisteredPrimitiveType);
 }
+

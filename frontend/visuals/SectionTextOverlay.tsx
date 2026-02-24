@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { sections, TOTAL_FRAMES } from "@/data/sections";
+import { sections, TOTAL_FRAMES } from "@/adapters/sections";
 
 interface SectionTextOverlayProps {
     progress: number; // 0 to 1, controlled by parent

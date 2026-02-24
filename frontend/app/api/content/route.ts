@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
-import { loadModuleBySlug, toParsedContent } from '@/lib/content-json';
+import { loadModuleBySlug, toParsedContent } from '@/adapters/content-json';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const subject = searchParams.get('subject');
-    const module = searchParams.get('module');
+    const moduleSlug = searchParams.get('module');
 
-    if (!subject || !module) {
+    if (!subject || !moduleSlug) {
         return NextResponse.json(
             { error: 'Both subject and module parameters are required' },
             { status: 400 }
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     }
 
     try {
-        const learningModule = await loadModuleBySlug(subject, module);
+        const learningModule = await loadModuleBySlug(subject, moduleSlug);
 
         if (!learningModule) {
             return NextResponse.json(

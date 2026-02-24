@@ -125,7 +125,7 @@ class FiltersVisual(VisualPrimitive):
             "invalid_type",
             "dimension_mismatch",
         ],
-        supported_modes=[RenderingMode.JSON],
+        supported_modes=[RenderingMode.JSON, RenderingMode.SVG],
     )
     
     def __init__(self, seed: int = 42):
@@ -333,8 +333,75 @@ class FiltersVisual(VisualPrimitive):
                 },
                 deterministic=True,
             )
+            
+        if mode == RenderingMode.SVG:
+            svg_content = self._render_svg(data)
+            return VisualOutput(
+                visual_id=f"filters_{data['visualization_type']}_{data['layer_name'] or 'layer'}",
+                visual_type=self.VISUAL_TYPE,
+                mode=mode,
+                data=svg_content,
+                metadata={
+                    "seed": self.seed,
+                    "visualization_type": data["visualization_type"],
+                },
+                deterministic=True,
+            )
         
         raise VisualValidationError(
             f"Unsupported rendering mode: {mode}",
             visual_id=self.VISUAL_TYPE,
         )
+
+    def _render_svg(self, data: Dict[str, Any]) -> str:
+        """Render filters or feature maps as SVG grid."""
+        vis_type = data["visualization_type"]
+        items = data["feature_maps"] if vis_type == "feature_maps" else data["filters"]
+        
+        if not items:
+            return '<svg width="100" height="100"><text x="10" y="50">No data</text></svg>'
+            
+        # Grid settings
+        cols = 4
+        rows = (len(items) + cols - 1) // cols
+        cell_size = 60
+        padding = 10
+        margin = 30
+        
+        width = margin * 2 + cols * (cell_size + padding)
+        height = margin * 2 + rows * (cell_size + padding) + 20
+        
+        svg = [f'<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" xmlns="http://www.w3.org/2000/svg">']
+        svg.append('<rect width="100%" height="100%" fill="#fcfcfc" />')
+        svg.append(f'<text x="{margin}" y="20" font-family="monospace" font-size="12" font-weight="bold">{vis_type.upper()}: {data["layer_name"] or "Layer"}</text>')
+
+        for idx, item in enumerate(items):
+            if idx >= 16: # Limit to 16 for SVG performance
+                break
+                
+            r = idx // cols
+            c = idx % cols
+            x = margin + c * (cell_size + padding)
+            y = margin + 10 + r * (cell_size + padding)
+            
+            # Draw individual map
+            activation = item["activation"] if "activation" in item else item["weights"][0]
+            if not activation: continue
+            
+            h = len(activation)
+            w = len(activation[0])
+            pixel_size = cell_size / max(h, w)
+            
+            for i in range(h):
+                for j in range(w):
+                    val = activation[i][j]
+                    alpha = min(1.0, max(0.0, val))
+                    color = f"rgba(0, 0, 0, {alpha})"
+                    svg.append(f'<rect x="{x + j * pixel_size}" y="{y + i * pixel_size}" width="{pixel_size + 0.1}" height="{pixel_size + 0.1}" fill="{color}" />')
+            
+            # Label
+            label = item.get("channel_index", item.get("filter_index", idx))
+            svg.append(f'<text x="{x}" y="{y + cell_size + 8}" font-family="monospace" font-size="6">Ch {label}</text>')
+
+        svg.append('</svg>')
+        return "\n".join(svg)

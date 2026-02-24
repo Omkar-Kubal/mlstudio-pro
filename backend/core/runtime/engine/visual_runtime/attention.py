@@ -124,7 +124,7 @@ class AttentionVisual(VisualPrimitive):
             "invalid_attention_type",
             "dimension_mismatch",
         ],
-        supported_modes=[RenderingMode.JSON],
+        supported_modes=[RenderingMode.JSON, RenderingMode.SVG],
     )
     
     def __init__(self, seed: int = 42):
@@ -270,7 +270,61 @@ class AttentionVisual(VisualPrimitive):
                 deterministic=True,
             )
         
+        if mode == RenderingMode.SVG:
+            svg_content = self._render_svg(data)
+            return VisualOutput(
+                visual_id=f"attention_{data['attention_type']}_{data['num_heads']}h",
+                visual_type=self.VISUAL_TYPE,
+                mode=mode,
+                data=svg_content,
+                metadata={
+                    "seed": self.seed,
+                    "attention_type": data["attention_type"],
+                },
+                deterministic=True,
+            )
+        
         raise VisualValidationError(
             f"Unsupported rendering mode: {mode}",
             visual_id=self.VISUAL_TYPE,
         )
+
+    def _render_svg(self, data: Dict[str, Any]) -> str:
+        """Render attention heatmap as SVG."""
+        seq_len = data["seq_length"]
+        source_tokens = data["source_tokens"]
+        target_tokens = data["target_tokens"]
+        weights = data["aggregated"]
+        
+        cell_size = 30
+        margin_left = 80
+        margin_top = 80
+        
+        width = margin_left + seq_len * cell_size + 40
+        height = margin_top + seq_len * cell_size + 40
+        
+        svg = [f'<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" xmlns="http://www.w3.org/2000/svg">']
+        svg.append('<rect width="100%" height="100%" fill="#fcfcfc" />')
+        
+        # Draw labels
+        for i, token in enumerate(target_tokens):
+            # Target labels (horizontal)
+            tx = margin_left + i * cell_size + cell_size/2
+            ty = margin_top - 10
+            svg.append(f'<text x="{tx}" y="{ty}" text-anchor="start" font-family="monospace" font-size="10" transform="rotate(-45, {tx}, {ty})">{token}</text>')
+            
+        for i, token in enumerate(source_tokens):
+            # Source labels (vertical)
+            svg.append(f'<text x="{margin_left - 10}" y="{margin_top + i * cell_size + cell_size/2 + 4}" text-anchor="end" font-family="monospace" font-size="10">{token}</text>')
+            
+        # Draw cells
+        for i in range(seq_len):
+            for j in range(seq_len):
+                w = weights[i][j]
+                # Scale color: 0 is white, 1 is primary blue
+                alpha = min(1.0, w * 1.5) # Boost visibility for small weights
+                color = f"rgba(59, 130, 246, {alpha})" # Tailwind blue-500
+                svg.append(f'<rect x="{margin_left + j * cell_size}" y="{margin_top + i * cell_size}" width="{cell_size}" height="{cell_size}" fill="{color}" stroke="#e5e7eb" stroke-width="0.5" />')
+        
+        svg.append('</svg>')
+        return "\n".join(svg)

@@ -68,6 +68,7 @@
         "Network diagram showing connected nodes. Drag and drop to add/remove layers. Parameter count updates dynamically."
       ],
       "visualSuggestions": [
+        "neural",
         "Forward pass animation with highlighted activations",
         "Parameter count breakdown by layer"
       ],

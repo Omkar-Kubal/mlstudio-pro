@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { TOTAL_FRAMES } from "@/data/sections";
+import { TOTAL_FRAMES } from "@/adapters/sections";
 
 interface SystemScrollCanvasProps {
     progress: number; // 0 to 1, controlled by parent

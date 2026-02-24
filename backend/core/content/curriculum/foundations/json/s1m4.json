@@ -20,6 +20,7 @@
                 "Imagine a landscape of hills and valleys where the height represents the 'error'. Your goal is to find the lowest point in the landscape—this point corresponds to the minimum error."
             ],
             "visualSuggestions": [
+                "optimization",
                 "3D topographic map showing a convex bowl with a red dot representing current parameters.",
                 "1D parabola showing the relationship between a single parameter and the resulting loss."
             ],

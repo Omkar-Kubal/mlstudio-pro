@@ -42,7 +42,7 @@ const SURFACES: Record<string, SurfaceDef> = {
     },
 };
 
-import { ObjectiveFunctionConfig } from "@/lib/visual-types";
+import { ObjectiveFunctionConfig } from "@/adapters/visual-types";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 const toCanvasX = (x: number) => PAD.left + ((x - X_MIN) / (X_MAX - X_MIN)) * pW;
@@ -376,3 +376,4 @@ export default function ObjectiveFunctionPrimitive({ config }: Props) {
         </div>
     );
 }
+

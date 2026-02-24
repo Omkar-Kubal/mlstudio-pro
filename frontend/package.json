@@ -9,9 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.97.0",
     "framer-motion": "^12.26.2",
     "next": "^16.1.6",
     "prism-react-renderer": "^2.4.1",
+    "pyodide": "^0.29.3",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },

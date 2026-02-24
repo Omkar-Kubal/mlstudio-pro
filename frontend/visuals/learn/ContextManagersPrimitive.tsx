@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { ContextManagersConfig } from "@/lib/visual-types";
+import { ContextManagersConfig } from "@/adapters/visual-types";
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 const CONTEXTS = [
@@ -186,3 +186,4 @@ export default function ContextManagersPrimitive({ config }: Props) {
         </div>
     );
 }
+

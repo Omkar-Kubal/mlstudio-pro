@@ -5,7 +5,7 @@ import type {
     ParameterSensitivityConfig,
     MeanMedianData,
     ThresholdData
-} from "@/lib/visual-types";
+} from "@/adapters/visual-types";
 
 interface Props {
     config: ParameterSensitivityConfig;
@@ -315,3 +315,4 @@ function ThresholdVisual({
         </>
     );
 }
+

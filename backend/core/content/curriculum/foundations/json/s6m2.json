@@ -22,8 +22,9 @@
         "Gradient magnitude heatmap by layer during training. Exponential decay visible with sigmoid, stable flow with ReLU."
       ],
       "visualSuggestions": [
-        "Layer-wise gradient bar chart animating backward pass",
-        "Activation saturation detector"
+        "neural",
+        "Layer-by-layer activation map for a sample image",
+        "Filter visualization showing edge/texture detection"
       ],
       "code": [
         {

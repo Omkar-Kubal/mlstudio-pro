@@ -59,6 +59,12 @@ export default function Navbar() {
                         Learn
                     </Link>
                     <Link
+                        href="/dashboard"
+                        className="text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
+                    >
+                        Dashboard
+                    </Link>
+                    <Link
                         href="/learn"
                         className="text-sm font-medium text-background bg-foreground hover:bg-primary px-4 py-2 rounded-full transition-colors duration-200"
                     >

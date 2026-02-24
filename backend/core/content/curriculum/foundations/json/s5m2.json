@@ -20,8 +20,9 @@
         "Pie chart animation of dataset splitting into training and testing portions. Show performance metrics changing with different random splits."
       ],
       "visualSuggestions": [
-        "Slider for test size with metric update",
-        "Multiple random splits comparison"
+        "metrics",
+        "Scatter plot showing predictions vs actual values",
+        "Residual plot highlighting high-error points"
       ],
       "code": [
         {

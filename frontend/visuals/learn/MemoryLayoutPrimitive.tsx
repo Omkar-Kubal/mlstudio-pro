@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { MemoryLayoutConfig } from "@/lib/visual-types";
+import { MemoryLayoutConfig } from "@/adapters/visual-types";
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 const ROWS = 3, COLS = 4;
@@ -245,3 +245,4 @@ export default function MemoryLayoutPrimitive({ config }: Props) {
         </div>
     );
 }
+

@@ -8,14 +8,19 @@ class CurriculumLoader:
     def __init__(self):
         # Base directory is d:\mlstudio-pro\backend\core\content\curriculum
         self.base_dir = Path(__file__).resolve().parent.parent.parent / "core" / "content" / "curriculum"
-        self.json_dir = self.base_dir / "foundations" / "json"
 
-    def get_module_path(self, subject_idx: int, module_idx: int) -> Path:
-        return self.json_dir / f"s{subject_idx}m{module_idx}.json"
+    def get_module_path(self, subject_idx: int, module_idx: int) -> Optional[Path]:
+        # Search for s{subject_idx}m{module_idx}.json in any subdirectory
+        for subject_dir in self.base_dir.iterdir():
+            if subject_dir.is_dir():
+                json_path = subject_dir / "json" / f"s{subject_idx}m{module_idx}.json"
+                if json_path.exists():
+                    return json_path
+        return None
 
     def load_module(self, subject_idx: int, module_idx: int) -> Optional[LearningModule]:
         file_path = self.get_module_path(subject_idx, module_idx)
-        if not file_path.exists():
+        if not file_path or not file_path.exists():
             return None
         
         try:
@@ -39,8 +44,16 @@ class CurriculumLoader:
             return None
 
     def list_all_modules(self) -> List[str]:
-        if not self.json_dir.exists():
+        modules = []
+        if not self.base_dir.exists():
             return []
-        return [f.stem for f in self.json_dir.glob("*.json")]
+            
+        for subject_dir in self.base_dir.iterdir():
+            if subject_dir.is_dir():
+                json_dir = subject_dir / "json"
+                if json_dir.exists():
+                    modules.extend([f.stem for f in json_dir.glob("*.json")])
+        
+        return sorted(modules)
 
 curriculum_loader = CurriculumLoader()

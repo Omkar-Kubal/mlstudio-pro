@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { DistributionEvolutionConfig } from "@/lib/visual-types";
+import type { DistributionEvolutionConfig } from "@/adapters/visual-types";
 
 interface Props {
     config: DistributionEvolutionConfig;
@@ -384,3 +384,4 @@ function generateDensityPath(
 
     return path;
 }
+

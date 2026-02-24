@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { GradientChainRuleConfig } from "@/lib/visual-types";
+import { GradientChainRuleConfig } from "@/adapters/visual-types";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const W = 720, H = 360;
@@ -318,3 +318,4 @@ export default function GradientChainRulePrimitive({ config }: Props) {
         </div>
     );
 }
+

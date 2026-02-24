@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import type { GradientBackflowConfig } from "@/lib/visual-types";
+import type { GradientBackflowConfig } from "@/adapters/visual-types";
 
 interface Props {
     config: GradientBackflowConfig;
@@ -327,3 +327,4 @@ export default function GradientBackflowPrimitive({ config }: Props) {
         </div>
     );
 }
+

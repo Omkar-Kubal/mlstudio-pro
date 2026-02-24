@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { GroupByConfig } from "@/lib/visual-types";
+import { GroupByConfig } from "@/adapters/visual-types";
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 const RAW_DATA = [
@@ -242,3 +242,4 @@ export default function GroupByPrimitive({ config }: Props) {
         </div>
     );
 }
+
