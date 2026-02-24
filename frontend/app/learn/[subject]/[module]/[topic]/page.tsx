@@ -182,7 +182,7 @@ export default function TopicPage({
                             <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" />
                             {/* Visual representation of data concept */}
                             <div className="w-full h-full p-2 flex flex-col items-center justify-center gap-4">
-                                <Visualizer subject={subjectSlug} module={moduleSlug} type={content.visualSuggestions?.[0] || ""} />
+                                <Visualizer module={moduleSlug} type={content.visualSuggestions?.[0] || ""} />
                             </div>
                         </div>
                         <p className="text-center text-xs text-muted font-mono pt-2">Fig 1.1: {content.title || "Data Distribution"} Visualization</p>
@@ -345,9 +345,9 @@ export default function TopicPage({
                                             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 text-white text-[10px] px-2 py-1 rounded backdrop-blur">
                                                 Matplotlib Output
                                             </div>
-                                            <img 
-                                                src={`data:image/png;base64,${output.image}`} 
-                                                alt="Plot" 
+                                            <img
+                                                src={`data:image/png;base64,${output.image}`}
+                                                alt="Plot"
                                                 className="w-full h-auto"
                                             />
                                         </div>
@@ -388,10 +388,10 @@ export default function TopicPage({
                                     const isCorrect = structuredQuiz && i === structuredQuiz.correctAnswer;
                                     const isSelected = selectedOption === i;
                                     const showFeedback = isAnswerChecked;
-                                    
+
                                     let borderColor = "border-border";
                                     let bgColor = "bg-background";
-                                    
+
                                     if (showFeedback) {
                                         if (isCorrect) {
                                             borderColor = "border-emerald-500/50";
@@ -406,14 +406,14 @@ export default function TopicPage({
                                     }
 
                                     return (
-                                        <label 
-                                            key={i} 
+                                        <label
+                                            key={i}
                                             className={`flex items-center gap-4 p-4 rounded-lg border ${borderColor} ${bgColor} hover:border-muted transition-all cursor-pointer group`}
                                         >
-                                            <input 
-                                                type="radio" 
-                                                name="quiz" 
-                                                className="text-primary bg-background border-border focus:ring-primary/50" 
+                                            <input
+                                                type="radio"
+                                                name="quiz"
+                                                className="text-primary bg-background border-border focus:ring-primary/50"
                                                 checked={isSelected}
                                                 onChange={() => !isAnswerChecked && setSelectedOption(i)}
                                             />
@@ -430,7 +430,7 @@ export default function TopicPage({
                                     );
                                 })}
                             </div>
-                            
+
                             {isAnswerChecked && structuredQuiz && structuredQuiz.explanation && (
                                 <div className="mt-6 p-4 rounded-lg bg-white/5 border border-white/10 animate-fade-in text-sm text-muted leading-relaxed">
                                     <strong className="text-foreground">Explanation:</strong> {structuredQuiz.explanation}
@@ -439,20 +439,20 @@ export default function TopicPage({
 
                             <div className="mt-8 pt-6 border-t border-border flex justify-between items-center">
                                 <span className="text-xs text-muted">
-                                    {isAnswerChecked 
+                                    {isAnswerChecked
                                         ? (quizIndex < content.quiz.length - 1 ? "Great job! Try the next one." : "Quiz completed!")
                                         : "Select the best answer to proceed."}
                                 </span>
                                 {isAnswerChecked ? (
                                     quizIndex < content.quiz.length - 1 ? (
-                                        <button 
+                                        <button
                                             onClick={handleNextQuestion}
                                             className="px-6 py-2.5 bg-foreground text-background font-bold text-sm rounded-lg hover:bg-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]"
                                         >
                                             Next Question
                                         </button>
                                     ) : (
-                                        <Link 
+                                        <Link
                                             href={`/learn/${subjectSlug}/${moduleSlug}`}
                                             className="px-6 py-2.5 bg-emerald-600 text-white font-bold text-sm rounded-lg hover:bg-emerald-500 hover:scale-105 transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]"
                                         >
@@ -460,7 +460,7 @@ export default function TopicPage({
                                         </Link>
                                     )
                                 ) : (
-                                    <button 
+                                    <button
                                         onClick={handleCheckAnswer}
                                         disabled={selectedOption === null}
                                         className="px-6 py-2.5 bg-foreground text-background font-bold text-sm rounded-lg hover:bg-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
