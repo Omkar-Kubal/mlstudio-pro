@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Module } from "@/types/learning";
-import { subjects } from "@/data/subjects";
+import { Module } from "@/adapters/learning";
+import { subjects } from "@/adapters/subjects";
 
 import { progressTracker } from "@/adapters/progress";
 

@@ -1,4 +1,4 @@
-import { Module } from '@/types/learning';
+import { Module } from '@/adapters/learning';
 
 export const modules: Module[] = [
     // FOUNDATIONS

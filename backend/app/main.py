@@ -2,12 +2,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .api import curriculum, labs_paths, runner, profile
 
+import os
+
 app = FastAPI(title="MLStudio Pro Backend", version="1.0.0")
 
-# Enable CORS for frontend
+# Get allowed origins from environment variable or default to wildcard for dev
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this to the frontend URL
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

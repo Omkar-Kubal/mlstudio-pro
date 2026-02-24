@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { subjects } from '@/data/subjects';
+import { subjects } from '@/adapters/subjects';
 
 export async function GET() {
     return NextResponse.json(subjects);

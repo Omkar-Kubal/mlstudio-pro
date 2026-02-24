@@ -1,6 +1,6 @@
 "use client";
 
-import { ContentSection } from "@/types/learning";
+import { ContentSection } from "@/adapters/learning";
 
 interface TheoryPanelProps {
     title: string;

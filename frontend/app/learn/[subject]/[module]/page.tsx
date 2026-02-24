@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Topic, ParsedContent } from "@/types/learning";
+import { Topic, ParsedContent } from "@/adapters/learning";
 
 export default function ModulePage() {
     const params = useParams();

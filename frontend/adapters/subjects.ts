@@ -1,4 +1,4 @@
-import { Subject } from '@/types/learning';
+import { Subject } from '@/adapters/learning';
 
 export interface SubjectMeta {
     difficulty: 'Beginner' | 'Core' | 'Advanced';

@@ -3,8 +3,8 @@
  * Maps sXmY.txt filenames to subject/module slugs based on data order
  */
 
-import { subjects } from '@/data/subjects';
-import { modules } from '@/data/modules';
+import { subjects } from '@/adapters/subjects';
+import { modules } from '@/adapters/modules';
 
 export interface ContentMapping {
     filename: string;

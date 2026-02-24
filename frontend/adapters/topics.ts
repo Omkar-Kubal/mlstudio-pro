@@ -1,4 +1,4 @@
-import { Topic } from '@/types/learning';
+import { Topic } from '@/adapters/learning';
 
 // Sample topics for Regression module (will expand to all 379 topics)
 export const topics: Topic[] = [
