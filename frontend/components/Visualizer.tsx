@@ -12,7 +12,7 @@ interface VisualizerProps {
     module?: string;
 }
 
-export const Visualizer = ({ type, subject, module }: VisualizerProps) => {
+export const Visualizer = ({ type, module }: Omit<VisualizerProps, 'subject'>) => {
     // Determine which primitive to show based on type or context
     const renderContent = () => {
         if (type === "calculus" || module?.includes("calculus")) {

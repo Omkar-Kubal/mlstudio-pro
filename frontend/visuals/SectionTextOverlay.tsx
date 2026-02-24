@@ -23,7 +23,6 @@ export default function SectionTextOverlay({ progress }: SectionTextOverlayProps
                         progress={progress}
                         sectionStart={sectionStart}
                         sectionEnd={sectionEnd}
-                        sectionMid={sectionMid}
                         index={index}
                     />
                 );
@@ -37,7 +36,6 @@ interface SectionTextProps {
     progress: number;
     sectionStart: number;
     sectionEnd: number;
-    sectionMid: number;
     index: number;
 }
 
@@ -46,7 +44,6 @@ function SectionText({
     progress,
     sectionStart,
     sectionEnd,
-    sectionMid,
 }: SectionTextProps) {
     // Calculate opacity based on progress
     const opacity = useMemo(() => {

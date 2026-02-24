@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .api import curriculum, labs_paths, runner
+from .api import curriculum, labs_paths, runner, profile
 
 app = FastAPI(title="MLStudio Pro Backend", version="1.0.0")
 
@@ -18,6 +18,7 @@ app.include_router(curriculum.router, prefix="/curriculum", tags=["curriculum"])
 app.include_router(labs_paths.lab_router, prefix="/labs", tags=["labs"])
 app.include_router(labs_paths.path_router, prefix="/paths", tags=["paths"])
 app.include_router(runner.router, prefix="/runner", tags=["runner"])
+app.include_router(profile.router, prefix="/profile", tags=["profile"])
 
 @app.get("/")
 async def root():

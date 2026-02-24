@@ -7,15 +7,14 @@ import Link from "next/link";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isPasswordLogin, setIsPasswordLogin] = useState(false);
+    const [isSignUp, setIsSignUp] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const router = useRouter();
 
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setMessage(null);
-
+    const handleMagicLinkLogin = async () => {
         const { error } = await supabase.auth.signInWithOtp({
             email,
             options: {
@@ -24,11 +23,85 @@ export default function LoginPage() {
         });
 
         if (error) {
-            setMessage({ type: 'error', text: error.message });
+            handleAuthError(error);
         } else {
-            setMessage({ type: 'success', text: "Check your email for the magic link!" });
+            setMessage({ type: 'success', text: "Check your email for the magic link! It may take a minute to arrive." });
         }
-        setLoading(false);
+    };
+
+    const handlePasswordLogin = async () => {
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        if (error) {
+            handleAuthError(error);
+        } else {
+            router.push("/learn");
+        }
+    };
+
+    const handleSignUp = async () => {
+        const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                emailRedirectTo: `${window.location.origin}/auth/callback`,
+            },
+        });
+
+        if (error) {
+            handleAuthError(error);
+        } else {
+            setMessage({ type: 'success', text: "Account created! Please check your email to confirm your registration." });
+        }
+    };
+
+    const handleAuthError = (error: { message: string }) => {
+        if (error.message.includes("Email rate limit exceeded")) {
+            setMessage({ type: 'error', text: "Too many login attempts. Please wait a few minutes." });
+        } else if (error.message.includes("Invalid login credentials")) {
+            setMessage({ type: 'error', text: "Invalid email or password. Please try again or use Magic Link." });
+        } else if (error.message.includes("User already registered")) {
+            setMessage({ type: 'error', text: "This email is already registered. Please sign in instead." });
+        } else if (error.message.includes("Provider is not enabled")) {
+            setMessage({ type: 'error', text: "This login method is currently disabled." });
+        } else {
+            setMessage({ type: 'error', text: error.message });
+        }
+    };
+
+    const handleFormSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setMessage({ type: 'error', text: "Please enter a valid email address." });
+            return;
+        }
+
+        if ((isPasswordLogin || isSignUp) && !password) {
+            setMessage({ type: 'error', text: "Please enter a password." });
+            return;
+        }
+
+        setLoading(true);
+        setMessage(null);
+
+        try {
+            if (isSignUp) {
+                await handleSignUp();
+            } else if (isPasswordLogin) {
+                await handlePasswordLogin();
+            } else {
+                await handleMagicLinkLogin();
+            }
+        } catch {
+            setMessage({ type: 'error', text: "An unexpected error occurred. Please try again." });
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleGitHubLogin = async () => {
@@ -99,8 +172,8 @@ export default function LoginPage() {
                         </div>
                     </div>
 
-                    <form onSubmit={handleLogin} className="space-y-4">
-                        <div>
+                    <form onSubmit={handleFormSubmit} className="space-y-4">
+                        <div className="space-y-3">
                             <input
                                 type="email"
                                 placeholder="name@example.com"
@@ -109,13 +182,57 @@ export default function LoginPage() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full bg-[#0d0d0d] border border-[#262626] rounded-xl px-4 py-3 text-white placeholder:text-[#525252] focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
                             />
+                            { (isPasswordLogin || isSignUp) && (
+                                <input
+                                    type="password"
+                                    placeholder={isSignUp ? "choose a password" : "your password"}
+                                    required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full bg-[#0d0d0d] border border-[#262626] rounded-xl px-4 py-3 text-white placeholder:text-[#525252] focus:outline-none focus:ring-2 focus:ring-white/20 transition-all animate-in fade-in slide-in-from-top-2"
+                                />
+                            )}
                         </div>
+                        
+                        <div className="flex flex-col gap-3 px-1">
+                            <div className="flex justify-between items-center">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsPasswordLogin(!isPasswordLogin);
+                                        setIsSignUp(false);
+                                        setMessage(null);
+                                    }}
+                                    className="text-xs text-[#a0a0a0] hover:text-white transition-colors"
+                                >
+                                    {isPasswordLogin ? "Use Magic Link instead" : "Sign in with password"}
+                                </button>
+                                {isPasswordLogin && !isSignUp && (
+                                    <Link href="/auth/forgot-password" className="text-xs text-[#a0a0a0] hover:text-white transition-colors">
+                                        Forgot password?
+                                    </Link>
+                                )}
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsSignUp(!isSignUp);
+                                    setIsPasswordLogin(false);
+                                    setMessage(null);
+                                }}
+                                className="text-xs text-[#a0a0a0] hover:text-white transition-colors text-left"
+                            >
+                                {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Create one"}
+                            </button>
+                        </div>
+
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-[#1a1a1a] border border-[#262626] text-white font-bold py-3 px-4 rounded-xl hover:bg-[#262626] transition-colors disabled:opacity-50"
+                            className="w-full bg-white text-black font-bold py-3 px-4 rounded-xl hover:bg-[#e0e0e0] transition-colors disabled:opacity-50"
                         >
-                            {loading ? "Sending..." : "Send Magic Link"}
+                            {loading ? "Processing..." : (isSignUp ? "Create Account" : (isPasswordLogin ? "Sign In" : "Send Magic Link"))}
                         </button>
                     </form>
 
