@@ -20,7 +20,7 @@ function runRNN(words: string[]) {
     const states = [h];
     const Wx = Array.from({ length: HIDDEN_SIZE }, () => Array.from({ length: 1 }, () => (Math.random() - 0.5)));
     const Wh = Array.from({ length: HIDDEN_SIZE }, () => Array.from({ length: HIDDEN_SIZE }, () => (Math.random() - 0.5) * 0.8));
-    words.forEach((w, t) => {
+    words.forEach((w, _t) => {
         const embedding = (w.charCodeAt(0) / 128);
         h = Array.from({ length: HIDDEN_SIZE }, (_, i) =>
             tanh(Wx[i][0] * embedding + Wh[i].reduce((s, weight, j) => s + weight * h[j], 0))

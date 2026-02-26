@@ -23,6 +23,12 @@ async def update_progress(module_id: str, topic_slug: str, user = Depends(get_cu
     progress_manager.update_topic_completion(user.id, module_id, topic_slug)
     return {"status": "success", "module_id": module_id, "topic_slug": topic_slug}
 
+@router.post("/progress/{module_id}/complete")
+async def finish_module(module_id: str, user = Depends(get_current_user)):
+    """Mark an entire module as completed."""
+    progress_manager.complete_module(user.id, module_id)
+    return {"status": "success", "module_id": module_id}
+
 @router.get("/{lesson_id}", response_model=LearningModule)
 async def get_module(lesson_id: str):
     """Get a specific learning module by ID (e.g., s1m1)."""

@@ -91,7 +91,7 @@ function Grid({ rows }: { rows: Array<Array<{ val: number | null; colorHex: stri
 interface Props { config?: BroadcastingConfig; }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function BroadcastingPrimitive({ config }: Props) {
+export default function BroadcastingPrimitive({ config: _config }: Props) {
     const [exIdx, setExIdx] = useState(0);
     const [phase, setPhase] = useState<Phase>("initial");
 

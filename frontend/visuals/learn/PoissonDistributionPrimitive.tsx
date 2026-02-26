@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 // ─── Constants & Types ───────────────────────────────────────────────────────
 const TW = 900, TH = 180;

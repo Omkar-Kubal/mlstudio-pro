@@ -16,7 +16,7 @@ interface LogEntry { text: string; color: string }
 interface Props { config?: DecoratorsConfig; }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function DecoratorsPrimitive({ config }: Props) {
+export default function DecoratorsPrimitive({ config: _config }: Props) {
     const [decKey, setDecKey] = useState("log");
     const [phase, setPhase] = useState<Phase>("idle");
     const [log, setLog] = useState<LogEntry[]>([]);

@@ -8,7 +8,7 @@ export default function AuthCallback() {
     const router = useRouter();
 
     useEffect(() => {
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event: string, session: any) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event: string, session) => {
             if (event === "SIGNED_IN" && session) {
                 router.push("/learn");
             }

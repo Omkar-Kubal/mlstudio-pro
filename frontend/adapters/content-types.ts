@@ -115,4 +115,5 @@ export interface ParsedContent {
     quiz: Array<string | QuizQuestion>;
     references: Reference[];
     visualSuggestions?: string[];
+    _raw?: LearningModule;
 }

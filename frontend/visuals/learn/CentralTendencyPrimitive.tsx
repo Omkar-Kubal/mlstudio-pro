@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const W = 600, H = 180;
@@ -38,7 +38,7 @@ export default function CentralTendencyPrimitive() {
     const allPoints = useMemo(() => [...FIXED_POINTS, outlier], [outlier]);
     const stats = useMemo(() => computeStats(allPoints), [allPoints]);
 
-    const [reducedMotion, setReducedMotion] = useState(() => {
+    const [_reducedMotion, setReducedMotion] = useState(() => {
         if (typeof window === "undefined") return false;
         return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     });

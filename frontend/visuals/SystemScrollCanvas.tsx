@@ -58,10 +58,16 @@ export default function SystemScrollCanvas({ progress }: SystemScrollCanvasProps
             setInitialBatchLoaded(true);
 
             // Load remaining frames in background (non-blocking)
+            // Batch updates to reduce re-renders
+            let loadedCount = 0;
             for (let i = INITIAL_BATCH + 1; i <= TOTAL_FRAMES; i++) {
                 loadFrame(i).then((img) => {
                     imageArray[i - 1] = img;
-                    setImages([...imageArray]);
+                    loadedCount++;
+                    // Update state every 20 frames or on completion
+                    if (loadedCount % 20 === 0 || i === TOTAL_FRAMES) {
+                        setImages([...imageArray]);
+                    }
                 });
             }
         };

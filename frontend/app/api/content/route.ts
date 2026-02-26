@@ -6,6 +6,8 @@ export async function GET(request: Request) {
     const subject = searchParams.get('subject');
     const moduleSlug = searchParams.get('module');
 
+    const topicSlug = searchParams.get('topic');
+
     if (!subject || !moduleSlug) {
         return NextResponse.json(
             { error: 'Both subject and module parameters are required' },
@@ -24,13 +26,11 @@ export async function GET(request: Request) {
         }
 
         // Convert to ParsedContent for UI compatibility
-        const parsedContent = toParsedContent(learningModule);
+        // Pass topicSlug to filter content if needed
+        const parsedContent = toParsedContent(learningModule, topicSlug);
 
         // Include raw module for new components that want full schema
-        return NextResponse.json({
-            ...parsedContent,
-            _raw: learningModule,
-        });
+        return NextResponse.json(parsedContent);
     } catch (error) {
         console.error('[Content API] Error:', error);
         return NextResponse.json(

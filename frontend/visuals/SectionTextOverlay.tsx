@@ -14,7 +14,7 @@ export default function SectionTextOverlay({ progress }: SectionTextOverlayProps
             {sections.map((section, index) => {
                 const sectionStart = (section.frameRange[0] - 1) / TOTAL_FRAMES;
                 const sectionEnd = section.frameRange[1] / TOTAL_FRAMES;
-                const sectionMid = (sectionStart + sectionEnd) / 2;
+                const _sectionMid = (sectionStart + sectionEnd) / 2;
 
                 return (
                     <SectionText

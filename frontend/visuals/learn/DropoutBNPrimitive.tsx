@@ -31,7 +31,9 @@ export default function DropoutBNPrimitive() {
         setBatch(makeBatch());
     };
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { regen(); }, [rate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [activeMask, batch, mode]);
 
     function draw() {

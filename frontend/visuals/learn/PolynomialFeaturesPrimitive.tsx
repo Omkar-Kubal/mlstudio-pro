@@ -13,7 +13,7 @@ _s = 55;
 const DATA = Array.from({ length: 22 }, (_, i) => { const x = X_MIN + (i / 21) * (X_MAX - X_MIN) + rn(0, 0.12); return { x: +x.toFixed(3), y: +(trueF(x) + rn(0, 1.8)).toFixed(3) }; });
 
 function polyFit(data: { x: number; y: number }[], deg: number) {
-    const n = data.length, d = deg + 1;
+    const _n = data.length, d = deg + 1;
     const Xm = data.map(p => Array.from({ length: d }, (_, k) => Math.pow(p.x, k)));
     const y = data.map(p => p.y);
     const XTX = Array.from({ length: d }, (_, i) => Array.from({ length: d }, (_, j) => Xm.reduce((s, r) => s + r[i] * r[j], 0)));
@@ -58,7 +58,7 @@ export default function PolynomialFeaturesPrimitive() {
         for (let i = 0; i <= 4; i++) { const y = PAD.top + i / 4 * pH; ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + pW, y); ctx.stroke(); }
         // True signal
         ctx.beginPath();
-        for (let i = 0; i <= 120; i++) { const x = X_MIN + i / 120 * (X_MAX - X_MIN), cx = toX(x), cy = toY(trueF(x)); if (cy < PAD.top - 5 || cy > PAD.top + pH + 5) { ctx.moveTo(cx, cy); continue; } i === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy); }
+        for (let i = 0; i <= 120; i++) { const x = X_MIN + i / 120 * (X_MAX - X_MIN), cx = toX(x), cy = toY(trueF(x)); if (cy < PAD.top - 5 || cy > PAD.top + pH + 5) { ctx.moveTo(cx, cy); continue; } if (i === 0) { ctx.moveTo(cx, cy); } else { ctx.lineTo(cx, cy); } }
         ctx.strokeStyle = "#ffffff22"; ctx.lineWidth = 1.5; ctx.setLineDash([4, 3]); ctx.stroke(); ctx.setLineDash([]);
         // Fitted
         ctx.beginPath(); let started = false;
@@ -76,6 +76,7 @@ export default function PolynomialFeaturesPrimitive() {
         const sc = overfit ? "#f87171" : underfit ? "#fbbf24" : "#34d399";
         ctx.fillStyle = sc; ctx.fillText(overfit ? "⚠ OVERFITTING" : underfit ? "⚠ UNDERFITTING" : "✓ GOOD FIT", PAD.left + pW - 4, PAD.top + 32);
         ctx.fillStyle = "#ffffff44"; ctx.font = "9px monospace"; ctx.textAlign = "left"; ctx.fillText("── true signal", PAD.left + 4, PAD.top + 14);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [degree]);
 
     const statusColor = overfit ? "#f87171" : underfit ? "#fbbf24" : "#34d399";

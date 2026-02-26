@@ -21,14 +21,14 @@ interface Particle { id: number; x: number }
 interface Props { config?: MLPipelinesConfig; }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function MLPipelinesPrimitive({ config }: Props) {
+export default function MLPipelinesPrimitive({ config: _config }: Props) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [active, setActive] = useState(false);
     const [curStep, setCurStep] = useState(-1);
     const rafRef = useRef<number>(0);
     const particles = useRef<Particle[]>([]);
 
-    const stepXs = STEPS.map((_, i) => PAD.left + i * (W - PAD.left - PAD.right) / (STEPS.length - 1));
+    const stepXs = STEPS.map((_el, i) => PAD.left + i * (W - PAD.left - PAD.right) / (STEPS.length - 1));
 
     const draw = useCallback((pts: Particle[], si: number) => {
         const canvas = canvasRef.current;
@@ -85,7 +85,7 @@ export default function MLPipelinesPrimitive({ config }: Props) {
         function animate() {
             particles.current = particles.current.map(p => ({ ...p, x: p.x + 1.8 }));
             const maxSi = particles.current.reduce((mx, p) => {
-                const si = stepXs.findIndex((sx, i) => p.x >= sx - 8 && p.x <= sx + 8);
+                const si = stepXs.findIndex((sx, _i) => p.x >= sx - 8 && p.x <= sx + 8);
                 return si > mx ? si : mx;
             }, -1);
             setCurStep(maxSi);

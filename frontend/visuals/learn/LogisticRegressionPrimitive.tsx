@@ -38,6 +38,7 @@ export default function LogisticRegressionPrimitive() {
     const queryProb = sigmoid(weight * queryX + bias);
     const predClass = queryProb >= 0.5 ? 1 : 0;
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [weight, bias, queryX]);
 
     function draw() {

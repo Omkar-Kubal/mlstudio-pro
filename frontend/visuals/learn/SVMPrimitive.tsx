@@ -60,6 +60,7 @@ export default function SVMPrimitive() {
 
     const { wx, wy, b, margin } = fitHyperplane(svs);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [svs]);
 
     function hyperplaneY(x: number, offset = 0) {

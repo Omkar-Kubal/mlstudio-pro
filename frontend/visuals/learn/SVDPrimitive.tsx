@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 // ─── Constants & Types ───────────────────────────────────────────────────────
 const CW = 740, CH = 460;
@@ -153,7 +152,7 @@ export default function SVDPrimitive() {
         // Origin
         ctx.fillStyle = "white";
         ctx.beginPath(); ctx.arc(OX, OY, 4, 0, Math.PI * 2); ctx.fill();
-    }, [currentMatrix]);
+    }, [currentMatrix]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         render();

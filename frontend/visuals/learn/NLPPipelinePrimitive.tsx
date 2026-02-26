@@ -140,9 +140,9 @@ export default function NLPPipelinePrimitive() {
                         <div style={{ fontSize: "9px", color: THEME.dim, letterSpacing: "2px", marginBottom: "8px" }}>OUTPUT ↓</div>
                         {isTokenArray ? (
                             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                                {(output as any[]).map((token, i) => (
+                                {(output as (string | number)[]).map((token, i) => (
                                     <div key={i} style={{ padding: "4px 10px", border: `1px solid ${currentStage.color}66`, borderRadius: "4px", background: currentStage.color + "18", fontSize: "12px", color: currentStage.color, fontWeight: 700, transition: "all 0.3s" }}>
-                                        {step === 6 ? (<><span style={{ fontSize: "9px", color: THEME.dim, display: "block", textAlign: "center" }}>id:{token}</span><span>{["[PAD]", "[UNK]", "hello", "cat", "run", "quick", "machine", "learn", "love", "score", "bad", "doctor", "smith"][token] ?? `id:${token}`}</span></>) : token}
+                                        {step === 6 ? (<><span style={{ fontSize: "9px", color: THEME.dim, display: "block", textAlign: "center" }}>id:{token}</span><span>{["[PAD]", "[UNK]", "hello", "cat", "run", "quick", "machine", "learn", "love", "score", "bad", "doctor", "smith"][token as number] ?? `id:${token}`}</span></>) : token}
                                     </div>
                                 ))}
                             </div>
@@ -153,7 +153,7 @@ export default function NLPPipelinePrimitive() {
 
                     {isTokenArray && (
                         <div style={{ marginTop: "8px", fontSize: "10px", color: THEME.dim }}>
-                            {(output as any[]).length} tokens {step === 6 ? `• vocab IDs` : `• ${step === 4 ? "stopwords removed" : "stemmed"}`}
+                            {(output as (string | number)[]).length} tokens {step === 6 ? `• vocab IDs` : `• ${step === 4 ? "stopwords removed" : "stemmed"}`}
                         </div>
                     )}
                 </div>

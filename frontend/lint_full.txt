@@ -1,0 +1,599 @@
+﻿
+> app-src@0.1.0 lint
+> eslint
+
+
+D:\mlstudio-pro\frontend\adapters\api.ts
+  18:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\mlstudio-pro\frontend\adapters\content-json.ts
+  67:9   error  'quiz' is never reassigned. Use 'const' instead  prefer-const
+  73:28  error  A `require()` style import is forbidden          @typescript-eslint/no-require-imports
+  74:43  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+
+D:\mlstudio-pro\frontend\app\auth\callback\page.tsx
+  11:101  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\mlstudio-pro\frontend\app\layout.tsx
+  37:9  warning  Custom fonts not added in `pages/_document.js` will only load for a single page. This is discouraged. See: https://nextjs.org/docs/messages/no-page-custom-font  @next/next/no-page-custom-font
+
+D:\mlstudio-pro\frontend\app\learn\[subject]\[module]\[topic]\page.tsx
+    6:10  error    'ProtectedRoute' is defined but never used                                                                                                                                                                                                                                               @typescript-eslint/no-unused-vars
+   19:11  error    'router' is assigned a value but never used                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+   35:58  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   37:11  error    'prevTopic' is assigned a value but never used                                                                                                                                                                                                                                           @typescript-eslint/no-unused-vars
+  119:58  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  120:50  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  363:45  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\mlstudio-pro\frontend\app\learn\[subject]\[module]\page.tsx
+  118:49  error  'index' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\app\learn\[subject]\page.tsx
+  57:47  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+D:\mlstudio-pro\frontend\app\learn\page.tsx
+   60:7    error  'formatIcons' is assigned a value but never used                 @typescript-eslint/no-unused-vars
+   76:54   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  147:194  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  259:77   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  259:88   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\app\profile\page.tsx
+    6:10   error    'supabase' is defined but never used                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+   62:18   error    'err' is defined but never used                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  104:45   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  149:44   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  149:53   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  149:91   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  149:100  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\components\CalculusVisualizer.tsx
+  3:27  error  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\components\MetricsVisualizer.tsx
+  8:16  error  'setFn' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  9:16  error  'setTn' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\components\OptimizationVisualizer.tsx
+  20:8  warning  React Hook useEffect has a missing dependency: 'initPoint'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\components\Visualizer.tsx
+  166:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\mlstudio-pro\frontend\context\AuthContext.tsx
+  27:11  error  'pathname' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  38:85  error  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+
+D:\mlstudio-pro\frontend\visuals\SectionTextOverlay.tsx
+  17:23  error  'sectionMid' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\explore\ExploreOverlay.tsx
+   50:32  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  277:36  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\explore\LearningRoadmap.tsx
+   88:33  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  107:32  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  202:28  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  204:31  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\AIEthicsPrimitive.tsx
+   50:21  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   50:97  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  121:53  error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+
+D:\mlstudio-pro\frontend\visuals\learn\ActivationFunctionPrimitive.tsx
+   45:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  135:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  135:134  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\AnomalyDetectionPrimitive.tsx
+   13:7    error  'PAD' is assigned a value but never used                                @typescript-eslint/no-unused-vars
+   23:17   error  'x' is never reassigned. Use 'const' instead                            prefer-const
+   68:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   68:88   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  162:73   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  162:81   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  174:58   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+  174:152  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  174:159  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  174:278  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`         react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\AttentionPrimitive.tsx
+   40:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  106:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  106:107  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  147:29   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  147:51   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  193:53   error    Comments inside children section of tag should be placed inside braces                                   react/jsx-no-comment-textnodes
+  193:136  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  193:140  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  193:153  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  193:157  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  193:163  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  193:167  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\BoundaryMorphingPrimitive.tsx
+    3:40  error  'useCallback' is defined but never used                       @typescript-eslint/no-unused-vars
+   24:27  error  'showProbabilityGradient' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  297:23  error  'cx' is assigned a value but never used                       @typescript-eslint/no-unused-vars
+  298:23  error  'cy' is assigned a value but never used                       @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\BroadcastingPrimitive.tsx
+  94:49  error  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\CNNFeaturesPrimitive.tsx
+  48:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  48:117  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\CNNPrimitive.tsx
+  123:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  123:120  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  200:55   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+
+D:\mlstudio-pro\frontend\visuals\learn\CentralTendencyPrimitive.tsx
+   4:18  error  'AnimatePresence' is defined but never used         @typescript-eslint/no-unused-vars
+  41:12  error  'reducedMotion' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\ClusterFormationPrimitive.tsx
+  3:40  error  'useRef' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\ClusteringPrimitive.tsx
+    3:29   error  'useEffect' is defined but never used                                   @typescript-eslint/no-unused-vars
+   24:17   error  'x' is never reassigned. Use 'const' instead                            prefer-const
+   97:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   97:88   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  150:95   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  150:97   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  152:78   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  152:91   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  164:60   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+  164:116  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  164:124  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  164:165  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  164:180  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\CodeEditor.tsx
+  175:29  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\mlstudio-pro\frontend\visuals\learn\CommonDistributionsPrimitive.tsx
+   22:10  error  'factorial' is defined but never used                                  @typescript-eslint/no-unused-vars
+  104:34  error  'yMax' is never reassigned. Use 'const' instead                        prefer-const
+  159:21  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  180:23  error  'barW' is assigned a value but never used                              @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\ConditionalProbabilityPrimitive.tsx
+    3:46   error  'useCallback' is defined but never used                          @typescript-eslint/no-unused-vars
+    4:18   error  'AnimatePresence' is defined but never used                      @typescript-eslint/no-unused-vars
+  159:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  159:40   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  159:200  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\ConfusionMatrixPrimitive.tsx
+   45:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   45:117  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  105:52   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+  105:274  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`         react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\ContextManagersPrimitive.tsx
+  23:52  error  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\DataValidationPrimitive.tsx
+  87:48  error  'errors' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\DecisionTreeClassificationPrimitive.tsx
+   80:21   error    Unexpected any. Specify a different type                                                                 @typescript-eslint/no-explicit-any
+  121:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  181:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  181:113  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  236:52   error    Comments inside children section of tag should be placed inside braces                                   react/jsx-no-comment-textnodes
+  236:268  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                          react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\DecisionTreePrimitive.tsx
+   49:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   49:31   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+   49:116  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  120:157  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\DecoratorsPrimitive.tsx
+  19:47  error  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\DescriptiveStatisticsPrimitive.tsx
+    4:10  error  'motion' is defined but never used                                     @typescript-eslint/no-unused-vars
+    4:18  error  'AnimatePresence' is defined but never used                            @typescript-eslint/no-unused-vars
+   93:15  error  'densities' is assigned a value but never used                         @typescript-eslint/no-unused-vars
+  132:17  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+
+D:\mlstudio-pro\frontend\visuals\learn\DispersionPrimitive.tsx
+    3:59  error  'useMemo' is defined but never used                                    @typescript-eslint/no-unused-vars
+    4:10  error  'motion' is defined but never used                                     @typescript-eslint/no-unused-vars
+    4:18  error  'AnimatePresence' is defined but never used                            @typescript-eslint/no-unused-vars
+    8:7   error  'MEAN' is assigned a value but never used                              @typescript-eslint/no-unused-vars
+   76:21  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  110:13  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+
+D:\mlstudio-pro\frontend\visuals\learn\DistributionEvolutionPrimitive.tsx
+  299:5  error  'mode' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\DomainFeaturesPrimitive.tsx
+  52:21  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  52:70  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\DropoutBNPrimitive.tsx
+   34:35  warning  React Hook useEffect has a missing dependency: 'regen'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+   35:34  warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array   react-hooks/exhaustive-deps
+  135:21  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                           react/no-unescaped-entities
+  135:98  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                           react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\DuplicateDataPrimitive.tsx
+  55:8  warning  React Hook useEffect has missing dependencies: 'pctA', 'pctB', and 'totalB'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\EigenvectorsPrimitive.tsx
+    4:10  error    'motion' is defined but never used                                                                                                                      @typescript-eslint/no-unused-vars
+  174:8   warning  React Hook useCallback has missing dependencies: 'OX', 'OY', 'drawGrid', and 'drawTransformedGrid'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\EnsembleMethodsPrimitive.tsx
+   49:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   49:103  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   55:67   error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+   56:103  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+   56:187  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+   56:251  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+   65:147  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  121:135  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  122:92   error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  130:95   error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  138:92   error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  138:165  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  139:78   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+
+D:\mlstudio-pro\frontend\visuals\learn\ExponentialDistributionPrimitive.tsx
+    4:10   error  'motion' is defined but never used                                     @typescript-eslint/no-unused-vars
+    4:18   error  'AnimatePresence' is defined but never used                            @typescript-eslint/no-unused-vars
+  149:17   error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  187:17   error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  226:104  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`        react/no-unescaped-entities
+  226:108  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`        react/no-unescaped-entities
+  308:39   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`        react/no-unescaped-entities
+  308:213  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`        react/no-unescaped-entities
+  308:220  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`        react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\FancyBooleanIndexingPrimitive.tsx
+  78:57  error  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\FeatureScalingPrimitive.tsx
+  74:8  warning  React Hook useEffect has missing dependencies: 'm.color', 'm.xL', and 'm.yL'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\FeatureSelectionPrimitive.tsx
+  50:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  50:113  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\GeneratorsPrimitive.tsx
+  10:47  error  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\GradientBackflowPrimitive.tsx
+  13:14  error  'activation' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\GradientBoostingPrimitive.tsx
+   62:51   warning  React Hook useEffect has missing dependencies: 'drawMain' and 'drawResid'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  185:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                react/no-unescaped-entities
+  185:106  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                react/no-unescaped-entities
+  197:152  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                react/no-unescaped-entities
+  228:52   error    Comments inside children section of tag should be placed inside braces                                                         react/jsx-no-comment-textnodes
+
+D:\mlstudio-pro\frontend\visuals\learn\GradientChainRulePrimitive.tsx
+  34:54  error  'config' is defined but never used                                     @typescript-eslint/no-unused-vars
+  70:13  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  83:13  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+
+D:\mlstudio-pro\frontend\visuals\learn\GradientDescentOptimizer.tsx
+    3:59  error    'useMemo' is defined but never used                                                                          @typescript-eslint/no-unused-vars
+    4:10  error    'motion' is defined but never used                                                                           @typescript-eslint/no-unused-vars
+    4:18  error    'AnimatePresence' is defined but never used                                                                  @typescript-eslint/no-unused-vars
+   64:26  error    Unexpected any. Specify a different type                                                                     @typescript-eslint/no-explicit-any
+   65:17  error    Unexpected any. Specify a different type                                                                     @typescript-eslint/no-explicit-any
+  118:30  error    Unexpected any. Specify a different type                                                                     @typescript-eslint/no-explicit-any
+  147:8   warning  React Hook useCallback has a missing dependency: 'render'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  160:8   warning  React Hook useEffect has a missing dependency: 'render'. Either include it or remove the dependency array    react-hooks/exhaustive-deps
+  233:75  error    Unexpected any. Specify a different type                                                                     @typescript-eslint/no-explicit-any
+  266:27  error    Unexpected any. Specify a different type                                                                     @typescript-eslint/no-explicit-any
+  267:77  error    Unexpected any. Specify a different type                                                                     @typescript-eslint/no-explicit-any
+
+D:\mlstudio-pro\frontend\visuals\learn\GroupByPrimitive.tsx
+  33:44  error  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\KNNClassificationPrimitive.tsx
+   59:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  152:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  152:107  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  177:64   error    Comments inside children section of tag should be placed inside braces                                   react/jsx-no-comment-textnodes
+
+D:\mlstudio-pro\frontend\visuals\learn\KNNRegressionPrimitive.tsx
+   52:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  150:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  150:111  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  175:41   error    Comments inside children section of tag should be placed inside braces                                   react/jsx-no-comment-textnodes
+  175:251  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                          react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\LawOfLargeNumbersPrimitive.tsx
+    4:18  error    'AnimatePresence' is defined but never used                                                                   @typescript-eslint/no-unused-vars
+  197:17  error    Expected an assignment or function call and instead saw an expression                                         @typescript-eslint/no-unused-expressions
+  239:8   warning  React Hook useMemo has an unnecessary dependency: 'trials'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\LinearIndependencePrimitive.tsx
+    4:10  error    'motion' is defined but never used                                                                                                                         @typescript-eslint/no-unused-vars
+   12:16  error    'setV1' is assigned a value but never used                                                                                                                 @typescript-eslint/no-unused-vars
+  154:8   warning  React Hook useCallback has missing dependencies: 'OX', 'OY', 'drawGrid', 'drawSpan', and 'drawVector'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\LinearRegressionPrimitive.tsx
+   3:20   error  'useRef' is defined but never used                               @typescript-eslint/no-unused-vars
+  40:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  40:104  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\LogisticRegressionPrimitive.tsx
+   41:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  144:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  144:119  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\MLOpsPrimitive.tsx
+   22:12  error  'driftLevel' is assigned a value but never used                         @typescript-eslint/no-unused-vars
+   22:24  error  'setDriftLevel' is assigned a value but never used                      @typescript-eslint/no-unused-vars
+   37:21  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   37:76  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  114:66  error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+  138:7   error  'PAD' is assigned a value but never used                                @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\MLPipelinesPrimitive.tsx
+  24:48  error  'config' is defined but never used  @typescript-eslint/no-unused-vars
+  88:50  error  'i' is defined but never used       @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\MatplotlibSeabornPrimitive.tsx
+  142:54  error  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\MatrixPropertiesPrimitive.tsx
+    4:10  error    'motion' is defined but never used                                                                                               @typescript-eslint/no-unused-vars
+    4:18  error    'AnimatePresence' is defined but never used                                                                                      @typescript-eslint/no-unused-vars
+  135:8   warning  React Hook useCallback has missing dependencies: 'drawBasis' and 'drawGrid'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  157:11  error    'result' is assigned a value but never used                                                                                      @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\MatrixTransformationPrimitive.tsx
+    3:46  error    'useCallback' is defined but never used                                                                                                     @typescript-eslint/no-unused-vars
+    4:10  error    'motion' is defined but never used                                                                                                          @typescript-eslint/no-unused-vars
+    4:18  error    'AnimatePresence' is defined but never used                                                                                                 @typescript-eslint/no-unused-vars
+  132:8   warning  React Hook useEffect has missing dependencies: 'OX', 'OY', 'drawBasis', and 'drawGrid'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\MemoryLayoutPrimitive.tsx
+   3:46  error  'useCallback' is defined but never used   @typescript-eslint/no-unused-vars
+   9:7   error  'GAP' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  38:49  error  'config' is defined but never used        @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\MetricDashboardPrimitive.tsx
+  3:40  error  'useCallback' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\MissingDataPrimitive.tsx
+  48:8  warning  React Hook useEffect has a missing dependency: 'getPts'. Either include it or remove the dependency array                            react-hooks/exhaustive-deps
+  80:8  warning  React Hook useEffect has missing dependencies: 'getPts', 'meanY', and 's.color'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\ModelResultsPrimitive.tsx
+  114:49  error  'config' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\NLPPipelinePrimitive.tsx
+  101:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  101:109  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  143:45   error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  156:41   error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  183:61   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+
+D:\mlstudio-pro\frontend\visuals\learn\NaiveBayesPrimitive.tsx
+   62:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   62:86   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`         react/no-unescaped-entities
+   62:133  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  105:71   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  105:80   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  140:54   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+  140:91   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`         react/no-unescaped-entities
+  140:134  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  140:139  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  140:145  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  140:152  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  140:157  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`         react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\NeuralNetworkPrimitive.tsx
+   66:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  158:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  158:121  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\NumpyArraysPrimitive.tsx
+    9:7   error  'COLORS' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  134:48  error  'config' is defined but never used           @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\ObjectiveFunctionPrimitive.tsx
+    4:10   error    'motion' is defined but never used                                                                                          @typescript-eslint/no-unused-vars
+    4:18   error    'AnimatePresence' is defined but never used                                                                                 @typescript-eslint/no-unused-vars
+   58:54   error    'config' is defined but never used                                                                                          @typescript-eslint/no-unused-vars
+  236:8    warning  React Hook useCallback has unnecessary dependencies: 'mode' and 'yMax'. Either exclude them or remove the dependency array  react-hooks/exhaustive-deps
+  275:45   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                             react/no-unescaped-entities
+  275:56   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                             react/no-unescaped-entities
+  362:119  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                             react/no-unescaped-entities
+  362:127  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                             react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\OutlierDetectionPrimitive.tsx
+  150:8  warning  React Hook useEffect has a missing dependency: 'maxCount'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\ParameterSensitivityPrimitive.tsx
+  24:48  error  'caption' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\PoissonDistributionPrimitive.tsx
+  4:10  error  'motion' is defined but never used           @typescript-eslint/no-unused-vars
+  4:18  error  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\PolynomialFeaturesPrimitive.tsx
+  16:11   error    'n' is assigned a value but never used                                                                                                             @typescript-eslint/no-unused-vars
+  61:201  error    Expected an assignment or function call and instead saw an expression                                                                              @typescript-eslint/no-unused-expressions
+  79:8    warning  React Hook useEffect has missing dependencies: 'co', 'color', 'overfit', 'r2', and 'underfit'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\PopulationSamplePrimitive.tsx
+   38:42   error    Unexpected any. Specify a different type                                                                        @typescript-eslint/no-explicit-any
+   75:35   warning  React Hook useEffect has a missing dependency: 'scoop'. Either include it or remove the dependency array        react-hooks/exhaustive-deps
+  215:105  warning  React Hook useMemo has a missing dependency: 'sample.length'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  352:99   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                 react/no-unescaped-entities
+  352:110  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                 react/no-unescaped-entities
+  354:201  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                 react/no-unescaped-entities
+  354:212  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                 react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\ProbabilityDistributionsPrimitive.tsx
+    4:18  error    'AnimatePresence' is defined but never used                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+   36:11  error    'containerRef' is assigned a value but never used                                                                                                                                                                                @typescript-eslint/no-unused-vars
+   37:12  error    'balls' is assigned a value but never used                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+   37:19  error    'setBalls' is assigned a value but never used                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+  142:8   warning  React Hook useCallback has missing dependencies: 'PEG_SPACING_X' and 'getPegPos'. Either include them or remove the dependency array                                                                                             react-hooks/exhaustive-deps
+  219:17  error    Expected an assignment or function call and instead saw an expression                                                                                                                                                            @typescript-eslint/no-unused-expressions
+  255:8   warning  React Hook useCallback has a missing dependency: 'getPegPos'. Either include it or remove the dependency array. Outer scope values like 'BIN_Y' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
+  257:34  error    'time' is defined but never used                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+  293:8   warning  React Hook useMemo has an unnecessary dependency: 'bins'. Either exclude it or remove the dependency array                                                                                                                       react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\RNNPrimitive.tsx
+   23:23   error  't' is defined but never used                                           @typescript-eslint/no-unused-vars
+   95:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   95:124  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  158:129  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  158:143  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  196:71   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+  197:72   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+  198:71   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+
+D:\mlstudio-pro\frontend\visuals\learn\ROCAUCPrimitive.tsx
+   64:49  warning  React Hook useEffect has missing dependencies: 'drawDist' and 'drawROC'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  136:13  error    Expected an assignment or function call and instead saw an expression                                                        @typescript-eslint/no-unused-expressions
+  164:21  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                              react/no-unescaped-entities
+  164:94  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                              react/no-unescaped-entities
+  219:52  error    Comments inside children section of tag should be placed inside braces                                                       react/jsx-no-comment-textnodes
+
+D:\mlstudio-pro\frontend\visuals\learn\RandomForestPrimitive.tsx
+  56:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  56:133  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\RecommenderPrimitive.tsx
+   40:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   40:101  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   98:65   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   98:82   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   98:87   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   98:102  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  105:88   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  105:103  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  111:53   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+  111:245  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`         react/no-unescaped-entities
+  111:264  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  111:274  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\RegressionMetricsPrimitive.tsx
+   47:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  151:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  151:116  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\RegularizationPrimitive.tsx
+  40:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  40:128  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\ResidualAnalysisPrimitive.tsx
+  57:117  error    Expected an assignment or function call and instead saw an expression                                                                    @typescript-eslint/no-unused-expressions
+  67:8    warning  React Hook useEffect has missing dependencies: 'm.color', 'resids', 'sd', and 'toY'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\RollingAveragePrimitive.tsx
+  48:51  error  'config' is defined but never used                                     @typescript-eslint/no-unused-vars
+  53:12  error  'scanPos' is assigned a value but never used                           @typescript-eslint/no-unused-vars
+  75:64  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+
+D:\mlstudio-pro\frontend\visuals\learn\SVDPrimitive.tsx
+    4:10   error    'motion' is defined but never used                                                                                                                              @typescript-eslint/no-unused-vars
+    4:18   error    'AnimatePresence' is defined but never used                                                                                                                     @typescript-eslint/no-unused-vars
+  156:8    warning  React Hook useCallback has missing dependencies: 'OX', 'OY', 'drawBasis', 'drawGrid', and 'drawUnitCircle'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  263:125  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                 react/no-unescaped-entities
+  263:139  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                 react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\SVMPrimitive.tsx
+   63:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  173:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  173:109  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  198:49   error    Comments inside children section of tag should be placed inside braces                                   react/jsx-no-comment-textnodes
+
+D:\mlstudio-pro\frontend\visuals\learn\SVRPrimitive.tsx
+   46:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  133:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  133:108  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  167:52   error    Comments inside children section of tag should be placed inside braces                                   react/jsx-no-comment-textnodes
+
+D:\mlstudio-pro\frontend\visuals\learn\TFIDFPrimitive.tsx
+  38:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  38:122  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  77:92   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  77:112  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\TimeSeriesPrimitive.tsx
+   68:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+   68:41   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`         react/no-unescaped-entities
+   68:47   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`         react/no-unescaped-entities
+   68:102  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  118:54   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+  118:269  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+  118:281  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`         react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\TransferLearningPrimitive.tsx
+    3:20   error  'useEffect' is defined but never used                            @typescript-eslint/no-unused-vars
+   28:24   error  'setSourceData' is assigned a value but never used               @typescript-eslint/no-unused-vars
+   29:24   error  'setTargetTask' is assigned a value but never used               @typescript-eslint/no-unused-vars
+   41:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   41:25   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+   41:103  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  111:29   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  111:145  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\TransformerPrimitive.tsx
+  102:21   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  102:109  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\mlstudio-pro\frontend\visuals\learn\UniformDistributionPrimitive.tsx
+  4:18  error  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\mlstudio-pro\frontend\visuals\learn\VectorOperationsPrimitive.tsx
+    4:10  error    'motion' is defined but never used                                                                                         @typescript-eslint/no-unused-vars
+  149:19  error    'l1' is assigned a value but never used                                                                                    @typescript-eslint/no-unused-vars
+  150:19  error    'linf' is assigned a value but never used                                                                                  @typescript-eslint/no-unused-vars
+  178:8   warning  React Hook useCallback has missing dependencies: 'OX', 'OY', and 'vc'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\WordEmbeddingPrimitive.tsx
+   72:34   warning  React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  170:21   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  170:113  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  210:43   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  210:55   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  217:144  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  217:155  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  254:67   error    Comments inside children section of tag should be placed inside braces                                   react/jsx-no-comment-textnodes
+  254:220  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+  254:228  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                          react/no-unescaped-entities
+
+Γ£û 374 problems (332 errors, 42 warnings)
+  3 errors and 0 warnings potentially fixable with the `--fix` option.
+
+node.exe : npm error Lifecycle script `lint` failed 
+with error:
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Users\deves\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm err 
+   or Lifec...led with error::String) [], RemoteExc  
+  eption
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+npm error code 1
+npm error path D:\mlstudio-pro\frontend
+npm error workspace app-src@0.1.0
+npm error location D:\mlstudio-pro\frontend
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s 
+/c eslint

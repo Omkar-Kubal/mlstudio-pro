@@ -12,6 +12,7 @@
   "topics": [
     {
       "title": "Descriptive Statistics Overview",
+      "slug": "descriptive-statistics",
       "theory": [
         "Descriptive statistics are numerical and graphical tools to summarize data. They describe what the data looks like without making predictions or generalizations.",
         "The three main components are: distribution (how values are spread), central tendency (where values cluster), and variability (how much values differ from each other).",
@@ -39,6 +40,7 @@
     },
     {
       "title": "Population vs Sample",
+      "slug": "population-vs-sample",
       "theory": [
         "In statistics, data always comes from somewhere. Understanding where it comes from determines how reliable your conclusions are.",
         "A population is the complete set of all possible observations you care about. Examples include all users of an app, every house in a city, or every transaction in a year.",
@@ -63,6 +65,7 @@
     },
     {
       "title": "Measures of Central Tendency",
+      "slug": "central-tendency",
       "theory": [
         "Measures of central tendency identify the 'typical' value in a dataset. There are three primary measures, each with different sensitivity to data distribution.",
         "The Mean ($$\\mu = \\frac{\\sum x_i}{n}$$) is the arithmetic average. It is the balance point of the data but is highly sensitive to outliers.",
@@ -86,6 +89,7 @@
     },
     {
       "title": "Measures of Dispersion",
+      "slug": "dispersion-measures",
       "theory": [
         "Dispersion describes how spread out the data is. Two datasets can have the same mean but totally different behavior.",
         "Variance ($$\\sigma^2 = \\frac{\\sum (x_i - \\mu)^2}{n}$$) captures the average squared distance from the mean.",
@@ -104,6 +108,29 @@
           "language": "python",
           "description": "Visualizing Spread",
           "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Same mean (0), different standard deviations (1 vs 3)\nd1 = np.random.normal(0, 1, 1000)\nd2 = np.random.normal(0, 3, 1000)\n\nplt.hist(d1, bins=30, alpha=0.5, label='High Precision (Low $\\sigma$)', color='blue')\nplt.hist(d2, bins=30, alpha=0.5, label='High Spread (High $\\sigma$)', color='orange')\nplt.title(\"Comparison of Dispersion ($$\\sigma$$)\")\nplt.legend()\nplt.show()"
+        }
+      ]
+    },
+    {
+      "title": "Law of Large Numbers",
+      "slug": "law-of-large-numbers",
+      "theory": [
+        "The Law of Large Numbers (LLN) is the mathematical bedrock which ensures that 'more data is better'. it states that as your sample size increases, the sample mean converges to the true population mean.",
+        "Weak LLN: For any small number ε, the probability that the difference between sample mean and population mean is greater than ε goes to zero as n goes to infinity.",
+        "In simple terms: Random noise 'cancels out' when you have enough observations. This is why a survey of 1,000 people is much more reliable than a survey of 5 people."
+      ],
+      "visualIntuition": [
+        "Watch a running mean chart: Early on, a single extreme value (like a 6 on a die) pulls the average way up. But as you roll more times, those extremes get averaged out and the line steadily flattens toward 3.5."
+      ],
+      "visualSuggestions": [
+        "Interactive chart showing multiple trials converging to a fixed line as N increases",
+        "Real-time die roll simulation updating a horizontal convergence graph"
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Demonstrating Convergence (LLN)",
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Simulate 5000 fair die rolls (mean should be 3.5)\nrolls = np.random.randint(1, 7, size=5000)\nrunning_means = np.cumsum(rolls) / np.arange(1, 5001)\n\nplt.plot(running_means, color='emerald')\nplt.axhline(y=3.5, color='red', linestyle='--', label='Expected Value (3.5)')\nplt.title(\"Convergence of Sample Mean (LLN)\")\nplt.xlabel(\"Number of Trials\")\nplt.ylabel(\"Running Mean\")\nplt.legend()\nplt.show()"
         }
       ]
     }

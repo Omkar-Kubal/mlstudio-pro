@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const W = 560, H = 600;
@@ -33,8 +33,8 @@ interface Ball {
 // ─── Component ───────────────────────────────────────────────────────────────
 export default function ProbabilityDistributionsPrimitive() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [balls, setBalls] = useState<Ball[]>([]);
+    const _containerRef = useRef<HTMLDivElement>(null);
+    const [_balls, _setBalls] = useState<Ball[]>([]);
     const [bins, setBins] = useState<number[]>(new Array(COLS).fill(0));
     const [totalDropped, setTotalDropped] = useState(0);
     const [autoPlay, setAutoPlay] = useState(false);
@@ -139,7 +139,7 @@ export default function ProbabilityDistributionsPrimitive() {
         ballsRef.current = activeBalls.filter(b => !b.settled || b.flash > 0);
         activeBalls.forEach(b => { if (b.settled && b.flash > 0) b.flash -= 0.1; });
 
-    }, [speed]);
+    }, [speed]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const draw = useCallback(() => {
         const canvas = canvasRef.current;
@@ -216,7 +216,7 @@ export default function ProbabilityDistributionsPrimitive() {
                 const bh = (expectedCount / maxBin) * (BIN_H - 20);
                 const px = leftWall + (binIdx + 0.5) * PEG_SPACING_X;
                 const py = H - 10 - bh;
-                i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+                if (i === 0) { ctx.moveTo(px, py); } else { ctx.lineTo(px, py); }
             }
             ctx.stroke();
             ctx.setLineDash([]);
@@ -252,9 +252,9 @@ export default function ProbabilityDistributionsPrimitive() {
             }
         });
 
-    }, [totalDropped, PEG_SPACING_X, BIN_Y]);
+    }, [totalDropped, PEG_SPACING_X]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const animate = useCallback((time: number) => {
+    const animate = useCallback((_time: number) => {
         update();
         draw();
         requestRef.current = requestAnimationFrame(animate);
@@ -279,7 +279,7 @@ export default function ProbabilityDistributionsPrimitive() {
     // Stats
     const stats = useMemo(() => {
         let sum = 0, sumSq = 0, count = 0;
-        binsRef.current.forEach((val, idx) => {
+        bins.forEach((val, idx) => {
             sum += idx * val;
             sumSq += idx * idx * val;
             count += val;

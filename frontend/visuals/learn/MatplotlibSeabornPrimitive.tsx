@@ -139,7 +139,7 @@ function drawSns(ctx: CanvasRenderingContext2D, showReg: boolean, showGrid: bool
 interface Props { config?: MatplotlibSeabornConfig; }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function MatplotlibSeabornPrimitive({ config }: Props) {
+export default function MatplotlibSeabornPrimitive({ config: _config }: Props) {
     const mplRef = useRef<HTMLCanvasElement>(null);
     const snsRef = useRef<HTMLCanvasElement>(null);
     const [showReg, setShowReg] = useState(true);

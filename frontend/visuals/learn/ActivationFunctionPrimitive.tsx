@@ -42,6 +42,7 @@ export default function ActivationFunctionPrimitive() {
         return n;
     });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [active, showDeriv, queryX]);
 
     function draw() {

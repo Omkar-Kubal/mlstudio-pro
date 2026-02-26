@@ -1,0 +1,371 @@
+﻿adapters\api.ts || 18:21 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+adapters\content-json.ts || 73:28 || @typescript-eslint/no-require-imports || A `require()` style import is forbidden.
+adapters\content-json.ts || 74:43 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+app\auth\callback\page.tsx || 11:101 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+app\layout.tsx || 37:9 || @next/next/no-page-custom-font || Custom fonts not added in `pages/_document.js` will only load for a single page. This is d
+app\learn\[subject]\[module]\[topic]\page.tsx || 6:10 || @typescript-eslint/no-unused-vars || 'ProtectedRoute' is defined but never used.
+app\learn\[subject]\[module]\[topic]\page.tsx || 19:11 || @typescript-eslint/no-unused-vars || 'router' is assigned a value but never used.
+app\learn\[subject]\[module]\[topic]\page.tsx || 35:58 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+app\learn\[subject]\[module]\[topic]\page.tsx || 37:11 || @typescript-eslint/no-unused-vars || 'prevTopic' is assigned a value but never used.
+app\learn\[subject]\[module]\[topic]\page.tsx || 119:58 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+app\learn\[subject]\[module]\[topic]\page.tsx || 120:50 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+app\learn\[subject]\[module]\[topic]\page.tsx || 363:45 || @next/next/no-img-element || Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` 
+app\learn\[subject]\[module]\page.tsx || 118:49 || @typescript-eslint/no-unused-vars || 'index' is defined but never used.
+app\learn\[subject]\page.tsx || 57:47 || @typescript-eslint/no-require-imports || A `require()` style import is forbidden.
+app\learn\page.tsx || 60:7 || @typescript-eslint/no-unused-vars || 'formatIcons' is assigned a value but never used.
+app\learn\page.tsx || 76:54 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+app\learn\page.tsx || 147:194 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+app\learn\page.tsx || 259:77 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+app\learn\page.tsx || 259:88 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+app\profile\page.tsx || 6:10 || @typescript-eslint/no-unused-vars || 'supabase' is defined but never used.
+app\profile\page.tsx || 62:18 || @typescript-eslint/no-unused-vars || 'err' is defined but never used.
+app\profile\page.tsx || 104:45 || @next/next/no-img-element || Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` 
+app\profile\page.tsx || 149:44 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+app\profile\page.tsx || 149:53 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+app\profile\page.tsx || 149:91 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+app\profile\page.tsx || 149:100 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+components\CalculusVisualizer.tsx || 3:27 || @typescript-eslint/no-unused-vars || 'useEffect' is defined but never used.
+components\MetricsVisualizer.tsx || 8:16 || @typescript-eslint/no-unused-vars || 'setFn' is assigned a value but never used.
+components\MetricsVisualizer.tsx || 9:16 || @typescript-eslint/no-unused-vars || 'setTn' is assigned a value but never used.
+components\OptimizationVisualizer.tsx || 20:8 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'initPoint'. Either include it or remove th
+components\Visualizer.tsx || 166:48 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+context\AuthContext.tsx || 27:11 || @typescript-eslint/no-unused-vars || 'pathname' is assigned a value but never used.
+context\AuthContext.tsx || 38:85 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\SectionTextOverlay.tsx || 17:23 || @typescript-eslint/no-unused-vars || 'sectionMid' is assigned a value but never used.
+visuals\explore\ExploreOverlay.tsx || 50:32 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\explore\ExploreOverlay.tsx || 277:36 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\explore\LearningRoadmap.tsx || 88:33 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\explore\LearningRoadmap.tsx || 107:32 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\explore\LearningRoadmap.tsx || 202:28 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\explore\LearningRoadmap.tsx || 204:31 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\AIEthicsPrimitive.tsx || 50:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AIEthicsPrimitive.tsx || 50:97 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AIEthicsPrimitive.tsx || 121:53 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\ActivationFunctionPrimitive.tsx || 45:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\ActivationFunctionPrimitive.tsx || 135:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ActivationFunctionPrimitive.tsx || 135:134 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AnomalyDetectionPrimitive.tsx || 13:7 || @typescript-eslint/no-unused-vars || 'PAD' is assigned a value but never used.
+visuals\learn\AnomalyDetectionPrimitive.tsx || 68:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AnomalyDetectionPrimitive.tsx || 68:88 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AnomalyDetectionPrimitive.tsx || 162:73 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AnomalyDetectionPrimitive.tsx || 162:81 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AnomalyDetectionPrimitive.tsx || 174:58 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\AnomalyDetectionPrimitive.tsx || 174:152 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AnomalyDetectionPrimitive.tsx || 174:159 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AnomalyDetectionPrimitive.tsx || 174:278 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\AttentionPrimitive.tsx || 40:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\AttentionPrimitive.tsx || 106:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AttentionPrimitive.tsx || 106:107 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AttentionPrimitive.tsx || 147:29 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AttentionPrimitive.tsx || 147:51 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AttentionPrimitive.tsx || 193:53 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\AttentionPrimitive.tsx || 193:136 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AttentionPrimitive.tsx || 193:140 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AttentionPrimitive.tsx || 193:153 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AttentionPrimitive.tsx || 193:157 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AttentionPrimitive.tsx || 193:163 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\AttentionPrimitive.tsx || 193:167 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\BoundaryMorphingPrimitive.tsx || 3:40 || @typescript-eslint/no-unused-vars || 'useCallback' is defined but never used.
+visuals\learn\BoundaryMorphingPrimitive.tsx || 24:27 || @typescript-eslint/no-unused-vars || 'showProbabilityGradient' is assigned a value but never used.
+visuals\learn\BoundaryMorphingPrimitive.tsx || 297:23 || @typescript-eslint/no-unused-vars || 'cx' is assigned a value but never used.
+visuals\learn\BoundaryMorphingPrimitive.tsx || 298:23 || @typescript-eslint/no-unused-vars || 'cy' is assigned a value but never used.
+visuals\learn\BroadcastingPrimitive.tsx || 94:49 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\CNNFeaturesPrimitive.tsx || 48:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\CNNFeaturesPrimitive.tsx || 48:117 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\CNNPrimitive.tsx || 123:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\CNNPrimitive.tsx || 123:120 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\CNNPrimitive.tsx || 200:55 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\CentralTendencyPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\CentralTendencyPrimitive.tsx || 41:12 || @typescript-eslint/no-unused-vars || 'reducedMotion' is assigned a value but never used.
+visuals\learn\ClusterFormationPrimitive.tsx || 3:40 || @typescript-eslint/no-unused-vars || 'useRef' is defined but never used.
+visuals\learn\ClusteringPrimitive.tsx || 3:29 || @typescript-eslint/no-unused-vars || 'useEffect' is defined but never used.
+visuals\learn\ClusteringPrimitive.tsx || 97:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ClusteringPrimitive.tsx || 97:88 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ClusteringPrimitive.tsx || 150:95 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ClusteringPrimitive.tsx || 150:97 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ClusteringPrimitive.tsx || 152:78 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ClusteringPrimitive.tsx || 152:91 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ClusteringPrimitive.tsx || 164:60 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\ClusteringPrimitive.tsx || 164:116 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ClusteringPrimitive.tsx || 164:124 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ClusteringPrimitive.tsx || 164:165 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ClusteringPrimitive.tsx || 164:180 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\CodeEditor.tsx || 175:29 || @next/next/no-img-element || Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` 
+visuals\learn\CommonDistributionsPrimitive.tsx || 22:10 || @typescript-eslint/no-unused-vars || 'factorial' is defined but never used.
+visuals\learn\CommonDistributionsPrimitive.tsx || 104:34 || prefer-const || 'yMax' is never reassigned. Use 'const' instead.
+visuals\learn\CommonDistributionsPrimitive.tsx || 159:21 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\CommonDistributionsPrimitive.tsx || 180:23 || @typescript-eslint/no-unused-vars || 'barW' is assigned a value but never used.
+visuals\learn\ConditionalProbabilityPrimitive.tsx || 3:46 || @typescript-eslint/no-unused-vars || 'useCallback' is defined but never used.
+visuals\learn\ConditionalProbabilityPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\ConditionalProbabilityPrimitive.tsx || 159:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ConditionalProbabilityPrimitive.tsx || 159:40 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\ConditionalProbabilityPrimitive.tsx || 159:200 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ConfusionMatrixPrimitive.tsx || 45:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ConfusionMatrixPrimitive.tsx || 45:117 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ConfusionMatrixPrimitive.tsx || 105:52 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\ConfusionMatrixPrimitive.tsx || 105:274 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\ContextManagersPrimitive.tsx || 23:52 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\DataValidationPrimitive.tsx || 87:48 || @typescript-eslint/no-unused-vars || 'errors' is defined but never used.
+visuals\learn\DecisionTreeClassificationPrimitive.tsx || 80:21 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\DecisionTreeClassificationPrimitive.tsx || 121:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\DecisionTreeClassificationPrimitive.tsx || 181:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\DecisionTreeClassificationPrimitive.tsx || 181:113 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\DecisionTreeClassificationPrimitive.tsx || 236:52 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\DecisionTreeClassificationPrimitive.tsx || 236:268 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\DecisionTreePrimitive.tsx || 49:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\DecisionTreePrimitive.tsx || 49:31 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\DecisionTreePrimitive.tsx || 49:116 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\DecisionTreePrimitive.tsx || 120:157 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\DecoratorsPrimitive.tsx || 19:47 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\DescriptiveStatisticsPrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\DescriptiveStatisticsPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\DescriptiveStatisticsPrimitive.tsx || 93:15 || @typescript-eslint/no-unused-vars || 'densities' is assigned a value but never used.
+visuals\learn\DescriptiveStatisticsPrimitive.tsx || 132:17 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\DispersionPrimitive.tsx || 3:59 || @typescript-eslint/no-unused-vars || 'useMemo' is defined but never used.
+visuals\learn\DispersionPrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\DispersionPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\DispersionPrimitive.tsx || 8:7 || @typescript-eslint/no-unused-vars || 'MEAN' is assigned a value but never used.
+visuals\learn\DispersionPrimitive.tsx || 76:21 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\DispersionPrimitive.tsx || 110:13 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\DistributionEvolutionPrimitive.tsx || 299:5 || @typescript-eslint/no-unused-vars || 'mode' is defined but never used.
+visuals\learn\DomainFeaturesPrimitive.tsx || 52:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\DomainFeaturesPrimitive.tsx || 52:70 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\DropoutBNPrimitive.tsx || 34:35 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'regen'. Either include it or remove the de
+visuals\learn\DropoutBNPrimitive.tsx || 35:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\DropoutBNPrimitive.tsx || 135:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\DropoutBNPrimitive.tsx || 135:98 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\DuplicateDataPrimitive.tsx || 55:8 || react-hooks/exhaustive-deps || React Hook useEffect has missing dependencies: 'pctA', 'pctB', and 'totalB'. Either includ
+visuals\learn\EigenvectorsPrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\EigenvectorsPrimitive.tsx || 174:8 || react-hooks/exhaustive-deps || React Hook useCallback has missing dependencies: 'OX', 'OY', 'drawGrid', and 'drawTransfor
+visuals\learn\EnsembleMethodsPrimitive.tsx || 49:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 49:103 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 55:67 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 56:103 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 56:187 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 56:251 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 65:147 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 121:135 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 122:92 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 130:95 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 138:92 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 138:165 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\EnsembleMethodsPrimitive.tsx || 139:78 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\ExponentialDistributionPrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\ExponentialDistributionPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\ExponentialDistributionPrimitive.tsx || 149:17 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\ExponentialDistributionPrimitive.tsx || 187:17 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\ExponentialDistributionPrimitive.tsx || 226:104 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ExponentialDistributionPrimitive.tsx || 226:108 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ExponentialDistributionPrimitive.tsx || 308:39 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\ExponentialDistributionPrimitive.tsx || 308:213 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ExponentialDistributionPrimitive.tsx || 308:220 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\FancyBooleanIndexingPrimitive.tsx || 78:57 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\FeatureScalingPrimitive.tsx || 74:8 || react-hooks/exhaustive-deps || React Hook useEffect has missing dependencies: 'm.color', 'm.xL', and 'm.yL'. Either inclu
+visuals\learn\FeatureSelectionPrimitive.tsx || 50:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\FeatureSelectionPrimitive.tsx || 50:113 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\GeneratorsPrimitive.tsx || 10:47 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\GradientBackflowPrimitive.tsx || 13:14 || @typescript-eslint/no-unused-vars || 'activation' is defined but never used.
+visuals\learn\GradientBoostingPrimitive.tsx || 62:51 || react-hooks/exhaustive-deps || React Hook useEffect has missing dependencies: 'drawMain' and 'drawResid'. Either include 
+visuals\learn\GradientBoostingPrimitive.tsx || 185:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\GradientBoostingPrimitive.tsx || 185:106 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\GradientBoostingPrimitive.tsx || 197:152 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\GradientBoostingPrimitive.tsx || 228:52 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\GradientChainRulePrimitive.tsx || 34:54 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\GradientChainRulePrimitive.tsx || 70:13 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\GradientChainRulePrimitive.tsx || 83:13 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\GradientDescentOptimizer.tsx || 3:59 || @typescript-eslint/no-unused-vars || 'useMemo' is defined but never used.
+visuals\learn\GradientDescentOptimizer.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\GradientDescentOptimizer.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\GradientDescentOptimizer.tsx || 64:26 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\GradientDescentOptimizer.tsx || 65:17 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\GradientDescentOptimizer.tsx || 118:30 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\GradientDescentOptimizer.tsx || 147:8 || react-hooks/exhaustive-deps || React Hook useCallback has a missing dependency: 'render'. Either include it or remove the
+visuals\learn\GradientDescentOptimizer.tsx || 160:8 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'render'. Either include it or remove the d
+visuals\learn\GradientDescentOptimizer.tsx || 233:75 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\GradientDescentOptimizer.tsx || 266:27 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\GradientDescentOptimizer.tsx || 267:77 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\GroupByPrimitive.tsx || 33:44 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\KNNClassificationPrimitive.tsx || 59:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\KNNClassificationPrimitive.tsx || 152:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\KNNClassificationPrimitive.tsx || 152:107 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\KNNClassificationPrimitive.tsx || 177:64 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\KNNRegressionPrimitive.tsx || 52:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\KNNRegressionPrimitive.tsx || 150:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\KNNRegressionPrimitive.tsx || 150:111 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\KNNRegressionPrimitive.tsx || 175:41 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\KNNRegressionPrimitive.tsx || 175:251 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\LawOfLargeNumbersPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\LawOfLargeNumbersPrimitive.tsx || 197:17 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\LawOfLargeNumbersPrimitive.tsx || 239:8 || react-hooks/exhaustive-deps || React Hook useMemo has an unnecessary dependency: 'trials'. Either exclude it or remove th
+visuals\learn\LinearIndependencePrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\LinearIndependencePrimitive.tsx || 12:16 || @typescript-eslint/no-unused-vars || 'setV1' is assigned a value but never used.
+visuals\learn\LinearIndependencePrimitive.tsx || 154:8 || react-hooks/exhaustive-deps || React Hook useCallback has missing dependencies: 'OX', 'OY', 'drawGrid', 'drawSpan', and '
+visuals\learn\LinearRegressionPrimitive.tsx || 3:20 || @typescript-eslint/no-unused-vars || 'useRef' is defined but never used.
+visuals\learn\LinearRegressionPrimitive.tsx || 40:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\LinearRegressionPrimitive.tsx || 40:104 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\LogisticRegressionPrimitive.tsx || 41:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\LogisticRegressionPrimitive.tsx || 144:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\LogisticRegressionPrimitive.tsx || 144:119 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\MLOpsPrimitive.tsx || 22:12 || @typescript-eslint/no-unused-vars || 'driftLevel' is assigned a value but never used.
+visuals\learn\MLOpsPrimitive.tsx || 22:24 || @typescript-eslint/no-unused-vars || 'setDriftLevel' is assigned a value but never used.
+visuals\learn\MLOpsPrimitive.tsx || 37:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\MLOpsPrimitive.tsx || 37:76 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\MLOpsPrimitive.tsx || 114:66 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\MLOpsPrimitive.tsx || 138:7 || @typescript-eslint/no-unused-vars || 'PAD' is assigned a value but never used.
+visuals\learn\MLPipelinesPrimitive.tsx || 24:48 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\MLPipelinesPrimitive.tsx || 88:50 || @typescript-eslint/no-unused-vars || 'i' is defined but never used.
+visuals\learn\MatplotlibSeabornPrimitive.tsx || 142:54 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\MatrixPropertiesPrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\MatrixPropertiesPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\MatrixPropertiesPrimitive.tsx || 135:8 || react-hooks/exhaustive-deps || React Hook useCallback has missing dependencies: 'drawBasis' and 'drawGrid'. Either includ
+visuals\learn\MatrixPropertiesPrimitive.tsx || 157:11 || @typescript-eslint/no-unused-vars || 'result' is assigned a value but never used.
+visuals\learn\MatrixTransformationPrimitive.tsx || 3:46 || @typescript-eslint/no-unused-vars || 'useCallback' is defined but never used.
+visuals\learn\MatrixTransformationPrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\MatrixTransformationPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\MatrixTransformationPrimitive.tsx || 132:8 || react-hooks/exhaustive-deps || React Hook useEffect has missing dependencies: 'OX', 'OY', 'drawBasis', and 'drawGrid'. Ei
+visuals\learn\MemoryLayoutPrimitive.tsx || 3:46 || @typescript-eslint/no-unused-vars || 'useCallback' is defined but never used.
+visuals\learn\MemoryLayoutPrimitive.tsx || 9:7 || @typescript-eslint/no-unused-vars || 'GAP' is assigned a value but never used.
+visuals\learn\MemoryLayoutPrimitive.tsx || 38:49 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\MetricDashboardPrimitive.tsx || 3:40 || @typescript-eslint/no-unused-vars || 'useCallback' is defined but never used.
+visuals\learn\MissingDataPrimitive.tsx || 48:8 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'getPts'. Either include it or remove the d
+visuals\learn\MissingDataPrimitive.tsx || 80:8 || react-hooks/exhaustive-deps || React Hook useEffect has missing dependencies: 'getPts', 'meanY', and 's.color'. Either in
+visuals\learn\ModelResultsPrimitive.tsx || 114:49 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\NLPPipelinePrimitive.tsx || 101:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NLPPipelinePrimitive.tsx || 101:109 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NLPPipelinePrimitive.tsx || 143:45 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\NLPPipelinePrimitive.tsx || 156:41 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\NLPPipelinePrimitive.tsx || 183:61 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\NaiveBayesPrimitive.tsx || 62:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NaiveBayesPrimitive.tsx || 62:86 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\NaiveBayesPrimitive.tsx || 62:133 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NaiveBayesPrimitive.tsx || 105:71 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NaiveBayesPrimitive.tsx || 105:80 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NaiveBayesPrimitive.tsx || 140:54 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\NaiveBayesPrimitive.tsx || 140:91 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\NaiveBayesPrimitive.tsx || 140:134 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NaiveBayesPrimitive.tsx || 140:139 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NaiveBayesPrimitive.tsx || 140:145 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NaiveBayesPrimitive.tsx || 140:152 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NaiveBayesPrimitive.tsx || 140:157 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\NeuralNetworkPrimitive.tsx || 66:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\NeuralNetworkPrimitive.tsx || 158:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NeuralNetworkPrimitive.tsx || 158:121 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\NumpyArraysPrimitive.tsx || 9:7 || @typescript-eslint/no-unused-vars || 'COLORS' is assigned a value but never used.
+visuals\learn\NumpyArraysPrimitive.tsx || 134:48 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\ObjectiveFunctionPrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\ObjectiveFunctionPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\ObjectiveFunctionPrimitive.tsx || 58:54 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\ObjectiveFunctionPrimitive.tsx || 236:8 || react-hooks/exhaustive-deps || React Hook useCallback has unnecessary dependencies: 'mode' and 'yMax'. Either exclude the
+visuals\learn\ObjectiveFunctionPrimitive.tsx || 275:45 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ObjectiveFunctionPrimitive.tsx || 275:56 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ObjectiveFunctionPrimitive.tsx || 362:119 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ObjectiveFunctionPrimitive.tsx || 362:127 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\OutlierDetectionPrimitive.tsx || 150:8 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'maxCount'. Either include it or remove the
+visuals\learn\ParameterSensitivityPrimitive.tsx || 24:48 || @typescript-eslint/no-unused-vars || 'caption' is assigned a value but never used.
+visuals\learn\PoissonDistributionPrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\PoissonDistributionPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\PolynomialFeaturesPrimitive.tsx || 16:11 || @typescript-eslint/no-unused-vars || 'n' is assigned a value but never used.
+visuals\learn\PolynomialFeaturesPrimitive.tsx || 61:201 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\PolynomialFeaturesPrimitive.tsx || 79:8 || react-hooks/exhaustive-deps || React Hook useEffect has missing dependencies: 'co', 'color', 'overfit', 'r2', and 'underf
+visuals\learn\PopulationSamplePrimitive.tsx || 38:42 || @typescript-eslint/no-explicit-any || Unexpected any. Specify a different type.
+visuals\learn\PopulationSamplePrimitive.tsx || 75:35 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'scoop'. Either include it or remove the de
+visuals\learn\PopulationSamplePrimitive.tsx || 215:105 || react-hooks/exhaustive-deps || React Hook useMemo has a missing dependency: 'sample.length'. Either include it or remove 
+visuals\learn\PopulationSamplePrimitive.tsx || 352:99 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\PopulationSamplePrimitive.tsx || 352:110 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\PopulationSamplePrimitive.tsx || 354:201 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\PopulationSamplePrimitive.tsx || 354:212 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx || 36:11 || @typescript-eslint/no-unused-vars || 'containerRef' is assigned a value but never used.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx || 37:12 || @typescript-eslint/no-unused-vars || 'balls' is assigned a value but never used.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx || 37:19 || @typescript-eslint/no-unused-vars || 'setBalls' is assigned a value but never used.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx || 142:8 || react-hooks/exhaustive-deps || React Hook useCallback has missing dependencies: 'PEG_SPACING_X' and 'getPegPos'. Either i
+visuals\learn\ProbabilityDistributionsPrimitive.tsx || 219:17 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx || 255:8 || react-hooks/exhaustive-deps || React Hook useCallback has a missing dependency: 'getPegPos'. Either include it or remove 
+visuals\learn\ProbabilityDistributionsPrimitive.tsx || 257:34 || @typescript-eslint/no-unused-vars || 'time' is defined but never used.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx || 293:8 || react-hooks/exhaustive-deps || React Hook useMemo has an unnecessary dependency: 'bins'. Either exclude it or remove the 
+visuals\learn\RNNPrimitive.tsx || 23:23 || @typescript-eslint/no-unused-vars || 't' is defined but never used.
+visuals\learn\RNNPrimitive.tsx || 95:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RNNPrimitive.tsx || 95:124 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RNNPrimitive.tsx || 158:129 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RNNPrimitive.tsx || 158:143 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RNNPrimitive.tsx || 196:71 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\RNNPrimitive.tsx || 197:72 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\RNNPrimitive.tsx || 198:71 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\ROCAUCPrimitive.tsx || 64:49 || react-hooks/exhaustive-deps || React Hook useEffect has missing dependencies: 'drawDist' and 'drawROC'. Either include th
+visuals\learn\ROCAUCPrimitive.tsx || 136:13 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\ROCAUCPrimitive.tsx || 164:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ROCAUCPrimitive.tsx || 164:94 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ROCAUCPrimitive.tsx || 219:52 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\RandomForestPrimitive.tsx || 56:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RandomForestPrimitive.tsx || 56:133 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 40:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 40:101 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 98:65 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 98:82 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 98:87 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 98:102 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 105:88 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 105:103 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 111:53 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\RecommenderPrimitive.tsx || 111:245 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 111:264 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RecommenderPrimitive.tsx || 111:274 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RegressionMetricsPrimitive.tsx || 47:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\RegressionMetricsPrimitive.tsx || 151:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RegressionMetricsPrimitive.tsx || 151:116 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RegularizationPrimitive.tsx || 40:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\RegularizationPrimitive.tsx || 40:128 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\ResidualAnalysisPrimitive.tsx || 57:117 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\ResidualAnalysisPrimitive.tsx || 67:8 || react-hooks/exhaustive-deps || React Hook useEffect has missing dependencies: 'm.color', 'resids', 'sd', and 'toY'. Eithe
+visuals\learn\RollingAveragePrimitive.tsx || 48:51 || @typescript-eslint/no-unused-vars || 'config' is defined but never used.
+visuals\learn\RollingAveragePrimitive.tsx || 53:12 || @typescript-eslint/no-unused-vars || 'scanPos' is assigned a value but never used.
+visuals\learn\RollingAveragePrimitive.tsx || 75:64 || @typescript-eslint/no-unused-expressions || Expected an assignment or function call and instead saw an expression.
+visuals\learn\SVDPrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\SVDPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\SVDPrimitive.tsx || 156:8 || react-hooks/exhaustive-deps || React Hook useCallback has missing dependencies: 'OX', 'OY', 'drawBasis', 'drawGrid', and 
+visuals\learn\SVDPrimitive.tsx || 263:125 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\SVDPrimitive.tsx || 263:139 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\SVMPrimitive.tsx || 63:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\SVMPrimitive.tsx || 173:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\SVMPrimitive.tsx || 173:109 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\SVMPrimitive.tsx || 198:49 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\SVRPrimitive.tsx || 46:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\SVRPrimitive.tsx || 133:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\SVRPrimitive.tsx || 133:108 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\SVRPrimitive.tsx || 167:52 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\TFIDFPrimitive.tsx || 38:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TFIDFPrimitive.tsx || 38:122 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TFIDFPrimitive.tsx || 77:92 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TFIDFPrimitive.tsx || 77:112 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TimeSeriesPrimitive.tsx || 68:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TimeSeriesPrimitive.tsx || 68:41 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\TimeSeriesPrimitive.tsx || 68:47 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\TimeSeriesPrimitive.tsx || 68:102 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TimeSeriesPrimitive.tsx || 118:54 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\TimeSeriesPrimitive.tsx || 118:269 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TimeSeriesPrimitive.tsx || 118:281 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TransferLearningPrimitive.tsx || 3:20 || @typescript-eslint/no-unused-vars || 'useEffect' is defined but never used.
+visuals\learn\TransferLearningPrimitive.tsx || 28:24 || @typescript-eslint/no-unused-vars || 'setSourceData' is assigned a value but never used.
+visuals\learn\TransferLearningPrimitive.tsx || 29:24 || @typescript-eslint/no-unused-vars || 'setTargetTask' is assigned a value but never used.
+visuals\learn\TransferLearningPrimitive.tsx || 41:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TransferLearningPrimitive.tsx || 41:25 || react/no-unescaped-entities || `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.
+visuals\learn\TransferLearningPrimitive.tsx || 41:103 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TransferLearningPrimitive.tsx || 111:29 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TransferLearningPrimitive.tsx || 111:145 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TransformerPrimitive.tsx || 102:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\TransformerPrimitive.tsx || 102:109 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\UniformDistributionPrimitive.tsx || 4:18 || @typescript-eslint/no-unused-vars || 'AnimatePresence' is defined but never used.
+visuals\learn\VectorOperationsPrimitive.tsx || 4:10 || @typescript-eslint/no-unused-vars || 'motion' is defined but never used.
+visuals\learn\VectorOperationsPrimitive.tsx || 149:19 || @typescript-eslint/no-unused-vars || 'l1' is assigned a value but never used.
+visuals\learn\VectorOperationsPrimitive.tsx || 150:19 || @typescript-eslint/no-unused-vars || 'linf' is assigned a value but never used.
+visuals\learn\VectorOperationsPrimitive.tsx || 178:8 || react-hooks/exhaustive-deps || React Hook useCallback has missing dependencies: 'OX', 'OY', and 'vc'. Either include them
+visuals\learn\WordEmbeddingPrimitive.tsx || 72:34 || react-hooks/exhaustive-deps || React Hook useEffect has a missing dependency: 'draw'. Either include it or remove the dep
+visuals\learn\WordEmbeddingPrimitive.tsx || 170:21 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\WordEmbeddingPrimitive.tsx || 170:113 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\WordEmbeddingPrimitive.tsx || 210:43 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\WordEmbeddingPrimitive.tsx || 210:55 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\WordEmbeddingPrimitive.tsx || 217:144 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\WordEmbeddingPrimitive.tsx || 217:155 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\WordEmbeddingPrimitive.tsx || 254:67 || react/jsx-no-comment-textnodes || Comments inside children section of tag should be placed inside braces
+visuals\learn\WordEmbeddingPrimitive.tsx || 254:220 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.
+visuals\learn\WordEmbeddingPrimitive.tsx || 254:228 || react/no-unescaped-entities || `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.

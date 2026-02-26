@@ -8,14 +8,29 @@ class ProfileManager:
     def __init__(self):
         self.url = os.getenv("SUPABASE_URL")
         self.key = os.getenv("SUPABASE_ANON_KEY")
-        if self.url and self.key:
+        self.use_mock_auth = os.getenv("USE_MOCK_AUTH", "false").lower() == "true"
+        
+        if not self.use_mock_auth and self.url and self.key:
             self.client: Client = create_client(self.url, self.key)
         else:
             self.client = None
-            print("WARNING: Supabase credentials missing. Profile management disabled.")
+            if not self.use_mock_auth:
+                print("WARNING: Supabase credentials missing. Profile management disabled.")
+            else:
+                print("LOG: Using Mock Auth mode for ProfileManager.")
 
     def get_profile(self, user_id: str) -> Optional[Dict[str, Any]]:
         """Fetch user profile from Supabase."""
+        is_mock = os.getenv("USE_MOCK_AUTH", "false").lower() == "true"
+        if is_mock:
+            return {
+                "id": user_id,
+                "display_name": "Demo User",
+                "avatar_url": "https://api.dicebear.com/7.x/bottts/svg?seed=Felix",
+                "persona": "Beginner",
+                "bio": "Keep exploring!"
+            }
+            
         if not self.client: return None
         
         try:
@@ -27,7 +42,8 @@ class ProfileManager:
 
     def update_profile(self, user_id: str, updates: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Update user profile in Supabase."""
-        if not self.client: return None
+        is_mock = os.getenv("USE_MOCK_AUTH", "false").lower() == "true"
+        if is_mock or not self.client: return None
         
         try:
             # Filter updates to only include allowed fields

@@ -7,31 +7,8 @@
  */
 
 // ============================================
-// Parameter Sensitivity Primitive Config
+// Shared Base Types
 // ============================================
-
-export interface ParameterSensitivityConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Slider configuration */
-    slider: SliderConfig;
-
-    /** Axis configuration */
-    axis: AxisConfig;
-
-    /** Visualization mode */
-    mode: "mean-median" | "threshold-classification";
-
-    /** Data points (mode-specific structure) */
-    data: MeanMedianData | ThresholdData;
-
-    /** Metric bars to display (optional) */
-    metrics?: MetricConfig[];
-
-    /** Caption text */
-    caption: string;
-}
 
 export interface SliderConfig {
     label: string;
@@ -67,13 +44,37 @@ export interface MetricConfig {
 }
 
 // ============================================
-// Fit Progression Primitive Config
+// Base Configuration
 // ============================================
 
-export interface FitProgressionConfig {
-    /** Unique identifier for this visualization */
+export interface BaseVisualConfig {
     id: string;
+    caption: string;
+    description?: string;
+}
 
+// ============================================
+// Specialized Primitives (Heavily Structured)
+// ============================================
+
+export interface ParameterSensitivityConfig extends BaseVisualConfig {
+    /** Slider configuration */
+    slider: SliderConfig;
+
+    /** Axis configuration */
+    axis: AxisConfig;
+
+    /** Visualization mode */
+    mode: "mean-median" | "threshold-classification";
+
+    /** Data points (mode-specific structure) */
+    data: MeanMedianData | ThresholdData;
+
+    /** Metric bars to display (optional) */
+    metrics?: MetricConfig[];
+}
+
+export interface FitProgressionConfig extends BaseVisualConfig {
     /** Primitive type discriminator */
     primitiveType: "fit-progression";
 
@@ -84,7 +85,7 @@ export interface FitProgressionConfig {
         max: number;
         step: number;
         initial: number;
-        inverted?: boolean;  // true for KNN where low = overfit
+        inverted?: boolean;
     };
 
     /** Visualization mode */
@@ -95,19 +96,9 @@ export interface FitProgressionConfig {
         trainPoints: Array<{ x: number; y: number }>;
         testPoints: Array<{ x: number; y: number }>;
     };
-
-    /** Caption text */
-    caption: string;
 }
 
-// ============================================
-// Distribution Evolution Primitive Config
-// ============================================
-
-export interface DistributionEvolutionConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
+export interface DistributionEvolutionConfig extends BaseVisualConfig {
     /** Primitive type discriminator */
     primitiveType: "distribution-evolution";
 
@@ -142,19 +133,9 @@ export interface DistributionEvolutionConfig {
         options: [string, string];
         initial: 0 | 1;
     };
-
-    /** Caption text */
-    caption: string;
 }
 
-// ============================================
-// Boundary Morphing Primitive Config
-// ============================================
-
-export interface BoundaryMorphingConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
+export interface BoundaryMorphingConfig extends BaseVisualConfig {
     /** Primitive type discriminator */
     primitiveType: "boundary-morphing";
 
@@ -165,7 +146,7 @@ export interface BoundaryMorphingConfig {
         max: number;
         step: number;
         initial: number;
-        inverted?: boolean;  // true for KNN where high K = smooth
+        inverted?: boolean;
     };
 
     /** Model type for boundary computation */
@@ -185,19 +166,9 @@ export interface BoundaryMorphingConfig {
         options: [string, string];
         initial: 0 | 1;
     };
-
-    /** Caption text */
-    caption: string;
 }
 
-// ============================================
-// Metric Dashboard Primitive Config
-// ============================================
-
-export interface MetricDashboardConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
+export interface MetricDashboardConfig extends BaseVisualConfig {
     /** Primitive type discriminator */
     primitiveType: "metric-dashboard";
 
@@ -227,19 +198,9 @@ export interface MetricDashboardConfig {
         options: [string, string];
         initial: 0 | 1;
     };
-
-    /** Caption text */
-    caption: string;
 }
 
-// ============================================
-// Cluster Formation Primitive Config
-// ============================================
-
-export interface ClusterFormationConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
+export interface ClusterFormationConfig extends BaseVisualConfig {
     /** Primitive type discriminator */
     primitiveType: "cluster-formation";
 
@@ -262,19 +223,9 @@ export interface ClusterFormationConfig {
 
     /** Show inertia metric */
     showInertia: boolean;
-
-    /** Caption text */
-    caption: string;
 }
 
-// ============================================
-// Network Forward Pass Primitive Config
-// ============================================
-
-export interface NetworkForwardPassConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
+export interface NetworkForwardPassConfig extends BaseVisualConfig {
     /** Primitive type discriminator */
     primitiveType: "network-forward-pass";
 
@@ -298,19 +249,9 @@ export interface NetworkForwardPassConfig {
 
     /** Initial activation function */
     initialActivation: "linear" | "relu" | "sigmoid" | "tanh" | "leaky-relu";
-
-    /** Caption text */
-    caption: string;
 }
 
-// ============================================
-// Gradient Backflow Primitive Config
-// ============================================
-
-export interface GradientBackflowConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
+export interface GradientBackflowConfig extends BaseVisualConfig {
     /** Primitive type discriminator */
     primitiveType: "gradient-backflow";
 
@@ -334,565 +275,100 @@ export interface GradientBackflowConfig {
 
     /** Initial activation function */
     initialActivation: "linear" | "relu" | "sigmoid" | "tanh";
-
-    /** Caption text */
-    caption: string;
 }
 
+export interface GradientDescentOptimizerConfig extends BaseVisualConfig { primitiveType: "gradient-descent-optimizer"; }
+export interface DescriptiveStatisticsConfig extends BaseVisualConfig { primitiveType: "descriptive-statistics"; }
+export interface PopulationSampleConfig extends BaseVisualConfig { primitiveType: "population-sample"; }
+export interface CentralTendencyConfig extends BaseVisualConfig { primitiveType: "central-tendency"; }
+export interface DispersionConfig extends BaseVisualConfig { primitiveType: "dispersion"; }
+export interface ProbabilityDistributionsConfig extends BaseVisualConfig { primitiveType: "probability-distributions"; }
+export interface CommonDistributionsConfig extends BaseVisualConfig { primitiveType: "common-distributions"; }
+export interface ConditionalProbabilityConfig extends BaseVisualConfig { primitiveType: "conditional-probability"; }
+export interface LawOfLargeNumbersConfig extends BaseVisualConfig { primitiveType: "law-of-large-numbers"; }
+export interface PoissonDistributionConfig extends BaseVisualConfig { primitiveType: "poisson-distribution"; }
+export interface ExponentialDistributionConfig extends BaseVisualConfig { primitiveType: "exponential-distribution"; }
+export interface UniformDistributionConfig extends BaseVisualConfig { primitiveType: "uniform-distribution"; }
+export interface VectorOperationsConfig extends BaseVisualConfig { primitiveType: "vector-operations"; }
+export interface MatrixTransformationConfig extends BaseVisualConfig { primitiveType: "matrix-transformation"; }
+export interface MatrixPropertiesConfig extends BaseVisualConfig { primitiveType: "matrix-properties"; }
+export interface LinearIndependenceConfig extends BaseVisualConfig { primitiveType: "linear-independence"; }
+export interface EigenvectorsConfig extends BaseVisualConfig { primitiveType: "eigen-vectors"; }
+export interface SVDConfig extends BaseVisualConfig { primitiveType: "svd"; }
+export interface ObjectiveFunctionConfig extends BaseVisualConfig { primitiveType: "objective-function"; }
+export interface GradientChainRuleConfig extends BaseVisualConfig { primitiveType: "gradient-chain-rule"; }
+export interface NumpyArraysConfig extends BaseVisualConfig { primitiveType: "numpy-arrays"; }
+export interface BroadcastingConfig extends BaseVisualConfig { primitiveType: "broadcasting"; }
+export interface FancyBooleanIndexingConfig extends BaseVisualConfig { primitiveType: "fancy-boolean-indexing"; }
+export interface MemoryLayoutConfig extends BaseVisualConfig { primitiveType: "memory-layout"; }
+export interface GroupByConfig extends BaseVisualConfig { primitiveType: "groupby"; }
+export interface RollingAverageConfig extends BaseVisualConfig { primitiveType: "rolling-average"; }
+export interface MatplotlibSeabornConfig extends BaseVisualConfig { primitiveType: "matplotlib-seaborn"; }
+export interface ModelResultsConfig extends BaseVisualConfig { primitiveType: "model-results"; }
+export interface DecoratorsConfig extends BaseVisualConfig { primitiveType: "decorators"; }
+export interface GeneratorsConfig extends BaseVisualConfig { primitiveType: "generators"; }
+export interface ContextManagersConfig extends BaseVisualConfig { primitiveType: "context-managers"; }
+export interface MLPipelinesConfig extends BaseVisualConfig { primitiveType: "ml-pipelines"; }
+export interface OutlierDetectionConfig extends BaseVisualConfig { primitiveType: "outlier-detection"; }
+export interface DataValidationConfig extends BaseVisualConfig { primitiveType: "data-validation"; }
+export interface CategoricalEncodingConfig extends BaseVisualConfig { primitiveType: "categorical-encoding"; }
+export interface FeatureScalingConfig extends BaseVisualConfig { primitiveType: "feature-scaling"; }
+export interface PolynomialFeaturesConfig extends BaseVisualConfig { primitiveType: "polynomial-features"; }
+export interface MissingDataConfig extends BaseVisualConfig { primitiveType: "missing-data"; }
+export interface DuplicateDataConfig extends BaseVisualConfig { primitiveType: "duplicate-data"; }
+export interface ResidualAnalysisConfig extends BaseVisualConfig { primitiveType: "residual-analysis"; }
+export interface FeatureSelectionConfig extends BaseVisualConfig { primitiveType: "feature-selection"; }
+export interface DomainFeaturesConfig extends BaseVisualConfig { primitiveType: "domain-features"; }
+export interface TFIDFConfig extends BaseVisualConfig { primitiveType: "tfidf"; }
+export interface CNNFeaturesConfig extends BaseVisualConfig { primitiveType: "cnn-features"; }
+export interface LinearRegressionConfig extends BaseVisualConfig { primitiveType: "linear-regression"; }
+export interface RegularizationConfig extends BaseVisualConfig { primitiveType: "regularization"; }
+export interface DecisionTreeConfig extends BaseVisualConfig { primitiveType: "decision-tree"; }
+export interface RandomForestConfig extends BaseVisualConfig { primitiveType: "random-forest"; }
+export interface GradientBoostingConfig extends BaseVisualConfig { primitiveType: "gradient-boosting"; }
+export interface SVRConfig extends BaseVisualConfig { primitiveType: "svr"; }
+export interface KNNRegressionConfig extends BaseVisualConfig { primitiveType: "knn-regression"; }
+export interface RegressionMetricsConfig extends BaseVisualConfig { primitiveType: "regression-metrics"; }
+export interface LogisticRegressionConfig extends BaseVisualConfig { primitiveType: "logistic-regression"; }
+export interface DecisionTreeClassificationConfig extends BaseVisualConfig { primitiveType: "decision-tree-classification"; }
+export interface SVMConfig extends BaseVisualConfig { primitiveType: "svm"; }
+export interface NaiveBayesConfig extends BaseVisualConfig { primitiveType: "naive-bayes"; }
+export interface KNNClassificationConfig extends BaseVisualConfig { primitiveType: "knn-classification"; }
+export interface ConfusionMatrixConfig extends BaseVisualConfig { primitiveType: "confusion-matrix"; }
+export interface ROCAUCConfig extends BaseVisualConfig { primitiveType: "roc-auc"; }
+export interface EnsembleMethodsConfig extends BaseVisualConfig { primitiveType: "ensemble-methods"; }
+
+export interface NeuralNetworkConfig extends BaseVisualConfig { primitiveType: "neural-network"; }
+export interface ActivationFunctionsConfig extends BaseVisualConfig { primitiveType: "activation-functions"; }
+export interface CNNConfig extends BaseVisualConfig { primitiveType: "cnn"; }
+export interface RNNConfig extends BaseVisualConfig { primitiveType: "rnn"; }
+export interface AttentionConfig extends BaseVisualConfig { primitiveType: "attention"; }
+export interface TransformerConfig extends BaseVisualConfig { primitiveType: "transformer"; }
+export interface DropoutBNConfig extends BaseVisualConfig { primitiveType: "dropout-bn"; }
+export interface TransferLearningConfig extends BaseVisualConfig { primitiveType: "transfer-learning"; }
+export interface NLPPipelineConfig extends BaseVisualConfig { primitiveType: "nlp-pipeline"; }
+export interface WordEmbeddingConfig extends BaseVisualConfig { primitiveType: "word-embedding"; }
+export interface TimeSeriesConfig extends BaseVisualConfig { primitiveType: "time-series"; }
+export interface AnomalyDetectionConfig extends BaseVisualConfig { primitiveType: "anomaly-detection"; }
+export interface RecommenderConfig extends BaseVisualConfig { primitiveType: "recommender"; }
+export interface ClusteringConfig extends BaseVisualConfig { primitiveType: "clustering"; }
+export interface MLOpsConfig extends BaseVisualConfig { primitiveType: "mlops"; }
+export interface AIEthicsConfig extends BaseVisualConfig { primitiveType: "ai-ethics"; }
+export interface PythonBasicsConfig extends BaseVisualConfig { primitiveType: "python-basics"; }
+export interface PythonControlFlowConfig extends BaseVisualConfig { primitiveType: "python-control-flow"; }
+export interface PythonErrorHandlingConfig extends BaseVisualConfig { primitiveType: "python-error-handling"; }
+export interface NumericalStabilityConfig extends BaseVisualConfig { primitiveType: "numerical-stability"; }
+export interface PandasUsageConfig extends BaseVisualConfig { primitiveType: "pandas-usage"; }
+export interface GPRConfig extends BaseVisualConfig { primitiveType: "gpr"; }
+export interface WhyEvalConfig extends BaseVisualConfig { primitiveType: "why-eval"; }
+export interface ClassificationMetricsConfig extends BaseVisualConfig { primitiveType: "classification-metrics"; }
+export interface PrecisionRecallConfig extends BaseVisualConfig { primitiveType: "precision-recall"; }
+export interface MulticlassMetricsConfig extends BaseVisualConfig { primitiveType: "multiclass-metrics"; }
+export interface BrierScoreConfig extends BaseVisualConfig { primitiveType: "brier-score"; }
+
+// ============================================
+// Combined Configuration Type
 // ============================================
-// Gradient Descent Optimizer Primitive Config
-// ============================================
-
-export interface GradientDescentOptimizerConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "gradient-descent-optimizer";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Descriptive Statistics Primitive Config
-// ============================================
-
-export interface DescriptiveStatisticsConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "descriptive-statistics";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Population Sample Primitive Config
-// ============================================
-
-export interface PopulationSampleConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "population-sample";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Central Tendency Primitive Config
-// ============================================
-
-export interface CentralTendencyConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "central-tendency";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Dispersion Primitive Config
-// ============================================
-
-export interface DispersionConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "dispersion";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Probability Distributions Primitive Config
-// ============================================
-
-export interface ProbabilityDistributionsConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "probability-distributions";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Common Distributions Primitive Config
-// ============================================
-
-export interface CommonDistributionsConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "common-distributions";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Conditional Probability Primitive Config
-// ============================================
-
-export interface ConditionalProbabilityConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "conditional-probability";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Law of Large Numbers Primitive Config
-// ============================================
-
-export interface LawOfLargeNumbersConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "law-of-large-numbers";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Poisson Distribution Primitive Config
-// ============================================
-
-export interface PoissonDistributionConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "poisson-distribution";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Exponential Distribution Primitive Config
-// ============================================
-
-export interface ExponentialDistributionConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "exponential-distribution";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Uniform Distribution Primitive Config
-// ============================================
-
-export interface UniformDistributionConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "uniform-distribution";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Vector Operations Primitive Config
-// ============================================
-
-export interface VectorOperationsConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "vector-operations";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Matrix Transformation Primitive Config
-// ============================================
-
-export interface MatrixTransformationConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "matrix-transformation";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Matrix Properties Primitive Config
-// ============================================
-
-export interface MatrixPropertiesConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "matrix-properties";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Linear Independence Primitive Config
-// ============================================
-
-export interface LinearIndependenceConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "linear-independence";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Eigenvectors Primitive Config
-// ============================================
-
-export interface EigenvectorsConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "eigen-vectors";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// SVD Primitive Config
-// ============================================
-
-export interface SVDConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "svd";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Objective Function Primitive Config
-// ============================================
-
-export interface ObjectiveFunctionConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "objective-function";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Gradient Chain Rule Primitive Config
-// ============================================
-
-export interface GradientChainRuleConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "gradient-chain-rule";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// NumPy Arrays & Shapes Primitive Config
-// ============================================
-
-export interface NumpyArraysConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "numpy-arrays";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Broadcasting Primitive Config
-// ============================================
-
-export interface BroadcastingConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "broadcasting";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Fancy & Boolean Indexing Primitive Config
-// ============================================
-
-export interface FancyBooleanIndexingConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "fancy-boolean-indexing";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// Memory Layout Primitive Config
-// ============================================
-
-export interface MemoryLayoutConfig {
-    /** Unique identifier for this visualization */
-    id: string;
-
-    /** Primitive type discriminator */
-    primitiveType: "memory-layout";
-
-    /** Caption text */
-    caption: string;
-}
-
-// ============================================
-// GroupBy Primitive Config
-// ============================================
-
-export interface GroupByConfig {
-    id: string;
-    primitiveType: "groupby";
-    caption: string;
-}
-
-// ============================================
-// Rolling Average Primitive Config
-// ============================================
-
-export interface RollingAverageConfig {
-    id: string;
-    primitiveType: "rolling-average";
-    caption: string;
-}
-
-// ============================================
-// Matplotlib vs Seaborn Primitive Config
-// ============================================
-
-export interface MatplotlibSeabornConfig {
-    id: string;
-    primitiveType: "matplotlib-seaborn";
-    caption: string;
-}
-
-// ============================================
-// Model Results Primitive Config
-// ============================================
-export interface ModelResultsConfig { id: string; primitiveType: "model-results"; caption: string; }
-
-// ============================================
-// Decorators Primitive Config
-// ============================================
-export interface DecoratorsConfig { id: string; primitiveType: "decorators"; caption: string; }
-
-// ============================================
-// Generators Primitive Config
-// ============================================
-export interface GeneratorsConfig { id: string; primitiveType: "generators"; caption: string; }
-
-// ============================================
-// Context Managers Primitive Config
-// ============================================
-export interface ContextManagersConfig { id: string; primitiveType: "context-managers"; caption: string; }
-
-// ============================================
-// ML Pipelines Primitive Config
-// ============================================
-export interface MLPipelinesConfig { id: string; primitiveType: "ml-pipelines"; caption: string; }
-
-// ============================================
-// Outlier Detection Primitive Config
-// ============================================
-export interface OutlierDetectionConfig { id: string; primitiveType: "outlier-detection"; caption: string; }
-
-// ============================================
-// Data Validation Primitive Config
-// ============================================
-export interface DataValidationConfig { id: string; primitiveType: "data-validation"; caption: string; }
-
-// ============================================
-// Categorical Encoding Primitive Config
-// ============================================
-export interface CategoricalEncodingConfig { id: string; primitiveType: "categorical-encoding"; caption: string; }
-
-// ============================================
-// Feature Scaling Primitive Config
-// ============================================
-export interface FeatureScalingConfig { id: string; primitiveType: "feature-scaling"; caption: string; }
-
-// ============================================
-// Polynomial Features Primitive Config
-// ============================================
-export interface PolynomialFeaturesConfig { id: string; primitiveType: "polynomial-features"; caption: string; }
-
-// ============================================
-// Missing Data Primitive Config
-// ============================================
-export interface MissingDataConfig { id: string; primitiveType: "missing-data"; caption: string; }
-
-// ============================================
-// Duplicate Data Primitive Config
-// ============================================
-export interface DuplicateDataConfig { id: string; primitiveType: "duplicate-data"; caption: string; }
-
-// ============================================
-// Residual Analysis Primitive Config
-// ============================================
-export interface ResidualAnalysisConfig { id: string; primitiveType: "residual-analysis"; caption: string; }
-
-// ============================================
-// Feature Selection Primitive Config
-// ============================================
-export interface FeatureSelectionConfig { id: string; primitiveType: "feature-selection"; caption: string; }
-
-// ============================================
-// Domain Features Primitive Config
-// ============================================
-export interface DomainFeaturesConfig { id: string; primitiveType: "domain-features"; caption: string; }
-
-// ============================================
-// TF-IDF Primitive Config
-// ============================================
-export interface TFIDFConfig { id: string; primitiveType: "tfidf"; caption: string; }
-
-// ============================================
-// CNN Features Primitive Config
-// ============================================
-export interface CNNFeaturesConfig { id: string; primitiveType: "cnn-features"; caption: string; }
-
-// ============================================
-// Linear Regression Primitive Config
-// ============================================
-export interface LinearRegressionConfig { id: string; primitiveType: "linear-regression"; caption: string; }
-
-// ============================================
-// Regularization Primitive Config
-// ============================================
-export interface RegularizationConfig { id: string; primitiveType: "regularization"; caption: string; }
-
-// ============================================
-// Decision Tree Primitive Config
-// ============================================
-export interface DecisionTreeConfig { id: string; primitiveType: "decision-tree"; caption: string; }
-
-// ============================================
-// Random Forest Primitive Config
-// ============================================
-export interface RandomForestConfig { id: string; primitiveType: "random-forest"; caption: string; }
-
-// ============================================
-// Gradient Boosting Primitive Config
-// ============================================
-export interface GradientBoostingConfig { id: string; primitiveType: "gradient-boosting"; caption: string; }
-
-// ============================================
-// SVR Primitive Config
-// = ============================================
-export interface SVRConfig { id: string; primitiveType: "svr"; caption: string; }
-
-// ============================================
-// KNN Regression Primitive Config
-// ============================================
-export interface KNNRegressionConfig { id: string; primitiveType: "knn-regression"; caption: string; }
-
-// ============================================
-// Regression Metrics Primitive Config
-// ============================================
-export interface RegressionMetricsConfig { id: string; primitiveType: "regression-metrics"; caption: string; }
-
-// ============================================
-// Logistic Regression Primitive Config
-// ============================================
-export interface LogisticRegressionConfig { id: string; primitiveType: "logistic-regression"; caption: string; }
-
-// ============================================
-// Decision Tree Classification Primitive Config
-// ============================================
-export interface DecisionTreeClassificationConfig { id: string; primitiveType: "decision-tree-classification"; caption: string; }
-
-// ============================================
-// SVM Primitive Config
-// ============================================
-export interface SVMConfig { id: string; primitiveType: "svm"; caption: string; }
-
-// ============================================
-// Naive Bayes Primitive Config
-// ============================================
-export interface NaiveBayesConfig { id: string; primitiveType: "naive-bayes"; caption: string; }
-
-// ============================================
-// KNN Classification Primitive Config
-// ============================================
-export interface KNNClassificationConfig { id: string; primitiveType: "knn-classification"; caption: string; }
-
-// ============================================
-// Confusion Matrix Primitive Config
-// ============================================
-export interface ConfusionMatrixConfig { id: string; primitiveType: "confusion-matrix"; caption: string; }
-
-// ============================================
-// ROC AUC Primitive Config
-// ============================================
-export interface ROCAUCConfig { id: string; primitiveType: "roc-auc"; caption: string; }
-
-// ============================================
-// Ensemble Methods Primitive Config
-// ============================================
-export interface EnsembleMethodsConfig { id: string; primitiveType: "ensemble-methods"; caption: string; }
 
 export type VisualConfig =
     | ParameterSensitivityConfig
@@ -978,106 +454,17 @@ export type VisualConfig =
     | RecommenderConfig
     | ClusteringConfig
     | MLOpsConfig
-    | AIEthicsConfig;
-
-export interface NeuralNetworkConfig {
-    id: string;
-    primitiveType: "neural-network";
-    caption: string;
-}
-
-export interface ActivationFunctionsConfig {
-    id: string;
-    primitiveType: "activation-functions";
-    caption: string;
-}
-
-export interface CNNConfig {
-    id: string;
-    primitiveType: "cnn";
-    caption: string;
-}
-
-export interface RNNConfig {
-    id: string;
-    primitiveType: "rnn";
-    caption: string;
-}
-
-export interface AttentionConfig {
-    id: string;
-    primitiveType: "attention";
-    caption: string;
-}
-
-export interface TransformerConfig {
-    id: string;
-    primitiveType: "transformer";
-    caption: string;
-}
-
-export interface DropoutBNConfig {
-    id: string;
-    primitiveType: "dropout-bn";
-    caption: string;
-}
-
-export interface TransferLearningConfig {
-    id: string;
-    primitiveType: "transfer-learning";
-    caption: string;
-}
-
-export interface NLPPipelineConfig {
-    id: string;
-    primitiveType: "nlp-pipeline";
-    caption: string;
-}
-
-export interface WordEmbeddingConfig {
-    id: string;
-    primitiveType: "word-embedding";
-    caption: string;
-}
-
-export interface TimeSeriesConfig {
-    id: string;
-    primitiveType: "time-series";
-    caption: string;
-}
-
-export interface AnomalyDetectionConfig {
-    id: string;
-    primitiveType: "anomaly-detection";
-    caption: string;
-}
-
-export interface RecommenderConfig {
-    id: string;
-    primitiveType: "recommender";
-    caption: string;
-}
-
-export interface ClusteringConfig {
-    id: string;
-    primitiveType: "clustering";
-    caption: string;
-}
-
-export interface MLOpsConfig {
-    id: string;
-    primitiveType: "mlops";
-    caption: string;
-}
-
-export interface AIEthicsConfig {
-    id: string;
-    primitiveType: "ai-ethics";
-    caption: string;
-}
+    | AIEthicsConfig
+    | PythonBasicsConfig
+    | PythonControlFlowConfig
+    | PythonErrorHandlingConfig
+    | NumericalStabilityConfig
+    | PandasUsageConfig
+    | GPRConfig
+    | WhyEvalConfig
+    | ClassificationMetricsConfig
+    | PrecisionRecallConfig
+    | MulticlassMetricsConfig
+    | BrierScoreConfig;
 
 export type VisualConfigRegistry = Record<string, VisualConfig>;
-
-// ============================================
-// Config Registry Type
-

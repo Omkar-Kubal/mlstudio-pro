@@ -51,9 +51,9 @@ export default function EnsembleMethodsPrimitive() {
             </div>
 
             <div style={{ display: "flex", gap: "8px", marginBottom: "20px", justifyContent: "center" }}>
-                {Object.keys(CONTENT).map((m) => (
-                    <button key={m} onClick={() => setMethod(m as any)}
-                        style={{ padding: "8px 18px", border: `1.5px solid ${method === m ? (THEME as any)[m] : THEME.border}`, borderRadius: "6px", background: method === m ? (THEME as any)[m] + "22" : "transparent", color: method === m ? (THEME as any)[m] : THEME.dim, fontSize: "12px", fontFamily: "inherit", fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}>
+                {(Object.keys(CONTENT) as Array<keyof typeof CONTENT>).map((m) => (
+                    <button key={m} onClick={() => setMethod(m)}
+                        style={{ padding: "8px 18px", border: `1.5px solid ${method === m ? THEME[m] : THEME.border}`, borderRadius: "6px", background: method === m ? THEME[m] + "22" : "transparent", color: method === m ? THEME[m] : THEME.dim, fontSize: "12px", fontFamily: "inherit", fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}>
                         {m.toUpperCase()}
                     </button>
                 ))}
@@ -62,7 +62,7 @@ export default function EnsembleMethodsPrimitive() {
             <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", justifyContent: "center" }}>
 
                 {/* Visual Diagram */}
-                <div style={{ flex: "1 1 300px", padding: "30px", background: THEME.surface, borderRadius: "12px", border: `2px solid ${(THEME as any)[method]}44`, textAlign: "center", minHeight: 280, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", overflow: "hidden" }}>
+                <div style={{ flex: "1 1 300px", padding: "30px", background: THEME.surface, borderRadius: "12px", border: `2px solid ${THEME[method]}44`, textAlign: "center", minHeight: 280, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", overflow: "hidden" }}>
                     <div style={{ position: "absolute", top: 10, right: 16, fontSize: "40px", opacity: 0.1 }}>{curr.icon}</div>
 
                     {method === "bagging" && (
@@ -118,8 +118,8 @@ export default function EnsembleMethodsPrimitive() {
 
                 {/* Info panel */}
                 <div style={{ flex: "1 1 320px", display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <div style={{ padding: "16px", background: THEME.surface, borderRadius: "8px", borderLeft: `4px solid ${(THEME as any)[method]}` }}>
-                        <h2 style={{ fontSize: "18px", margin: "0 0 4px", color: (THEME as any)[method] }}>{curr.title}</h2>
+                    <div style={{ padding: "16px", background: THEME.surface, borderRadius: "8px", borderLeft: `4px solid ${THEME[method]}` }}>
+                        <h2 style={{ fontSize: "18px", margin: "0 0 4px", color: THEME[method] }}>{curr.title}</h2>
                         <div style={{ fontSize: "10px", color: THEME.dim, letterSpacing: "2px", marginBottom: "12px" }}>{curr.philosophy}</div>
                         <p style={{ fontSize: "12px", color: THEME.text, lineHeight: 1.6, margin: 0 }}>{curr.process}</p>
                     </div>
@@ -127,7 +127,7 @@ export default function EnsembleMethodsPrimitive() {
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                         <div style={{ padding: "12px", background: "#ffffff08", borderRadius: "6px" }}>
                             <div style={{ fontSize: "9px", color: THEME.dim, marginBottom: "4px" }}>PRIMARY GOAL</div>
-                            <div style={{ fontSize: "11px", fontWeight: 700, color: (THEME as any)[method] }}>{curr.key}</div>
+                            <div style={{ fontSize: "11px", fontWeight: 700, color: THEME[method] }}>{curr.key}</div>
                         </div>
                         <div style={{ padding: "12px", background: "#ffffff08", borderRadius: "6px" }}>
                             <div style={{ fontSize: "9px", color: THEME.dim, marginBottom: "4px" }}>COMMON ALGORITHM</div>
@@ -135,7 +135,7 @@ export default function EnsembleMethodsPrimitive() {
                         </div>
                     </div>
 
-                    <div style={{ marginTop: "4px", padding: "12px", background: (THEME as any)[method] + "11", borderRadius: "6px", border: `1px solid ${(THEME as any)[method]}33` }}>
+                    <div style={{ marginTop: "4px", padding: "12px", background: THEME[method] + "11", borderRadius: "6px", border: `1px solid ${THEME[method]}33` }}>
                         <span style={{ fontSize: "10px", color: THEME.dim }}>// WHY IT WORKS:</span>
                         <p style={{ fontSize: "11px", color: THEME.dim, margin: "4px 0 0", lineHeight: 1.5 }}>
                             {method === "bagging" && "Individual models fail in different places. By averaging them, uncorrelated noise cancels out, leaving only the signal."}

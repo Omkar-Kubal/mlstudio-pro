@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { apiFetch } from "@/adapters/api";
-import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 
 interface Profile {
@@ -13,6 +12,13 @@ interface Profile {
     persona: string;
     bio: string;
 }
+
+const AVATARS = [
+    "https://api.dicebear.com/7.x/bottts/svg?seed=Felix",
+    "https://api.dicebear.com/7.x/bottts/svg?seed=Aria",
+    "https://api.dicebear.com/7.x/bottts/svg?seed=Zane",
+    "https://api.dicebear.com/7.x/bottts/svg?seed=Nova"
+];
 
 export default function ProfilePage() {
     const [profile, setProfile] = useState<Profile | null>(null);
@@ -48,10 +54,11 @@ export default function ProfilePage() {
                     display_name: profile.display_name,
                     bio: profile.bio,
                     persona: profile.persona,
+                    avatar_url: profile.avatar_url,
                 }),
             });
             setMessage({ type: 'success', text: "Profile updated successfully!" });
-        } catch (err) {
+        } catch (_err) {
             setMessage({ type: 'error', text: "Failed to update profile." });
         } finally {
             setSaving(false);
@@ -81,6 +88,26 @@ export default function ProfilePage() {
                     <form onSubmit={handleUpdate} className="space-y-8">
                         <div className="space-y-6">
                             <div className="space-y-2">
+                                <label className="text-xs uppercase tracking-widest text-muted font-bold">Avatar</label>
+                                <div className="flex gap-4">
+                                    {AVATARS.map((url) => (
+                                        <button
+                                            key={url}
+                                            type="button"
+                                            onClick={() => setProfile(prev => prev ? { ...prev, avatar_url: url } : null)}
+                                            className={`size-16 rounded-2xl border-2 transition-all overflow-hidden ${profile?.avatar_url === url
+                                                ? 'border-primary ring-4 ring-primary/20 bg-primary/10'
+                                                : 'border-border hover:border-white/20 bg-surface'
+                                                }`}
+                                        >
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img src={url} alt="Avatar" className="w-full h-full" />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-muted font-bold">Display Name</label>
                                 <input
                                     type="text"
@@ -109,11 +136,10 @@ export default function ProfilePage() {
                                             key={p}
                                             type="button"
                                             onClick={() => setProfile(prev => prev ? { ...prev, persona: p } : null)}
-                                            className={`p-4 rounded-xl border transition-all text-sm font-bold ${
-                                                profile?.persona === p 
-                                                ? 'bg-primary text-black border-primary' 
+                                            className={`p-4 rounded-xl border transition-all text-sm font-bold ${profile?.persona === p
+                                                ? 'bg-primary text-black border-primary'
                                                 : 'bg-surface border-border text-muted hover:border-white/20'
-                                            }`}
+                                                }`}
                                         >
                                             {p}
                                         </button>

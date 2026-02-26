@@ -56,6 +56,7 @@ export default function KNNClassificationPrimitive() {
             grid.push({ gx, gy, cls: knnClassify({ x, y }, DATA, k).cls });
         }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [k, query]);
 
     function draw() {

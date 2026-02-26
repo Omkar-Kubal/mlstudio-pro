@@ -29,7 +29,7 @@ function validateRow(row: RawRow): string[] {
     return e;
 }
 
-const VALIDATED = RAW_ROWS.map(row => ({ row, errors: validateRow(row) }));
+const VALIDATED = RAW_ROWS.map(row => ({ row, _errors: validateRow(row) }));
 
 export default function DataValidationPrimitive() {
     const [scanIdx, setScanIdx] = useState(-1);
@@ -49,8 +49,8 @@ export default function DataValidationPrimitive() {
         let i = 0;
         function step() {
             setScanIdx(i);
-            const { errors } = VALIDATED[i];
-            if (errors.length > 0) setRejected(r => [...r, i]);
+            const { _errors } = VALIDATED[i];
+            if (_errors.length > 0) setRejected(r => [...r, i]);
             else setAccepted(a => [...a, i]);
             i++;
             if (i < VALIDATED.length) {
@@ -84,7 +84,7 @@ export default function DataValidationPrimitive() {
                 <div className="flex-1 min-w-0">
                     <div className="text-[9px] text-muted/30 uppercase tracking-widest mb-2">RAW INPUT ({RAW_ROWS.length} rows)</div>
                     <div className="bg-black/60 border border-border rounded-xl overflow-hidden">
-                        {VALIDATED.map(({ row, errors }, i) => {
+                        {VALIDATED.map(({ row, _errors }, i) => {
                             const isScanning = scanIdx === i;
                             const isRejected = rejected.includes(i);
                             const isAccepted = accepted.includes(i);
@@ -150,7 +150,7 @@ export default function DataValidationPrimitive() {
                                 : rejected.map(i => (
                                     <div key={i} className="p-2 rounded-lg" style={{ border: `1px solid ${FAIL_COLOR}22`, background: FAIL_COLOR + "08" }}>
                                         <div className="text-[10px] font-bold mb-1" style={{ color: FAIL_COLOR }}>Row {i + 1}</div>
-                                        {VALIDATED[i].errors.map((e, ei) => (
+                                        {VALIDATED[i]._errors.map((e, ei) => (
                                             <div key={ei} className="text-[9px] text-muted/50">· {e}</div>
                                         ))}
                                     </div>

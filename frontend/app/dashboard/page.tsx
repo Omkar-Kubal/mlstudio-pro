@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { apiFetch } from "@/adapters/api";
 import Link from "next/link";
+import { topics } from "@/adapters/topics";
 
 interface ProgressStats {
     completed_topics: Record<string, string[]>;
@@ -65,7 +66,7 @@ export default function DashboardPage() {
             <main className="min-h-screen bg-black p-6 lg:p-12 overflow-hidden relative">
                 {/* Background Decor */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-                
+
                 <div className="max-w-6xl mx-auto space-y-12 relative z-10">
                     {/* Header */}
                     <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -78,7 +79,7 @@ export default function DashboardPage() {
                                 &quot;{profile?.persona === 'Advanced' ? 'The mathematics of the universe are waiting to be solved.' : 'Your journey into the heart of artificial intelligence continues.'}&quot;
                             </p>
                         </div>
-                        
+
                         <div className="flex gap-4">
                             <Link href="/profile" className="flex items-center gap-4 bg-surface p-4 rounded-2xl border border-border hover:border-primary/50 transition-all group">
                                 <div className="size-12 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 group-hover:scale-110 transition-transform">
@@ -126,7 +127,7 @@ export default function DashboardPage() {
                                 <span className="material-symbols-outlined text-xl text-primary">data_usage</span>
                             </div>
                             <span className="text-5xl font-black text-primary lining-nums">
-                                {Math.round(((totalTopicsCompleted()) / 40) * 100)}%
+                                {Math.round(((totalTopicsCompleted()) / Math.max(1, topics.length)) * 100)}%
                             </span>
                             <p className="text-xs text-muted uppercase tracking-[0.2em] font-bold">Total Knowledge</p>
                         </div>
@@ -138,7 +139,7 @@ export default function DashboardPage() {
                             <h2 className="text-2xl font-black tracking-tighter">Current Learning Path</h2>
                             <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
                         </div>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <Link href="/learn" className="group p-8 rounded-2xl border border-border bg-surface/50 hover:border-primary/50 transition-all relative overflow-hidden ring-1 ring-white/5">
                                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

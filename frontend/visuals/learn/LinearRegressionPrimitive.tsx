@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useMemo } from "react";
+import { useState, useMemo } from "react";
 
 const THEME = {
     bg: "#08090d", surface: "#0d0e18", border: "#1a1b2c",

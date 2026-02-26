@@ -31,7 +31,7 @@ interface Props {
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function GradientChainRulePrimitive({ config }: Props) {
+export default function GradientChainRulePrimitive({ config: _config }: Props) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [xVal, setXVal] = useState(1.5);
     const [dragging, setDragging] = useState(false);
@@ -67,7 +67,7 @@ export default function GradientChainRulePrimitive({ config }: Props) {
         for (let i = 0; i <= steps; i++) {
             const xi = X_MIN + (i / steps) * (X_MAX - X_MIN);
             const px = toCanvasX(xi), py = toCanvasY(hFn(xi));
-            i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+            if (i === 0) { ctx.moveTo(px, py); } else { ctx.lineTo(px, py); }
         }
         ctx.lineTo(toCanvasX(X_MAX), toCanvasY(Y_MIN));
         ctx.lineTo(toCanvasX(X_MIN), toCanvasY(Y_MIN));
@@ -80,7 +80,7 @@ export default function GradientChainRulePrimitive({ config }: Props) {
         for (let i = 0; i <= steps; i++) {
             const xi = X_MIN + (i / steps) * (X_MAX - X_MIN);
             const px = toCanvasX(xi), py = toCanvasY(hFn(xi));
-            i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+            if (i === 0) { ctx.moveTo(px, py); } else { ctx.lineTo(px, py); }
         }
         ctx.strokeStyle = "hsl(var(--primary))";
         ctx.lineWidth = 2.5;

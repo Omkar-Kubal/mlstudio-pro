@@ -35,7 +35,7 @@ export default function PopulationSamplePrimitive() {
     })));
 
     const [sampleSize, setSampleSize] = useState(50);
-    const [sample, setSample] = useState<any[]>([]);
+    const [sample, setSample] = useState<{ v: number; x: number; y: number }[]>([]);
     const [biased, setBiased] = useState(false);
     const [scooping, setScooping] = useState(false);
 
@@ -71,7 +71,7 @@ export default function PopulationSamplePrimitive() {
         }, delay);
     }, [population, sampleSize, biased, reducedMotion]);
 
-    // Initial scoop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { scoop(); }, []);
 
     // Render Population Cloud
@@ -212,7 +212,7 @@ export default function PopulationSamplePrimitive() {
 
     const popMeanVal = useMemo(() => (population.reduce((a, b) => a + b.v, 0) / POP_SIZE).toFixed(1), [population]);
     const samMeanVal = useMemo(() => sample.length ? (sample.reduce((a, b) => a + b.v, 0) / sample.length).toFixed(1) : "—", [sample]);
-    const diffVal = useMemo(() => sample.length ? Math.abs(+popMeanVal - +samMeanVal).toFixed(1) : "—", [popMeanVal, samMeanVal]);
+    const diffVal = useMemo(() => sample.length ? Math.abs(+popMeanVal - +samMeanVal).toFixed(1) : "—", [popMeanVal, samMeanVal]); // eslint-disable-line react-hooks/exhaustive-deps
     const representative = sample.length ? (+diffVal < 5) : true;
 
     return (
@@ -280,8 +280,8 @@ export default function PopulationSamplePrimitive() {
                                 key={s}
                                 onClick={() => setSampleSize(s)}
                                 className={`flex-1 text-[10px] font-mono py-1.5 rounded transition-all border ${s === sampleSize
-                                        ? 'bg-primary border-primary text-white shadow-lg'
-                                        : 'bg-surface/50 border-border/50 text-muted hover:border-muted'
+                                    ? 'bg-primary border-primary text-white shadow-lg'
+                                    : 'bg-surface/50 border-border/50 text-muted hover:border-muted'
                                     }`}
                             >
                                 {s}
@@ -296,8 +296,8 @@ export default function PopulationSamplePrimitive() {
                     <button
                         onClick={() => setBiased(!biased)}
                         className={`w-full flex items-center justify-between px-3 py-2 rounded border transition-all ${biased
-                                ? 'bg-rose-500/10 border-rose-500/50 text-rose-500'
-                                : 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500'
+                            ? 'bg-rose-500/10 border-rose-500/50 text-rose-500'
+                            : 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500'
                             }`}
                     >
                         <div className="flex items-center gap-2">
@@ -323,8 +323,8 @@ export default function PopulationSamplePrimitive() {
                         onClick={scoop}
                         disabled={scooping}
                         className={`w-full flex items-center justify-center gap-2 py-3 rounded-md font-bold text-[10px] tracking-[0.2em] transition-all shadow-lg ${scooping
-                                ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                                : 'bg-primary text-white hover:bg-primary/90 shadow-primary/20 hover:scale-[1.02]'
+                            ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                            : 'bg-primary text-white hover:bg-primary/90 shadow-primary/20 hover:scale-[1.02]'
                             }`}
                     >
                         <span className="material-symbols-outlined text-base">restaurant</span>
@@ -340,8 +340,8 @@ export default function PopulationSamplePrimitive() {
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     className={`p-4 rounded-lg flex items-start gap-3 border ${biased
-                            ? 'bg-rose-500/5 border-rose-500/10 text-rose-200/70'
-                            : 'bg-primary/5 border-primary/10 text-muted'
+                        ? 'bg-rose-500/5 border-rose-500/10 text-rose-200/70'
+                        : 'bg-primary/5 border-primary/10 text-muted'
                         }`}
                 >
                     <span className={`material-symbols-outlined text-lg ${biased ? 'text-rose-500' : 'text-primary'}`}>

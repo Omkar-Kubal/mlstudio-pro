@@ -1,8 +1,12 @@
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env if it exists
+load_dotenv()
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .api import curriculum, labs_paths, runner, profile
-
-import os
 
 app = FastAPI(title="MLStudio Pro Backend", version="1.0.0")
 

@@ -52,6 +52,8 @@ export async function loadModuleBySlug(
     }
 }
 
+import { topics } from './topics';
+
 // ============================================================================
 // Conversion to ParsedContent (UI Compatibility)
 // ============================================================================
@@ -59,19 +61,40 @@ export async function loadModuleBySlug(
 /**
  * Convert a LearningModule to ParsedContent for backward compatibility.
  * This allows gradual migration of UI components.
+ * If topicSlug is provided, it filters the content to only include that topic.
  */
-export function toParsedContent(module: LearningModule): ParsedContent {
+export function toParsedContent(module: LearningModule, topicSlug: string | null = null): ParsedContent {
     const sections: ContentSection[] = [];
+    let topicsToInclude = module.topics;
+    const quiz = module.quiz;
 
-    // Add overview as paragraphs
-    module.overview.forEach((para) => {
-        sections.push({ type: 'paragraph', content: para });
-    });
+    // Filter by topic if slug is provided
+    if (topicSlug) {
+        // We need to find which topic in the JSON corresponds to this slug
+        // Using the topics adapter to get the order
+        const topicInfo = topics.find((t: { slug: string; moduleSlug: string; order: number }) => t.slug === topicSlug && t.moduleSlug === module.meta.module);
+
+        if (topicInfo) {
+            // Arrays are 0-indexed, order is 1-indexed
+            const topicIndex = topicInfo.order - 1;
+            if (module.topics[topicIndex]) {
+                topicsToInclude = [module.topics[topicIndex]];
+                // Also filter quiz if possible (for now we keep all quiz questions)
+            }
+        }
+    } else {
+        // Only include overview if no specific topic is requested
+        module.overview.forEach((para) => {
+            sections.push({ type: 'paragraph', content: para });
+        });
+    }
 
     // Add topics
-    module.topics.forEach((topic) => {
-        // Topic title as heading
-        sections.push({ type: 'heading', content: topic.title, level: 2 });
+    topicsToInclude.forEach((topic) => {
+        // Topic title as heading (if multiple topics)
+        if (topicsToInclude.length > 1) {
+            sections.push({ type: 'heading', content: topic.title, level: 2 });
+        }
 
         // Theory paragraphs
         topic.theory.forEach((para) => {
@@ -96,15 +119,16 @@ export function toParsedContent(module: LearningModule): ParsedContent {
         });
     });
 
-    // Flatten all code snippets
-    const codeSnippets = module.topics.flatMap((t) => t.code);
+    // Extract code snippets for the included topics
+    const codeSnippets = topicsToInclude.flatMap((t) => t.code);
 
     return {
-        title: module.meta.module,
+        title: topicsToInclude.length > 0 ? topicsToInclude[0].title : module.meta.module,
         sections,
         codeSnippets,
-        quiz: module.quiz,
+        quiz: quiz,
         references: module.references,
-        visualSuggestions: module.topics[0]?.visualSuggestions || [],
+        visualSuggestions: topicsToInclude[0]?.visualSuggestions || [],
+        _raw: module,
     };
 }

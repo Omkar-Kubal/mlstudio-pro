@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion } from "framer-motion";
 
 // ─── Constants & Types ───────────────────────────────────────────────────────
 const CW = 720, CH = 560;
@@ -146,8 +145,8 @@ export default function VectorOperationsPrimitive() {
         } else if (mode === "norm") {
             // Visualize norms
             const l2 = mag(vecA);
-            const l1 = norm1(vecA);
-            const linf = normInf(vecA);
+            const _l1 = norm1(vecA);
+            const _linf = normInf(vecA);
 
             // L2 circle
             ctx.strokeStyle = "hsla(var(--emerald-400), 0.1)";
@@ -175,7 +174,7 @@ export default function VectorOperationsPrimitive() {
         drawHandle(aPos, "hsl(var(--emerald-400))");
         if (mode !== "norm") drawHandle(bPos, "hsl(var(--rose-400))");
 
-    }, [vecA, vecB, mode]);
+    }, [vecA, vecB, mode]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         draw();

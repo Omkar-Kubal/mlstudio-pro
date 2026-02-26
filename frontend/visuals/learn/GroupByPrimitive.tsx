@@ -30,7 +30,7 @@ type Phase = "idle" | "split" | "apply" | "combine";
 interface Props { config?: GroupByConfig; }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function GroupByPrimitive({ config }: Props) {
+export default function GroupByPrimitive({ config: _config }: Props) {
     const [phase, setPhase] = useState<Phase>("idle");
     const [aggKey, setAggKey] = useState("sum");
     const t1 = useRef<ReturnType<typeof setTimeout> | null>(null);

@@ -77,8 +77,8 @@ function giniImpurity(pts: Point[]) {
 
 function predictTree(tree: TreeNode, pt: Point | { x: number; y: number }): number {
     if (tree.leaf) return tree.cls!;
-    const p = pt as any;
-    return p[tree.split!.axis] <= tree.split!.val ? predictTree(tree.left!, pt) : predictTree(tree.right!, pt);
+    const val = tree.split!.axis === 'x' ? pt.x : pt.y;
+    return val <= tree.split!.val ? predictTree(tree.left!, pt) : predictTree(tree.right!, pt);
 }
 
 type SplitLine = { x0: number; x1: number; y0: number; y1: number; axis: string };
@@ -118,6 +118,7 @@ export default function DecisionTreeClassificationPrimitive() {
     const splits = collectSplits(tree);
     const accuracy = DATA.filter(d => predictTree(tree, d) === d.cls).length / DATA.length;
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [depth]);
 
     function draw() {

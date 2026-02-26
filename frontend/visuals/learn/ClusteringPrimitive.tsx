@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 
 const THEME = {
     bg: "#07080c", surface: "#0c0d16", border: "#181826",
@@ -21,7 +21,7 @@ export default function ClusteringPrimitive() {
         const d = [];
         const seed = 42;
         const random = (s: number) => {
-            let x = Math.sin(s) * 10000;
+            const x = Math.sin(s) * 10000;
             return x - Math.floor(x);
         };
 

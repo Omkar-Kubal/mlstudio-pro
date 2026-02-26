@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 
 // ─── Constants & Types ───────────────────────────────────────────────────────
 const CW = 740, CH = 520;
@@ -129,7 +128,7 @@ export default function MatrixTransformationPrimitive() {
         ctx.fillStyle = "rgba(255,255,255,0.5)";
         ctx.beginPath(); ctx.arc(OX, OY, 4, 0, Math.PI * 2); ctx.fill();
 
-    }, [m, view, morphT]);
+    }, [m, view, morphT]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // ─── Animation Loop ─────────────────────────────────────────────────────
     useEffect(() => {

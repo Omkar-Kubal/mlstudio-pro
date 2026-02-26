@@ -21,6 +21,7 @@ class CodeSnippet(BaseModel):
 
 class Topic(BaseModel):
     title: str
+    slug: str
     theory: List[str]
     visualIntuition: List[str]
     visualSuggestions: List[str]

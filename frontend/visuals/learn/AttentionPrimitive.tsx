@@ -37,6 +37,7 @@ export default function AttentionPrimitive() {
 
     const attnRow = ATTN[queryWord];
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [queryWord, dim]);
 
     function draw() {

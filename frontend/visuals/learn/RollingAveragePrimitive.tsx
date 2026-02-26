@@ -45,12 +45,12 @@ const GRID_COLOR = "#111827";
 interface Props { config?: RollingAverageConfig; }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function RollingAveragePrimitive({ config }: Props) {
+export default function RollingAveragePrimitive({ config: _config }: Props) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [win, setWin] = useState(7);
     const [animating, setAnim] = useState(false);
-    const [scanPos, setScanPos] = useState<number | null>(null);
+    const [_scanPos, setScanPos] = useState<number | null>(null);
 
     const rolling = rollingMean(DATA, win);
 
@@ -72,7 +72,7 @@ export default function RollingAveragePrimitive({ config }: Props) {
 
         // Raw signal (dim)
         ctx.beginPath();
-        DATA.forEach((v, i) => { const x = toX(i), y = toY(v); i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); });
+        DATA.forEach((v, i) => { const x = toX(i), y = toY(v); if (i === 0) { ctx.moveTo(x, y); } else { ctx.lineTo(x, y); } });
         ctx.strokeStyle = RAW_COLOR; ctx.lineWidth = 1; ctx.globalAlpha = 0.3; ctx.stroke(); ctx.globalAlpha = 1;
 
         // Window highlight box

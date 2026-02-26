@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 
+const INIT_POINT = { x: 3.5, y: -3.2 };
+
 export const OptimizationVisualizer = () => {
     const [step, setStep] = useState(0);
-    const [path, setPath] = useState<{x: number, y: number}[]>([]);
+    const [path, setPath] = useState<{ x: number, y: number }[]>([]);
     const [lr, setLr] = useState(0.1);
 
     // Convergent bowl function: f(x, y) = x^2 + y^2
@@ -12,17 +14,15 @@ export const OptimizationVisualizer = () => {
     const centerY = 150;
     const scale = 30;
 
-    const initPoint = { x: 3.5, y: -3.2 };
-
     useEffect(() => {
-        setPath([initPoint]);
+        setPath([INIT_POINT]);
         setStep(0);
     }, []);
 
     const handleStep = () => {
         if (path.length === 0) return;
         const current = path[path.length - 1];
-        
+
         // Gradient of x^2 + y^2 is [2x, 2y]
         const dx = 2 * current.x;
         const dy = 2 * current.y;
@@ -37,7 +37,7 @@ export const OptimizationVisualizer = () => {
     };
 
     const handleReset = () => {
-        setPath([initPoint]);
+        setPath([INIT_POINT]);
         setStep(0);
     };
 
@@ -54,7 +54,7 @@ export const OptimizationVisualizer = () => {
 
             <div className="relative w-full aspect-square bg-[#050505] rounded-lg border border-border overflow-hidden">
                 <div className="absolute inset-0 grid-bg opacity-20" />
-                
+
                 {/* Contour Rings */}
                 <svg viewBox="0 0 300 300" className="w-full h-full">
                     {[1, 2, 3, 4, 5].map(r => (
@@ -93,7 +93,7 @@ export const OptimizationVisualizer = () => {
                 </svg>
 
                 <div className="absolute top-2 right-2 text-[8px] font-mono text-muted/50 text-right">
-                    Minimize: f(x,y) = x² + y²<br/>
+                    Minimize: f(x,y) = x² + y²<br />
                     Target: (0,0)
                 </div>
             </div>
@@ -113,7 +113,7 @@ export const OptimizationVisualizer = () => {
                         />
                     </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-3">
                     <button
                         onClick={handleReset}

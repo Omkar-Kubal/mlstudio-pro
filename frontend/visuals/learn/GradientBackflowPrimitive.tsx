@@ -8,12 +8,12 @@ interface Props {
     config: GradientBackflowConfig;
 }
 
-// Gradient derivative by activation function
+// Gradient derivative by _activation function
 const activationDerivatives = {
-    linear: (activation: number) => 1,
-    relu: (activation: number) => activation > 0 ? 1 : 0,
-    sigmoid: (activation: number) => activation * (1 - activation), // max ≈ 0.25
-    tanh: (activation: number) => 1 - activation * activation
+    linear: (_activation: number) => 1,
+    relu: (_activation: number) => _activation > 0 ? 1 : 0,
+    sigmoid: (_activation: number) => _activation * (1 - _activation), // max ≈ 0.25
+    tanh: (_activation: number) => 1 - _activation * _activation
 };
 
 // Color for gradients (purple/green to distinguish from forward pass blue/orange)
@@ -30,7 +30,7 @@ function getGradientColor(magnitude: number): string {
  * Visualizes gradient backpropagation:
  * - Right→left wave animation
  * - Error slider seeds gradient at output
- * - Activation function affects attenuation
+ * - _activation function affects attenuation
  * - Per-layer gradient magnitude bars
  * - Dead ReLU neurons show zero gradient
  * 
@@ -42,8 +42,8 @@ export default function GradientBackflowPrimitive({ config }: Props) {
     // Error magnitude
     const [errorMagnitude, setErrorMagnitude] = useState(slider.initial);
 
-    // Activation function
-    const [activation, setActivation] = useState<keyof typeof activationDerivatives>(initialActivation);
+    // _activation function
+    const [_activation, setActivation] = useState<keyof typeof activationDerivatives>(initialActivation);
 
     // Reduced motion
     const [reducedMotion, setReducedMotion] = useState(() => {
@@ -68,7 +68,7 @@ export default function GradientBackflowPrimitive({ config }: Props) {
             relu: (x: number) => Math.max(0, x),
             sigmoid: (x: number) => 1 / (1 + Math.exp(-x)),
             tanh: (x: number) => Math.tanh(x)
-        }[activation];
+        }[_activation];
 
         const inputLayer = Array.from({ length: architecture[0] }, () => inputVal);
         layers.push(inputLayer);
@@ -88,11 +88,11 @@ export default function GradientBackflowPrimitive({ config }: Props) {
             layers.push(currentLayer);
         }
         return layers;
-    }, [architecture, weights, activation]);
+    }, [architecture, weights, _activation]);
 
     // Compute backward gradients (right to left)
     const { layerGradients, gradientMagnitudes } = useMemo(() => {
-        const derivativeFn = activationDerivatives[activation];
+        const derivativeFn = activationDerivatives[_activation];
         const layers: number[][] = [];
         const magnitudes: number[] = [];
 
@@ -114,7 +114,7 @@ export default function GradientBackflowPrimitive({ config }: Props) {
                     const weight = layerWeights?.[i]?.[j] ?? 0.5;
                     gradSum += nextLayerGrad[j] * weight;
                 }
-                // Multiply by activation derivative
+                // Multiply by _activation derivative
                 const derivative = derivativeFn(forwardActs[i]);
                 const grad = gradSum * derivative;
                 currentGrad.push(Math.max(-10, Math.min(10, grad)));
@@ -124,7 +124,7 @@ export default function GradientBackflowPrimitive({ config }: Props) {
         }
 
         return { layerGradients: layers, gradientMagnitudes: magnitudes };
-    }, [errorMagnitude, activation, architecture, weights, forwardActivations]);
+    }, [errorMagnitude, _activation, architecture, weights, forwardActivations]);
 
     // Max gradient for normalization
     const maxGradient = Math.max(...gradientMagnitudes, 0.1);
@@ -288,14 +288,14 @@ export default function GradientBackflowPrimitive({ config }: Props) {
                 </p>
             </div>
 
-            {/* Activation Function Selector */}
+            {/* _activation Function Selector */}
             <div className="flex items-center gap-3 flex-wrap">
-                <span className="text-xs text-muted">Activation:</span>
+                <span className="text-xs text-muted">_activation:</span>
                 {activations.map(act => (
                     <button
                         key={act}
                         onClick={() => setActivation(act)}
-                        className={`px-2 py-1 text-xs rounded capitalize transition-colors ${activation === act
+                        className={`px-2 py-1 text-xs rounded capitalize transition-colors ${_activation === act
                             ? "bg-purple-600 text-white"
                             : "bg-surface text-muted hover:text-foreground"
                             }`}

@@ -52,6 +52,7 @@ export default function DuplicateDataPrimitive() {
                 ctx.fillText("⚠ LEAK", mX + 15, ly + lh * .22); ctx.fillText("dupe in", mX + 15, ly + lh * .22 + 12); ctx.fillText("train", mX + 15, ly + lh * .22 + 24);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dupRatio, showLeak, totalA, extraA]);
 
     const iColor = dupRatio > 0.5 ? "#f87171" : "rgba(255,255,255,0.3)";

@@ -7,7 +7,7 @@ const TOTAL = 20;
 type Mode = "list" | "generator";
 interface Props { config?: GeneratorsConfig; }
 
-export default function GeneratorsPrimitive({ config }: Props) {
+export default function GeneratorsPrimitive({ config: _config }: Props) {
     const [mode, setMode] = useState<Mode>("list");
     const [genStep, setGenStep] = useState(0);
     const [listLoaded, setListLoaded] = useState(false);

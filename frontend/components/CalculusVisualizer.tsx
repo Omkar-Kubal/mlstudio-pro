@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 interface CalculusVisualizerProps {
     functionType?: "parabola" | "sine" | "cubic";
@@ -8,7 +8,7 @@ interface CalculusVisualizerProps {
 
 export const CalculusVisualizer = ({ functionType = "parabola" }: CalculusVisualizerProps) => {
     const [x, setX] = useState(0);
-    
+
     // Function definitions
     const f = (x: number) => {
         switch (functionType) {
@@ -61,7 +61,7 @@ export const CalculusVisualizer = ({ functionType = "parabola" }: CalculusVisual
 
             <div className="relative w-full aspect-square bg-background rounded-lg border border-border overflow-hidden shadow-inner uppercase font-mono text-[8px] text-muted/30">
                 <div className="absolute inset-0 grid-bg opacity-30" />
-                
+
                 {/* Axes */}
                 <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/10" />
                 <div className="absolute top-1/2 left-0 right-0 h-px bg-white/10" />

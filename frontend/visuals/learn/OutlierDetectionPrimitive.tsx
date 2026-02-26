@@ -147,7 +147,7 @@ export default function OutlierDetectionPrimitive() {
 
         ctx.fillStyle = "#f87171"; ctx.font = "bold 10px monospace"; ctx.textAlign = "right";
         ctx.fillText(`${flagCount} outliers flagged`, PAD.left + pW - 4, PAD.top + 16);
-    }, [method, threshold, flags, flagCount, m, binFlags, counts]);
+    }, [method, threshold, flags, flagCount, m, binFlags, counts]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className="bg-surface/50 border border-border rounded-lg p-6 space-y-5 select-none">

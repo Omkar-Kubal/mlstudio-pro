@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ClusterFormationConfig } from "@/adapters/visual-types";
 

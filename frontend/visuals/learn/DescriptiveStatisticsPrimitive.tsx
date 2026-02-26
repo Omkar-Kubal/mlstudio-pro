@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const W = 600, H = 360;
@@ -90,7 +89,7 @@ export default function DescriptiveStatisticsPrimitive() {
         // Histogram Calculation
         const counts = buildHistogram(samples);
         const binWidth = (X_MAX - X_MIN) / N_BINS;
-        const densities = counts.map(c => c / (samples.length * binWidth));
+        const _densities = counts.map(c => c / (samples.length * binWidth));
         const maxDensity = 0.5; // Fixed scale for better comparison across N
         const barW = (pW / N_BINS) - 1;
 
@@ -129,7 +128,7 @@ export default function DescriptiveStatisticsPrimitive() {
                 const pdf = normalPDF(x, MEAN, STD);
                 const cx = PAD.left + ((x - X_MIN) / (X_MAX - X_MIN)) * pW;
                 const cy = PAD.top + pH - (pdf / maxDensity) * pH;
-                i === 0 ? ctx.moveTo(cx, cy) : ctx.lineTo(cx, cy);
+                if (i === 0) { ctx.moveTo(cx, cy); } else { ctx.lineTo(cx, cy); }
             }
             ctx.stroke();
             ctx.restore();
@@ -240,8 +239,8 @@ export default function DescriptiveStatisticsPrimitive() {
                     onClick={autoPlay}
                     disabled={animating}
                     className={`flex-1 flex items-center justify-center gap-2 px-8 py-3 rounded-full font-bold text-xs tracking-widest transition-all ${animating
-                            ? 'bg-primary/20 text-primary cursor-not-allowed'
-                            : 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20'
+                        ? 'bg-primary/20 text-primary cursor-not-allowed'
+                        : 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20'
                         }`}
                 >
                     <span className="material-symbols-outlined text-base">

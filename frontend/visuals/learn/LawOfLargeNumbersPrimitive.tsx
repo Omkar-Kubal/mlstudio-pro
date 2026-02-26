@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 // ─── Constants & Types ───────────────────────────────────────────────────────
 const W = 660, H = 400;
@@ -194,7 +194,7 @@ export default function LawOfLargeNumbersPrimitive() {
             t.history.forEach(([tn, tm], idx) => {
                 if (tn === 0) return;
                 const px = toX(tn), py = toY(tm);
-                idx === 1 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+                if (idx === 1) { ctx.moveTo(px, py); } else { ctx.lineTo(px, py); }
             });
             ctx.stroke();
 
@@ -236,7 +236,7 @@ export default function LawOfLargeNumbersPrimitive() {
         const distances = trialsRef.current.map(t => Math.abs((t.sum / t.count) - mu) / mu);
         const avgDist = distances.reduce((a, b) => a + b, 0) / distances.length;
         return Math.max(0, Math.min(100, (1 - avgDist * 4) * 100));
-    }, [n, currentDist, trials]);
+    }, [n, currentDist, trials]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className="bg-surface/50 border border-border rounded-lg p-6 space-y-6">

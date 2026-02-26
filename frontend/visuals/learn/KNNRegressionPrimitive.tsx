@@ -49,6 +49,7 @@ export default function KNNRegressionPrimitive() {
     const curve = buildKNNCurve(DATA, k);
     const color = K_COLORS[Math.min(15, k)] || "#60a5fa";
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [k, queryX]);
 
     function draw() {

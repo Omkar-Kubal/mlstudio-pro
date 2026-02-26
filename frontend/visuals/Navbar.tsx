@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
     const { scrollYProgress } = useScroll();
+    const { user, signOut } = useAuth();
 
     const borderOpacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
     const backdropBlur = useTransform(
@@ -58,18 +60,37 @@ export default function Navbar() {
                     >
                         Learn
                     </Link>
-                    <Link
-                        href="/dashboard"
-                        className="text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
-                    >
-                        Dashboard
-                    </Link>
-                    <Link
-                        href="/learn"
-                        className="text-sm font-medium text-background bg-foreground hover:bg-primary px-4 py-2 rounded-full transition-colors duration-200"
-                    >
-                        Get Started
-                    </Link>
+                    {user && (
+                        <Link
+                            href="/dashboard"
+                            className="text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
+                        >
+                            Dashboard
+                        </Link>
+                    )}
+                    {!user ? (
+                        <>
+                            <Link
+                                href="/auth/login"
+                                className="text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
+                            >
+                                Login
+                            </Link>
+                            <Link
+                                href="/learn"
+                                className="text-sm font-medium text-background bg-foreground hover:bg-primary px-4 py-2 rounded-full transition-colors duration-200"
+                            >
+                                Get Started
+                            </Link>
+                        </>
+                    ) : (
+                        <button
+                            onClick={signOut}
+                            className="text-sm font-medium text-rose-400 hover:text-rose-300 transition-colors duration-200"
+                        >
+                            Sign Out
+                        </button>
+                    )}
                 </motion.div>
             </div>
         </motion.nav>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const THEME = {
     bg: "#07080c", surface: "#0c0d16", border: "#181826",
@@ -25,8 +25,8 @@ const BASE_MODEL: ModelLayer[] = [
 
 export default function TransferLearningPrimitive() {
     const [layers, setLayers] = useState(BASE_MODEL);
-    const [sourceData, setSourceData] = useState("ImageNet (1000 classes)");
-    const [targetTask, setTargetTask] = useState("Skin Cancer Detection (2 classes)");
+    const [sourceData, _setSourceData] = useState("ImageNet (1000 classes)");
+    const [targetTask, _setTargetTask] = useState("Skin Cancer Detection (2 classes)");
 
     const toggleFrozen = (id: number) => {
         setLayers(ls => ls.map(l => l.id === id ? { ...l, frozen: !l.frozen } : l));

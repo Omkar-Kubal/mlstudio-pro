@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MemoryLayoutConfig } from "@/adapters/visual-types";
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 const ROWS = 3, COLS = 4;
 const CELL = 54;
-const GAP = 5;
+const _GAP = 5;
 
 type Order = "C" | "F";
 
@@ -35,7 +35,7 @@ function getValue(mode: Order, r: number, c: number) {
 interface Props { config?: MemoryLayoutConfig; }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function MemoryLayoutPrimitive({ config }: Props) {
+export default function MemoryLayoutPrimitive({ config: _config }: Props) {
     const [mode, setMode] = useState<Order>("C");
     const [step, setStep] = useState(-1);
     const [running, setRunning] = useState(false);

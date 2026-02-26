@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const W = 600, H = 400;
@@ -53,7 +52,13 @@ function gradient(x: number, y: number, eps = 1e-4) {
     ];
 }
 
-function makeOptimizerState(x0: number, y0: number) {
+type OptimizerStates = {
+    GD: { x: number; y: number; trail: number[][] };
+    Momentum: { x: number; y: number; vx: number; vy: number; trail: number[][] };
+    Adam: { x: number; y: number; mx: number; my: number; vx: number; vy: number; t: number; trail: number[][] };
+};
+
+function makeOptimizerState(x0: number, y0: number): OptimizerStates {
     return {
         GD: { x: x0, y: y0, trail: [[x0, y0]] },
         Momentum: { x: x0, y: y0, vx: 0, vy: 0, trail: [[x0, y0]] },
@@ -61,8 +66,8 @@ function makeOptimizerState(x0: number, y0: number) {
     };
 }
 
-function stepAll(states: any, lr: number, noise: number) {
-    const next: any = {};
+function stepAll(states: OptimizerStates, lr: number, noise: number): OptimizerStates {
+    const next = {} as OptimizerStates;
 
     // GD
     {
@@ -115,7 +120,7 @@ export default function GradientDescentOptimizer() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const contourRef = useRef<HTMLCanvasElement | null>(null);
     const animRef = useRef<number | null>(null);
-    const statesRef = useRef<any>(null);
+    const statesRef = useRef<OptimizerStates | null>(null);
 
     const START = { x: -1.5, y: 1.8 };
     const [running, setRunning] = useState(false);
@@ -144,6 +149,7 @@ export default function GradientDescentOptimizer() {
         setStep(0);
         setLosses({});
         render();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [START.x, START.y]);
 
     useEffect(() => { reset(); }, [reset]);
@@ -157,6 +163,7 @@ export default function GradientDescentOptimizer() {
             contourRef.current = off;
             render();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function drawContours(ctx: CanvasRenderingContext2D) {
@@ -230,7 +237,7 @@ export default function GradientDescentOptimizer() {
         ctx.fill(); ctx.restore();
 
         if (statesRef.current) {
-            Object.entries(statesRef.current).forEach(([key, s]: [string, any]) => {
+            (Object.entries(statesRef.current) as [string, { x: number; y: number; trail: number[][] }][]).forEach(([key, s]) => {
                 if (!active[key]) return;
                 const color = OPTIMIZERS[key].color;
                 const trail = s.trail;
@@ -262,10 +269,12 @@ export default function GradientDescentOptimizer() {
         let frame = 0;
         const tick = () => {
             if (frame % interval === 0) {
-                statesRef.current = stepAll(statesRef.current, lr, noise);
-                const nL: any = {};
-                Object.entries(statesRef.current).forEach(([k, s]: [string, any]) => nL[k] = loss(s.x, s.y).toFixed(3));
-                setLosses(nL); setStep(s => s + 1);
+                if (statesRef.current) {
+                    statesRef.current = stepAll(statesRef.current, lr, noise);
+                    const nL: Record<string, string> = {};
+                    (Object.entries(statesRef.current) as [string, { x: number; y: number }][]).forEach(([k, s]) => { nL[k] = loss(s.x, s.y).toFixed(3); });
+                    setLosses(nL); setStep(s => s + 1);
+                }
             }
             frame++; render();
             animRef.current = requestAnimationFrame(tick);
@@ -304,8 +313,8 @@ export default function GradientDescentOptimizer() {
                         key={key}
                         onClick={() => setActive(p => ({ ...p, [key]: !p[key] }))}
                         className={`flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 text-left ${active[key]
-                                ? 'bg-surface border-primary/50 shadow-lg translate-y-[-2px]'
-                                : 'bg-surface/20 border-border/20 grayscale opacity-40 hover:opacity-100 hover:grayscale-0'
+                            ? 'bg-surface border-primary/50 shadow-lg translate-y-[-2px]'
+                            : 'bg-surface/20 border-border/20 grayscale opacity-40 hover:opacity-100 hover:grayscale-0'
                             }`}
                     >
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center text-lg`} style={{ backgroundColor: `${opt.color}20`, color: opt.color }}>
@@ -351,8 +360,8 @@ export default function GradientDescentOptimizer() {
                 <button
                     onClick={() => setRunning(!running)}
                     className={`flex-1 flex items-center justify-center gap-2 px-8 py-3 rounded-md font-bold text-xs tracking-widest transition-all ${running
-                            ? 'bg-red-500/10 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white'
-                            : 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20'
+                        ? 'bg-red-500/10 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white'
+                        : 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20'
                         }`}
                 >
                     <span className="material-symbols-outlined text-base">

@@ -114,6 +114,7 @@ interface PrimitiveWrapperProps {
     children: ReactNode;
     primitiveName: string;
     caption?: string;
+    description?: string;
 }
 
 /**
@@ -125,7 +126,7 @@ interface PrimitiveWrapperProps {
  * - Motion preference context
  * - Print mode handling
  */
-export function PrimitiveWrapper({ children, primitiveName, caption }: PrimitiveWrapperProps) {
+export function PrimitiveWrapper({ children, primitiveName, caption, description }: PrimitiveWrapperProps) {
     const [isPrintMode, setIsPrintMode] = useState(() => {
         if (typeof window === "undefined") return false;
         return window.matchMedia("print").matches;
@@ -146,7 +147,23 @@ export function PrimitiveWrapper({ children, primitiveName, caption }: Primitive
     return (
         <PrimitiveErrorBoundary fallback={<StaticFallback primitiveName={primitiveName} caption={caption} />}>
             <MotionPreferenceProvider>
-                {children}
+                <div className="flex flex-col gap-4">
+                    {children}
+                    {(caption || description) && (
+                        <div className="bg-surface/30 border border-border p-4 rounded-xl space-y-2 backdrop-blur-sm shadow-sm">
+                            {caption && (
+                                <p className="text-sm font-bold text-foreground">
+                                    {caption}
+                                </p>
+                            )}
+                            {description && (
+                                <p className="text-xs text-muted leading-relaxed">
+                                    {description}
+                                </p>
+                            )}
+                        </div>
+                    )}
+                </div>
             </MotionPreferenceProvider>
         </PrimitiveErrorBoundary>
     );

@@ -6,7 +6,7 @@ import { NumpyArraysConfig } from "@/adapters/visual-types";
 // ─── Data ──────────────────────────────────────────────────────────────────────
 const VALUES = Array.from({ length: 12 }, (_, i) => i + 1);
 
-const COLORS = [
+const _COLORS = [
     "hsl(239 84% 67%)",  // indigo
     "hsl(262 83% 58%)",  // violet
     "hsl(270 76% 73%)",  // light violet
@@ -131,7 +131,7 @@ interface Props {
 }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function NumpyArraysPrimitive({ config }: Props) {
+export default function NumpyArraysPrimitive({ config: _config }: Props) {
     const [shapeIdx, setShapeIdx] = useState(0);
     const [animate, setAnimate] = useState(false);
     const memCanvasRef = useRef<HTMLCanvasElement>(null);

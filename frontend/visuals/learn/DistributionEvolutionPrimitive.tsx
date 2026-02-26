@@ -296,7 +296,7 @@ function normalSample(mean: number, std: number, random: () => number): number {
 function generateSamples(
     distribution: { type: string; mean: number; std: number; skew?: number },
     sampleSize: number,
-    mode: string
+    _mode: string
 ): number[] {
     const random = seededRandom(42); // Fixed seed for reproducibility
     const samples: number[] = [];

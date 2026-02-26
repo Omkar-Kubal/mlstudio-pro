@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const W = 600, H = 320;
-const MEAN = 0;
+const _MEAN = 0;
 
 function normalPDF(x: number, std: number) {
     return (1 / (std * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * (x / std) ** 2);
@@ -73,7 +72,7 @@ export default function DispersionPrimitive() {
                 for (let i = 0; i <= 150; i++) {
                     const x = x1 + (i / 150) * (x2 - x1);
                     const pdf = normalPDF(x, std);
-                    i === 0 ? ctx.moveTo(cx(x), cy(pdf)) : ctx.lineTo(cx(x), cy(pdf));
+                    if (i === 0) { ctx.moveTo(cx(x), cy(pdf)); } else { ctx.lineTo(cx(x), cy(pdf)); }
                 }
                 ctx.lineTo(cx(x2), cy(0));
                 ctx.lineTo(cx(x1), cy(0));
@@ -107,7 +106,7 @@ export default function DispersionPrimitive() {
         for (let i = 0; i <= 250; i++) {
             const x = xMin + (i / 250) * (xMax - xMin);
             const pdf = normalPDF(x, std);
-            i === 0 ? ctx.moveTo(cx(x), cy(pdf)) : ctx.lineTo(cx(x), cy(pdf));
+            if (i === 0) { ctx.moveTo(cx(x), cy(pdf)); } else { ctx.lineTo(cx(x), cy(pdf)); }
         }
         ctx.save();
         ctx.shadowBlur = 10;

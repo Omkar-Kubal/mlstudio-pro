@@ -37,6 +37,14 @@ export function getContentMapping(subjectSlug: string, moduleSlug: string): Cont
 }
 
 /**
+ * Get the lesson ID (sXmY) for a given subject and module
+ */
+export function getLessonId(subjectSlug: string, moduleSlug: string): string | null {
+    const mapping = getContentMapping(subjectSlug, moduleSlug);
+    return mapping ? `s${mapping.subjectIndex}m${mapping.moduleIndex}` : null;
+}
+
+/**
  * Get subject and module slugs from a filename
  */
 export function getSlugsFromFilename(filename: string): { subjectSlug: string; moduleSlug: string } | null {

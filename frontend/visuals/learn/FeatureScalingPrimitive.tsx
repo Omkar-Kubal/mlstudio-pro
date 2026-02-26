@@ -71,6 +71,7 @@ export default function FeatureScalingPrimitive() {
         ctx.fillText(m.xL + " →", PAD.left + pW / 2, H - 7);
         ctx.save(); ctx.translate(13, PAD.top + pH / 2); ctx.rotate(-Math.PI / 2); ctx.fillText(m.yL, 0, 0); ctx.restore();
         if (sdx > 0 && sdy > 0) { ctx.fillStyle = m.color; ctx.font = "bold 10px monospace"; ctx.textAlign = "right"; ctx.fillText(`ellipse ratio ${(sdx / sdy).toFixed(1)}:1`, PAD.left + pW - 4, PAD.top + 16); }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mode]);
 
     return (

@@ -12,6 +12,7 @@
   "topics": [
     {
       "title": "Random Variables & Probability Distributions",
+      "slug": "random-variables",
       "theory": [
         "A random variable is a numerical outcome of a random process. It is not random itself — it maps randomness to numbers.",
         "Discrete random variables take countable values (dice rolls, number of clicks, class labels). Continuous random variables take uncountably infinite values (height, time, loss values). Key distinction: Discrete uses probabilities, Continuous uses probability densities.",
@@ -40,6 +41,7 @@
     },
     {
       "title": "Common Probability Distributions",
+      "slug": "probability-distributions",
       "theory": [
         "Bernoulli Distribution models a single binary trial: X ∈ {0, 1}, P(X=1) = p. Examples: click/no click, fraud/no fraud, pass/fail. Mean = p, Variance = p(1-p). In ML: Binary classification labels use Bernoulli, and cross-entropy loss is derived from Bernoulli likelihood.",
         "Binomial Distribution models the number of successes in N independent Bernoulli trials: X ~ Binomial(n, p). Examples: number of users clicking an ad, defective items in a batch. Mean = np, Variance = np(1-p).",
@@ -73,6 +75,7 @@
     },
     {
       "title": "Conditional Probability & Bayes' Theorem",
+      "slug": "bayes-theorem",
       "theory": [
         "Conditional probability answers: How likely is an event given that something else already happened? P(A|B) = P(A∩B) / P(B). Conditional probability shrinks the universe — instead of asking how often A happens, you ask how often A happens inside the world where B is already true.",
         "Independence vs Dependence: If P(A|B) = P(A), events are independent — knowing B tells you nothing about A. If P(A|B) ≠ P(A), events are dependent — B changes your belief about A. Machine Learning assumes dependence; if features were independent of labels, learning would be impossible.",
@@ -95,80 +98,75 @@
       ]
     },
     {
-      "title": "Law of Large Numbers",
+      "title": "Poisson Distribution",
+      "slug": "poisson-distribution",
       "theory": [
-        "The Law of Large Numbers states: As the number of observations increases, the average of the results converges to the expected value. It does not say outcomes become predictable or randomness disappears — it says aggregates stabilize and estimates improve with data.",
-        "Formal statement: Let X₁, X₂, ..., Xₙ be independent, identically distributed random variables with expected value μ. Then (1/n)Σᵢ Xᵢ → μ as n → ∞. Translation: The sample mean approaches the true mean as sample size grows.",
-        "Why small samples lie: With small samples, variance dominates, random streaks appear meaningful, and models overfit noise. This is why early metrics fluctuate wildly and overconfidence is dangerous.",
-        "In ML: LLN explains why training improves with more data, why validation metrics stabilize, why ensemble averaging works, and why stochastic gradient descent converges."
+        "The Poisson distribution models the number of discrete events occurring in a fixed interval of time or space, given that events happen at a known constant mean rate λ (lambda) and independently of each other.",
+        "PMF: P(X = k) = (λ^k · e^{-λ}) / k!",
+        "Key properties: Mean = λ, Variance = λ (unique: mean equals variance), Skewness = 1/√λ.",
+        "ML Use Cases: Count-based NLP models (word frequency), anomaly detection for rare events (network intrusions), recommendation systems (click/purchase counts), and queueing theory (server requests)."
       ],
       "visualIntuition": [
-        "Running mean chart: Early samples show aggressive jumps with high volatility, as samples grow fluctuations reduce and mean stabilizes, finally the curve flattens as noise averages out."
-      ],
-      "visualSuggestions": [
-        "Button to add samples one by one, watching running mean converge to true value",
-        "Comparison view: small sample volatility vs large sample stability"
-      ],
-      "code": [
-        {
-          "language": "python",
-          "description": "Law of Large Numbers simulation",
-          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\nsamples = []\nmeans = []\n\nfor i in range(1, 5001):\n    samples.append(np.random.binomial(1, 0.7))\n    means.append(np.mean(samples))\n\nplt.plot(means)\nplt.axhline(0.7, color=\"red\", label=\"True probability\")\nplt.title(\"Law of Large Numbers\")\nplt.xlabel(\"Number of Samples\")\nplt.ylabel(\"Running Mean\")\nplt.legend()\nplt.show()"
-        }
-      ]
-    },
-    {
-      "title": "Poisson Distribution",
-      "content": "The Poisson distribution models the **number of discrete events** occurring in a fixed interval of time or space, given that events happen at a known constant mean rate λ (lambda) and independently of each other.\n\n**PMF:** P(X = k) = (λ^k · e^{-λ}) / k!\n\n**Key properties:** Mean = λ, Variance = λ (unique: mean equals variance), Skewness = 1/√λ.\n\n**ML Use Cases:** Count-based NLP models (word frequency), anomaly detection for rare events (network intrusions), recommendation systems (click/purchase counts), and queueing theory (server requests).\n\nFor small λ (e.g., 1), the PMF is heavily right-skewed — most mass at 0 and 1. As λ increases toward 10+, the distribution becomes bell-shaped and symmetric, approaching a Normal distribution.",
-      "code": [
-        {
-          "title": "Poisson Distribution — PMF, CDF, and Visualization",
-          "language": "python",
-          "code": "from scipy import stats\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Create Poisson distribution with lambda=4\nrv = stats.poisson(mu=4)\n\n# PMF: probability of exactly k=3 events\nprint(rv.pmf(3))         # 0.1954\n\n# CDF: probability of k <= 5 events\nprint(rv.cdf(5))         # 0.7851\n\n# Descriptive statistics\nprint(rv.mean())         # 4.0\nprint(rv.var())          # 4.0  (always equals lambda)\nprint(rv.std())          # 2.0\n\n# Generate random samples\nsamples = rv.rvs(size=1000, random_state=42)\nprint(np.mean(samples))  # ≈ 4.0\n\n# Plot PMF\nk = np.arange(0, 15)\nplt.bar(k, rv.pmf(k), color='steelblue', alpha=0.7)\nplt.xlabel('k (events)')\nplt.ylabel('P(X=k)')\nplt.title('Poisson PMF (λ=4)')\nplt.show()\n\n# Compare different lambdas\nfor lam in [1, 4, 10]:\n    rv_l = stats.poisson(mu=lam)\n    plt.plot(k, rv_l.pmf(k), marker='o', label=f'λ={lam}')\nplt.legend()\nplt.show()"
-        }
+        "Imagine counting how many emails you receive per hour. Some hours you get 0, some hours 5. The Poisson distribution describes this pattern — given an average rate λ, it tells you the probability of any specific count."
       ],
       "visualSuggestions": [
         "Interactive PMF bar chart with λ slider — watch distribution shape shift from right-skewed to symmetric",
         "Sample generator: click to add random events, histogram builds toward theoretical PMF"
       ],
-      "visualIntuition": [
-        "Imagine counting how many emails you receive per hour. Some hours you get 0, some hours 5. The Poisson distribution describes this pattern — given an average rate λ, it tells you the probability of any specific count."
+      "code": [
+        {
+          "language": "python",
+          "description": "Poisson Distribution — PMF, CDF, and Visualization",
+          "content": "from scipy import stats\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Create Poisson distribution with lambda=4\nrv = stats.poisson(mu=4)\n\n# PMF: probability of exactly k=3 events\nprint(rv.pmf(3))         # 0.1954\n\n# CDF: probability of k <= 5 events\nprint(rv.cdf(5))         # 0.7851\n\n# Descriptive statistics\nprint(rv.mean())         # 4.0\nprint(rv.var())          # 4.0  (always equals lambda)\nprint(rv.std())          # 2.0\n\n# Generate random samples\nsamples = rv.rvs(size=1000, random_state=42)\nprint(np.mean(samples))  # ≈ 4.0\n\n# Plot PMF\nk = np.arange(0, 15)\nplt.bar(k, rv.pmf(k), color='steelblue', alpha=0.7)\nplt.xlabel('k (events)')\nplt.ylabel('P(X=k)')\nplt.title('Poisson PMF (λ=4)')\nplt.show()"
+        }
       ]
     },
     {
       "title": "Exponential Distribution",
-      "content": "The Exponential distribution models the **time between consecutive events** in a Poisson process. It is the continuous counterpart to the Poisson distribution.\n\n**PDF:** f(x) = λ · e^{-λx} for x ≥ 0\n\n**Key property — Memorylessness:** P(X > s + t | X > s) = P(X > t). The probability of waiting an additional time t is the same regardless of how long you've already waited. This is the *only* continuous distribution with this property.\n\n**Parameters:** λ (rate) = events per unit time; scale = 1/λ = mean waiting time (scipy convention).\n\n**Key properties:** Mean = 1/λ, Variance = 1/λ², Std Dev = 1/λ (std equals mean).\n\n**ML Use Cases:** Survival analysis and customer churn modelling, time-to-failure predictions in reliability engineering, fraud detection (inter-transaction times), and prior distribution in Bayesian models for positive quantities.",
-      "code": [
-        {
-          "title": "Exponential Distribution — Memorylessness Verification",
-          "language": "python",
-          "code": "from scipy import stats\nimport numpy as np\n\n# Exponential with rate=0.5 (mean = 1/0.5 = 2)\nrv = stats.expon(scale=2)  # scipy uses scale = 1/rate\n\n# PDF at a specific point\nprint(rv.pdf(3))           # 0.1116\n\n# CDF: P(X <= 4)\nprint(rv.cdf(4))           # 0.8647\n\n# Survival function: P(X > 4)\nprint(rv.sf(4))            # 0.1353  (= 1 - CDF)\n\n# Mean and std\nprint(rv.mean())           # 2.0\nprint(rv.std())            # 2.0  (always equals mean)\n\n# Quantiles\nprint(rv.ppf(0.5))         # 1.386 (median)\nprint(rv.ppf(0.95))        # 5.991 (95th percentile)\n\n# Generate samples\nsamples = rv.rvs(size=1000, random_state=42)\n\n# Memorylessness verification\n# P(X > 5 | X > 3) should equal P(X > 2)\nprint(rv.sf(5) / rv.sf(3)) # ≈ 0.3679\nprint(rv.sf(2))            # ≈ 0.3679  — they match!\n\n# Maximum Likelihood Estimate of lambda\ndata = rv.rvs(size=500)\nlambda_mle = 1 / np.mean(data)\nprint(f'Estimated lambda: {lambda_mle:.3f}')  # ≈ 0.5"
-        }
+      "slug": "exponential-distribution",
+      "theory": [
+        "The Exponential distribution models the time between consecutive events in a Poisson process. It is the continuous counterpart to the Poisson distribution.",
+        "PDF: f(x) = λ · e^{-λx} for x ≥ 0",
+        "Key property — Memorylessness: P(X > s + t | X > s) = P(X > t). The probability of waiting an additional time t is the same regardless of how long you've already waited.",
+        "ML Use Cases: Survival analysis and customer churn modelling, time-to-failure predictions in reliability engineering, fraud detection (inter-transaction times)."
+      ],
+      "visualIntuition": [
+        "Imagine waiting for a bus that arrives randomly. The Exponential distribution tells you the probability of waiting a certain amount of time. Its memoryless property means that if you've already waited 10 minutes, the expected additional wait is still the same."
       ],
       "visualSuggestions": [
         "PDF curve with λ slider — heavier tail (slower decay) for smaller λ",
         "Memorylessness demo: progress bar resets, showing waiting time is independent of elapsed time"
       ],
-      "visualIntuition": [
-        "Imagine waiting for a bus that arrives randomly. The Exponential distribution tells you the probability of waiting a certain amount of time. Its memoryless property means that if you've already waited 10 minutes, the expected additional wait is still the same — the bus doesn't 'owe' you an arrival."
+      "code": [
+        {
+          "language": "python",
+          "description": "Exponential Distribution — Memorylessness Verification",
+          "content": "from scipy import stats\nimport numpy as np\n\n# Exponential with rate=0.5 (mean = 1/0.5 = 2)\nrv = stats.expon(scale=2)  # scipy uses scale = 1/rate\n\n# Mean and std\nprint(rv.mean())           # 2.0\nprint(rv.std())            # 2.0  (always equals mean)\n\n# Memorylessness verification\n# P(X > 5 | X > 3) should equal P(X > 2)\nprint(rv.sf(5) / rv.sf(3)) # ≈ 0.3679\nprint(rv.sf(2))            # ≈ 0.3679  — they match!"
+        }
       ]
     },
     {
       "title": "Uniform Distribution",
-      "content": "The Uniform distribution assigns **equal probability** to all outcomes in an interval [a, b]. Every value is equally likely.\n\n**PDF:** f(x) = 1/(b-a) for a ≤ x ≤ b, else 0\n\n**Key properties:** Mean = (a+b)/2, Variance = (b-a)²/12, Entropy is maximised among all distributions with the same support.\n\n**ML Use Cases:**\n- **Weight initialisation** in neural networks (small symmetric interval around 0)\n- **Hyperparameter search** — defining search bounds for random/grid search\n- **Data augmentation** — random rotation angles, brightness shifts\n- **Monte Carlo sampling** — base distribution for inverse transform sampling\n\n**Summary Comparison:**\n| Property | Poisson | Exponential | Uniform |\n|---|---|---|---|\n| Type | Discrete | Continuous | Continuous |\n| Domain | k = 0,1,2,… | x ∈ [0,∞) | x ∈ [a,b] |\n| Mean | λ | 1/λ | (a+b)/2 |\n| Variance | λ | 1/λ² | (b-a)²/12 |",
-      "code": [
-        {
-          "title": "Uniform Distribution — ML Applications",
-          "language": "python",
-          "code": "from scipy import stats\nimport numpy as np\n\n# Uniform between 2 and 8 (loc=a, scale=b-a)\nrv = stats.uniform(loc=2, scale=6)\n\n# PDF (constant within range)\nprint(rv.pdf(5))           # 0.1667 (= 1/6)\nprint(rv.pdf(1))           # 0.0    (outside range)\n\n# Mean and variance\nprint(rv.mean())           # 5.0\nprint(rv.var())            # 3.0  (= 36/12)\n\n# CDF\nprint(rv.cdf(4))           # 0.333 (= (4-2)/6)\n\n# 1. Neural network weight initialisation\ndef uniform_init(shape, a=-0.1, b=0.1):\n    return np.random.uniform(a, b, shape)\n\nW = uniform_init((128, 64))\nprint(W.min(), W.max())    # ≈ -0.1, 0.1\n\n# 2. Inverse transform sampling\n# To sample from Exponential using Uniform:\nu = np.random.uniform(0, 1, 1000)\nexp_samples = -np.log(1 - u) / 0.5  # lambda=0.5"
-        }
+      "slug": "uniform-distribution",
+      "theory": [
+        "The Uniform distribution assigns equal probability to all outcomes in an interval [a, b]. Every value is equally likely.",
+        "PDF: f(x) = 1/(b-a) for a ≤ x ≤ b, else 0",
+        "Key properties: Mean = (a+b)/2, Variance = (b-a)²/12, Entropy is maximised among all distributions with the same support.",
+        "ML Use Cases: Weight initialisation in neural networks, hyperparameter search limits, data augmentation."
+      ],
+      "visualIntuition": [
+        "Think of a perfectly fair spinner on a circular dial. No matter where the needle lands between a and b, every position is equally likely. The probability is simply 1/(b-a) everywhere in the interval."
       ],
       "visualSuggestions": [
         "Flat PDF rectangle with [a,b] sliders — CDF shows linear ramp",
         "Inverse transform sampling demo: uniform draws on y-axis mapped through CDF inverse to target distribution"
       ],
-      "visualIntuition": [
-        "Think of a perfectly fair spinner on a circular dial. No matter where the needle lands between a and b, every position is equally likely. The probability is simply 1/(b-a) everywhere in the interval — a perfectly flat, democratic distribution."
+      "code": [
+        {
+          "language": "python",
+          "description": "Uniform Distribution — ML Applications",
+          "content": "from scipy import stats\nimport numpy as np\n\n# Uniform between 2 and 8 (loc=a, scale=b-a)\nrv = stats.uniform(loc=2, scale=6)\n\n# PDF (constant within range)\nprint(rv.pdf(5))           # 0.1667 (= 1/6)\n\n# Neural network weight initialisation\ndef uniform_init(shape, a=-0.1, b=0.1):\n    return np.random.uniform(a, b, shape)\n\nW = uniform_init((128, 64))\nprint(W.min(), W.max())    # ≈ -0.1, 0.1"
+        }
       ]
     }
   ],
@@ -286,10 +284,6 @@
     {
       "label": "scikit-learn - Naive Bayes",
       "url": "https://scikit-learn.org/stable/modules/naive_bayes.html"
-    },
-    {
-      "label": "Khan Academy - Linear Algebra",
-      "url": "https://www.khanacademy.org/math/linear-algebra"
     }
   ],
   "_contentWarnings": []

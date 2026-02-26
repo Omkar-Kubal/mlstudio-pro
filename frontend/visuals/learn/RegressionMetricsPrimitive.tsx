@@ -44,6 +44,7 @@ export default function RegressionMetricsPrimitive() {
     const rmse = Math.sqrt(errors.reduce((s, e) => s + e * e, 0) / allPts.length);
     const outlierError = Math.abs(outlier.y - (LINE_M * outlier.x + LINE_B));
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [outlier, metric]);
 
     function draw() {

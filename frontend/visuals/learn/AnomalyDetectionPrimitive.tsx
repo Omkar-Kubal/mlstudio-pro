@@ -10,7 +10,7 @@ const THEME = {
 
 const N = 60;
 const H = 340, W = 700;
-const PAD = 40;
+const _PAD = 40;
 
 export default function AnomalyDetectionPrimitive() {
     const [threshold, setThreshold] = useState(2.0);
@@ -20,7 +20,7 @@ export default function AnomalyDetectionPrimitive() {
         const d = [];
         let seed = 123;
         const random = () => {
-            let x = Math.sin(seed++) * 10000;
+            const x = Math.sin(seed++) * 10000;
             return x - Math.floor(x);
         };
 

@@ -40,6 +40,7 @@ export default function MissingDataPrimitive() {
         return SEED.map(d => d.missing ? { ...d, y: +knn(d, observed.map(o => ({ ...o }))).toFixed(2), imputed: true } : { ...d, imputed: false });
     };
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         setStep(0); if (animRef.current) clearInterval(animRef.current);
         const pts = getPts(); let i = 0;
@@ -77,6 +78,7 @@ export default function MissingDataPrimitive() {
             const mn = shown.reduce((a, b) => a + b.y, 0) / n, vr = Math.sqrt(shown.reduce((a, b) => a + (b.y - mn) ** 2, 0) / n);
             ctx.fillStyle = s.color; ctx.font = "bold 10px monospace"; ctx.textAlign = "right"; ctx.fillText(`n=${n}  σ=${vr.toFixed(2)}`, PAD.left + pW - 4, PAD.top + 16);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [step, strat]);
 
     return (

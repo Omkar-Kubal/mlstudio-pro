@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion } from "framer-motion";
 
 // ─── Constants & Types ───────────────────────────────────────────────────────
 const CW = 720, CH = 460;
@@ -171,7 +170,7 @@ export default function EigenvectorsPrimitive() {
         // Origin
         ctx.fillStyle = "white";
         ctx.beginPath(); ctx.arc(OX, OY, 4, 0, Math.PI * 2); ctx.fill();
-    }, [a, b, c, d, stats, drawEigenDirections]);
+    }, [a, b, c, d, stats, drawEigenDirections]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         render();

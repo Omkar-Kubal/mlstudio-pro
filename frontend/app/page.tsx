@@ -8,10 +8,22 @@ import SystemScrollCanvas from "@/visuals/SystemScrollCanvas";
 import SectionTextOverlay from "@/visuals/SectionTextOverlay";
 import Footer from "@/visuals/Footer";
 
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+
 export default function HomePage() {
+    const { user, loading } = useAuth();
+    const router = useRouter();
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [progress, setProgress] = useState(0);
     const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+    // Redirect to dashboard if logged in
+    useEffect(() => {
+        if (!loading && user) {
+            router.push("/dashboard");
+        }
+    }, [user, loading, router]);
 
     // Single scroll progress source for the entire scroll section
     const { scrollYProgress } = useScroll({

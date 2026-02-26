@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import type { BoundaryMorphingConfig } from "@/adapters/visual-types";
 
@@ -294,8 +294,8 @@ function computeBoundaryPath(grid: GridCell[][], gridSize: number): string {
             const sum = tl + tr + bl + br;
             if (sum > 0 && sum < 4) {
                 // There's a boundary in this cell
-                const cx = (j + 0.5) * cellW;
-                const cy = (i + 0.5) * cellH;
+                const _cx = (j + 0.5) * cellW;
+                const _cy = (i + 0.5) * cellH;
 
                 // Simple: draw a small segment at boundary cells
                 if (tl !== tr) {

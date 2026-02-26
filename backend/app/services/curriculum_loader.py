@@ -27,7 +27,8 @@ class CurriculumLoader:
             with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 return LearningModule(**data)
-        except Exception:
+        except Exception as e:
+            print(f"Error loading module from {file_path}: {e}")
             return None
 
     def load_module_by_id(self, lesson_id: str) -> Optional[LearningModule]:
@@ -54,6 +55,14 @@ class CurriculumLoader:
                 if json_dir.exists():
                     modules.extend([f.stem for f in json_dir.glob("*.json")])
         
-        return sorted(modules)
+        # Numerical sort based on s{X}m{Y}
+        def sort_key(mid):
+            try:
+                parts = mid[1:].split('m')
+                return (int(parts[0]), int(parts[1]))
+            except:
+                return (0, 0)
+
+        return sorted(modules, key=sort_key)
 
 curriculum_loader = CurriculumLoader()

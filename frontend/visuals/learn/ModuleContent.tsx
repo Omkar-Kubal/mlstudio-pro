@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import type { LearningModule, Reference, QuizQuestion } from "@/adapters/content-types";
+import { apiFetch } from "@/adapters/api";
+import { getLessonId } from "@/adapters/content-mapping";
 import { progressTracker } from "@/adapters/progress";
 import TopicRenderer from "./TopicRenderer";
 
@@ -22,6 +25,7 @@ interface ModuleContentProps {
  */
 export default function ModuleContent({ module, subjectSlug }: ModuleContentProps) {
     const { meta, overview, topics, quiz, references } = module;
+    const router = useRouter();
 
     return (
         <div className="space-y-12">
@@ -66,7 +70,7 @@ export default function ModuleContent({ module, subjectSlug }: ModuleContentProp
 
             {/* Check Understanding */}
             {quiz.length > 0 && (
-                <QuizSection questions={quiz} moduleSlug={meta.module} />
+                <QuizSection questions={quiz} moduleSlug={meta.module} subjectSlug={subjectSlug} router={router} />
             )}
 
             {/* References */}
@@ -165,10 +169,14 @@ function PlaceholderNotice() {
  */
 function QuizSection({
     questions,
-    moduleSlug
+    moduleSlug,
+    subjectSlug,
+    router
 }: {
     questions: Array<string | QuizQuestion>,
-    moduleSlug: string
+    moduleSlug: string,
+    subjectSlug: string,
+    router: any
 }) {
     const [answers, setAnswers] = useState<Record<number, number>>({});
     const [showResults, setShowResults] = useState<Record<number, boolean>>({});
@@ -178,9 +186,25 @@ function QuizSection({
         setShowResults(prev => ({ ...prev, [qIdx]: true }));
     };
 
-    const handleComplete = () => {
-        progressTracker.completeModule(moduleSlug);
-        alert("Module marked as complete! Your progress has been saved.");
+    const handleComplete = async () => {
+        try {
+            // Resolve module slug to lessonId (s1m1 format) for backend compatibility
+            const lessonId = getLessonId(subjectSlug, moduleSlug) || moduleSlug;
+
+            // Mark all topics in this module as complete on the backend
+            // For the mock mode, it will just update the in-memory state
+            await apiFetch(`/curriculum/progress/${lessonId}/complete`, {
+                method: "POST"
+            });
+
+            progressTracker.completeModule(moduleSlug);
+            router.push(`/learn/${subjectSlug}`);
+        } catch (e) {
+            console.error("Failed to complete module:", e);
+            // Fallback to local and redirect anyway
+            progressTracker.completeModule(moduleSlug);
+            router.push(`/learn/${subjectSlug}`);
+        }
     };
 
     return (

@@ -59,6 +59,7 @@ export default function GradientBoostingPrimitive() {
     const currentPreds = round === 0 ? DATA.map(() => BASELINE) : ROUNDS[round - 1].preds;
     const currentRMSE = round === 0 ? +(Math.sqrt(DATA.reduce((s, d) => s + (d.y - BASELINE) ** 2, 0) / DATA.length)).toFixed(3) : ROUNDS[round - 1].rmse;
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { drawMain(); drawResid(); }, [round]);
 
     function drawMain() {

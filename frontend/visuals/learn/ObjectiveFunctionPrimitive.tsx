@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 // ─── Constants & Types ───────────────────────────────────────────────────────
 const W = 720, H = 400;
@@ -55,7 +54,7 @@ interface Props {
 }
 
 // ─── Component ──────────────────────────────────────────────────────────────
-export default function ObjectiveFunctionPrimitive({ config }: Props) {
+export default function ObjectiveFunctionPrimitive({ config: _config }: Props) {
     const [mode, setMode] = useState<keyof typeof SURFACES>("convex");
     const [ballX, setBallX] = useState(SURFACES.convex.start);
     const [lr, setLr] = useState(0.12);
@@ -233,7 +232,7 @@ export default function ObjectiveFunctionPrimitive({ config }: Props) {
         ctx.textAlign = "right";
         ctx.fillText(`\u2207L = ${g.toFixed(3)}`, W - 20, 25);
 
-    }, [ballX, trail, mode, tCY, surf, fn, yMin, yMax]);
+    }, [ballX, trail, mode, tCY, surf, fn, yMin, yMax]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => { draw(); }, [draw]);
 

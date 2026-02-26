@@ -17,7 +17,7 @@ export default function ModulePage() {
 
     useEffect(() => {
         // Fetch topics for this module
-        fetch(`/api/topics?module=${moduleSlug}`)
+        fetch(`/api/topics?module=${moduleSlug}&subject=${subjectSlug}`)
             .then((res) => res.json())
             .then((data) => {
                 setTopics(data);
@@ -115,7 +115,7 @@ export default function ModulePage() {
                             Topics
                         </h2>
                         <div className="space-y-3">
-                            {topics.map((topic, index) => (
+                            {topics.map((topic, _index) => (
                                 <Link
                                     key={topic.id}
                                     href={`/learn/${subjectSlug}/${moduleSlug}/${topic.slug}`}

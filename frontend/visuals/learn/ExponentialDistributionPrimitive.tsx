@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 // ─── Constants & Types ───────────────────────────────────────────────────────
 const TW = 900, TH = 180;
@@ -146,7 +145,7 @@ export default function ExponentialDistributionPrimitive() {
                 const y = expPDF(x, lambda);
                 const px = m.l + (x / xMax) * cw;
                 const py = m.t + ch - (y / yMax) * ch;
-                i === 0 ? pdfCtx.moveTo(px, py) : pdfCtx.lineTo(px, py);
+                if (i === 0) { pdfCtx.moveTo(px, py); } else { pdfCtx.lineTo(px, py); }
             }
             pdfCtx.stroke();
 
@@ -184,7 +183,7 @@ export default function ExponentialDistributionPrimitive() {
                 const y = expCDF(x, lambda);
                 const px = m.l + (x / xMax) * cw;
                 const py = m.t + ch - y * ch;
-                i === 0 ? cdfCtx.moveTo(px, py) : cdfCtx.lineTo(px, py);
+                if (i === 0) { cdfCtx.moveTo(px, py); } else { cdfCtx.lineTo(px, py); }
             }
             cdfCtx.stroke();
         }

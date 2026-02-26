@@ -19,7 +19,7 @@ const PHASES = [
 
 export default function MLOpsPrimitive() {
     const [activeTab, setActiveTab] = useState(0);
-    const [driftLevel, setDriftLevel] = useState(0);
+    const [_driftLevel, _setDriftLevel] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -135,5 +135,5 @@ function Metric({ label, value, status, width }: { label: string, value: string,
     );
 }
 
-const PAD = 40;
+const _PAD = 40;
 

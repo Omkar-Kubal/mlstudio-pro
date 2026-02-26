@@ -54,7 +54,7 @@ export default function ResidualAnalysisPrimitive() {
         });
         // Poor pattern overlay
         if (mode === "poor") {
-            ctx.beginPath(); for (let i = 0; i <= 100; i++) { const x = i / 100 * xMax, tr = Math.sin(x * 0.3) * 3; i === 0 ? ctx.moveTo(toX(x), toY(tr)) : ctx.lineTo(toX(x), toY(tr)); }
+            ctx.beginPath(); for (let i = 0; i <= 100; i++) { const x = i / 100 * xMax, tr = Math.sin(x * 0.3) * 3; if (i === 0) { ctx.moveTo(toX(x), toY(tr)); } else { ctx.lineTo(toX(x), toY(tr)); } }
             ctx.strokeStyle = "#f8717166"; ctx.lineWidth = 2; ctx.setLineDash([5, 3]); ctx.stroke(); ctx.setLineDash([]);
             ctx.fillStyle = "#f87171"; ctx.font = "10px monospace"; ctx.textAlign = "left"; ctx.fillText("↑ non-random pattern = missed signal", PAD.left + 4, PAD.top + 14);
         }
@@ -64,6 +64,7 @@ export default function ResidualAnalysisPrimitive() {
         ctx.save(); ctx.translate(13, PAD.top + pH / 2); ctx.rotate(-Math.PI / 2); ctx.fillText("Residuals", 0, 0); ctx.restore();
         const rmse = Math.sqrt(resids.reduce((s, r) => s + r * r, 0) / resids.length).toFixed(2);
         ctx.fillStyle = m.color; ctx.font = "bold 10px monospace"; ctx.textAlign = "right"; ctx.fillText(`RMSE = ${rmse}`, PAD.left + pW - 4, PAD.top + 16);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mode]);
 
     return (

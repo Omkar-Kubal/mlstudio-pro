@@ -4,6 +4,8 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -13,6 +15,13 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const router = useRouter();
+    const { user, loading: authLoading } = useAuth();
+
+    useEffect(() => {
+        if (user && !authLoading) {
+            router.push("/learn");
+        }
+    }, [user, authLoading, router]);
 
     const handleMagicLinkLogin = async () => {
         const { error } = await supabase.auth.signInWithOtp({
@@ -67,6 +76,11 @@ export default function LoginPage() {
             setMessage({ type: 'error', text: "This email is already registered. Please sign in instead." });
         } else if (error.message.includes("Provider is not enabled")) {
             setMessage({ type: 'error', text: "This login method is currently disabled." });
+        } else if (error.message.includes("Failed to fetch") || error.message.includes("Load failed") || error.message.includes("Connection timed out")) {
+            setMessage({
+                type: 'error',
+                text: "Unable to reach authentication server. The Supabase project may be paused or the network is blocked. Check your connection or set NEXT_PUBLIC_USE_MOCK_AUTH=true in .env.local for local development."
+            });
         } else {
             setMessage({ type: 'error', text: error.message });
         }
@@ -74,7 +88,7 @@ export default function LoginPage() {
 
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             setMessage({ type: 'error', text: "Please enter a valid email address." });
@@ -182,7 +196,7 @@ export default function LoginPage() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full bg-[#0d0d0d] border border-[#262626] rounded-xl px-4 py-3 text-white placeholder:text-[#525252] focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
                             />
-                            { (isPasswordLogin || isSignUp) && (
+                            {(isPasswordLogin || isSignUp) && (
                                 <input
                                     type="password"
                                     placeholder={isSignUp ? "choose a password" : "your password"}
@@ -193,7 +207,7 @@ export default function LoginPage() {
                                 />
                             )}
                         </div>
-                        
+
                         <div className="flex flex-col gap-3 px-1">
                             <div className="flex justify-between items-center">
                                 <button

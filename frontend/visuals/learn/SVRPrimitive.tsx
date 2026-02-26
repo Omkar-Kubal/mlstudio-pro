@@ -43,6 +43,7 @@ export default function SVRPrimitive() {
     const insideCount = DATA.filter(d => Math.abs(d.y - (m * d.x + b)) <= epsilon).length;
     const supportVectors = DATA.filter(d => Math.abs(d.y - (m * d.x + b)) > epsilon);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [epsilon]);
 
     function draw() {

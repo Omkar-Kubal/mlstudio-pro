@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 // ─── Constants & Types ───────────────────────────────────────────────────────
 const CW = 480, CH = 340;
@@ -132,7 +131,7 @@ export default function MatrixPropertiesPrimitive() {
             drawBasis(rCtx, rMat);
         }
 
-    }, [m, mode, animT, rankT]);
+    }, [m, mode, animT, rankT]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         render();
@@ -154,7 +153,7 @@ export default function MatrixPropertiesPrimitive() {
         return () => { if (requestRef.current) cancelAnimationFrame(requestRef.current); };
     }, [animIsRunning]);
 
-    const result = useMemo(() => {
+    const _result = useMemo(() => {
         if (mode === "transpose") return getTranspose(m);
         if (mode === "inverse") return getInverse(m);
         return null;

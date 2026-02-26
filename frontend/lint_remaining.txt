@@ -1,0 +1,85 @@
+app\learn\[subject]\[module]\[topic]\page.tsx :: 18:11 [@typescript-eslint/no-unused-vars] '_router' is assigned a value but never used.
+app\learn\[subject]\[module]\[topic]\page.tsx :: 36:11 [@typescript-eslint/no-unused-vars] '_prevTopic' is assigned a value but never used.
+app\learn\[subject]\[module]\page.tsx :: 118:49 [@typescript-eslint/no-unused-vars] '_index' is defined but never used.
+app\learn\page.tsx :: 60:7 [@typescript-eslint/no-unused-vars] '_formatIcons' is assigned a value but never used.
+app\profile\page.tsx :: 61:18 [@typescript-eslint/no-unused-vars] '_err' is defined but never used.
+components\MetricsVisualizer.tsx :: 8:16 [@typescript-eslint/no-unused-vars] '_setFn' is assigned a value but never used.
+components\MetricsVisualizer.tsx :: 9:16 [@typescript-eslint/no-unused-vars] '_setTn' is assigned a value but never used.
+context\AuthContext.tsx :: 27:11 [@typescript-eslint/no-unused-vars] '_pathname' is assigned a value but never used.
+visuals\SectionTextOverlay.tsx :: 17:23 [@typescript-eslint/no-unused-vars] '_sectionMid' is assigned a value but never used.
+visuals\learn\AnomalyDetectionPrimitive.tsx :: 13:7 [@typescript-eslint/no-unused-vars] '_PAD' is assigned a value but never used.
+visuals\learn\BoundaryMorphingPrimitive.tsx :: 3:40 [@typescript-eslint/no-unused-vars] 'useCallback' is defined but never used.
+visuals\learn\BoundaryMorphingPrimitive.tsx :: 24:27 [@typescript-eslint/no-unused-vars] '_showProbabilityGradient' is assigned a value but never used.
+visuals\learn\BoundaryMorphingPrimitive.tsx :: 297:23 [@typescript-eslint/no-unused-vars] '_cx' is assigned a value but never used.
+visuals\learn\BoundaryMorphingPrimitive.tsx :: 298:23 [@typescript-eslint/no-unused-vars] '_cy' is assigned a value but never used.
+visuals\learn\BroadcastingPrimitive.tsx :: 94:57 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\CentralTendencyPrimitive.tsx :: 41:12 [@typescript-eslint/no-unused-vars] 'reducedMotion' is assigned a value but never used.
+visuals\learn\ClusterFormationPrimitive.tsx :: 3:40 [@typescript-eslint/no-unused-vars] 'useRef' is defined but never used.
+visuals\learn\ClusteringPrimitive.tsx :: 3:29 [@typescript-eslint/no-unused-vars] 'useEffect' is defined but never used.
+visuals\learn\CommonDistributionsPrimitive.tsx :: 22:10 [@typescript-eslint/no-unused-vars] '_factorial' is defined but never used.
+visuals\learn\CommonDistributionsPrimitive.tsx :: 104:34 [prefer-const] 'yMax' is never reassigned. Use 'const' instead.
+visuals\learn\CommonDistributionsPrimitive.tsx :: 170:23 [@typescript-eslint/no-unused-vars] '_barW' is assigned a value but never used.
+visuals\learn\CommonDistributionsPrimitive.tsx :: 180:23 [@typescript-eslint/no-unused-vars] '_barW' is assigned a value but never used.
+visuals\learn\ContextManagersPrimitive.tsx :: 23:60 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\DataValidationPrimitive.tsx :: 87:48 [@typescript-eslint/no-unused-vars] '_errors' is defined but never used.
+visuals\learn\DecoratorsPrimitive.tsx :: 19:55 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\DescriptiveStatisticsPrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\DescriptiveStatisticsPrimitive.tsx :: 93:15 [@typescript-eslint/no-unused-vars] '_densities' is assigned a value but never used.
+visuals\learn\DispersionPrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\DispersionPrimitive.tsx :: 8:7 [@typescript-eslint/no-unused-vars] '_MEAN' is assigned a value but never used.
+visuals\learn\DistributionEvolutionPrimitive.tsx :: 299:5 [@typescript-eslint/no-unused-vars] 'mode' is defined but never used.
+visuals\learn\EigenvectorsPrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\ExponentialDistributionPrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\FancyBooleanIndexingPrimitive.tsx :: 78:65 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\GeneratorsPrimitive.tsx :: 10:55 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\GradientBackflowPrimitive.tsx :: 13:14 [@typescript-eslint/no-unused-vars] '_activation' is defined but never used.
+visuals\learn\GradientChainRulePrimitive.tsx :: 34:62 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\GradientDescentOptimizer.tsx :: 3:59 [@typescript-eslint/no-unused-vars] 'useMemo' is defined but never used.
+visuals\learn\GradientDescentOptimizer.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\GroupByPrimitive.tsx :: 33:52 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\LinearIndependencePrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\LinearIndependencePrimitive.tsx :: 12:16 [@typescript-eslint/no-unused-vars] '_setV1' is assigned a value but never used.
+visuals\learn\MLOpsPrimitive.tsx :: 22:12 [@typescript-eslint/no-unused-vars] '_driftLevel' is assigned a value but never used.
+visuals\learn\MLOpsPrimitive.tsx :: 22:25 [@typescript-eslint/no-unused-vars] '_setDriftLevel' is assigned a value but never used.
+visuals\learn\MLOpsPrimitive.tsx :: 138:7 [@typescript-eslint/no-unused-vars] '_PAD' is assigned a value but never used.
+visuals\learn\MLPipelinesPrimitive.tsx :: 24:56 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\MLPipelinesPrimitive.tsx :: 31:31 [@typescript-eslint/no-unused-vars] '_el' is defined but never used.
+visuals\learn\MLPipelinesPrimitive.tsx :: 31:36 [@typescript-eslint/no-unused-vars] '_i' is defined but never used.
+visuals\learn\MLPipelinesPrimitive.tsx :: 50:27 [@typescript-eslint/no-unused-vars] '_i' is defined but never used.
+visuals\learn\MLPipelinesPrimitive.tsx :: 83:66 [@typescript-eslint/no-unused-vars] '_' is defined but never used.
+visuals\learn\MLPipelinesPrimitive.tsx :: 83:69 [@typescript-eslint/no-unused-vars] '_i' is defined but never used.
+visuals\learn\MLPipelinesPrimitive.tsx :: 88:50 [@typescript-eslint/no-unused-vars] '_i' is defined but never used.
+visuals\learn\MLPipelinesPrimitive.tsx :: 122:32 [@typescript-eslint/no-unused-vars] '_i' is defined but never used.
+visuals\learn\MLPipelinesPrimitive.tsx :: 155:44 [@typescript-eslint/no-unused-vars] '_i' is defined but never used.
+visuals\learn\MatplotlibSeabornPrimitive.tsx :: 142:62 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\MatrixPropertiesPrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\MatrixPropertiesPrimitive.tsx :: 157:11 [@typescript-eslint/no-unused-vars] '_result' is assigned a value but never used.
+visuals\learn\MatrixTransformationPrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\MemoryLayoutPrimitive.tsx :: 3:46 [@typescript-eslint/no-unused-vars] 'useCallback' is defined but never used.
+visuals\learn\MemoryLayoutPrimitive.tsx :: 9:7 [@typescript-eslint/no-unused-vars] '_GAP' is assigned a value but never used.
+visuals\learn\MemoryLayoutPrimitive.tsx :: 38:57 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\MetricDashboardPrimitive.tsx :: 3:40 [@typescript-eslint/no-unused-vars] 'useCallback' is defined but never used.
+visuals\learn\ModelResultsPrimitive.tsx :: 114:57 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\NumpyArraysPrimitive.tsx :: 9:7 [@typescript-eslint/no-unused-vars] '_COLORS' is assigned a value but never used.
+visuals\learn\NumpyArraysPrimitive.tsx :: 134:56 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\ObjectiveFunctionPrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\ObjectiveFunctionPrimitive.tsx :: 58:62 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\ParameterSensitivityPrimitive.tsx :: 24:57 [@typescript-eslint/no-unused-vars] '_caption' is assigned a value but never used.
+visuals\learn\PoissonDistributionPrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\PolynomialFeaturesPrimitive.tsx :: 16:11 [@typescript-eslint/no-unused-vars] '_n' is assigned a value but never used.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx :: 36:11 [@typescript-eslint/no-unused-vars] '_containerRef' is assigned a value but never used.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx :: 37:12 [@typescript-eslint/no-unused-vars] '_balls' is assigned a value but never used.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx :: 37:20 [@typescript-eslint/no-unused-vars] '_setBalls' is assigned a value but never used.
+visuals\learn\ProbabilityDistributionsPrimitive.tsx :: 257:34 [@typescript-eslint/no-unused-vars] 'time' is defined but never used.
+visuals\learn\RNNPrimitive.tsx :: 23:23 [@typescript-eslint/no-unused-vars] '_t' is defined but never used.
+visuals\learn\RNNPrimitive.tsx :: 113:42 [@typescript-eslint/no-unused-vars] '_t' is defined but never used.
+visuals\learn\RNNPrimitive.tsx :: 179:38 [@typescript-eslint/no-unused-vars] '_t' is defined but never used.
+visuals\learn\RollingAveragePrimitive.tsx :: 48:59 [@typescript-eslint/no-unused-vars] '_config' is defined but never used.
+visuals\learn\RollingAveragePrimitive.tsx :: 53:12 [@typescript-eslint/no-unused-vars] 'scanPos' is assigned a value but never used.
+visuals\learn\SVDPrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\TransferLearningPrimitive.tsx :: 3:20 [@typescript-eslint/no-unused-vars] 'useEffect' is defined but never used.
+visuals\learn\TransferLearningPrimitive.tsx :: 28:24 [@typescript-eslint/no-unused-vars] '_setSourceData' is assigned a value but never used.
+visuals\learn\TransferLearningPrimitive.tsx :: 29:24 [@typescript-eslint/no-unused-vars] '_setTargetTask' is assigned a value but never used.
+visuals\learn\VectorOperationsPrimitive.tsx :: 4:10 [@typescript-eslint/no-unused-vars] 'motion' is defined but never used.
+visuals\learn\VectorOperationsPrimitive.tsx :: 149:19 [@typescript-eslint/no-unused-vars] '_l1' is assigned a value but never used.
+visuals\learn\VectorOperationsPrimitive.tsx :: 150:19 [@typescript-eslint/no-unused-vars] '_linf' is assigned a value but never used.

@@ -172,6 +172,7 @@ export default function CodeEditor({
                     {/* Image Output */}
                     {result.image && (
                         <div className="p-4 bg-white rounded-b-lg flex justify-center">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={`data:image/png;base64,${result.image}`}
                                 alt="Generated Plot"

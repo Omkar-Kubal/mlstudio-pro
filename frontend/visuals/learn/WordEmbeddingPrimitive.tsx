@@ -69,6 +69,7 @@ export default function WordEmbeddingPrimitive() {
 
     const an = ANALOGIES[analogy];
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { draw(); }, [selected, analogy, showGroups]);
 
     function draw() {

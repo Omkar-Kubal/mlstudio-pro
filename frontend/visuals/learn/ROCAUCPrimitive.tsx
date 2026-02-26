@@ -61,6 +61,7 @@ export default function ROCAUCPrimitive() {
     const tpr = P ? tp / P : 0;
     const fpr = N_neg ? fp / N_neg : 0;
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { drawROC(); drawDist(); }, [threshold]);
 
     function drawROC() {
@@ -89,7 +90,7 @@ export default function ROCAUCPrimitive() {
 
         // ROC curve
         ctx.beginPath();
-        ROC_PTS.forEach((p, i) => i === 0 ? ctx.moveTo(toX(p.fpr), toY(p.tpr)) : ctx.lineTo(toX(p.fpr), toY(p.tpr)));
+        ROC_PTS.forEach((p, i) => { if (i === 0) { ctx.moveTo(toX(p.fpr), toY(p.tpr)); } else { ctx.lineTo(toX(p.fpr), toY(p.tpr)); } });
         ctx.strokeStyle = "#a78bfa"; ctx.lineWidth = 2.5;
         ctx.shadowColor = "#a78bfa"; ctx.shadowBlur = 6; ctx.stroke(); ctx.shadowBlur = 0;
 
@@ -133,7 +134,7 @@ export default function ROCAUCPrimitive() {
         const counts0 = Array(bins).fill(0), counts1 = Array(bins).fill(0);
         SAMPLES.forEach(s => {
             const bi = Math.min(Math.floor(s.score * bins), bins - 1);
-            s.cls === 0 ? counts0[bi]++ : counts1[bi]++;
+            if (s.cls === 0) { counts0[bi]++; } else { counts1[bi]++; }
         });
         const maxC = Math.max(...counts0, ...counts1, 1);
         const bW = dW / bins;

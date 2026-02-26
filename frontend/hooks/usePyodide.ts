@@ -38,13 +38,11 @@ export const usePyodide = () => {
                 }));
             } else if (type === "success") {
                 setIsRunning(false);
-                if (image) {
-                    setOutput((prev) => ({
-                        text: prev?.text || "",
-                        error: prev?.error,
-                        image: image
-                    }));
-                }
+                setOutput((prev) => ({
+                    text: (prev?.text || "") + (content ? `\n\nResult: ${content}` : ""),
+                    error: prev?.error,
+                    image: image || prev?.image
+                }));
             } else if (type === "error") {
                 setIsRunning(false);
                 setOutput({

@@ -75,7 +75,7 @@ function isSelected(mode: Mode, r: number, c: number): boolean {
 interface Props { config?: FancyBooleanIndexingConfig; }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function FancyBooleanIndexingPrimitive({ config }: Props) {
+export default function FancyBooleanIndexingPrimitive({ config: _config }: Props) {
     const [modeKey, setModeKey] = useState("boolean");
     const [filtered, setFiltered] = useState(false);
 

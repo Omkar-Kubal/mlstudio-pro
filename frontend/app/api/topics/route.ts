@@ -4,9 +4,13 @@ import { topics } from '@/adapters/topics';
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const moduleSlug = searchParams.get('module');
+    const subjectSlug = searchParams.get('subject');
 
     if (moduleSlug) {
-        const filtered = topics.filter(t => t.moduleSlug === moduleSlug);
+        const filtered = topics.filter(t =>
+            t.moduleSlug === moduleSlug &&
+            (!subjectSlug || t.subjectSlug === subjectSlug)
+        );
         return NextResponse.json(filtered);
     }
 

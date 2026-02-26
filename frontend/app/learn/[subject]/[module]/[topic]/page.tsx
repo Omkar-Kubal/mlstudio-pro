@@ -1,21 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useEffect, useState, use } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
+import Image from "next/image";
 import { ParsedContent, QuizQuestion } from "@/adapters/content-types";
 import { usePyodide } from "@/hooks/usePyodide";
 import { Visualizer } from "@/components/Visualizer";
+import { getTopicsByModule } from "@/adapters/topics";
+import { apiFetch } from "@/adapters/api";
+import { getLessonId } from "@/adapters/content-mapping";
 
 export default function TopicPage({
     params,
 }: {
-    params: { subject: string; module: string; topic: string };
+    params: Promise<{ subject: string; module: string; topic: string }>;
 }) {
-    const subjectSlug = params.subject;
-    const moduleSlug = params.module;
-    const topicSlug = params.topic;
+    const { subject: subjectSlug, module: moduleSlug, topic: topicSlug } = use(params);
+    const _router = useRouter();
 
     const [content, setContent] = useState<ParsedContent | null>(null);
     const [loading, setLoading] = useState(true);
@@ -27,10 +29,15 @@ export default function TopicPage({
     const [isAnswerChecked, setIsAnswerChecked] = useState(false);
     const [quizIndex, setQuizIndex] = useState(0);
 
+    const moduleTopics = getTopicsByModule(moduleSlug);
+    const currentTopicIndex = moduleTopics.findIndex((t: { slug: string }) => t.slug === topicSlug);
+    const nextTopic = moduleTopics[currentTopicIndex + 1];
+    const _prevTopic = moduleTopics[currentTopicIndex - 1];
+
     const { runCode, isReady: isPyodideReady, isRunning, output } = usePyodide();
 
     useEffect(() => {
-        fetch(`/api/content?subject=${subjectSlug}&module=${moduleSlug}`)
+        fetch(`/api/content?subject=${subjectSlug}&module=${moduleSlug}&topic=${topicSlug}`)
             .then((res) => {
                 if (!res.ok) throw new Error("Content not found");
                 return res.json();
@@ -46,7 +53,7 @@ export default function TopicPage({
                 setError(err.message);
                 setLoading(false);
             });
-    }, [subjectSlug, moduleSlug]);
+    }, [subjectSlug, moduleSlug, topicSlug]);
 
     const handleRunCode = async () => {
         runCode(code);
@@ -54,7 +61,11 @@ export default function TopicPage({
 
     const handleFinishTopic = async () => {
         try {
-            await fetch(`/api/content/progress/${moduleSlug}/${topicSlug}`, {
+            // Resolve module slug to lessonId (s1m1 format) for backend compatibility
+            const lessonId = getLessonId(subjectSlug, moduleSlug) || moduleSlug;
+
+            // Use apiFetch to automatically include auth token
+            await apiFetch(`/curriculum/progress/${lessonId}/${topicSlug}`, {
                 method: "POST"
             });
         } catch (e) {
@@ -64,7 +75,7 @@ export default function TopicPage({
 
     const handleCheckAnswer = () => {
         setIsAnswerChecked(true);
-        // If it's the last question, automatically trigger progress update
+        // If it's the last question, trigger progress update but DON'T auto-redirect
         if (content && quizIndex === content.quiz.length - 1) {
             handleFinishTopic();
         }
@@ -102,9 +113,9 @@ export default function TopicPage({
         );
     }
 
-    // Get theory paragraphs (filter out headings for main content)
-    const theoryParagraphs = content.sections.filter((s: any) => s.type === "paragraph").slice(0, 3);
-    const headings = content.sections.filter((s: any) => s.type === "heading");
+    // Get theory paragraphs
+    const theoryParagraphs = content.sections.filter((s: { type: string; content: string }) => s.type === "paragraph");
+    const headings = content.sections.filter((s: { type: string; content: string }) => s.type === "heading");
 
     const currentQuiz = content.quiz[quizIndex];
     const isStructuredQuiz = typeof currentQuiz !== "string";
@@ -129,17 +140,19 @@ export default function TopicPage({
                         {content.title || topicSlug.replace(/-/g, " ")}
                     </h1>
                     <p className="text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed">
-                        {theoryParagraphs[0]?.content.slice(0, 200) || "Explore this topic with interactive examples and hands-on code."}...
+                        {theoryParagraphs[0]?.content.replace(/\$\$.*?\$\$/g, '').slice(0, 200) || "Explore this topic with interactive examples and hands-on code."}...
                     </p>
                     <div className="pt-8 flex justify-center gap-4">
                         <div className="flex items-center gap-2 text-sm text-muted">
-                            <span className="material-symbols-outlined text-lg">timer</span> 15 min
+                            <span className="material-symbols-outlined text-lg">timer</span>
+                            {content._raw && content._raw.topics.length > 0 ? Math.round((content._raw.meta.estimatedHours * 60) / content._raw.topics.length) : "15"} min
                         </div>
                         <div className="flex items-center gap-2 text-sm text-muted">
                             <span className="material-symbols-outlined text-lg">code</span> Python
                         </div>
                         <div className="flex items-center gap-2 text-sm text-muted">
-                            <span className="material-symbols-outlined text-lg">signal_cellular_alt</span> Beginner
+                            <span className="material-symbols-outlined text-lg">signal_cellular_alt</span>
+                            {content._raw?.meta.level || "Beginner"}
                         </div>
                     </div>
                 </div>
@@ -182,7 +195,7 @@ export default function TopicPage({
                             <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" />
                             {/* Visual representation of data concept */}
                             <div className="w-full h-full p-2 flex flex-col items-center justify-center gap-4">
-                                <Visualizer module={moduleSlug} type={content.visualSuggestions?.[0] || ""} />
+                                <Visualizer module={moduleSlug} topicTitle={content.title} />
                             </div>
                         </div>
                         <p className="text-center text-xs text-muted font-mono pt-2">Fig 1.1: {content.title || "Data Distribution"} Visualization</p>
@@ -345,9 +358,12 @@ export default function TopicPage({
                                             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 text-white text-[10px] px-2 py-1 rounded backdrop-blur">
                                                 Matplotlib Output
                                             </div>
-                                            <img
+                                            <Image
                                                 src={`data:image/png;base64,${output.image}`}
                                                 alt="Plot"
+                                                width={600}
+                                                height={400}
+                                                unoptimized
                                                 className="w-full h-auto"
                                             />
                                         </div>
@@ -452,12 +468,23 @@ export default function TopicPage({
                                             Next Question
                                         </button>
                                     ) : (
-                                        <Link
-                                            href={`/learn/${subjectSlug}/${moduleSlug}`}
-                                            className="px-6 py-2.5 bg-emerald-600 text-white font-bold text-sm rounded-lg hover:bg-emerald-500 hover:scale-105 transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]"
-                                        >
-                                            Finish Module
-                                        </Link>
+                                        <div className="flex gap-4">
+                                            {nextTopic ? (
+                                                <Link
+                                                    href={`/learn/${subjectSlug}/${moduleSlug}/${nextTopic.slug}`}
+                                                    className="px-6 py-2.5 bg-primary text-black font-bold text-sm rounded-lg hover:opacity-90 hover:scale-105 transition-all shadow-[0_0_15px_rgba(212,212,212,0.2)]"
+                                                >
+                                                    Next Topic: {nextTopic.title}
+                                                </Link>
+                                            ) : (
+                                                <Link
+                                                    href={`/learn/${subjectSlug}`}
+                                                    className="px-6 py-2.5 bg-emerald-600 text-white font-bold text-sm rounded-lg hover:bg-emerald-500 hover:scale-105 transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                                                >
+                                                    Finish Module
+                                                </Link>
+                                            )}
+                                        </div>
                                     )
                                 ) : (
                                     <button

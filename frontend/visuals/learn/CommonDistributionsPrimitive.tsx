@@ -19,7 +19,7 @@ const COLORS: Record<DistType, string> = {
 };
 
 // ─── Math Helpers ──────────────────────────────────────────────────────────
-function factorial(n: number): number {
+function _factorial(n: number): number {
     if (n <= 1) return 1;
     let res = 1;
     for (let i = 2; i <= n; i++) res *= i;
@@ -101,7 +101,7 @@ export default function CommonDistributionsPrimitive() {
         const distsToDraw: DistType[] = overlayAll ? ['normal', 'binomial', 'poisson', 'uniform'] : [activeDist];
 
         // Determine Axis Ranges
-        let xMin = -5, xMax = 5, yMax = 0.5;
+        let xMin = -5, xMax = 5; const yMax = 0.5;
 
         if (overlayAll || activeDist === 'binomial' || activeDist === 'poisson') {
             xMax = Math.max(10, params.nBinom, params.lambda * 2.5);
@@ -156,7 +156,7 @@ export default function CommonDistributionsPrimitive() {
                 for (let i = 0; i <= 200; i++) {
                     const x = xMin + (i / 200) * xSpan;
                     const y = normalPDF(x, params.mu, params.sigma);
-                    i === 0 ? ctx.moveTo(toCX(x), toCY(y)) : ctx.lineTo(toCX(x), toCY(y));
+                    if (i === 0) { ctx.moveTo(toCX(x), toCY(y)); } else { ctx.lineTo(toCX(x), toCY(y)); }
                 }
                 ctx.stroke();
                 if (!overlayAll) {
@@ -177,7 +177,7 @@ export default function CommonDistributionsPrimitive() {
                     ctx.globalAlpha = 1;
                 }
             } else if (d === 'poisson') {
-                const barW = Math.max(2, (CW / xSpan) * 0.4);
+                const _barW = Math.max(2, (CW / xSpan) * 0.4);
                 for (let k = 0; k <= xMax; k++) {
                     const y = poissonPMF(k, params.lambda);
                     const cx = toCX(k);

@@ -5,8 +5,8 @@ import React, { useState } from "react";
 export const MetricsVisualizer = () => {
     const [tp, setTp] = useState(45);
     const [fp, setFp] = useState(10);
-    const [fn, setFn] = useState(5);
-    const [tn, setTn] = useState(40);
+    const [fn, _setFn] = useState(5);
+    const [tn, _setTn] = useState(40);
 
     const total = tp + fp + fn + tn;
     const accuracy = (tp + tn) / total;
@@ -38,28 +38,28 @@ export const MetricsVisualizer = () => {
                 </div>
 
                 {/* Cells */}
-                <div 
+                <div
                     className="rounded border border-white/5 flex flex-col items-center justify-center p-2 transition-all"
                     style={{ backgroundColor: `rgba(212, 212, 212, ${getIntensity(tn) / 500})` }}
                 >
                     <span className="text-[8px] text-muted/50">TN</span>
                     <span className="text-sm font-bold">{tn}</span>
                 </div>
-                <div 
+                <div
                     className="rounded border border-rose-500/20 flex flex-col items-center justify-center p-2 transition-all"
                     style={{ backgroundColor: `rgba(244, 63, 94, ${getIntensity(fp) / 500})` }}
                 >
                     <span className="text-[8px] text-rose-400/50">FP</span>
                     <span className="text-sm font-bold text-rose-400">{fp}</span>
                 </div>
-                <div 
+                <div
                     className="rounded border border-rose-500/20 flex flex-col items-center justify-center p-2 transition-all"
                     style={{ backgroundColor: `rgba(244, 63, 94, ${getIntensity(fn) / 500})` }}
                 >
                     <span className="text-[8px] text-rose-400/50">FN</span>
                     <span className="text-sm font-bold text-rose-400">{fn}</span>
                 </div>
-                <div 
+                <div
                     className="rounded border border-primary/20 flex flex-col items-center justify-center p-2 transition-all"
                     style={{ backgroundColor: `rgba(212, 212, 212, ${getIntensity(tp) / 300})` }}
                 >

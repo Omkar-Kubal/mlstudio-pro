@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion } from "framer-motion";
 
 // ─── Constants & Types ───────────────────────────────────────────────────────
 const CW = 720, CH = 460;
@@ -9,7 +8,7 @@ const SCALE = 60;
 
 // ─── Component ──────────────────────────────────────────────────────────────
 export default function LinearIndependencePrimitive() {
-    const [v1, setV1] = useState({ x: 2, y: 1 });
+    const [v1, _setV1] = useState({ x: 2, y: 1 });
     const [v2Angle, setV2Angle] = useState(45);
     const [v2Mag, setV2Mag] = useState(2);
 
@@ -151,7 +150,7 @@ export default function LinearIndependencePrimitive() {
         // Origin
         ctx.fillStyle = "white";
         ctx.beginPath(); ctx.arc(OX, OY, 4, 0, Math.PI * 2); ctx.fill();
-    }, [v1, v2, isIndependent]);
+    }, [v1, v2, isIndependent]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         draw();

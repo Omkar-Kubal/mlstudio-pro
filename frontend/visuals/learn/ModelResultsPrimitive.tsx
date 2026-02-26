@@ -111,7 +111,7 @@ function drawScatter(
 interface Props { config?: ModelResultsConfig; }
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function ModelResultsPrimitive({ config }: Props) {
+export default function ModelResultsPrimitive({ config: _config }: Props) {
     const goodRef = useRef<HTMLCanvasElement>(null);
     const poorRef = useRef<HTMLCanvasElement>(null);
 

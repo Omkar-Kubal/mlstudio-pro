@@ -21,7 +21,7 @@ interface Props {
  * Behavior is identical to original pilots - this is a refactor only.
  */
 export default function ParameterSensitivityPrimitive({ config }: Props) {
-    const { slider, axis, mode, data, metrics, caption } = config;
+    const { slider, axis, mode, data, metrics, caption: _caption } = config;
 
     // Slider state
     const [paramValue, setParamValue] = useState(slider.initial);

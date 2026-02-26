@@ -1,0 +1,9 @@
+﻿
+D:\mlstudio-pro\frontend\visuals\learn\MissingDataPrimitive.tsx
+  48:8  warning  React Hook useEffect has a missing dependency: 'getPts'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\mlstudio-pro\frontend\visuals\learn\ProbabilityDistributionsPrimitive.tsx
+  293:8  warning  React Hook useMemo has unnecessary dependencies: 'bins' and 'totalDropped'. Either exclude them or remove the dependency array  react-hooks/exhaustive-deps
+
+Γ£û 2 problems (0 errors, 2 warnings)
+

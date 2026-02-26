@@ -20,7 +20,7 @@ const EXIT_COLOR = "#f472b6";
 const ERROR_COLOR = "#f87171";
 
 // ─── Component ─────────────────────────────────────────────────────────────────
-export default function ContextManagersPrimitive({ config }: Props) {
+export default function ContextManagersPrimitive({ config: _config }: Props) {
     const [ctxKey, setCtxKey] = useState("file");
     const [step, setStep] = useState<Step>("idle");
     const [hasError, setHasError] = useState(false);
