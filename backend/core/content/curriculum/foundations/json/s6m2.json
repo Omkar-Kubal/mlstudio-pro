@@ -14,8 +14,8 @@
       "title": "Vanishing Gradients",
       "theory": [
         "Vanishing gradients occur when gradients become extremely small as they propagate backward, preventing early layers from learning. This was the major bottleneck before modern solutions.",
-        "Chain rule multiplication: Each layer multiplies gradient by W × σ'(z). If these terms are < 1, repeated multiplication → exponentially small values. Through n layers with sigmoid: gradient ∝ (0.25)^n.",
-        "Activation function derivatives cause the problem: Sigmoid max derivative is 0.25, saturated regions have derivative ≈ 0. Early layers receive vanishingly small gradients and barely learn.",
+        "Chain rule multiplication: Each layer multiplies gradient by W \u00d7 \u03c3'(z). If these terms are < 1, repeated multiplication \u2192 exponentially small values. Through n layers with sigmoid: gradient \u221d (0.25)^n.",
+        "Activation function derivatives cause the problem: Sigmoid max derivative is 0.25, saturated regions have derivative \u2248 0. Early layers receive vanishingly small gradients and barely learn.",
         "Solutions: ReLU activation (gradient = 1 for positive inputs), better initialization (Xavier/He), Batch Normalization, Residual connections (skip connections provide gradient highways), LSTM/GRU for sequences."
       ],
       "visualIntuition": [
@@ -32,15 +32,16 @@
           "description": "Simulating gradient flow",
           "content": "import numpy as np\n\ndef simulate_gradient_flow(n_layers, activation='sigmoid'):\n    \"\"\"Simulate gradient magnitude through deep network\"\"\"\n    gradient = np.ones(100)  # Initial gradient from loss\n    magnitudes = []\n    \n    for i in range(n_layers):\n        W = np.random.randn(100, 100) * 0.5\n        \n        # Simulate activation derivative\n        if activation == 'sigmoid':\n            # Max sigmoid derivative is 0.25\n            grad_activation = np.random.uniform(0.1, 0.25, 100)\n        else:  # relu\n            # ReLU derivative is 0 or 1\n            grad_activation = np.random.choice([0, 1], 100, p=[0.3, 0.7])\n        \n        gradient = gradient * grad_activation\n        gradient = np.dot(gradient, W.T[:100, :100])\n        magnitudes.append(np.mean(np.abs(gradient)))\n    \n    return magnitudes\n\n# Compare sigmoid vs ReLU\nsigmoid_grads = simulate_gradient_flow(10, 'sigmoid')\nrelu_grads = simulate_gradient_flow(10, 'relu')\n\nprint(\"Sigmoid gradient magnitudes:\", [f\"{g:.6f}\" for g in sigmoid_grads])\nprint(\"ReLU gradient magnitudes:\", [f\"{g:.6f}\" for g in relu_grads])"
         }
-      ]
+      ],
+      "slug": "vanishing-gradients"
     },
     {
       "title": "Batch Normalization",
       "theory": [
-        "Batch Normalization normalizes inputs to each layer, improving training speed, stability, and performance. Addresses 'internal covariate shift' — distribution of layer inputs changing during training.",
-        "For each mini-batch: compute mean μ and variance σ², normalize x̂ = (x - μ) / √(σ² + ε), then scale and shift with learnable parameters γ and β.",
+        "Batch Normalization normalizes inputs to each layer, improving training speed, stability, and performance. Addresses 'internal covariate shift' \u2014 distribution of layer inputs changing during training.",
+        "For each mini-batch: compute mean \u03bc and variance \u03c3\u00b2, normalize x\u0302 = (x - \u03bc) / \u221a(\u03c3\u00b2 + \u03b5), then scale and shift with learnable parameters \u03b3 and \u03b2.",
         "Why it works: Stabilizes input distributions, allows higher learning rates, acts as regularization (batch statistics add noise), reduces sensitivity to initialization.",
-        "Training uses batch statistics; inference uses running averages collected during training. Batch size matters — very small batches give noisy statistics."
+        "Training uses batch statistics; inference uses running averages collected during training. Batch size matters \u2014 very small batches give noisy statistics."
       ],
       "visualIntuition": [
         "Activation distribution histograms over training iterations. Without BN: distributions shift dramatically. With BN: stable, centered distributions."
@@ -55,7 +56,8 @@
           "description": "Comparing training with and without BatchNorm",
           "content": "from tensorflow import keras\nfrom tensorflow.keras import layers\n\n(X_train, y_train), (X_test, y_test) = keras.datasets.mnist.load_data()\nX_train = X_train.reshape(-1, 784).astype('float32') / 255.0\n\n# Without BatchNorm\nmodel_no_bn = keras.Sequential([\n    layers.Dense(256, activation='relu', input_shape=(784,)),\n    layers.Dense(128, activation='relu'),\n    layers.Dense(10, activation='softmax')\n])\n\n# With BatchNorm\nmodel_with_bn = keras.Sequential([\n    layers.Dense(256, input_shape=(784,)),\n    layers.BatchNormalization(),\n    layers.Activation('relu'),\n    layers.Dense(128),\n    layers.BatchNormalization(),\n    layers.Activation('relu'),\n    layers.Dense(10, activation='softmax')\n])\n\nfor model, name in [(model_no_bn, 'Without BN'), (model_with_bn, 'With BN')]:\n    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])\n    history = model.fit(X_train, y_train, epochs=3, validation_split=0.2, verbose=0)\n    print(f\"{name}: Final val_accuracy = {history.history['val_accuracy'][-1]:.4f}\")"
         }
-      ]
+      ],
+      "slug": "batch-normalization"
     },
     {
       "title": "Weight Initialization",
@@ -78,7 +80,8 @@
           "description": "Weight initialization strategies",
           "content": "from tensorflow.keras import layers, initializers\n\n# Xavier/Glorot initialization (default for Dense)\nxavier_layer = layers.Dense(\n    64, \n    kernel_initializer=initializers.GlorotNormal(),\n    activation='tanh'\n)\n\n# He initialization (for ReLU)\nhe_layer = layers.Dense(\n    64,\n    kernel_initializer=initializers.HeNormal(),\n    activation='relu'\n)\n\nprint(\"Xavier init for tanh/sigmoid\")\nprint(\"He init for ReLU\")"
         }
-      ]
+      ],
+      "slug": "weight-initialization"
     },
     {
       "title": "Advanced Optimizers",
@@ -101,13 +104,14 @@
           "description": "Comparing optimizers",
           "content": "from tensorflow import keras\nfrom tensorflow.keras import layers, optimizers\n\nmodel = keras.Sequential([\n    layers.Dense(128, activation='relu', input_shape=(784,)),\n    layers.Dense(10, activation='softmax')\n])\n\n# Different optimizers\noptimizer_configs = [\n    ('SGD', optimizers.SGD(learning_rate=0.01)),\n    ('SGD+Momentum', optimizers.SGD(learning_rate=0.01, momentum=0.9)),\n    ('Adam', optimizers.Adam(learning_rate=0.001)),\n]\n\nfor name, opt in optimizer_configs:\n    model.compile(optimizer=opt, loss='sparse_categorical_crossentropy', metrics=['accuracy'])\n    print(f\"Optimizer: {name}\")"
         }
-      ]
+      ],
+      "slug": "advanced-optimizers"
     },
     {
       "title": "Regularization Techniques",
       "theory": [
         "Dropout: Randomly zero out neurons during training with probability p. Forces network to learn redundant representations, reduces co-adaptation. Typically p=0.2-0.5.",
-        "L2 Regularization (Weight Decay): Add λΣw² to loss. Penalizes large weights, encouraging smaller, more distributed weights.",
+        "L2 Regularization (Weight Decay): Add \u03bb\u03a3w\u00b2 to loss. Penalizes large weights, encouraging smaller, more distributed weights.",
         "Early Stopping: Stop training when validation loss stops improving. Simple, effective regularization that prevents overfitting to training data.",
         "Data Augmentation: Artificially expand training data through transformations (rotation, flip, crop for images). Improves generalization without more real data."
       ],
@@ -124,16 +128,19 @@
           "description": "Regularization techniques",
           "content": "from tensorflow import keras\nfrom tensorflow.keras import layers, regularizers, callbacks\n\nmodel = keras.Sequential([\n    layers.Dense(128, activation='relu', input_shape=(784,),\n                 kernel_regularizer=regularizers.l2(0.01)),  # L2\n    layers.Dropout(0.3),  # Dropout\n    layers.Dense(64, activation='relu'),\n    layers.Dropout(0.3),\n    layers.Dense(10, activation='softmax')\n])\n\nmodel.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])\n\n# Early stopping\nearly_stop = callbacks.EarlyStopping(\n    monitor='val_loss',\n    patience=3,\n    restore_best_weights=True\n)\n\nprint(\"Model with L2 regularization, Dropout, and Early Stopping\")\nprint(model.summary())"
         }
-      ]
+      ],
+      "slug": "regularization-techniques"
     },
     {
       "title": "Learning Rate Schedulers",
-      "theory": "A fixed learning rate is rarely optimal throughout training. Schedulers dynamically adjust the LR based on epoch count or validation performance.\n\n**Common Schedulers:**\n\n| Scheduler | Strategy | Use Case |\n|---|---|---|\n| StepLR | Decay by γ every N epochs | Simple, predictable |\n| CosineAnnealingLR | Cosine curve from max to min | Smooth, avoids sharp changes |\n| ReduceLROnPlateau | Decay when metric plateaus | Adaptive, validation-driven |\n| OneCycleLR | Warm-up → cool-down in one cycle | Best for super-convergence |\n| CosineAnnealingWarmRestarts | Periodic cosine with restarts | Escape local minima |\n\n**Warm-up:** Start with a tiny LR and linearly increase to the target LR over the first few epochs. Prevents unstable updates when random weights produce large gradients.\n\n**Best practice:** Use OneCycleLR for most tasks — it combines warm-up and annealing in a single policy and often achieves the best results fastest.",
+      "theory": [
+        "A fixed learning rate is rarely optimal throughout training. Schedulers dynamically adjust the LR based on epoch count or validation performance.\n\n**Common Schedulers:**\n\n| Scheduler | Strategy | Use Case |\n|---|---|---|\n| StepLR | Decay by \u03b3 every N epochs | Simple, predictable |\n| CosineAnnealingLR | Cosine curve from max to min | Smooth, avoids sharp changes |\n| ReduceLROnPlateau | Decay when metric plateaus | Adaptive, validation-driven |\n| OneCycleLR | Warm-up \u2192 cool-down in one cycle | Best for super-convergence |\n| CosineAnnealingWarmRestarts | Periodic cosine with restarts | Escape local minima |\n\n**Warm-up:** Start with a tiny LR and linearly increase to the target LR over the first few epochs. Prevents unstable updates when random weights produce large gradients.\n\n**Best practice:** Use OneCycleLR for most tasks \u2014 it combines warm-up and annealing in a single policy and often achieves the best results fastest."
+      ],
       "code": [
         {
-          "title": "LR Schedulers — StepLR, Cosine, OneCycle, ReduceOnPlateau",
           "language": "python",
-          "code": "import torch\nimport torch.nn as nn\nimport torch.optim as optim\nimport matplotlib.pyplot as plt\n\nmodel = nn.Linear(10, 1)\n\n# Track LR for each scheduler\ndef track_lr(scheduler_cls, optimizer_cls, **kwargs):\n    opt = optimizer_cls(model.parameters(), lr=0.1)\n    sched = scheduler_cls(opt, **kwargs)\n    lrs = []\n    for epoch in range(100):\n        lrs.append(opt.param_groups[0]['lr'])\n        opt.step()  # dummy step\n        sched.step()\n    return lrs\n\nopt_cls = optim.SGD\n\n# 1. StepLR: decay by 0.1 every 30 epochs\nlrs_step = track_lr(optim.lr_scheduler.StepLR, opt_cls, step_size=30, gamma=0.1)\n\n# 2. CosineAnnealingLR: smooth cosine decay\nlrs_cos = track_lr(optim.lr_scheduler.CosineAnnealingLR, opt_cls, T_max=100, eta_min=1e-5)\n\n# 3. OneCycleLR: warm-up + cool-down (separate tracking)\nopt = optim.SGD(model.parameters(), lr=0.01)\nsched = optim.lr_scheduler.OneCycleLR(opt, max_lr=0.1, total_steps=100)\nlrs_one = []\nfor i in range(100):\n    lrs_one.append(opt.param_groups[0]['lr'])\n    opt.step(); sched.step()\n\nfig, ax = plt.subplots(figsize=(8, 4))\nax.plot(lrs_step, label='StepLR')\nax.plot(lrs_cos, label='CosineAnnealing')\nax.plot(lrs_one, label='OneCycleLR')\nax.set_xlabel('Epoch'); ax.set_ylabel('Learning Rate')\nax.legend(); ax.set_yscale('log')\nplt.title('LR Scheduler Comparison')\nplt.show()"
+          "description": "LR Schedulers - StepLR, Cosine, OneCycle, ReduceOnPlateau",
+          "content": "import torch\nimport torch.nn as nn\nimport torch.optim as optim\nimport matplotlib.pyplot as plt\n\nmodel = nn.Linear(10, 1)\n\n# Track LR for each scheduler\ndef track_lr(scheduler_cls, optimizer_cls, **kwargs):\n    opt = optimizer_cls(model.parameters(), lr=0.1)\n    sched = scheduler_cls(opt, **kwargs)\n    lrs = []\n    for epoch in range(100):\n        lrs.append(opt.param_groups[0]['lr'])\n        opt.step()  # dummy step\n        sched.step()\n    return lrs\n\nopt_cls = optim.SGD\n\n# 1. StepLR: decay by 0.1 every 30 epochs\nlrs_step = track_lr(optim.lr_scheduler.StepLR, opt_cls, step_size=30, gamma=0.1)\n\n# 2. CosineAnnealingLR: smooth cosine decay\nlrs_cos = track_lr(optim.lr_scheduler.CosineAnnealingLR, opt_cls, T_max=100, eta_min=1e-5)\n\n# 3. OneCycleLR: warm-up + cool-down (separate tracking)\nopt = optim.SGD(model.parameters(), lr=0.01)\nsched = optim.lr_scheduler.OneCycleLR(opt, max_lr=0.1, total_steps=100)\nlrs_one = []\nfor i in range(100):\n    lrs_one.append(opt.param_groups[0]['lr'])\n    opt.step(); sched.step()\n\nfig, ax = plt.subplots(figsize=(8, 4))\nax.plot(lrs_step, label='StepLR')\nax.plot(lrs_cos, label='CosineAnnealing')\nax.plot(lrs_one, label='OneCycleLR')\nax.set_xlabel('Epoch'); ax.set_ylabel('Learning Rate')\nax.legend(); ax.set_yscale('log')\nplt.title('LR Scheduler Comparison')\nplt.show()"
         }
       ],
       "visualSuggestions": [
@@ -141,17 +148,20 @@
         "Loss landscape with LR path overlay showing trajectory"
       ],
       "visualIntuition": [
-        "A learning rate scheduler is like driving a car toward a parking spot. You start fast on the highway (high LR), then slow down in the parking lot (decay), and inch forward for the final alignment (low LR). OneCycleLR even warms up first — like gradually accelerating from a stop."
-      ]
+        "A learning rate scheduler is like driving a car toward a parking spot. You start fast on the highway (high LR), then slow down in the parking lot (decay), and inch forward for the final alignment (low LR). OneCycleLR even warms up first \u2014 like gradually accelerating from a stop."
+      ],
+      "slug": "learning-rate-schedulers"
     },
     {
       "title": "Gradient Clipping",
-      "theory": "Gradient clipping prevents **exploding gradients** by capping the gradient norm or value before updating weights. Essential for RNNs, Transformers, and deep networks.\n\n**Two approaches:**\n\n**1. Gradient Norm Clipping (clip_grad_norm_):**\n- If ||g|| > max_norm: g ← g × (max_norm / ||g||)\n- Preserves gradient direction, only reduces magnitude\n- Most common approach. Typical max_norm = 1.0\n\n**2. Gradient Value Clipping (clip_grad_value_):**\n- Clamps each gradient element to [-clip_value, +clip_value]\n- Changes gradient direction (each dimension clipped independently)\n- Less common, can distort optimization\n\n**Monitoring:** Track gradient norms over training. If they spike or diverge, increase clipping.",
+      "theory": [
+        "Gradient clipping prevents **exploding gradients** by capping the gradient norm or value before updating weights. Essential for RNNs, Transformers, and deep networks.\n\n**Two approaches:**\n\n**1. Gradient Norm Clipping (clip_grad_norm_):**\n- If ||g|| > max_norm: g \u2190 g \u00d7 (max_norm / ||g||)\n- Preserves gradient direction, only reduces magnitude\n- Most common approach. Typical max_norm = 1.0\n\n**2. Gradient Value Clipping (clip_grad_value_):**\n- Clamps each gradient element to [-clip_value, +clip_value]\n- Changes gradient direction (each dimension clipped independently)\n- Less common, can distort optimization\n\n**Monitoring:** Track gradient norms over training. If they spike or diverge, increase clipping."
+      ],
       "code": [
         {
-          "title": "Gradient Clipping — Norm and Value Clipping",
           "language": "python",
-          "code": "import torch\nimport torch.nn as nn\n\nmodel = nn.Sequential(nn.Linear(100, 64), nn.ReLU(), nn.Linear(64, 10))\noptimizer = torch.optim.Adam(model.parameters(), lr=1e-3)\ncriterion = nn.CrossEntropyLoss()\n\n# Simulate one training step\nx = torch.randn(32, 100)\ny = torch.randint(0, 10, (32,))\nloss = criterion(model(x), y)\nloss.backward()\n\n# Check gradient norm BEFORE clipping\ntotal_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=float('inf'))\nprint(f'Gradient norm before clip: {total_norm:.4f}')\n\n# Method 1: Norm clipping (preserves direction)\nloss.backward()  # recompute\nclipped_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)\nprint(f'After norm clip: {clipped_norm:.4f}')\n\n# Method 2: Value clipping (caps each value)\nloss.backward()\ntorch.nn.utils.clip_grad_value_(model.parameters(), clip_value=0.5)\n\n# In a training loop:\nfor epoch in range(3):\n    x = torch.randn(32, 100); y = torch.randint(0, 10, (32,))\n    optimizer.zero_grad()\n    loss = criterion(model(x), y)\n    loss.backward()\n    grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)\n    optimizer.step()\n    print(f'Epoch {epoch}: loss={loss.item():.4f}  grad_norm={grad_norm:.4f}')"
+          "description": "Gradient Clipping - Norm and Value Clipping",
+          "content": "import torch\nimport torch.nn as nn\n\nmodel = nn.Sequential(nn.Linear(100, 64), nn.ReLU(), nn.Linear(64, 10))\noptimizer = torch.optim.Adam(model.parameters(), lr=1e-3)\ncriterion = nn.CrossEntropyLoss()\n\n# Simulate one training step\nx = torch.randn(32, 100)\ny = torch.randint(0, 10, (32,))\nloss = criterion(model(x), y)\nloss.backward()\n\n# Check gradient norm BEFORE clipping\ntotal_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=float('inf'))\nprint(f'Gradient norm before clip: {total_norm:.4f}')\n\n# Method 1: Norm clipping (preserves direction)\nloss.backward()  # recompute\nclipped_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)\nprint(f'After norm clip: {clipped_norm:.4f}')\n\n# Method 2: Value clipping (caps each value)\nloss.backward()\ntorch.nn.utils.clip_grad_value_(model.parameters(), clip_value=0.5)\n\n# In a training loop:\nfor epoch in range(3):\n    x = torch.randn(32, 100); y = torch.randint(0, 10, (32,))\n    optimizer.zero_grad()\n    loss = criterion(model(x), y)\n    loss.backward()\n    grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)\n    optimizer.step()\n    print(f'Epoch {epoch}: loss={loss.item():.4f}  grad_norm={grad_norm:.4f}')"
         }
       ],
       "visualSuggestions": [
@@ -160,7 +170,8 @@
       ],
       "visualIntuition": [
         "Gradient clipping is like a speed governor on a car. Without it, gradients can 'floor it' and crash the training. The governor caps the speed (gradient magnitude) while still letting you steer in the right direction."
-      ]
+      ],
+      "slug": "gradient-clipping"
     }
   ],
   "quiz": [
@@ -210,7 +221,7 @@
         "It keeps the LR constant"
       ],
       "correctAnswer": 1,
-      "explanation": "OneCycleLR warms up the learning rate from a small value to a maximum, then anneals it back down — all in one training run. This helps escape saddle points early and converge precisely later."
+      "explanation": "OneCycleLR warms up the learning rate from a small value to a maximum, then anneals it back down \u2014 all in one training run. This helps escape saddle points early and converge precisely later."
     },
     {
       "id": "q5",

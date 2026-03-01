@@ -60,3 +60,8 @@ brain/
 
 # Runtime reports
 reports/
+
+# Sensitive and Temporary Files
+mlstudio-pro-firebase-adminsdk-fbsvc-*.json
+tmp/
+test_supabase.py

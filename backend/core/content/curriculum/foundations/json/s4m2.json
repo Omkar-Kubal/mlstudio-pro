@@ -7,7 +7,7 @@
   },
   "overview": [
     "Classification is the task of assigning inputs to discrete categories. Fundamentally, classification is about regions in space, not labels. Each classifier learns: 'Which region of input space belongs to which class?'",
-    "A classifier does not say what something is — it says which side of a boundary it falls on. Models compute scores that are converted into class decisions."
+    "A classifier does not say what something is \u2014 it says which side of a boundary it falls on. Models compute scores that are converted into class decisions."
   ],
   "topics": [
     {
@@ -29,17 +29,18 @@
           "description": "Creating classification data",
           "content": "from sklearn.datasets import make_classification\n\nX, y = make_classification(\n    n_samples=300,\n    n_features=2,\n    n_redundant=0,\n    n_informative=2,\n    n_clusters_per_class=1,\n    random_state=42\n)"
         }
-      ]
+      ],
+      "slug": "decision-boundaries"
     },
     {
       "title": "Logistic Regression",
       "theory": [
-        "Despite the name, logistic regression is a linear classifier, not a regression model. Process: Linear combination z = w^T x + b, sigmoid squashes z into probability, threshold → class label.",
-        "Sigmoid: σ(z) = 1/(1 + e^(-z)). Maps any real number to (0, 1). Assumes classes are linearly separable and log-odds are linear in features.",
-        "Softmax generalizes logistic regression to multiple classes. Classes compete — increasing one probability lowers others. P(y=k) = e^(z_k) / Σ e^(z_j)."
+        "Despite the name, logistic regression is a linear classifier, not a regression model. Process: Linear combination z = w^T x + b, sigmoid squashes z into probability, threshold \u2192 class label.",
+        "Sigmoid: \u03c3(z) = 1/(1 + e^(-z)). Maps any real number to (0, 1). Assumes classes are linearly separable and log-odds are linear in features.",
+        "Softmax generalizes logistic regression to multiple classes. Classes compete \u2014 increasing one probability lowers others. P(y=k) = e^(z_k) / \u03a3 e^(z_j)."
       ],
       "visualIntuition": [
-        "Linear decision boundary with probability gradient (0→1). Sigmoid curve shown separately. Threshold slider shows how predictions change."
+        "Linear decision boundary with probability gradient (0\u21921). Sigmoid curve shown separately. Threshold slider shows how predictions change."
       ],
       "visualSuggestions": [
         "Probability heatmap overlay on scatter plot",
@@ -51,13 +52,14 @@
           "description": "Logistic regression",
           "content": "from sklearn.linear_model import LogisticRegression\n\nmodel = LogisticRegression()\nmodel.fit(X, y)\n\ny_pred = model.predict(X)\ny_prob = model.predict_proba(X)[:, 1]\n\nprint(\"Predictions:\", y_pred[:5])\nprint(\"Probabilities:\", y_prob[:5])"
         }
-      ]
+      ],
+      "slug": "logistic-regression"
     },
     {
       "title": "Cross-Entropy Loss",
       "theory": [
-        "Cross-entropy measures confidence-weighted error. If model is confident and wrong → large penalty. If unsure → smaller penalty.",
-        "Binary cross-entropy: L = -[y·log(p) + (1-y)·log(1-p)]. Wrong confident predictions spike loss dramatically. This is why models learn to be calibrated."
+        "Cross-entropy measures confidence-weighted error. If model is confident and wrong \u2192 large penalty. If unsure \u2192 smaller penalty.",
+        "Binary cross-entropy: L = -[y\u00b7log(p) + (1-y)\u00b7log(1-p)]. Wrong confident predictions spike loss dramatically. This is why models learn to be calibrated."
       ],
       "visualIntuition": [
         "Loss curve vs probability showing spike near 0 or 1 when prediction is wrong."
@@ -71,13 +73,14 @@
           "description": "Cross-entropy loss computation",
           "content": "import numpy as np\n\ndef cross_entropy(y_true, y_prob):\n    epsilon = 1e-15  # Avoid log(0)\n    y_prob = np.clip(y_prob, epsilon, 1 - epsilon)\n    return -np.mean(y_true * np.log(y_prob) + (1 - y_true) * np.log(1 - y_prob))\n\ny_true = np.array([1, 0, 1, 1])\ny_prob = np.array([0.9, 0.1, 0.8, 0.7])\n\nprint(\"Cross-entropy loss:\", cross_entropy(y_true, y_prob))"
         }
-      ]
+      ],
+      "slug": "cross-entropy-loss"
     },
     {
       "title": "KNN, Naive Bayes, and Decision Trees",
       "theory": [
-        "KNN classifies by local majority vote. No training — stores data, measures distance. Prediction = most common class among k neighbors. Small k = complex boundary, large k = smooth boundary.",
-        "Naive Bayes applies Bayes' Theorem with independence assumption: P(y|x) ∝ P(y)·Π P(x_i|y). 'Naive' because it assumes feature independence — often false but still works well for text.",
+        "KNN classifies by local majority vote. No training \u2014 stores data, measures distance. Prediction = most common class among k neighbors. Small k = complex boundary, large k = smooth boundary.",
+        "Naive Bayes applies Bayes' Theorem with independence assumption: P(y|x) \u221d P(y)\u00b7\u03a0 P(x_i|y). 'Naive' because it assumes feature independence \u2014 often false but still works well for text.",
         "Decision Trees ask yes/no questions, partition space into rectangles, predict majority class. Easy to interpret but prone to overfitting when grown deep."
       ],
       "visualIntuition": [
@@ -93,14 +96,15 @@
           "description": "KNN, Naive Bayes, Decision Tree classifiers",
           "content": "from sklearn.neighbors import KNeighborsClassifier\nfrom sklearn.naive_bayes import GaussianNB\nfrom sklearn.tree import DecisionTreeClassifier\n\n# KNN\nknn = KNeighborsClassifier(n_neighbors=5)\nknn.fit(X, y)\n\n# Naive Bayes\nnb = GaussianNB()\nnb.fit(X, y)\n\n# Decision Tree\ntree = DecisionTreeClassifier(max_depth=3)\ntree.fit(X, y)\n\nprint(\"KNN accuracy:\", knn.score(X, y))\nprint(\"Naive Bayes accuracy:\", nb.score(X, y))\nprint(\"Tree accuracy:\", tree.score(X, y))"
         }
-      ]
+      ],
+      "slug": "knn-naive-bayes-and-decision-trees"
     },
     {
       "title": "Ensemble Classifiers",
       "theory": [
         "Random Forest: Many trees with bootstrapped data and random feature subsets. Prediction = majority vote. Reduces variance while maintaining low bias.",
         "Gradient Boosting: Learns sequentially, each model corrects previous errors. Focuses on hard samples. High accuracy but can overfit.",
-        "SVM (Support Vector Machine) finds the maximum-margin boundary — the safest boundary is farthest from all points. Kernel trick allows non-linear boundaries without explicit feature expansion."
+        "SVM (Support Vector Machine) finds the maximum-margin boundary \u2014 the safest boundary is farthest from all points. Kernel trick allows non-linear boundaries without explicit feature expansion."
       ],
       "visualIntuition": [
         "Random Forest: individual trees disagree, final decision stabilizes. SVM: margin bands with support vectors highlighted."
@@ -115,13 +119,14 @@
           "description": "Ensemble classifiers",
           "content": "from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier\nfrom sklearn.svm import SVC\n\n# Random Forest\nrf = RandomForestClassifier(n_estimators=100)\nrf.fit(X, y)\n\n# Gradient Boosting\ngb = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1)\ngb.fit(X, y)\n\n# SVM with RBF kernel\nsvm = SVC(kernel='rbf', gamma=0.5)\nsvm.fit(X, y)\n\nprint(\"Random Forest accuracy:\", rf.score(X, y))\nprint(\"Gradient Boosting accuracy:\", gb.score(X, y))\nprint(\"SVM accuracy:\", svm.score(X, y))"
         }
-      ]
+      ],
+      "slug": "ensemble-classifiers"
     },
     {
       "title": "Imbalanced Datasets and Threshold Tuning",
       "theory": [
         "Accuracy fails when classes are imbalanced. Important metrics: Precision (positive predictive value), Recall (sensitivity), F1 (harmonic mean), ROC-AUC.",
-        "Classification ≠ fixed threshold. Threshold controls precision vs recall trade-off and business decisions. Moving threshold changes false positive/negative rates.",
+        "Classification \u2260 fixed threshold. Threshold controls precision vs recall trade-off and business decisions. Moving threshold changes false positive/negative rates.",
         "Strategies for imbalance: resampling (over/undersampling), class weights, SMOTE, focal loss. Choose based on problem and cost of errors."
       ],
       "visualIntuition": [
@@ -137,16 +142,19 @@
           "description": "Handling imbalanced data and threshold tuning",
           "content": "from sklearn.metrics import classification_report, roc_curve, precision_recall_curve\nimport numpy as np\n\n# Get probabilities\ny_prob = rf.predict_proba(X)[:, 1]\n\n# Custom threshold\nthreshold = 0.3\ny_custom = (y_prob > threshold).astype(int)\n\nprint(classification_report(y, y_custom))\n\n# ROC curve points\nfpr, tpr, thresholds = roc_curve(y, y_prob)\nprint(f\"TPR at threshold 0.5: {tpr[np.argmin(np.abs(thresholds - 0.5))]}\")"
         }
-      ]
+      ],
+      "slug": "imbalanced-datasets-and-threshold-tuning"
     },
     {
       "title": "Multi-label Classification",
-      "theory": "In multi-label classification, each sample can belong to **multiple classes simultaneously** (e.g., an article tagged 'sports' AND 'politics').\n\n**Approaches:**\n- **MultiOutputClassifier:** Trains one independent model per label. Simple but ignores label correlations.\n- **ClassifierChain:** Each model in the chain receives previous predictions as features, capturing label dependencies.\n\n**Key metrics:**\n- **Hamming Loss:** Fraction of wrong label predictions (lower = better)\n- **Jaccard Score:** Intersection over Union of predicted vs true labels\n- **F1 (micro/macro/samples):** Micro pools all labels; macro averages per-label F1; samples averages per-sample F1",
+      "theory": [
+        "In multi-label classification, each sample can belong to **multiple classes simultaneously** (e.g., an article tagged 'sports' AND 'politics').\n\n**Approaches:**\n- **MultiOutputClassifier:** Trains one independent model per label. Simple but ignores label correlations.\n- **ClassifierChain:** Each model in the chain receives previous predictions as features, capturing label dependencies.\n\n**Key metrics:**\n- **Hamming Loss:** Fraction of wrong label predictions (lower = better)\n- **Jaccard Score:** Intersection over Union of predicted vs true labels\n- **F1 (micro/macro/samples):** Micro pools all labels; macro averages per-label F1; samples averages per-sample F1"
+      ],
       "code": [
         {
-          "title": "Multi-label Classification with ClassifierChain",
           "language": "python",
-          "code": "from sklearn.multioutput import MultiOutputClassifier, ClassifierChain\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.datasets import make_multilabel_classification\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import hamming_loss, jaccard_score, f1_score\nimport numpy as np\n\nX, y = make_multilabel_classification(\n    n_samples=1000, n_features=20,\n    n_classes=5, n_labels=2, random_state=42)\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# MultiOutputClassifier: one model per label\nmo = MultiOutputClassifier(RandomForestClassifier(n_estimators=100, random_state=42), n_jobs=-1)\nmo.fit(X_train, y_train)\ny_pred = mo.predict(X_test)\n\nprint(f'Hamming Loss: {hamming_loss(y_test, y_pred):.4f}')\nprint(f'Jaccard (samples): {jaccard_score(y_test, y_pred, average=\"samples\"):.4f}')\nprint(f'F1 (micro): {f1_score(y_test, y_pred, average=\"micro\"):.4f}')\nprint(f'F1 (macro): {f1_score(y_test, y_pred, average=\"macro\"):.4f}')\n\n# ClassifierChain: models label dependencies\nchain = ClassifierChain(LogisticRegression(max_iter=1000), order='random', random_state=42)\nchain.fit(X_train, y_train)\ny_pred_chain = chain.predict(X_test)\nprint(f'Chain F1 (micro): {f1_score(y_test, y_pred_chain, average=\"micro\"):.4f}')"
+          "description": "Multi-label Classification with ClassifierChain",
+          "content": "from sklearn.multioutput import MultiOutputClassifier, ClassifierChain\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.datasets import make_multilabel_classification\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import hamming_loss, jaccard_score, f1_score\nimport numpy as np\n\nX, y = make_multilabel_classification(\n    n_samples=1000, n_features=20,\n    n_classes=5, n_labels=2, random_state=42)\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# MultiOutputClassifier: one model per label\nmo = MultiOutputClassifier(RandomForestClassifier(n_estimators=100, random_state=42), n_jobs=-1)\nmo.fit(X_train, y_train)\ny_pred = mo.predict(X_test)\n\nprint(f'Hamming Loss: {hamming_loss(y_test, y_pred):.4f}')\nprint(f'Jaccard (samples): {jaccard_score(y_test, y_pred, average=\"samples\"):.4f}')\nprint(f'F1 (micro): {f1_score(y_test, y_pred, average=\"micro\"):.4f}')\nprint(f'F1 (macro): {f1_score(y_test, y_pred, average=\"macro\"):.4f}')\n\n# ClassifierChain: models label dependencies\nchain = ClassifierChain(LogisticRegression(max_iter=1000), order='random', random_state=42)\nchain.fit(X_train, y_train)\ny_pred_chain = chain.predict(X_test)\nprint(f'Chain F1 (micro): {f1_score(y_test, y_pred_chain, average=\"micro\"):.4f}')"
         }
       ],
       "visualSuggestions": [
@@ -155,16 +163,19 @@
       ],
       "visualIntuition": [
         "Multi-label is like sorting books in a library where each book can sit on multiple shelves. A biology textbook might go on both 'Science' and 'Education' shelves. ClassifierChain is like asking: 'Is it Science?' first, then 'Given that it's Science, is it also Education?'"
-      ]
+      ],
+      "slug": "multi-label-classification"
     },
     {
       "title": "Probability Calibration",
-      "theory": "Well-calibrated probabilities mean: among samples where the model says P=0.7, approximately 70% should actually be positive.\n\n**Why it matters:** SVMs and some tree models produce poorly calibrated probabilities. Calibration is essential for risk-sensitive applications (medical, financial).\n\n**Methods:**\n- **Sigmoid (Platt scaling):** Fits a logistic regression on model outputs. Good for small datasets, monotone.\n- **Isotonic regression:** Non-parametric. More flexible but needs more data (>1000 samples).\n\n**CalibratedClassifierCV** uses cross-validation internally to prevent calibration leakage.\n\n**Expected Calibration Error (ECE):** Measures average gap between predicted probability and observed frequency across bins. Lower = better.\n\n| BS | Quality |\n|---|---|\n| < 0.05 | Excellent |\n| < 0.10 | Good |\n| ≈ 0.25 | Baseline (mean prediction) |\n| > 0.25 | Anti-calibrated |",
+      "theory": [
+        "Well-calibrated probabilities mean: among samples where the model says P=0.7, approximately 70% should actually be positive.\n\n**Why it matters:** SVMs and some tree models produce poorly calibrated probabilities. Calibration is essential for risk-sensitive applications (medical, financial).\n\n**Methods:**\n- **Sigmoid (Platt scaling):** Fits a logistic regression on model outputs. Good for small datasets, monotone.\n- **Isotonic regression:** Non-parametric. More flexible but needs more data (>1000 samples).\n\n**CalibratedClassifierCV** uses cross-validation internally to prevent calibration leakage.\n\n**Expected Calibration Error (ECE):** Measures average gap between predicted probability and observed frequency across bins. Lower = better.\n\n| BS | Quality |\n|---|---|\n| < 0.05 | Excellent |\n| < 0.10 | Good |\n| \u2248 0.25 | Baseline (mean prediction) |\n| > 0.25 | Anti-calibrated |"
+      ],
       "code": [
         {
-          "title": "Probability Calibration with Reliability Diagram",
           "language": "python",
-          "code": "from sklearn.svm import SVC\nfrom sklearn.calibration import CalibratedClassifierCV, calibration_curve\nfrom sklearn.datasets import make_classification\nfrom sklearn.model_selection import train_test_split\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nX, y = make_classification(n_samples=2000, n_features=10, random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)\n\n# Raw SVM (poorly calibrated)\nsvm_raw = SVC(probability=True)\nsvm_raw.fit(X_train, y_train)\n\n# Calibrated versions\ncal_sigmoid = CalibratedClassifierCV(SVC(), cv=5, method='sigmoid')\ncal_isotonic = CalibratedClassifierCV(SVC(), cv=5, method='isotonic')\ncal_sigmoid.fit(X_train, y_train)\ncal_isotonic.fit(X_train, y_train)\n\n# Reliability diagram\nfig, ax = plt.subplots(figsize=(7, 5))\nax.plot([0,1], [0,1], 'k--', label='Perfect')\n\nfor name, clf in [('SVM raw', svm_raw), ('Sigmoid', cal_sigmoid), ('Isotonic', cal_isotonic)]:\n    proba = clf.predict_proba(X_test)[:,1]\n    frac_pos, mean_pred = calibration_curve(y_test, proba, n_bins=10)\n    ece = np.mean(np.abs(frac_pos - mean_pred))\n    ax.plot(mean_pred, frac_pos, marker='o', label=f'{name} (ECE={ece:.3f})')\n\nax.legend(); ax.set_xlabel('Mean predicted probability')\nax.set_ylabel('Fraction of positives')\nplt.title('Calibration Curves'); plt.show()"
+          "description": "Probability Calibration with Reliability Diagram",
+          "content": "from sklearn.svm import SVC\nfrom sklearn.calibration import CalibratedClassifierCV, calibration_curve\nfrom sklearn.datasets import make_classification\nfrom sklearn.model_selection import train_test_split\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nX, y = make_classification(n_samples=2000, n_features=10, random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)\n\n# Raw SVM (poorly calibrated)\nsvm_raw = SVC(probability=True)\nsvm_raw.fit(X_train, y_train)\n\n# Calibrated versions\ncal_sigmoid = CalibratedClassifierCV(SVC(), cv=5, method='sigmoid')\ncal_isotonic = CalibratedClassifierCV(SVC(), cv=5, method='isotonic')\ncal_sigmoid.fit(X_train, y_train)\ncal_isotonic.fit(X_train, y_train)\n\n# Reliability diagram\nfig, ax = plt.subplots(figsize=(7, 5))\nax.plot([0,1], [0,1], 'k--', label='Perfect')\n\nfor name, clf in [('SVM raw', svm_raw), ('Sigmoid', cal_sigmoid), ('Isotonic', cal_isotonic)]:\n    proba = clf.predict_proba(X_test)[:,1]\n    frac_pos, mean_pred = calibration_curve(y_test, proba, n_bins=10)\n    ece = np.mean(np.abs(frac_pos - mean_pred))\n    ax.plot(mean_pred, frac_pos, marker='o', label=f'{name} (ECE={ece:.3f})')\n\nax.legend(); ax.set_xlabel('Mean predicted probability')\nax.set_ylabel('Fraction of positives')\nplt.title('Calibration Curves'); plt.show()"
         }
       ],
       "visualSuggestions": [
@@ -173,7 +184,8 @@
       ],
       "visualIntuition": [
         "Calibration is like tuning a thermometer. An uncalibrated model might say '80% chance of rain' when it actually rains only 50% of the time. Calibration adjusts the readings so they match reality."
-      ]
+      ],
+      "slug": "probability-calibration"
     }
   ],
   "quiz": [
@@ -211,7 +223,7 @@
         "Bagging uses deep trees, boosting uses shallow ones"
       ],
       "correctAnswer": 1,
-      "explanation": "Bagging (Bootstrap Aggregating) trains models independently on random data subsets. Boosting trains models sequentially — each new model focuses on examples the previous models got wrong, reducing bias."
+      "explanation": "Bagging (Bootstrap Aggregating) trains models independently on random data subsets. Boosting trains models sequentially \u2014 each new model focuses on examples the previous models got wrong, reducing bias."
     },
     {
       "id": "q4",
@@ -235,7 +247,7 @@
         "Model is overfitting"
       ],
       "correctAnswer": 1,
-      "explanation": "A Brier Score of 0.25 is the baseline for balanced binary classification — equivalent to always predicting P=0.5. Scores below 0.25 indicate the model adds value; above suggests anti-calibration."
+      "explanation": "A Brier Score of 0.25 is the baseline for balanced binary classification \u2014 equivalent to always predicting P=0.5. Scores below 0.25 indicate the model adds value; above suggests anti-calibration."
     }
   ],
   "references": [

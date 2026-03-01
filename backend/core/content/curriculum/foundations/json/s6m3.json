@@ -13,7 +13,7 @@
     {
       "title": "Why CNNs?",
       "theory": [
-        "A 224×224×3 image has 150,528 input values. With 1,000 neurons in the first hidden layer, a fully connected network needs 150 million parameters just for that layer — computationally prohibitive and prone to overfitting.",
+        "A 224\u00d7224\u00d73 image has 150,528 input values. With 1,000 neurons in the first hidden layer, a fully connected network needs 150 million parameters just for that layer \u2014 computationally prohibitive and prone to overfitting.",
         "CNNs solve this through: Local connectivity (each neuron connects only to small region), Parameter sharing (same filter across entire image), Spatial hierarchy (build complex features from simple ones).",
         "To recognize a face, you first detect edges, combine them into features (eyes, nose), then combine features into the complete face. CNNs mirror this hierarchical processing.",
         "Key benefits: massive parameter reduction, translation invariance (pattern detected regardless of position), and natural exploitation of spatial structure."
@@ -31,14 +31,15 @@
           "description": "Comparing FC vs CNN parameter counts",
           "content": "from tensorflow import keras\nfrom tensorflow.keras import layers\n\n# Fully Connected Network\nfc_model = keras.Sequential([\n    layers.Flatten(input_shape=(28, 28, 1)),\n    layers.Dense(128, activation='relu'),\n    layers.Dense(64, activation='relu'),\n    layers.Dense(10, activation='softmax')\n])\n\n# CNN\ncnn_model = keras.Sequential([\n    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),\n    layers.MaxPooling2D((2, 2)),\n    layers.Conv2D(64, (3, 3), activation='relu'),\n    layers.MaxPooling2D((2, 2)),\n    layers.Flatten(),\n    layers.Dense(64, activation='relu'),\n    layers.Dense(10, activation='softmax')\n])\n\nprint(f\"FC Parameters: {fc_model.count_params():,}\")\nprint(f\"CNN Parameters: {cnn_model.count_params():,}\")"
         }
-      ]
+      ],
+      "slug": "why-cnns"
     },
     {
       "title": "Convolution Operation",
       "theory": [
         "Convolution slides a small kernel (filter) across the image, computing dot product at each position. The kernel learns to detect specific patterns (edges, textures, shapes).",
-        "Key parameters: Kernel size (typically 3×3, 5×5), Stride (how many pixels to skip), Padding (border handling to control output size), Number of filters (creates depth).",
-        "Output size formula: Output = (Input - Kernel + 2×Padding) / Stride + 1. 'Same' padding keeps output size equal to input; 'valid' padding shrinks it.",
+        "Key parameters: Kernel size (typically 3\u00d73, 5\u00d75), Stride (how many pixels to skip), Padding (border handling to control output size), Number of filters (creates depth).",
+        "Output size formula: Output = (Input - Kernel + 2\u00d7Padding) / Stride + 1. 'Same' padding keeps output size equal to input; 'valid' padding shrinks it.",
         "Different kernels detect different patterns: vertical edges, horizontal edges, blur, sharpen. In CNNs, kernel values are learned during training."
       ],
       "visualIntuition": [
@@ -54,14 +55,15 @@
           "description": "Manual convolution and common kernels",
           "content": "import numpy as np\n\ndef convolve2d(image, kernel, stride=1, padding=0):\n    \"\"\"Manual 2D convolution\"\"\"\n    if padding > 0:\n        image = np.pad(image, padding, mode='constant')\n    \n    i_h, i_w = image.shape\n    k_h, k_w = kernel.shape\n    o_h = (i_h - k_h) // stride + 1\n    o_w = (i_w - k_w) // stride + 1\n    output = np.zeros((o_h, o_w))\n    \n    for i in range(o_h):\n        for j in range(o_w):\n            region = image[i*stride:i*stride+k_h, j*stride:j*stride+k_w]\n            output[i, j] = np.sum(region * kernel)\n    return output\n\n# Edge detection kernel\nvertical_edge = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])\n\n# Sample image with vertical edge\nimage = np.array([[0,0,1,1], [0,0,1,1], [0,0,1,1], [0,0,1,1]], dtype=float)\nresult = convolve2d(image, vertical_edge, padding=1)\nprint(\"Edge detection result:\\n\", result)"
         }
-      ]
+      ],
+      "slug": "convolution-operation"
     },
     {
       "title": "Feature Maps",
       "theory": [
-        "A feature map is the output when a filter is applied — it shows WHERE in the image the pattern was detected. High activation = pattern present; low = absent.",
+        "A feature map is the output when a filter is applied \u2014 it shows WHERE in the image the pattern was detected. High activation = pattern present; low = absent.",
         "Multiple filters create multiple feature maps (depth). Each learns to detect different patterns. Early layers detect edges/textures; deep layers detect complex objects.",
-        "Hierarchical learning: Layer 1 (edges) → Layer 2 (shapes) → Layer 3 (object parts) → Layer 4 (complete objects). Each layer builds on the previous.",
+        "Hierarchical learning: Layer 1 (edges) \u2192 Layer 2 (shapes) \u2192 Layer 3 (object parts) \u2192 Layer 4 (complete objects). Each layer builds on the previous.",
         "Feature maps have spatial dimensions (height, width) showing pattern location, and depth dimension (number of filters) showing what patterns were detected."
       ],
       "visualIntuition": [
@@ -77,18 +79,19 @@
           "description": "Extracting and visualizing feature maps",
           "content": "from tensorflow import keras\nfrom tensorflow.keras import layers, models\nimport matplotlib.pyplot as plt\n\n# Build simple CNN\nmodel = models.Sequential([\n    layers.Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(28, 28, 1)),\n    layers.MaxPooling2D((2, 2)),\n    layers.Conv2D(64, (3, 3), activation='relu', padding='same'),\n])\n\n# Create feature extractor\nlayer_outputs = [layer.output for layer in model.layers if 'conv' in layer.name]\nfeature_extractor = models.Model(inputs=model.input, outputs=layer_outputs)\n\n# Get sample image\n(x_train, _), _ = keras.datasets.mnist.load_data()\nsample = x_train[0:1].reshape(1, 28, 28, 1) / 255.0\n\n# Extract feature maps\nfeature_maps = feature_extractor.predict(sample, verbose=0)\nprint(f\"Layer 1 feature maps shape: {feature_maps[0].shape}\")\nprint(f\"Layer 2 feature maps shape: {feature_maps[1].shape}\")"
         }
-      ]
+      ],
+      "slug": "feature-maps"
     },
     {
       "title": "Pooling Layers",
       "theory": [
         "Pooling reduces spatial dimensions while retaining important features. Max pooling takes maximum value in each region; average pooling takes the average.",
-        "Typical 2×2 max pooling with stride 2 reduces each dimension by half (e.g., 28×28 → 14×14). This reduces computation and provides some translation invariance.",
+        "Typical 2\u00d72 max pooling with stride 2 reduces each dimension by half (e.g., 28\u00d728 \u2192 14\u00d714). This reduces computation and provides some translation invariance.",
         "Global Average Pooling (GAP) averages entire feature map to single value. Often used before final classification layer, reducing parameters dramatically.",
-        "Pooling provides slight spatial invariance — small shifts in input don't change output. Combined with convolution's translation equivariance, CNNs handle position variations well."
+        "Pooling provides slight spatial invariance \u2014 small shifts in input don't change output. Combined with convolution's translation equivariance, CNNs handle position variations well."
       ],
       "visualIntuition": [
-        "2×2 grid sliding over feature map showing max selection. Before/after comparison showing spatial reduction."
+        "2\u00d72 grid sliding over feature map showing max selection. Before/after comparison showing spatial reduction."
       ],
       "visualSuggestions": [
         "neural",
@@ -101,18 +104,19 @@
           "description": "Pooling operations",
           "content": "import numpy as np\nfrom tensorflow.keras import layers\n\n# Manual max pooling\ndef max_pool_2d(image, pool_size=2):\n    h, w = image.shape\n    out_h, out_w = h // pool_size, w // pool_size\n    output = np.zeros((out_h, out_w))\n    \n    for i in range(out_h):\n        for j in range(out_w):\n            region = image[i*pool_size:(i+1)*pool_size, \n                          j*pool_size:(j+1)*pool_size]\n            output[i, j] = np.max(region)\n    return output\n\n# Example\nfeature_map = np.array([[1, 2, 3, 4], [5, 6, 7, 8], \n                        [9, 10, 11, 12], [13, 14, 15, 16]])\npooled = max_pool_2d(feature_map)\nprint(\"Original (4x4):\\n\", feature_map)\nprint(\"\\nMax Pooled (2x2):\\n\", pooled)"
         }
-      ]
+      ],
+      "slug": "pooling-layers"
     },
     {
       "title": "Classic CNN Architectures",
       "theory": [
         "LeNet (1998): First successful CNN for digit recognition. 2 conv layers, 2 pooling, 3 FC layers. Proved convolution works for visual recognition.",
-        "VGGNet (2014): Simple repeated pattern of 3×3 convs. Showed depth matters — VGG-16 has 16 layers. Clean architecture but many parameters.",
+        "VGGNet (2014): Simple repeated pattern of 3\u00d73 convs. Showed depth matters \u2014 VGG-16 has 16 layers. Clean architecture but many parameters.",
         "ResNet (2015): Introduced skip connections allowing gradients to flow directly. Enabled training very deep networks (50, 101, 152 layers). Solved degradation problem.",
         "Modern architectures: MobileNet (efficient for mobile), EfficientNet (compound scaling), Vision Transformers (attention-based). Choose based on accuracy/efficiency tradeoff."
       ],
       "visualIntuition": [
-        "Timeline showing CNN evolution: LeNet → AlexNet → VGG → ResNet → Modern architectures with key innovations highlighted."
+        "Timeline showing CNN evolution: LeNet \u2192 AlexNet \u2192 VGG \u2192 ResNet \u2192 Modern architectures with key innovations highlighted."
       ],
       "visualSuggestions": [
         "Architecture comparison diagram",
@@ -124,16 +128,19 @@
           "description": "Building common architectures",
           "content": "from tensorflow import keras\nfrom tensorflow.keras import layers\n\n# VGG-like block\ndef vgg_block(x, filters, num_convs):\n    for _ in range(num_convs):\n        x = layers.Conv2D(filters, (3, 3), activation='relu', padding='same')(x)\n    x = layers.MaxPooling2D((2, 2))(x)\n    return x\n\n# Residual block (ResNet)\ndef residual_block(x, filters):\n    shortcut = x\n    x = layers.Conv2D(filters, (3, 3), padding='same')(x)\n    x = layers.BatchNormalization()(x)\n    x = layers.ReLU()(x)\n    x = layers.Conv2D(filters, (3, 3), padding='same')(x)\n    x = layers.BatchNormalization()(x)\n    x = layers.Add()([shortcut, x])  # Skip connection!\n    x = layers.ReLU()(x)\n    return x\n\n# Using pretrained models\nresnet = keras.applications.ResNet50(weights='imagenet', include_top=False)\nprint(f\"ResNet50 layers: {len(resnet.layers)}\")"
         }
-      ]
+      ],
+      "slug": "classic-cnn-architectures"
     },
     {
       "title": "Transposed Convolutions (Upsampling)",
-      "theory": "Transposed convolutions (sometimes incorrectly called 'deconvolutions') **increase spatial resolution** — the opposite of standard convolutions. They are essential for:\n\n- **Image segmentation** (U-Net decoder path)\n- **GANs** (generator upsampling noise to images)\n- **Autoencoders** (decoder reconstruction)\n- **Super-resolution** (enlarge low-res images)\n\n**Mechanism:** Input is padded with zeros between pixels, then a standard convolution is applied. This maps a smaller input to a larger output.\n\n**Output size formula:** H_out = (H_in - 1) × stride - 2 × padding + kernel_size + output_padding\n\n**Checkerboard artifacts:** Transposed convolutions with certain stride/kernel combinations produce visible grid patterns. Fix: use `nn.Upsample(mode='bilinear') + nn.Conv2d` instead, or use pixel shuffle.",
+      "theory": [
+        "Transposed convolutions (sometimes incorrectly called 'deconvolutions') **increase spatial resolution** \u2014 the opposite of standard convolutions. They are essential for:\n\n- **Image segmentation** (U-Net decoder path)\n- **GANs** (generator upsampling noise to images)\n- **Autoencoders** (decoder reconstruction)\n- **Super-resolution** (enlarge low-res images)\n\n**Mechanism:** Input is padded with zeros between pixels, then a standard convolution is applied. This maps a smaller input to a larger output.\n\n**Output size formula:** H_out = (H_in - 1) \u00d7 stride - 2 \u00d7 padding + kernel_size + output_padding\n\n**Checkerboard artifacts:** Transposed convolutions with certain stride/kernel combinations produce visible grid patterns. Fix: use `nn.Upsample(mode='bilinear') + nn.Conv2d` instead, or use pixel shuffle."
+      ],
       "code": [
         {
-          "title": "Transposed Convolution for Upsampling",
           "language": "python",
-          "code": "import torch\nimport torch.nn as nn\n\n# Standard conv: 32x32 -> 16x16 (downsampling)\nconv_down = nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1)\nx = torch.randn(1, 3, 32, 32)\nprint(f'Input:  {x.shape}')        # [1, 3, 32, 32]\nprint(f'After conv down: {conv_down(x).shape}')  # [1, 64, 16, 16]\n\n# Transposed conv: 16x16 -> 32x32 (upsampling)\nconv_up = nn.ConvTranspose2d(64, 3, kernel_size=3, stride=2, padding=1, output_padding=1)\nsmall = torch.randn(1, 64, 16, 16)\nprint(f'After conv up:   {conv_up(small).shape}')  # [1, 3, 32, 32]\n\n# Alternative: Bilinear upsampling + conv (avoids checkerboard)\nup_block = nn.Sequential(\n    nn.Upsample(scale_factor=2, mode='bilinear', align_corners=False),\n    nn.Conv2d(64, 3, kernel_size=3, padding=1))\nprint(f'Bilinear+Conv:   {up_block(small).shape}')  # [1, 3, 32, 32]\n\n# Pixel Shuffle (sub-pixel convolution)\nshuffle = nn.Sequential(\n    nn.Conv2d(64, 3 * 4, kernel_size=3, padding=1),  # 4x channels\n    nn.PixelShuffle(2))                               # rearrange to 2x spatial\nprint(f'PixelShuffle:    {shuffle(small).shape}')  # [1, 3, 32, 32]"
+          "description": "Transposed Convolution for Upsampling",
+          "content": "import torch\nimport torch.nn as nn\n\n# Standard conv: 32x32 -> 16x16 (downsampling)\nconv_down = nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1)\nx = torch.randn(1, 3, 32, 32)\nprint(f'Input:  {x.shape}')        # [1, 3, 32, 32]\nprint(f'After conv down: {conv_down(x).shape}')  # [1, 64, 16, 16]\n\n# Transposed conv: 16x16 -> 32x32 (upsampling)\nconv_up = nn.ConvTranspose2d(64, 3, kernel_size=3, stride=2, padding=1, output_padding=1)\nsmall = torch.randn(1, 64, 16, 16)\nprint(f'After conv up:   {conv_up(small).shape}')  # [1, 3, 32, 32]\n\n# Alternative: Bilinear upsampling + conv (avoids checkerboard)\nup_block = nn.Sequential(\n    nn.Upsample(scale_factor=2, mode='bilinear', align_corners=False),\n    nn.Conv2d(64, 3, kernel_size=3, padding=1))\nprint(f'Bilinear+Conv:   {up_block(small).shape}')  # [1, 3, 32, 32]\n\n# Pixel Shuffle (sub-pixel convolution)\nshuffle = nn.Sequential(\n    nn.Conv2d(64, 3 * 4, kernel_size=3, padding=1),  # 4x channels\n    nn.PixelShuffle(2))                               # rearrange to 2x spatial\nprint(f'PixelShuffle:    {shuffle(small).shape}')  # [1, 3, 32, 32]"
         }
       ],
       "visualSuggestions": [
@@ -141,26 +148,30 @@
         "Checkerboard artifact comparison: transposed conv vs bilinear+conv"
       ],
       "visualIntuition": [
-        "Standard convolution is like a zoom-out lens — it shrinks the image while capturing patterns. Transposed convolution is the reverse: a zoom-in lens that expands the representation back to full resolution, filling in details."
-      ]
+        "Standard convolution is like a zoom-out lens \u2014 it shrinks the image while capturing patterns. Transposed convolution is the reverse: a zoom-in lens that expands the representation back to full resolution, filling in details."
+      ],
+      "slug": "transposed-convolutions-upsampling"
     },
     {
       "title": "Dilated (Atrous) Convolutions",
-      "theory": "Dilated convolutions insert **gaps (holes) between kernel elements**, expanding the receptive field WITHOUT increasing parameters or reducing resolution.\n\n**Dilation rate r:** A rate of r=2 means one gap between kernel elements, making a 3×3 kernel effectively cover a 5×5 area. Rate r=4 covers a 9×9 area — all with only 9 parameters.\n\n**Effective receptive field:** (kernel_size - 1) × dilation + 1. A 3×3 kernel with dilation=4 has effective size 9×9.\n\n**Use cases:**\n- **Semantic segmentation** (DeepLab, dense prediction without pooling)\n- **Audio/speech** (WaveNet: exponentially increasing dilation 1, 2, 4, 8, …)\n- **Any task** needing large context without downsampling\n\n**Key advantage:** Maintains spatial resolution — no information loss from pooling/strided convolutions.",
+      "theory": [
+        "Dilated convolutions insert **gaps (holes) between kernel elements**, expanding the receptive field WITHOUT increasing parameters or reducing resolution.\n\n**Dilation rate r:** A rate of r=2 means one gap between kernel elements, making a 3\u00d73 kernel effectively cover a 5\u00d75 area. Rate r=4 covers a 9\u00d79 area \u2014 all with only 9 parameters.\n\n**Effective receptive field:** (kernel_size - 1) \u00d7 dilation + 1. A 3\u00d73 kernel with dilation=4 has effective size 9\u00d79.\n\n**Use cases:**\n- **Semantic segmentation** (DeepLab, dense prediction without pooling)\n- **Audio/speech** (WaveNet: exponentially increasing dilation 1, 2, 4, 8, \u2026)\n- **Any task** needing large context without downsampling\n\n**Key advantage:** Maintains spatial resolution \u2014 no information loss from pooling/strided convolutions."
+      ],
       "code": [
         {
-          "title": "Dilated Convolution — Expanding Receptive Field",
           "language": "python",
-          "code": "import torch\nimport torch.nn as nn\n\nx = torch.randn(1, 3, 64, 64)\n\n# Standard 3x3: receptive field = 3x3\nconv_std = nn.Conv2d(3, 32, kernel_size=3, padding=1, dilation=1)\nprint(f'Standard 3x3:  output={conv_std(x).shape[-1]}x{conv_std(x).shape[-1]}, RF=3x3')\n\n# Dilated: 3x3 kernel with rate=2 -> effective 5x5\nconv_d2 = nn.Conv2d(3, 32, kernel_size=3, padding=2, dilation=2)\nprint(f'Dilated r=2:   output={conv_d2(x).shape[-1]}x{conv_d2(x).shape[-1]}, RF=5x5')\n\n# Dilated: rate=4 -> effective 9x9\nconv_d4 = nn.Conv2d(3, 32, kernel_size=3, padding=4, dilation=4)\nprint(f'Dilated r=4:   output={conv_d4(x).shape[-1]}x{conv_d4(x).shape[-1]}, RF=9x9')\n\n# Atrous Spatial Pyramid Pooling (ASPP) — multi-scale\nclass ASPP(nn.Module):\n    def __init__(self, in_ch, out_ch, rates=[6, 12, 18]):\n        super().__init__()\n        self.branches = nn.ModuleList([\n            nn.Conv2d(in_ch, out_ch, 1),  # 1x1 conv\n        ] + [\n            nn.Conv2d(in_ch, out_ch, 3, padding=r, dilation=r)\n            for r in rates\n        ])\n        self.fuse = nn.Conv2d(out_ch * (1 + len(rates)), out_ch, 1)\n    def forward(self, x):\n        outs = [branch(x) for branch in self.branches]\n        return self.fuse(torch.cat(outs, dim=1))\n\naspp = ASPP(3, 32)\nprint(f'ASPP output: {aspp(x).shape}')  # [1, 32, 64, 64] — same resolution!"
+          "description": "Dilated Convolution - Expanding Receptive Field",
+          "content": "import torch\nimport torch.nn as nn\n\nx = torch.randn(1, 3, 64, 64)\n\n# Standard 3x3: receptive field = 3x3\nconv_std = nn.Conv2d(3, 32, kernel_size=3, padding=1, dilation=1)\nprint(f'Standard 3x3:  output={conv_std(x).shape[-1]}x{conv_std(x).shape[-1]}, RF=3x3')\n\n# Dilated: 3x3 kernel with rate=2 -> effective 5x5\nconv_d2 = nn.Conv2d(3, 32, kernel_size=3, padding=2, dilation=2)\nprint(f'Dilated r=2:   output={conv_d2(x).shape[-1]}x{conv_d2(x).shape[-1]}, RF=5x5')\n\n# Dilated: rate=4 -> effective 9x9\nconv_d4 = nn.Conv2d(3, 32, kernel_size=3, padding=4, dilation=4)\nprint(f'Dilated r=4:   output={conv_d4(x).shape[-1]}x{conv_d4(x).shape[-1]}, RF=9x9')\n\n# Atrous Spatial Pyramid Pooling (ASPP) - multi-scale\nclass ASPP(nn.Module):\n    def __init__(self, in_ch, out_ch, rates=[6, 12, 18]):\n        super().__init__()\n        self.branches = nn.ModuleList([\n            nn.Conv2d(in_ch, out_ch, 1),  # 1x1 conv\n        ] + [\n            nn.Conv2d(in_ch, out_ch, 3, padding=r, dilation=r)\n            for r in rates\n        ])\n        self.fuse = nn.Conv2d(out_ch * (1 + len(rates)), out_ch, 1)\n    def forward(self, x):\n        outs = [branch(x) for branch in self.branches]\n        return self.fuse(torch.cat(outs, dim=1))\n\naspp = ASPP(3, 32)\nprint(f'ASPP output: {aspp(x).shape}')  # [1, 32, 64, 64] - same resolution!"
         }
       ],
       "visualSuggestions": [
-        "Grid showing kernel coverage at dilation rates 1, 2, 4 — same params, growing field",
+        "Grid showing kernel coverage at dilation rates 1, 2, 4 \u2014 same params, growing field",
         "WaveNet-style exponential dilation stack visualization"
       ],
       "visualIntuition": [
-        "Imagine looking through a lattice fence. A standard convolution sees a small dense patch. Dilated convolution spreads the lattice openings wider — you see a broader area through the same number of holes. The 'gaps' between kernel points let you look further without adding more eyes."
-      ]
+        "Imagine looking through a lattice fence. A standard convolution sees a small dense patch. Dilated convolution spreads the lattice openings wider \u2014 you see a broader area through the same number of holes. The 'gaps' between kernel points let you look further without adding more eyes."
+      ],
+      "slug": "dilated-atrous-convolutions"
     }
   ],
   "quiz": [

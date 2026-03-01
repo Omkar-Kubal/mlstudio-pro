@@ -1,130 +1,133 @@
 {
-    "meta": {
-        "subject": "deep-learning",
-        "module": "sequence-models",
-        "level": "advanced",
-        "estimatedHours": 5
+  "meta": {
+    "subject": "deep-learning",
+    "module": "sequence-models",
+    "level": "advanced",
+    "estimatedHours": 5
+  },
+  "overview": [
+    "Traditional neural networks assume that all inputs and outputs are independent of each other. However, for many tasks\u2014like speech, music, or text\u2014the order matters deeply. These are 'Sequence Models'.",
+    "In this module, we move beyond static data to model time and relationships using Recurrent Neural Networks (RNNs), LSTMs, and the Attention mechanism."
+  ],
+  "topics": [
+    {
+      "title": "Recurrent Neural Networks (RNNs)",
+      "theory": [
+        "RNNs are networks with 'memory'. They process sequences by passing the information from one step as an input to the next step along with the current data. This creates a hidden state (h_t) that accumulates knowledge about the sequence so far.",
+        "However, standard RNNs suffer from the 'Vanishing Gradient' problem: they forget information from many steps ago, making them unsuitable for long sentences or long-term dependencies."
+      ],
+      "visualIntuition": [
+        "Imagine reading a sentence while having a very small notepad. You write down the gist of what you've read so far. But the notepad is so small that by the time you reach the 10th word, you've had to erase and write over what happened at the start."
+      ],
+      "visualSuggestions": [
+        "Unrolled RNN diagram showing data flowing through time steps.",
+        "Graph showing how the 'gradient' becomes smaller and smaller as it is backpropagated through time."
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Simple RNN Step Simulation",
+          "content": "import numpy as np\n\ndef rnn_step(x_t, h_prev, W_xh, W_hh, b_h):\n    # h_t = tanh(W_xh * x_t + W_hh * h_prev + b_h)\n    h_next = np.tanh(np.dot(W_xh, x_t) + np.dot(W_hh, h_prev) + b_h)\n    return h_next\n\nx = np.array([1, 0])\nh = np.array([0, 0])\nW_xh, W_hh = np.eye(2), np.eye(2)\nb = np.zeros(2)\nprint(f\"New State: {rnn_step(x, h, W_xh, W_hh, b)}\")"
+        }
+      ],
+      "slug": "recurrent-neural-networks-rnns"
     },
-    "overview": [
-        "Traditional neural networks assume that all inputs and outputs are independent of each other. However, for many tasks—like speech, music, or text—the order matters deeply. These are 'Sequence Models'.",
-        "In this module, we move beyond static data to model time and relationships using Recurrent Neural Networks (RNNs), LSTMs, and the Attention mechanism."
-    ],
-    "topics": [
+    {
+      "title": "LSTMs & GRUs (Gated Memory)",
+      "theory": [
+        "Long Short-Term Memory (LSTM) networks were specifically designed to solve the vanishing gradient problem. They introduce 'Gates' (Input, Forget, and Output gates) that control the flow of information.",
+        "The 'Cell State' acts as a long-term memory highway, allowing information to persist virtually unchanged over many time steps. GRUs are a simpler version that combines the gates to reduce computational cost."
+      ],
+      "visualIntuition": [
+        "Think of the LSTM as having a better notepad with a 'Protect' seal. If the model sees something important at the start of a chapter, it 'locks' that info (Forget gate = 0) so it doesn't get erased as the story continues."
+      ],
+      "visualSuggestions": [
+        "Detailed diagram of an LSTM cell showing the internal gates and the cell state highway.",
+        "Analogy graphic: Standard RNN (Leaky Bucket) vs LSTM (Sealed Tank)."
+      ],
+      "code": [
         {
-            "title": "Recurrent Neural Networks (RNNs)",
-            "theory": [
-                "RNNs are networks with 'memory'. They process sequences by passing the information from one step as an input to the next step along with the current data. This creates a hidden state (h_t) that accumulates knowledge about the sequence so far.",
-                "However, standard RNNs suffer from the 'Vanishing Gradient' problem: they forget information from many steps ago, making them unsuitable for long sentences or long-term dependencies."
-            ],
-            "visualIntuition": [
-                "Imagine reading a sentence while having a very small notepad. You write down the gist of what you've read so far. But the notepad is so small that by the time you reach the 10th word, you've had to erase and write over what happened at the start."
-            ],
-            "visualSuggestions": [
-                "Unrolled RNN diagram showing data flowing through time steps.",
-                "Graph showing how the 'gradient' becomes smaller and smaller as it is backpropagated through time."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Simple RNN Step Simulation",
-                    "content": "import numpy as np\n\ndef rnn_step(x_t, h_prev, W_xh, W_hh, b_h):\n    # h_t = tanh(W_xh * x_t + W_hh * h_prev + b_h)\n    h_next = np.tanh(np.dot(W_xh, x_t) + np.dot(W_hh, h_prev) + b_h)\n    return h_next\n\nx = np.array([1, 0])\nh = np.array([0, 0])\nW_xh, W_hh = np.eye(2), np.eye(2)\nb = np.zeros(2)\nprint(f\"New State: {rnn_step(x, h, W_xh, W_hh, b)}\")"
-                }
-            ]
-        },
-        {
-            "title": "LSTMs & GRUs (Gated Memory)",
-            "theory": [
-                "Long Short-Term Memory (LSTM) networks were specifically designed to solve the vanishing gradient problem. They introduce 'Gates' (Input, Forget, and Output gates) that control the flow of information.",
-                "The 'Cell State' acts as a long-term memory highway, allowing information to persist virtually unchanged over many time steps. GRUs are a simpler version that combines the gates to reduce computational cost."
-            ],
-            "visualIntuition": [
-                "Think of the LSTM as having a better notepad with a 'Protect' seal. If the model sees something important at the start of a chapter, it 'locks' that info (Forget gate = 0) so it doesn't get erased as the story continues."
-            ],
-            "visualSuggestions": [
-                "Detailed diagram of an LSTM cell showing the internal gates and the cell state highway.",
-                "Analogy graphic: Standard RNN (Leaky Bucket) vs LSTM (Sealed Tank)."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Concept of Gating logic",
-                    "content": "def sigmoid(x): return 1/(1+np.exp(-x))\n\ndef lstm_forget_gate(h_prev, x_t, W_f, b_f):\n    # Forget gate decides what to discard from long-term memory\n    return sigmoid(np.dot(W_f, np.concatenate([h_prev, x_t])) + b_f)\n\nprint(\"Forget Gate value (0=erase, 1=keep)\")"
-                }
-            ]
-        },
-        {
-            "title": "Encoder-Decoder & Seq2Seq",
-            "theory": [
-                "Sequence-to-Sequence (Seq2Seq) models transform one sequence into another (e.g., English to French). They consist of an 'Encoder' that compresses the input into a fixed-length vector and a 'Decoder' that generates the output.",
-                "This architecture is the bridge between traditional RNNs and modern Transformers. By adding 'Attention' to Seq2Seq, we allow the decoder to look at specific parts of the input sequence for every word it generates."
-            ],
-            "visualIntuition": [
-                "Imagine a translator. The Encoder is someone listening to a sentence and summarizing it into a single thought. The Decoder is another person taking that summary and expanding it back into a new language."
-            ],
-            "visualSuggestions": [
-                "High-level block diagram of Encoder -> Context Vector -> Decoder.",
-                "Attention heatmap linking source words to target words."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Simple Seq2Seq loop logic (Pseudo-code)",
-                    "content": "def decode_sequence(context_vector):\n    output = []\n    current_token = '<START>'\n    while current_token != '<END>':\n        current_token = decoder_step(current_token, context_vector)\n        output.append(current_token)\n    return ' '.join(output)\nprint(\"Seq2Seq generation simulation\")"
-                }
-            ]
+          "language": "python",
+          "description": "Concept of Gating logic",
+          "content": "def sigmoid(x): return 1/(1+np.exp(-x))\n\ndef lstm_forget_gate(h_prev, x_t, W_f, b_f):\n    # Forget gate decides what to discard from long-term memory\n    return sigmoid(np.dot(W_f, np.concatenate([h_prev, x_t])) + b_f)\n\nprint(\"Forget Gate value (0=erase, 1=keep)\")"
         }
-    ],
-    "quiz": [
+      ],
+      "slug": "lstms-grus-gated-memory"
+    },
+    {
+      "title": "Encoder-Decoder & Seq2Seq",
+      "theory": [
+        "Sequence-to-Sequence (Seq2Seq) models transform one sequence into another (e.g., English to French). They consist of an 'Encoder' that compresses the input into a fixed-length vector and a 'Decoder' that generates the output.",
+        "This architecture is the bridge between traditional RNNs and modern Transformers. By adding 'Attention' to Seq2Seq, we allow the decoder to look at specific parts of the input sequence for every word it generates."
+      ],
+      "visualIntuition": [
+        "Imagine a translator. The Encoder is someone listening to a sentence and summarizing it into a single thought. The Decoder is another person taking that summary and expanding it back into a new language."
+      ],
+      "visualSuggestions": [
+        "High-level block diagram of Encoder -> Context Vector -> Decoder.",
+        "Attention heatmap linking source words to target words."
+      ],
+      "code": [
         {
-            "id": "q1",
-            "question": "What is the 'memory' in a standard Recurrent Neural Network (RNN)?",
-            "options": [
-                "A separate hard drive storage",
-                "The hidden state (h_t) which is passed from one time step to the next",
-                "The list of all previous inputs",
-                "A specialized database"
-            ],
-            "correctAnswer": 1,
-            "explanation": "RNNs process sequences by passing the hidden state from the previous time step as an input to the current time step. This hidden state acts as a summary of all information seen so far in the sequence."
-        },
-        {
-            "id": "q2",
-            "question": "What is the 'vanishing gradient problem' in RNNs?",
-            "options": [
-                "The model runs out of memory",
-                "Gradients become extremely small as they backpropagate through many time steps, making it hard to learn long-term dependencies",
-                "The error becomes zero instantly",
-                "The model gets stuck in a local minimum"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Because weights are multiplied repeatedly across time steps, gradients often shrink exponentially during backpropagation through time. This prevents the model from learning relationships between words or events that are far apart in a sequence."
-        },
-        {
-            "id": "q3",
-            "question": "Which component of an LSTM allows it to keep information for a long time without it being erased?",
-            "options": [
-                "The Forget Gate",
-                "The Cell State highway",
-                "The Softmax output",
-                "The Weight matrix"
-            ],
-            "correctAnswer": 1,
-            "explanation": "The Cell State acts like a long-term memory highway. It has very few non-linearities, allowing information to flow virtually unchanged across many time steps unless a gate explicitly decides to modify it."
+          "language": "python",
+          "description": "Simple Seq2Seq loop logic (Pseudo-code)",
+          "content": "def decode_sequence(context_vector):\n    output = []\n    current_token = '<START>'\n    while current_token != '<END>':\n        current_token = decoder_step(current_token, context_vector)\n        output.append(current_token)\n    return ' '.join(output)\nprint(\"Seq2Seq generation simulation\")"
         }
-    ],
-    "references": [
-        {
-            "label": "Colah's Blog - Understanding LSTMs",
-            "url": "https://colah.github.io/posts/2015-08-Understanding-LSTMs/"
-        },
-        {
-            "label": "Deep Learning Specialization (Andrew Ng) - Sequence Models",
-            "url": "https://www.coursera.org/learn/nlp-sequence-models"
-        },
-        {
-            "label": "Unreasonable Effectiveness of RNNs (Andrej Karpathy)",
-            "url": "http://karpathy.github.io/2015/05/21/rnn-effectiveness/"
-        }
-    ],
-    "_contentWarnings": []
+      ],
+      "slug": "encoder-decoder-seqseq"
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is the 'memory' in a standard Recurrent Neural Network (RNN)?",
+      "options": [
+        "A separate hard drive storage",
+        "The hidden state (h_t) which is passed from one time step to the next",
+        "The list of all previous inputs",
+        "A specialized database"
+      ],
+      "correctAnswer": 1,
+      "explanation": "RNNs process sequences by passing the hidden state from the previous time step as an input to the current time step. This hidden state acts as a summary of all information seen so far in the sequence."
+    },
+    {
+      "id": "q2",
+      "question": "What is the 'vanishing gradient problem' in RNNs?",
+      "options": [
+        "The model runs out of memory",
+        "Gradients become extremely small as they backpropagate through many time steps, making it hard to learn long-term dependencies",
+        "The error becomes zero instantly",
+        "The model gets stuck in a local minimum"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Because weights are multiplied repeatedly across time steps, gradients often shrink exponentially during backpropagation through time. This prevents the model from learning relationships between words or events that are far apart in a sequence."
+    },
+    {
+      "id": "q3",
+      "question": "Which component of an LSTM allows it to keep information for a long time without it being erased?",
+      "options": [
+        "The Forget Gate",
+        "The Cell State highway",
+        "The Softmax output",
+        "The Weight matrix"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The Cell State acts like a long-term memory highway. It has very few non-linearities, allowing information to flow virtually unchanged across many time steps unless a gate explicitly decides to modify it."
+    }
+  ],
+  "references": [
+    {
+      "label": "Colah's Blog - Understanding LSTMs",
+      "url": "https://colah.github.io/posts/2015-08-Understanding-LSTMs/"
+    },
+    {
+      "label": "Deep Learning Specialization (Andrew Ng) - Sequence Models",
+      "url": "https://www.coursera.org/learn/nlp-sequence-models"
+    },
+    {
+      "label": "Unreasonable Effectiveness of RNNs (Andrej Karpathy)",
+      "url": "http://karpathy.github.io/2015/05/21/rnn-effectiveness/"
+    }
+  ],
+  "_contentWarnings": []
 }

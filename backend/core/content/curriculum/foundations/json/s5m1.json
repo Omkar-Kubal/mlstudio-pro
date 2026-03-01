@@ -14,7 +14,7 @@
       "title": "Why Evaluation Matters",
       "theory": [
         "Evaluation ensures reliability by detecting overfitting or underperformance before deployment through train-test comparison.",
-        "Domain alignment requires choosing metrics that reflect real costs — e.g., false negatives in disease diagnosis may be far worse than false positives.",
+        "Domain alignment requires choosing metrics that reflect real costs \u2014 e.g., false negatives in disease diagnosis may be far worse than false positives.",
         "Accountability and trust come from quantitative scores (accuracy, error rates, AUC) providing transparency to stakeholders.",
         "Evaluation guides iteration by showing where a model fails, helping prioritize improvements."
       ],
@@ -31,14 +31,15 @@
           "description": "Demonstrating overfitting with polynomial regression",
           "content": "import numpy as np\nfrom sklearn.metrics import mean_squared_error\nfrom sklearn.model_selection import train_test_split\n\n# Generate noisy data\nrng = np.random.RandomState(0)\nX = rng.uniform(-3, 3, size=100)[:, np.newaxis]\ny = np.sin(X).ravel() + rng.normal(scale=0.3, size=100)\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)\n\n# Compare different polynomial degrees\ndegrees = [1, 3, 5, 9]\nfor d in degrees:\n    model = np.poly1d(np.polyfit(X_train.ravel(), y_train, d))\n    train_mse = mean_squared_error(y_train, model(X_train))\n    test_mse = mean_squared_error(y_test, model(X_test))\n    print(f\"Degree {d}: Train MSE={train_mse:.3f}, Test MSE={test_mse:.3f}\")"
         }
-      ]
+      ],
+      "slug": "why-evaluation-matters"
     },
     {
       "title": "Regression Metrics",
       "theory": [
-        "MSE (Mean Squared Error) computes average squared difference. By squaring, it heavily penalizes large errors — important when big mistakes are costly.",
+        "MSE (Mean Squared Error) computes average squared difference. By squaring, it heavily penalizes large errors \u2014 important when big mistakes are costly.",
         "MAE (Mean Absolute Error) penalizes errors linearly, more robust to outliers. Good for interpretability in original units.",
-        "R² (Coefficient of Determination) measures proportion of variance explained by the model. R²=1 means perfect fit, R²=0 means no better than predicting the mean.",
+        "R\u00b2 (Coefficient of Determination) measures proportion of variance explained by the model. R\u00b2=1 means perfect fit, R\u00b2=0 means no better than predicting the mean.",
         "Use MSE/RMSE when large errors are particularly undesirable. Use MAE when outlier robustness matters."
       ],
       "visualIntuition": [
@@ -52,14 +53,15 @@
         {
           "language": "python",
           "description": "Computing regression metrics",
-          "content": "from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score\nfrom sklearn.linear_model import LinearRegression\nimport numpy as np\n\n# Create linear data with noise\nrng = np.random.RandomState(42)\nX = 2 * rng.rand(100, 1) - 1\ny = 3 * X.ravel() + 2 + rng.normal(scale=0.5, size=100)\n\nmodel = LinearRegression().fit(X, y)\ny_pred = model.predict(X)\n\nmse = mean_squared_error(y, y_pred)\nmae = mean_absolute_error(y, y_pred)\nr2 = r2_score(y, y_pred)\n\nprint(f\"MSE: {mse:.3f}\")\nprint(f\"MAE: {mae:.3f}\")\nprint(f\"R²: {r2:.3f}\")"
+          "content": "from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score\nfrom sklearn.linear_model import LinearRegression\nimport numpy as np\n\n# Create linear data with noise\nrng = np.random.RandomState(42)\nX = 2 * rng.rand(100, 1) - 1\ny = 3 * X.ravel() + 2 + rng.normal(scale=0.5, size=100)\n\nmodel = LinearRegression().fit(X, y)\ny_pred = model.predict(X)\n\nmse = mean_squared_error(y, y_pred)\nmae = mean_absolute_error(y, y_pred)\nr2 = r2_score(y, y_pred)\n\nprint(f\"MSE: {mse:.3f}\")\nprint(f\"MAE: {mae:.3f}\")\nprint(f\"R^2: {r2:.3f}\")"
         }
-      ]
+      ],
+      "slug": "regression-metrics"
     },
     {
       "title": "Classification Metrics",
       "theory": [
-        "Accuracy is the fraction of correct predictions, but can be misleading with imbalanced classes — 99% accuracy by predicting majority class.",
+        "Accuracy is the fraction of correct predictions, but can be misleading with imbalanced classes \u2014 99% accuracy by predicting majority class.",
         "Precision = TP/(TP+FP): How many selected items are relevant? Recall = TP/(TP+FN): How many relevant items are selected?",
         "F1 Score is the harmonic mean of precision and recall, balancing both into one metric.",
         "Choose based on context: medical tests prioritize recall (catch all sick patients), spam filters prioritize precision (don't flag good emails)."
@@ -77,14 +79,15 @@
           "description": "Computing classification metrics",
           "content": "from sklearn.datasets import make_classification\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report\nfrom sklearn.model_selection import train_test_split\n\nX, y = make_classification(n_samples=200, n_features=4, n_informative=2, random_state=1)\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)\n\nclf = LogisticRegression(solver='liblinear').fit(X_train, y_train)\ny_pred = clf.predict(X_test)\n\nprint(f\"Accuracy: {accuracy_score(y_test, y_pred):.3f}\")\nprint(f\"Precision: {precision_score(y_test, y_pred):.3f}\")\nprint(f\"Recall: {recall_score(y_test, y_pred):.3f}\")\nprint(f\"F1: {f1_score(y_test, y_pred):.3f}\")\nprint(\"\\nClassification Report:\\n\", classification_report(y_test, y_pred))"
         }
-      ]
+      ],
+      "slug": "classification-metrics"
     },
     {
       "title": "Confusion Matrix",
       "theory": [
         "A confusion matrix summarizes classification performance with four cells: True Positives (TP), True Negatives (TN), False Positives (FP), False Negatives (FN).",
         "From this, many metrics derive: accuracy = (TP+TN)/(TP+TN+FP+FN), precision = TP/(TP+FP), recall = TP/(TP+FN), specificity = TN/(TN+FP).",
-        "The confusion matrix shows which types of errors a model makes. For multi-class, it generalizes to N×N table where entry (i,j) counts instances of true class i predicted as j."
+        "The confusion matrix shows which types of errors a model makes. For multi-class, it generalizes to N\u00d7N table where entry (i,j) counts instances of true class i predicted as j."
       ],
       "visualIntuition": [
         "Heatmap with rows as true classes, columns as predicted. Interactive version highlights one cell and computes derived metrics on click."
@@ -100,7 +103,8 @@
           "description": "Confusion matrix visualization",
           "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\nfrom sklearn.metrics import confusion_matrix\n\ncm = confusion_matrix(y_test, y_pred)\nlabels = ['Negative', 'Positive']\n\nplt.figure(figsize=(6, 4))\nsns.heatmap(cm, annot=True, fmt='d', cmap='Blues',\n            xticklabels=labels, yticklabels=labels)\nplt.xlabel('Predicted')\nplt.ylabel('True')\nplt.title('Confusion Matrix')\nplt.show()"
         }
-      ]
+      ],
+      "slug": "confusion-matrix"
     },
     {
       "title": "ROC and AUC",
@@ -122,7 +126,8 @@
           "description": "ROC curve and AUC",
           "content": "from sklearn.metrics import roc_curve, roc_auc_score\nimport matplotlib.pyplot as plt\n\ny_scores = clf.predict_proba(X_test)[:, 1]\nfpr, tpr, thresholds = roc_curve(y_test, y_scores)\nauc = roc_auc_score(y_test, y_scores)\n\nplt.figure(figsize=(6, 5))\nplt.plot(fpr, tpr, label=f'ROC (AUC = {auc:.3f})')\nplt.plot([0, 1], [0, 1], 'r--', label='Random (AUC = 0.5)')\nplt.xlabel('False Positive Rate')\nplt.ylabel('True Positive Rate')\nplt.title('ROC Curve')\nplt.legend()\nplt.show()"
         }
-      ]
+      ],
+      "slug": "roc-and-auc"
     },
     {
       "title": "Precision-Recall Curves",
@@ -144,16 +149,19 @@
           "description": "Precision-Recall curve",
           "content": "from sklearn.metrics import precision_recall_curve, average_precision_score\nimport matplotlib.pyplot as plt\n\nprecision, recall, pr_thresholds = precision_recall_curve(y_test, y_scores)\nap = average_precision_score(y_test, y_scores)\n\nplt.figure(figsize=(6, 5))\nplt.step(recall, precision, where='post')\nplt.xlabel('Recall')\nplt.ylabel('Precision')\nplt.title(f'Precision-Recall Curve (AP = {ap:.3f})')\nplt.ylim([0.0, 1.05])\nplt.xlim([0.0, 1.0])\nplt.show()"
         }
-      ]
+      ],
+      "slug": "precision-recall-curves"
     },
     {
       "title": "Multi-class Classification Metrics",
-      "theory": "Multi-class metrics extend binary metrics using **averaging strategies:**\n\n- **Micro:** Pool all TP/FP/FN globally. Gives equal weight to each sample. Same as accuracy for single-label.\n- **Macro:** Compute metric per class, then average. Gives equal weight to each class. Sensitive to rare classes.\n- **Weighted:** Like macro but weighted by class support (number of samples). Accounts for class imbalance.\n\n**When to use each:**\n| Average | Best For | Weakness |\n|---|---|---|\n| micro | Overall performance, balanced datasets | Hides poor performance on small classes |\n| macro | Equal treatment of all classes | Affected by low-support classes |\n| weighted | Imbalanced datasets | May hide zero-performance on minority |\n\n**Top-k Accuracy:** Correct if the true label is among the model's top k predictions. Common in image classification (top-5 accuracy).\n\n**Per-class analysis:** Always look at the full `classification_report` to spot classes where the model struggles.",
+      "theory": [
+        "Multi-class metrics extend binary metrics using **averaging strategies:**\n\n- **Micro:** Pool all TP/FP/FN globally. Gives equal weight to each sample. Same as accuracy for single-label.\n- **Macro:** Compute metric per class, then average. Gives equal weight to each class. Sensitive to rare classes.\n- **Weighted:** Like macro but weighted by class support (number of samples). Accounts for class imbalance.\n\n**When to use each:**\n| Average | Best For | Weakness |\n|---|---|---|\n| micro | Overall performance, balanced datasets | Hides poor performance on small classes |\n| macro | Equal treatment of all classes | Affected by low-support classes |\n| weighted | Imbalanced datasets | May hide zero-performance on minority |\n\n**Top-k Accuracy:** Correct if the true label is among the model's top k predictions. Common in image classification (top-5 accuracy).\n\n**Per-class analysis:** Always look at the full `classification_report` to spot classes where the model struggles."
+      ],
       "code": [
         {
-          "title": "Multi-class Metrics and Averaging Strategies",
           "language": "python",
-          "code": "from sklearn.datasets import make_classification\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import (classification_report, f1_score,\n    precision_score, recall_score, confusion_matrix, top_k_accuracy_score)\nimport numpy as np\n\n# Imbalanced multi-class\nX, y = make_classification(n_samples=1000, n_classes=4, n_features=15,\n    n_informative=10, weights=[0.5, 0.2, 0.2, 0.1], random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nclf = RandomForestClassifier(n_estimators=100, random_state=42)\nclf.fit(X_train, y_train)\ny_pred = clf.predict(X_test)\ny_proba = clf.predict_proba(X_test)\n\n# All averaging strategies\nfor avg in ['micro', 'macro', 'weighted']:\n    f1 = f1_score(y_test, y_pred, average=avg)\n    print(f'F1 ({avg:8s}): {f1:.4f}')\n\n# Full classification report\nprint(classification_report(y_test, y_pred, target_names=['ClassA','ClassB','ClassC','ClassD']))\n\n# Top-k accuracy\ntop1 = top_k_accuracy_score(y_test, y_proba, k=1)\ntop2 = top_k_accuracy_score(y_test, y_proba, k=2)\nprint(f'Top-1 accuracy: {top1:.4f}')\nprint(f'Top-2 accuracy: {top2:.4f}')"
+          "description": "Multi-class Metrics and Averaging Strategies",
+          "content": "from sklearn.datasets import make_classification\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import (classification_report, f1_score,\n    precision_score, recall_score, confusion_matrix, top_k_accuracy_score)\nimport numpy as np\n\n# Imbalanced multi-class\nX, y = make_classification(n_samples=1000, n_classes=4, n_features=15,\n    n_informative=10, weights=[0.5, 0.2, 0.2, 0.1], random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nclf = RandomForestClassifier(n_estimators=100, random_state=42)\nclf.fit(X_train, y_train)\ny_pred = clf.predict(X_test)\ny_proba = clf.predict_proba(X_test)\n\n# All averaging strategies\nfor avg in ['micro', 'macro', 'weighted']:\n    f1 = f1_score(y_test, y_pred, average=avg)\n    print(f'F1 ({avg:8s}): {f1:.4f}')\n\n# Full classification report\nprint(classification_report(y_test, y_pred, target_names=['ClassA','ClassB','ClassC','ClassD']))\n\n# Top-k accuracy\ntop1 = top_k_accuracy_score(y_test, y_proba, k=1)\ntop2 = top_k_accuracy_score(y_test, y_proba, k=2)\nprint(f'Top-1 accuracy: {top1:.4f}')\nprint(f'Top-2 accuracy: {top2:.4f}')"
         }
       ],
       "visualSuggestions": [
@@ -161,17 +169,20 @@
         "Micro vs macro vs weighted comparison chart"
       ],
       "visualIntuition": [
-        "Micro averaging is like grading all exam answers in one big pile — each question counts equally. Macro averaging is like grading each subject separately and then averaging the subject scores — each subject counts equally, regardless of how many questions it had."
-      ]
+        "Micro averaging is like grading all exam answers in one big pile \u2014 each question counts equally. Macro averaging is like grading each subject separately and then averaging the subject scores \u2014 each subject counts equally, regardless of how many questions it had."
+      ],
+      "slug": "multi-class-classification-metrics"
     },
     {
       "title": "Brier Score and Probability Scoring",
-      "theory": "The Brier Score measures the **accuracy of probabilistic predictions.** It is the mean squared error between predicted probabilities and actual outcomes.\n\n**Formula:** BS = (1/N) Σ (pᵢ - yᵢ)²\n\n**Interpretation:**\n- 0 = perfect predictions (all probabilities match outcomes)\n- 0.25 = no-skill baseline (always predicting 0.5 for balanced binary)\n- 1 = worst possible (confident and always wrong)\n\n**Multi-class extension:** BS = (1/N) Σᵢ Σⱼ (pᵢⱼ - yᵢⱼ)², where j indexes classes.\n\n**Decomposition:**\n- **Reliability:** How well predicted probabilities match observed frequencies\n- **Resolution:** How much predictions vary (better than constant prediction)\n- **Uncertainty:** Inherent uncertainty in the data\n\nBS = Reliability - Resolution + Uncertainty",
+      "theory": [
+        "The Brier Score measures the **accuracy of probabilistic predictions.** It is the mean squared error between predicted probabilities and actual outcomes.\n\n**Formula:** BS = (1/N) \u03a3 (p\u1d62 - y\u1d62)\u00b2\n\n**Interpretation:**\n- 0 = perfect predictions (all probabilities match outcomes)\n- 0.25 = no-skill baseline (always predicting 0.5 for balanced binary)\n- 1 = worst possible (confident and always wrong)\n\n**Multi-class extension:** BS = (1/N) \u03a3\u1d62 \u03a3\u2c7c (p\u1d62\u2c7c - y\u1d62\u2c7c)\u00b2, where j indexes classes.\n\n**Decomposition:**\n- **Reliability:** How well predicted probabilities match observed frequencies\n- **Resolution:** How much predictions vary (better than constant prediction)\n- **Uncertainty:** Inherent uncertainty in the data\n\nBS = Reliability - Resolution + Uncertainty"
+      ],
       "code": [
         {
-          "title": "Brier Score Computation and Comparison",
           "language": "python",
-          "code": "from sklearn.metrics import brier_score_loss\nfrom sklearn.datasets import make_classification\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.svm import SVC\nfrom sklearn.calibration import CalibratedClassifierCV\nfrom sklearn.model_selection import train_test_split\nimport numpy as np\n\nX, y = make_classification(n_samples=1000, n_features=10, random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# Compare Brier Scores\nbaseline_mean = np.mean(y_train)\nbs_baseline = np.mean((baseline_mean - y_test)**2)\nprint(f'Baseline (mean): {bs_baseline:.4f}')\n\nlr = LogisticRegression(max_iter=1000); lr.fit(X_train, y_train)\nbs_lr = brier_score_loss(y_test, lr.predict_proba(X_test)[:,1])\nprint(f'Logistic Regression: {bs_lr:.4f}')\n\nsvm_raw = SVC(probability=True); svm_raw.fit(X_train, y_train)\nbs_svm = brier_score_loss(y_test, svm_raw.predict_proba(X_test)[:,1])\nprint(f'SVM (raw): {bs_svm:.4f}')\n\nsvm_cal = CalibratedClassifierCV(SVC(), cv=5, method='isotonic')\nsvm_cal.fit(X_train, y_train)\nbs_svm_cal = brier_score_loss(y_test, svm_cal.predict_proba(X_test)[:,1])\nprint(f'SVM (calibrated): {bs_svm_cal:.4f}')\n\n# Multi-class Brier Score\nfrom sklearn.preprocessing import label_binarize\nX_mc, y_mc = make_classification(n_samples=1000, n_classes=3, n_informative=8, random_state=42)\nX_tr, X_te, y_tr, y_te = train_test_split(X_mc, y_mc, test_size=0.2)\nlr_mc = LogisticRegression(max_iter=1000); lr_mc.fit(X_tr, y_tr)\ny_bin = label_binarize(y_te, classes=[0,1,2])\ny_proba = lr_mc.predict_proba(X_te)\nbs_mc = np.mean((y_proba - y_bin)**2)\nprint(f'Multi-class Brier Score: {bs_mc:.4f}')"
+          "description": "Brier Score Computation and Comparison",
+          "content": "from sklearn.metrics import brier_score_loss\nfrom sklearn.datasets import make_classification\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.svm import SVC\nfrom sklearn.calibration import CalibratedClassifierCV\nfrom sklearn.model_selection import train_test_split\nimport numpy as np\n\nX, y = make_classification(n_samples=1000, n_features=10, random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# Compare Brier Scores\nbaseline_mean = np.mean(y_train)\nbs_baseline = np.mean((baseline_mean - y_test)**2)\nprint(f'Baseline (mean): {bs_baseline:.4f}')\n\nlr = LogisticRegression(max_iter=1000); lr.fit(X_train, y_train)\nbs_lr = brier_score_loss(y_test, lr.predict_proba(X_test)[:,1])\nprint(f'Logistic Regression: {bs_lr:.4f}')\n\nsvm_raw = SVC(probability=True); svm_raw.fit(X_train, y_train)\nbs_svm = brier_score_loss(y_test, svm_raw.predict_proba(X_test)[:,1])\nprint(f'SVM (raw): {bs_svm:.4f}')\n\nsvm_cal = CalibratedClassifierCV(SVC(), cv=5, method='isotonic')\nsvm_cal.fit(X_train, y_train)\nbs_svm_cal = brier_score_loss(y_test, svm_cal.predict_proba(X_test)[:,1])\nprint(f'SVM (calibrated): {bs_svm_cal:.4f}')\n\n# Multi-class Brier Score\nfrom sklearn.preprocessing import label_binarize\nX_mc, y_mc = make_classification(n_samples=1000, n_classes=3, n_informative=8, random_state=42)\nX_tr, X_te, y_tr, y_te = train_test_split(X_mc, y_mc, test_size=0.2)\nlr_mc = LogisticRegression(max_iter=1000); lr_mc.fit(X_tr, y_tr)\ny_bin = label_binarize(y_te, classes=[0,1,2])\ny_proba = lr_mc.predict_proba(X_te)\nbs_mc = np.mean((y_proba - y_bin)**2)\nprint(f'Multi-class Brier Score: {bs_mc:.4f}')"
         }
       ],
       "visualSuggestions": [
@@ -179,8 +190,9 @@
         "Probability distribution histogram showing model confidence"
       ],
       "visualIntuition": [
-        "Brier Score is like a quiz grade for your model's confidence. If the model says 'I'm 90% sure it's positive' and it is positive, the error is small (0.1² = 0.01). But if it's wrong, the penalty is huge (0.9² = 0.81). It rewards confident, correct predictions and punishes confident, wrong ones."
-      ]
+        "Brier Score is like a quiz grade for your model's confidence. If the model says 'I'm 90% sure it's positive' and it is positive, the error is small (0.1\u00b2 = 0.01). But if it's wrong, the penalty is huge (0.9\u00b2 = 0.81). It rewards confident, correct predictions and punishes confident, wrong ones."
+      ],
+      "slug": "brier-score-and-probability-scoring"
     }
   ],
   "quiz": [
@@ -190,7 +202,7 @@
       "options": [
         "MAE",
         "MSE",
-        "R²",
+        "R\u00b2",
         "Accuracy"
       ],
       "correctAnswer": 1,

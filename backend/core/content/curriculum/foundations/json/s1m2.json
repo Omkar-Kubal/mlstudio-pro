@@ -6,18 +6,18 @@
     "estimatedHours": 4
   },
   "overview": [
-    "Machine Learning models do not learn fixed values — they learn uncertainty. Probability theory provides the language to describe uncertainty, starting with random variables and probability distributions.",
-    "This module covers random variables, common probability distributions, conditional probability, Bayes' theorem, and the Law of Large Numbers — all essential foundations for understanding how ML models learn from data."
+    "Machine Learning models do not learn fixed values \u2014 they learn uncertainty. Probability theory provides the language to describe uncertainty, starting with random variables and probability distributions.",
+    "This module covers random variables, common probability distributions, conditional probability, Bayes' theorem, and the Law of Large Numbers \u2014 all essential foundations for understanding how ML models learn from data."
   ],
   "topics": [
     {
       "title": "Random Variables & Probability Distributions",
       "slug": "random-variables",
       "theory": [
-        "A random variable is a numerical outcome of a random process. It is not random itself — it maps randomness to numbers.",
+        "A random variable is a numerical outcome of a random process. It is not random itself \u2014 it maps randomness to numbers.",
         "Discrete random variables take countable values (dice rolls, number of clicks, class labels). Continuous random variables take uncountably infinite values (height, time, loss values). Key distinction: Discrete uses probabilities, Continuous uses probability densities.",
         "A probability distribution describes how likely different outcomes are. For discrete distributions, we use a Probability Mass Function (PMF) where P(X=x) gives exact probabilities. For continuous distributions, we use a Probability Density Function (PDF) where probability exists over ranges, not points.",
-        "Expected Value E[X] is the long-run average — the target most ML models optimize toward. Variance Var(X) measures uncertainty, risk, and model instability."
+        "Expected Value E[X] is the long-run average \u2014 the target most ML models optimize toward. Variance Var(X) measures uncertainty, risk, and model instability."
       ],
       "visualIntuition": [
         "Show randomness becoming structure: random points are generated appearing chaotic, then samples accumulate and a histogram shape emerges, finally a smooth distribution curve overlays the histogram showing randomness becoming order."
@@ -43,13 +43,13 @@
       "title": "Common Probability Distributions",
       "slug": "probability-distributions",
       "theory": [
-        "Bernoulli Distribution models a single binary trial: X ∈ {0, 1}, P(X=1) = p. Examples: click/no click, fraud/no fraud, pass/fail. Mean = p, Variance = p(1-p). In ML: Binary classification labels use Bernoulli, and cross-entropy loss is derived from Bernoulli likelihood.",
+        "Bernoulli Distribution models a single binary trial: X \u2208 {0, 1}, P(X=1) = p. Examples: click/no click, fraud/no fraud, pass/fail. Mean = p, Variance = p(1-p). In ML: Binary classification labels use Bernoulli, and cross-entropy loss is derived from Bernoulli likelihood.",
         "Binomial Distribution models the number of successes in N independent Bernoulli trials: X ~ Binomial(n, p). Examples: number of users clicking an ad, defective items in a batch. Mean = np, Variance = np(1-p).",
-        "Normal Distribution is the most important continuous distribution: X ~ N(μ, σ²). Most values cluster around the mean; extreme values are rare but possible. Examples: measurement noise, model errors, aggregated natural processes. The Central Limit Theorem explains why it appears everywhere.",
+        "Normal Distribution is the most important continuous distribution: X ~ N(\u03bc, \u03c3\u00b2). Most values cluster around the mean; extreme values are rare but possible. Examples: measurement noise, model errors, aggregated natural processes. The Central Limit Theorem explains why it appears everywhere.",
         "Central Limit Theorem: Regardless of the original distribution, the mean of samples converges to a normal distribution as sample size increases. This justifies using normal assumptions and explains why averages behave predictably."
       ],
       "visualIntuition": [
-        "Distribution selector allowing users to switch between Bernoulli (single dot flipping), Binomial (histogram forming as trials increase), and Normal (bell curve). Parameter sliders for p, n, μ, σ to see distribution shapes change."
+        "Distribution selector allowing users to switch between Bernoulli (single dot flipping), Binomial (histogram forming as trials increase), and Normal (bell curve). Parameter sliders for p, n, \u03bc, \u03c3 to see distribution shapes change."
       ],
       "visualSuggestions": [
         "CLT demonstration: sample from skewed distribution, plot means, watch histogram become normal",
@@ -77,9 +77,9 @@
       "title": "Conditional Probability & Bayes' Theorem",
       "slug": "bayes-theorem",
       "theory": [
-        "Conditional probability answers: How likely is an event given that something else already happened? P(A|B) = P(A∩B) / P(B). Conditional probability shrinks the universe — instead of asking how often A happens, you ask how often A happens inside the world where B is already true.",
-        "Independence vs Dependence: If P(A|B) = P(A), events are independent — knowing B tells you nothing about A. If P(A|B) ≠ P(A), events are dependent — B changes your belief about A. Machine Learning assumes dependence; if features were independent of labels, learning would be impossible.",
-        "Bayes' Theorem: P(A|B) = P(B|A) × P(A) / P(B). P(A) is the prior belief, P(B|A) is the likelihood, P(B) is the evidence, and P(A|B) is the posterior (updated belief). Bayes' theorem is belief updating: start with a belief, see evidence, update belief.",
+        "Conditional probability answers: How likely is an event given that something else already happened? P(A|B) = P(A\u2229B) / P(B). Conditional probability shrinks the universe \u2014 instead of asking how often A happens, you ask how often A happens inside the world where B is already true.",
+        "Independence vs Dependence: If P(A|B) = P(A), events are independent \u2014 knowing B tells you nothing about A. If P(A|B) \u2260 P(A), events are dependent \u2014 B changes your belief about A. Machine Learning assumes dependence; if features were independent of labels, learning would be impossible.",
+        "Bayes' Theorem: P(A|B) = P(B|A) \u00d7 P(A) / P(B). P(A) is the prior belief, P(B|A) is the likelihood, P(B) is the evidence, and P(A|B) is the posterior (updated belief). Bayes' theorem is belief updating: start with a belief, see evidence, update belief.",
         "In ML: Bayes explains why models output probabilities, why predictions change with new data, why uncertainty matters. Applications include spam filtering, medical diagnosis, recommendation systems, and Naive Bayes classifiers."
       ],
       "visualIntuition": [
@@ -101,23 +101,23 @@
       "title": "Poisson Distribution",
       "slug": "poisson-distribution",
       "theory": [
-        "The Poisson distribution models the number of discrete events occurring in a fixed interval of time or space, given that events happen at a known constant mean rate λ (lambda) and independently of each other.",
-        "PMF: P(X = k) = (λ^k · e^{-λ}) / k!",
-        "Key properties: Mean = λ, Variance = λ (unique: mean equals variance), Skewness = 1/√λ.",
+        "The Poisson distribution models the number of discrete events occurring in a fixed interval of time or space, given that events happen at a known constant mean rate \u03bb (lambda) and independently of each other.",
+        "PMF: P(X = k) = (\u03bb^k \u00b7 e^{-\u03bb}) / k!",
+        "Key properties: Mean = \u03bb, Variance = \u03bb (unique: mean equals variance), Skewness = 1/\u221a\u03bb.",
         "ML Use Cases: Count-based NLP models (word frequency), anomaly detection for rare events (network intrusions), recommendation systems (click/purchase counts), and queueing theory (server requests)."
       ],
       "visualIntuition": [
-        "Imagine counting how many emails you receive per hour. Some hours you get 0, some hours 5. The Poisson distribution describes this pattern — given an average rate λ, it tells you the probability of any specific count."
+        "Imagine counting how many emails you receive per hour. Some hours you get 0, some hours 5. The Poisson distribution describes this pattern \u2014 given an average rate \u03bb, it tells you the probability of any specific count."
       ],
       "visualSuggestions": [
-        "Interactive PMF bar chart with λ slider — watch distribution shape shift from right-skewed to symmetric",
+        "Interactive PMF bar chart with \u03bb slider \u2014 watch distribution shape shift from right-skewed to symmetric",
         "Sample generator: click to add random events, histogram builds toward theoretical PMF"
       ],
       "code": [
         {
           "language": "python",
-          "description": "Poisson Distribution — PMF, CDF, and Visualization",
-          "content": "from scipy import stats\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Create Poisson distribution with lambda=4\nrv = stats.poisson(mu=4)\n\n# PMF: probability of exactly k=3 events\nprint(rv.pmf(3))         # 0.1954\n\n# CDF: probability of k <= 5 events\nprint(rv.cdf(5))         # 0.7851\n\n# Descriptive statistics\nprint(rv.mean())         # 4.0\nprint(rv.var())          # 4.0  (always equals lambda)\nprint(rv.std())          # 2.0\n\n# Generate random samples\nsamples = rv.rvs(size=1000, random_state=42)\nprint(np.mean(samples))  # ≈ 4.0\n\n# Plot PMF\nk = np.arange(0, 15)\nplt.bar(k, rv.pmf(k), color='steelblue', alpha=0.7)\nplt.xlabel('k (events)')\nplt.ylabel('P(X=k)')\nplt.title('Poisson PMF (λ=4)')\nplt.show()"
+          "description": "Poisson Distribution - PMF, CDF, and Visualization",
+          "content": "from scipy import stats\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Create Poisson distribution with lambda=4\nrv = stats.poisson(mu=4)\n\n# PMF: probability of exactly k=3 events\nprint(rv.pmf(3))         # 0.1954\n\n# CDF: probability of k <= 5 events\nprint(rv.cdf(5))         # 0.7851\n\n# Descriptive statistics\nprint(rv.mean())         # 4.0\nprint(rv.var())          # 4.0  (always equals lambda)\nprint(rv.std())          # 2.0\n\n# Generate random samples\nsamples = rv.rvs(size=1000, random_state=42)\nprint(np.mean(samples))  # ~= 4.0\n\n# Plot PMF\nk = np.arange(0, 15)\nplt.bar(k, rv.pmf(k), color='steelblue', alpha=0.7)\nplt.xlabel('k (events)')\nplt.ylabel('P(X=k)')\nplt.title('Poisson PMF (lambda=4)')\nplt.show()"
         }
       ]
     },
@@ -126,22 +126,22 @@
       "slug": "exponential-distribution",
       "theory": [
         "The Exponential distribution models the time between consecutive events in a Poisson process. It is the continuous counterpart to the Poisson distribution.",
-        "PDF: f(x) = λ · e^{-λx} for x ≥ 0",
-        "Key property — Memorylessness: P(X > s + t | X > s) = P(X > t). The probability of waiting an additional time t is the same regardless of how long you've already waited.",
+        "PDF: f(x) = \u03bb \u00b7 e^{-\u03bbx} for x \u2265 0",
+        "Key property \u2014 Memorylessness: P(X > s + t | X > s) = P(X > t). The probability of waiting an additional time t is the same regardless of how long you've already waited.",
         "ML Use Cases: Survival analysis and customer churn modelling, time-to-failure predictions in reliability engineering, fraud detection (inter-transaction times)."
       ],
       "visualIntuition": [
         "Imagine waiting for a bus that arrives randomly. The Exponential distribution tells you the probability of waiting a certain amount of time. Its memoryless property means that if you've already waited 10 minutes, the expected additional wait is still the same."
       ],
       "visualSuggestions": [
-        "PDF curve with λ slider — heavier tail (slower decay) for smaller λ",
+        "PDF curve with \u03bb slider \u2014 heavier tail (slower decay) for smaller \u03bb",
         "Memorylessness demo: progress bar resets, showing waiting time is independent of elapsed time"
       ],
       "code": [
         {
           "language": "python",
-          "description": "Exponential Distribution — Memorylessness Verification",
-          "content": "from scipy import stats\nimport numpy as np\n\n# Exponential with rate=0.5 (mean = 1/0.5 = 2)\nrv = stats.expon(scale=2)  # scipy uses scale = 1/rate\n\n# Mean and std\nprint(rv.mean())           # 2.0\nprint(rv.std())            # 2.0  (always equals mean)\n\n# Memorylessness verification\n# P(X > 5 | X > 3) should equal P(X > 2)\nprint(rv.sf(5) / rv.sf(3)) # ≈ 0.3679\nprint(rv.sf(2))            # ≈ 0.3679  — they match!"
+          "description": "Exponential Distribution - Memorylessness Verification",
+          "content": "from scipy import stats\nimport numpy as np\n\n# Exponential with rate=0.5 (mean = 1/0.5 = 2)\nrv = stats.expon(scale=2)  # scipy uses scale = 1/rate\n\n# Mean and std\nprint(rv.mean())           # 2.0\nprint(rv.std())            # 2.0  (always equals mean)\n\n# Memorylessness verification\n# P(X > 5 | X > 3) should equal P(X > 2)\nprint(rv.sf(5) / rv.sf(3)) # ~= 0.3679\nprint(rv.sf(2))            # ~= 0.3679  - they match!"
         }
       ]
     },
@@ -150,22 +150,22 @@
       "slug": "uniform-distribution",
       "theory": [
         "The Uniform distribution assigns equal probability to all outcomes in an interval [a, b]. Every value is equally likely.",
-        "PDF: f(x) = 1/(b-a) for a ≤ x ≤ b, else 0",
-        "Key properties: Mean = (a+b)/2, Variance = (b-a)²/12, Entropy is maximised among all distributions with the same support.",
+        "PDF: f(x) = 1/(b-a) for a \u2264 x \u2264 b, else 0",
+        "Key properties: Mean = (a+b)/2, Variance = (b-a)\u00b2/12, Entropy is maximised among all distributions with the same support.",
         "ML Use Cases: Weight initialisation in neural networks, hyperparameter search limits, data augmentation."
       ],
       "visualIntuition": [
         "Think of a perfectly fair spinner on a circular dial. No matter where the needle lands between a and b, every position is equally likely. The probability is simply 1/(b-a) everywhere in the interval."
       ],
       "visualSuggestions": [
-        "Flat PDF rectangle with [a,b] sliders — CDF shows linear ramp",
+        "Flat PDF rectangle with [a,b] sliders \u2014 CDF shows linear ramp",
         "Inverse transform sampling demo: uniform draws on y-axis mapped through CDF inverse to target distribution"
       ],
       "code": [
         {
           "language": "python",
-          "description": "Uniform Distribution — ML Applications",
-          "content": "from scipy import stats\nimport numpy as np\n\n# Uniform between 2 and 8 (loc=a, scale=b-a)\nrv = stats.uniform(loc=2, scale=6)\n\n# PDF (constant within range)\nprint(rv.pdf(5))           # 0.1667 (= 1/6)\n\n# Neural network weight initialisation\ndef uniform_init(shape, a=-0.1, b=0.1):\n    return np.random.uniform(a, b, shape)\n\nW = uniform_init((128, 64))\nprint(W.min(), W.max())    # ≈ -0.1, 0.1"
+          "description": "Uniform Distribution - ML Applications",
+          "content": "from scipy import stats\nimport numpy as np\n\n# Uniform between 2 and 8 (loc=a, scale=b-a)\nrv = stats.uniform(loc=2, scale=6)\n\n# PDF (constant within range)\nprint(rv.pdf(5))           # 0.1667 (= 1/6)\n\n# Neural network weight initialisation\ndef uniform_init(shape, a=-0.1, b=0.1):\n    return np.random.uniform(a, b, shape)\n\nW = uniform_init((128, 64))\nprint(W.min(), W.max())    # ~= -0.1, 0.1"
         }
       ]
     }
@@ -205,7 +205,7 @@
         "1%"
       ],
       "correctAnswer": 2,
-      "explanation": "Using Bayes' theorem: P(D|+) = (0.95 × 0.01) / (0.95×0.01 + 0.05×0.99) ≈ 0.16 or 16%. Even with an accurate test, rare conditions produce surprisingly low posterior probabilities."
+      "explanation": "Using Bayes' theorem: P(D|+) = (0.95 \u00d7 0.01) / (0.95\u00d70.01 + 0.05\u00d70.99) \u2248 0.16 or 16%. Even with an accurate test, rare conditions produce surprisingly low posterior probabilities."
     },
     {
       "id": "q4",
@@ -224,7 +224,7 @@
       "question": "What does it mean for two events to be independent?",
       "options": [
         "They never occur together",
-        "P(A|B) = P(A) — knowing B tells you nothing about A",
+        "P(A|B) = P(A) \u2014 knowing B tells you nothing about A",
         "They have the same probability",
         "They are mutually exclusive"
       ],
@@ -241,7 +241,7 @@
         "Mean is always greater than variance"
       ],
       "correctAnswer": 1,
-      "explanation": "For a Poisson distribution with parameter λ, both the mean and variance equal λ. This is a unique identifying property."
+      "explanation": "For a Poisson distribution with parameter \u03bb, both the mean and variance equal \u03bb. This is a unique identifying property."
     },
     {
       "id": "q7",

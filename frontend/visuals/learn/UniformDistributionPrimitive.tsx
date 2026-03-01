@@ -41,7 +41,7 @@ export default function UniformDistributionPrimitive() {
         if (!ctx) return;
 
         ctx.clearRect(0, 0, W, H);
-        ctx.fillStyle = "hsl(var(--surface))";
+        ctx.fillStyle = "#121212";
         ctx.fillRect(0, 0, W, H);
 
         const M = { top: 20, right: 30, bottom: 40, left: 60 };
@@ -72,12 +72,12 @@ export default function UniformDistributionPrimitive() {
         const qLo = Math.max(qx1, a);
         const qHi = Math.min(qx2, b);
         if (qLo < qHi) {
-            ctx.fillStyle = "hsla(var(--amber-500), 0.15)";
+            ctx.fillStyle = "rgba(245, 158, 11, 0.15)";
             const sx = tx(qLo), sw = tx(qHi) - sx;
             ctx.fillRect(sx, ty(height), sw, ty(0) - ty(height));
 
             // Query Borders
-            ctx.strokeStyle = "hsla(var(--amber-500), 0.5)";
+            ctx.strokeStyle = "rgba(245, 158, 11, 0.5)";
             ctx.setLineDash([4, 4]);
             ctx.beginPath();
             ctx.moveTo(sx, ty(0)); ctx.lineTo(sx, ty(height));
@@ -91,12 +91,12 @@ export default function UniformDistributionPrimitive() {
         const ry = ty(height);
 
         const grad = ctx.createLinearGradient(0, ry, 0, ty(0));
-        grad.addColorStop(0, "hsla(var(--primary), 0.3)");
+        grad.addColorStop(0, "rgba(212, 212, 212, 0.3)");
         grad.addColorStop(1, "transparent");
         ctx.fillStyle = grad;
         ctx.fillRect(rx, ry, rw, ty(0) - ry);
 
-        ctx.strokeStyle = "hsl(var(--primary))";
+        ctx.strokeStyle = "#D4D4D4";
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(rx, ry);
@@ -117,14 +117,14 @@ export default function UniformDistributionPrimitive() {
         ctx.stroke();
 
         // Markers a and b
-        ctx.fillStyle = "hsl(var(--primary))";
+        ctx.fillStyle = "#D4D4D4";
         ctx.textAlign = "center";
         ctx.font = "bold 10px var(--font-jetbrains)";
         ctx.fillText(`a=${a.toFixed(1)}`, rx, ty(0) + 20);
         ctx.fillText(`b=${b.toFixed(1)}`, rx + rw, ty(0) + 20);
 
         // Height Annotation
-        ctx.fillStyle = "hsl(var(--primary))";
+        ctx.fillStyle = "#D4D4D4";
         ctx.textAlign = "left";
         ctx.fillText(`h = 1/(b−a) = ${height.toFixed(3)}`, rx + rw + 10, ry + 5);
 

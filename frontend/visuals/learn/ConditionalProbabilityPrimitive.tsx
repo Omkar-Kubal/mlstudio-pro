@@ -114,19 +114,19 @@ export default function ConditionalProbabilityPrimitive() {
 
         // Draw A
         ctx.globalAlpha = evidenceOn ? 0.2 : 0.6;
-        ctx.fillStyle = "hsl(var(--primary))";
+        ctx.fillStyle = "#D4D4D4";
         ctx.beginPath(); ctx.arc(aX, cy, rA, 0, Math.PI * 2); ctx.fill();
 
         // Draw B
         ctx.globalAlpha = evidenceOn ? 0.8 : 0.4;
-        ctx.fillStyle = "hsl(var(--secondary))";
+        ctx.fillStyle = "#A3A3A3";
         ctx.beginPath(); ctx.arc(bX, cy, rB, 0, Math.PI * 2); ctx.fill();
 
         // Intersection
         ctx.globalAlpha = 1;
         ctx.save();
         ctx.beginPath(); ctx.arc(aX, cy, rA, 0, Math.PI * 2); ctx.clip();
-        ctx.fillStyle = "hsl(var(--accent))";
+        ctx.fillStyle = "#525252";
         ctx.beginPath(); ctx.arc(bX, cy, rB, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
 
@@ -204,9 +204,9 @@ export default function ConditionalProbabilityPrimitive() {
 
                         <div className="flex flex-wrap gap-4 pt-2 border-t border-border/40">
                             {[
-                                { color: "bg-primary", label: scenario.leg[0] },
-                                { color: "bg-secondary", label: scenario.leg[1] },
-                                { color: "bg-accent", label: scenario.leg[2] },
+                                { color: "bg-[#D4D4D4]", label: scenario.leg[0] },
+                                { color: "bg-[#A3A3A3]", label: scenario.leg[1] },
+                                { color: "bg-[#525252]", label: scenario.leg[2] },
                             ].map(l => (
                                 <div key={l.label} className="flex items-center gap-2">
                                     <div className={`w-2.5 h-2.5 rounded-sm ${l.color}`} />

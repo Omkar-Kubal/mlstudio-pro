@@ -10,4 +10,5 @@ scipy
 pandas
 xgboost
 lightgbm
-supabase
+firebase-admin
+PyJWT

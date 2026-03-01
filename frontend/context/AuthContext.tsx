@@ -1,58 +1,82 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
-import { User, Session } from "@supabase/supabase-js";
-import { useRouter, usePathname } from "next/navigation";
+import { auth } from "@/lib/firebase";
+import { onAuthStateChanged, signOut as firebaseSignOut, User as FirebaseUser } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useSession } from "@/hooks/useSession";
+
+// Define a common User interface to avoid breaking components during migration
+export interface User {
+    id: string;
+    email: string | null;
+    displayName?: string | null;
+    isAdmin: boolean;
+}
 
 interface AuthContextType {
     user: User | null;
-    session: Session | null;
     loading: boolean;
     signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
     user: null,
-    session: null,
     loading: true,
     signOut: async () => { },
 });
 
+/** Inner component that starts session tracking once the user is authenticated */
+function SessionTracker() {
+    useSession();
+    return null;
+}
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
-    const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
-    const _pathname = usePathname();
 
     useEffect(() => {
-        // Get initial session
-        supabase.auth.getSession().then(({ data: { session } }: { data: { session: Session | null } }) => {
-            setSession(session);
-            setUser(session?.user ?? null);
+        // Firebase onAuthStateChanged returns an unsubscribe function
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
+            if (firebaseUser) {
+                // Get ID Token Result to check for custom 'admin' claim
+                const idTokenResult = await firebaseUser.getIdTokenResult();
+                const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+                const isAdmin = !!idTokenResult.claims.admin || (adminEmail && firebaseUser.email === adminEmail);
+
+                // Map Firebase User to our App User interface
+                setUser({
+                    id: firebaseUser.uid,
+                    email: firebaseUser.email,
+                    displayName: firebaseUser.displayName,
+                    isAdmin: !!isAdmin
+                });
+            } else {
+                setUser(null);
+            }
+            setLoading(false);
+        }, (error) => {
+            console.error("[AuthContext] Firebase Auth error:", error);
             setLoading(false);
         });
 
-        // Listen for auth changes
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session: Session | null) => {
-            setSession(session);
-            setUser(session?.user ?? null);
-            setLoading(false);
-        });
-
-        return () => {
-            subscription.unsubscribe();
-        };
+        return () => unsubscribe();
     }, []);
 
     const signOut = async () => {
-        await supabase.auth.signOut();
-        router.push("/");
+        try {
+            await firebaseSignOut(auth);
+            router.push("/");
+        } catch (error) {
+            console.error("[AuthContext] Sign out error:", error);
+        }
     };
 
     return (
-        <AuthContext.Provider value={{ user, session, loading, signOut }}>
+        <AuthContext.Provider value={{ user, loading, signOut }}>
+            <SessionTracker />
             {children}
         </AuthContext.Provider>
     );

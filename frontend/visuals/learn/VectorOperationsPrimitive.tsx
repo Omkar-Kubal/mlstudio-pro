@@ -69,7 +69,7 @@ export default function VectorOperationsPrimitive() {
         if (!ctx) return;
 
         ctx.clearRect(0, 0, CW, CH);
-        ctx.fillStyle = "hsl(var(--surface))";
+        ctx.fillStyle = "#121212";
         ctx.fillRect(0, 0, CW, CH);
 
         // Grid
@@ -106,19 +106,19 @@ export default function VectorOperationsPrimitive() {
             const bShiftedTip = { x: aPos.x + (bPos.x - OX), y: aPos.y + (bPos.y - OY) };
 
             // Resultant
-            drawArrow(ctx, oPos, rPos, "hsl(var(--primary))", 3, 0.4, true);
+            drawArrow(ctx, oPos, rPos, "#D4D4D4", 3, 0.4, true);
 
             // Vector A
-            drawArrow(ctx, oPos, aPos, "hsl(var(--emerald-400))", 3);
+            drawArrow(ctx, oPos, aPos, "#34D399", 3);
 
             // Vector B (shifted)
-            drawArrow(ctx, aPos, bShiftedTip, "hsl(var(--rose-400))", 3);
+            drawArrow(ctx, aPos, bShiftedTip, "#FB7185", 3);
 
             // Vector B (origin)
-            drawArrow(ctx, oPos, bPos, "hsl(var(--rose-400))", 1.5, 0.2, true);
+            drawArrow(ctx, oPos, bPos, "#FB7185", 1.5, 0.2, true);
 
             // Solid Resultant
-            drawArrow(ctx, oPos, rPos, "hsl(var(--primary))", 3);
+            drawArrow(ctx, oPos, rPos, "#D4D4D4", 3);
         } else if (mode === "dot") {
             // Projection of A onto B
             const bLen = mag(vecB);
@@ -133,11 +133,11 @@ export default function VectorOperationsPrimitive() {
             ctx.beginPath(); ctx.moveTo(aPos.x, aPos.y); ctx.lineTo(projPos.x, projPos.y); ctx.stroke();
             ctx.restore();
 
-            drawArrow(ctx, oPos, aPos, "hsl(var(--emerald-400))", 3);
-            drawArrow(ctx, oPos, bPos, "hsl(var(--rose-400))", 3);
+            drawArrow(ctx, oPos, aPos, "#34D399", 3);
+            drawArrow(ctx, oPos, bPos, "#FB7185", 3);
 
             // Highlight projection
-            ctx.strokeStyle = "hsl(var(--primary))";
+            ctx.strokeStyle = "#D4D4D4";
             ctx.lineWidth = 4;
             ctx.globalAlpha = 0.5;
             ctx.beginPath(); ctx.moveTo(OX, OY); ctx.lineTo(projPos.x, projPos.y); ctx.stroke();
@@ -149,7 +149,7 @@ export default function VectorOperationsPrimitive() {
             const _linf = normInf(vecA);
 
             // L2 circle
-            ctx.strokeStyle = "hsla(var(--emerald-400), 0.1)";
+            ctx.strokeStyle = "rgba(52, 211, 153, 0.1)";
             ctx.beginPath(); ctx.arc(OX, OY, l2 * SCALE, 0, Math.PI * 2); ctx.stroke();
 
             // Components
@@ -159,7 +159,7 @@ export default function VectorOperationsPrimitive() {
             ctx.beginPath(); ctx.moveTo(OX, OY); ctx.lineTo(aPos.x, OY); ctx.lineTo(aPos.x, aPos.y); ctx.stroke();
             ctx.restore();
 
-            drawArrow(ctx, oPos, aPos, "hsl(var(--emerald-400))", 3);
+            drawArrow(ctx, oPos, aPos, "#34D399", 3);
         }
 
         // Draggable Handles
@@ -171,8 +171,8 @@ export default function VectorOperationsPrimitive() {
             ctx.stroke();
         };
 
-        drawHandle(aPos, "hsl(var(--emerald-400))");
-        if (mode !== "norm") drawHandle(bPos, "hsl(var(--rose-400))");
+        drawHandle(aPos, "#34D399");
+        if (mode !== "norm") drawHandle(bPos, "#FB7185");
 
     }, [vecA, vecB, mode]); // eslint-disable-line react-hooks/exhaustive-deps
 

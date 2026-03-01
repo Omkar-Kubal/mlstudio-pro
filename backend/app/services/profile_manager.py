@@ -1,62 +1,76 @@
 import os
 from typing import Dict, Any, Optional
-from supabase import create_client, Client
+import firebase_admin
+from firebase_admin import firestore
 
 class ProfileManager:
-    """Manages user profile data in Supabase."""
-    
+    """Manages user profile data in Firestore (migrated from Supabase)."""
+
     def __init__(self):
-        self.url = os.getenv("SUPABASE_URL")
-        self.key = os.getenv("SUPABASE_ANON_KEY")
-        self.use_mock_auth = os.getenv("USE_MOCK_AUTH", "false").lower() == "true"
-        
-        if not self.use_mock_auth and self.url and self.key:
-            self.client: Client = create_client(self.url, self.key)
+        self.use_mock = os.getenv("USE_MOCK_AUTH", "false").lower() == "true"
+        self.db = None
+
+        if not self.use_mock:
+            try:
+                if firebase_admin._apps:
+                    self.db = firestore.client()
+                    print("LOG: ProfileManager connected to Firestore.")
+                else:
+                    print("WARNING: Firebase not initialized yet. ProfileManager using Mock mode.")
+                    self.use_mock = True
+            except Exception as e:
+                print(f"WARNING: ProfileManager Firestore init failed: {e}. Using Mock mode.")
+                self.use_mock = True
         else:
-            self.client = None
-            if not self.use_mock_auth:
-                print("WARNING: Supabase credentials missing. Profile management disabled.")
-            else:
-                print("LOG: Using Mock Auth mode for ProfileManager.")
+            print("LOG: Using Mock Auth mode for ProfileManager.")
+
+    def _mock_profile(self, user_id: str) -> Dict[str, Any]:
+        return {
+            "id": user_id,
+            "display_name": "Demo User",
+            "avatar_url": "https://api.dicebear.com/7.x/bottts/svg?seed=Felix",
+            "persona": "Beginner",
+            "bio": "Keep exploring!",
+        }
 
     def get_profile(self, user_id: str) -> Optional[Dict[str, Any]]:
-        """Fetch user profile from Supabase."""
-        is_mock = os.getenv("USE_MOCK_AUTH", "false").lower() == "true"
-        if is_mock:
-            return {
-                "id": user_id,
-                "display_name": "Demo User",
-                "avatar_url": "https://api.dicebear.com/7.x/bottts/svg?seed=Felix",
-                "persona": "Beginner",
-                "bio": "Keep exploring!"
-            }
-            
-        if not self.client: return None
-        
+        """Fetch user profile from Firestore."""
+        if self.use_mock or os.getenv("USE_MOCK_AUTH", "false").lower() == "true":
+            return self._mock_profile(user_id)
+
+        if not self.db:
+            return None
+
         try:
-            response = self.client.table("profiles").select("*").eq("id", user_id).single().execute()
-            return response.data
+            doc = self.db.collection("profiles").document(user_id).get()
+            if doc.exists:
+                return {"id": user_id, **doc.to_dict()}
+            # Auto-create a default profile on first fetch
+            default = self._mock_profile(user_id)
+            self.db.collection("profiles").document(user_id).set(default)
+            return default
         except Exception as e:
             print(f"Error fetching profile: {e}")
             return None
 
     def update_profile(self, user_id: str, updates: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        """Update user profile in Supabase."""
-        is_mock = os.getenv("USE_MOCK_AUTH", "false").lower() == "true"
-        if is_mock or not self.client: return None
-        
-        try:
-            # Filter updates to only include allowed fields
-            allowed_fields = {"display_name", "avatar_url", "persona", "bio"}
-            filtered_updates = {k: v for k, v in updates.items() if k in allowed_fields}
-            
-            response = self.client.table("profiles").update(filtered_updates).eq("id", user_id).execute()
-            if response.data:
-                return response.data[0]
+        """Update user profile in Firestore."""
+        if self.use_mock or os.getenv("USE_MOCK_AUTH", "false").lower() == "true":
             return None
+
+        if not self.db:
+            return None
+
+        try:
+            allowed_fields = {"display_name", "avatar_url", "persona", "bio"}
+            filtered = {k: v for k, v in updates.items() if k in allowed_fields}
+            self.db.collection("profiles").document(user_id).update(filtered)
+            doc = self.db.collection("profiles").document(user_id).get()
+            return {"id": user_id, **doc.to_dict()} if doc.exists else None
         except Exception as e:
             print(f"Error updating profile: {e}")
             return None
+
 
 # Global instance
 profile_manager = ProfileManager()

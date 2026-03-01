@@ -1,130 +1,133 @@
 {
-    "meta": {
-        "subject": "data-handling",
-        "module": "feature-selection",
-        "level": "intermediate",
-        "estimatedHours": 3
+  "meta": {
+    "subject": "data-handling",
+    "module": "feature-selection",
+    "level": "intermediate",
+    "estimatedHours": 3
+  },
+  "overview": [
+    "In machine learning, 'more data' is not always better. Including irrelevant or redundant features can confuse models, increase training time, and lead to overfitting.",
+    "Feature selection is the process of identifying and keeping only the most informative variables. This module covers the three main families of techniques: Filter, Wrapper, and Embedded methods."
+  ],
+  "topics": [
+    {
+      "title": "Filter Methods (Statistical Selection)",
+      "theory": [
+        "Filter methods use statistical measures to score the correlation between each feature and the target variable. These methods are independent of any machine learning algorithm and are performed as a preprocessing step.",
+        "Common techniques include Pearson correlation (for continuous data), Chi-Square tests (for categorical data), and Mutual Information. They are generally fast and computationally inexpensive."
+      ],
+      "visualIntuition": [
+        "Imagine you're trying to predict if it will rain. You look at 'Humidity', 'Temperature', and 'The color of your socks'. A filter method would statistically prove that sock color has zero relationship with rain and throw it away before you even start predicting."
+      ],
+      "visualSuggestions": [
+        "Correlation heatmap showing high vs low relationship between features and target.",
+        "Bar chart ranking features by their P-values or Correlation coefficients."
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Identifying highly correlated features",
+          "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'Target': [1,0,1,1], 'A': [0.9,0.1,0.8,0.7], 'B': [0.1,0.9,0.2,0.3]})\ncorr = df.corr()['Target'].abs()\nprint(\"Feature scores:\\n\", corr.sort_values(ascending=False))"
+        }
+      ],
+      "slug": "filter-methods-statistical-selection"
     },
-    "overview": [
-        "In machine learning, 'more data' is not always better. Including irrelevant or redundant features can confuse models, increase training time, and lead to overfitting.",
-        "Feature selection is the process of identifying and keeping only the most informative variables. This module covers the three main families of techniques: Filter, Wrapper, and Embedded methods."
-    ],
-    "topics": [
+    {
+      "title": "Wrapper Methods (Forward & Backward)",
+      "theory": [
+        "Wrapper methods treat the feature selection process as a search problem. They use a specific machine learning model to evaluate subsets of features and select the combination that produces the best performance.",
+        "Forward Selection starts with no features and adds them one-by-one; Backward Elimination starts with all features and removes the least useful ones. These methods are powerful but computationally expensive."
+      ],
+      "visualIntuition": [
+        "Think of building a basketball team. Instead of just picking the tallest people (filtering), you try different combinations of players in a practice game (the model) to see which 5-person lineup actually wins the most matches."
+      ],
+      "visualSuggestions": [
+        "Flowchart showing the 'Add feature -> Train -> Evaluate' iterative loop.",
+        "Graph showing Model Accuracy vs Number of Features included."
+      ],
+      "code": [
         {
-            "title": "Filter Methods (Statistical Selection)",
-            "theory": [
-                "Filter methods use statistical measures to score the correlation between each feature and the target variable. These methods are independent of any machine learning algorithm and are performed as a preprocessing step.",
-                "Common techniques include Pearson correlation (for continuous data), Chi-Square tests (for categorical data), and Mutual Information. They are generally fast and computationally inexpensive."
-            ],
-            "visualIntuition": [
-                "Imagine you're trying to predict if it will rain. You look at 'Humidity', 'Temperature', and 'The color of your socks'. A filter method would statistically prove that sock color has zero relationship with rain and throw it away before you even start predicting."
-            ],
-            "visualSuggestions": [
-                "Correlation heatmap showing high vs low relationship between features and target.",
-                "Bar chart ranking features by their P-values or Correlation coefficients."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Identifying highly correlated features",
-                    "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'Target': [1,0,1,1], 'A': [0.9,0.1,0.8,0.7], 'B': [0.1,0.9,0.2,0.3]})\ncorr = df.corr()['Target'].abs()\nprint(\"Feature scores:\\n\", corr.sort_values(ascending=False))"
-                }
-            ]
-        },
-        {
-            "title": "Wrapper Methods (Forward & Backward)",
-            "theory": [
-                "Wrapper methods treat the feature selection process as a search problem. They use a specific machine learning model to evaluate subsets of features and select the combination that produces the best performance.",
-                "Forward Selection starts with no features and adds them one-by-one; Backward Elimination starts with all features and removes the least useful ones. These methods are powerful but computationally expensive."
-            ],
-            "visualIntuition": [
-                "Think of building a basketball team. Instead of just picking the tallest people (filtering), you try different combinations of players in a practice game (the model) to see which 5-person lineup actually wins the most matches."
-            ],
-            "visualSuggestions": [
-                "Flowchart showing the 'Add feature -> Train -> Evaluate' iterative loop.",
-                "Graph showing Model Accuracy vs Number of Features included."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Recursive Feature Elimination (RFE) Simulation",
-                    "content": "from sklearn.feature_selection import RFE\nfrom sklearn.linear_model import LogisticRegression\nimport numpy as np\n\nX = np.random.rand(10, 5) # 5 potential features\ny = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]\n\nmodel = LogisticRegression()\nrfe = RFE(model, n_features_to_select=2)\nfit = rfe.fit(X, y)\nprint(f\"Selected Features: {fit.support_}\")"
-                }
-            ]
-        },
-        {
-            "title": "Embedded Methods (Lasso & Trees)",
-            "theory": [
-                "Embedded methods perform feature selection as part of the model training process itself. They combine the advantages of Filter and Wrapper methods.",
-                "Examples include LASSO regression (which uses L1 regularization to shrink unimportant feature weights to zero) and Decision Trees/Random Forests (which naturally rank features by how much they reduce impurity)."
-            ],
-            "visualIntuition": [
-                "Imagine a filter that is built directly into a water pipe. You don't filter the water before it enters or check it after it leaves; the pipe itself captures the sediment as the water flows through it."
-            ],
-            "visualSuggestions": [
-                "Lasso coefficient paths showing weights dropping to zero as regularization increases.",
-                "Random Forest 'Feature Importance' bar chart."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Feature importance from a Random Forest",
-                    "content": "from sklearn.ensemble import RandomForestClassifier\nimport numpy as np\n\nX = np.random.rand(100, 3) # 3 features: A, B, C\ny = (X[:, 0] > 0.5).astype(int) # Only A is actually related to target\n\nrf = RandomForestClassifier().fit(X, y)\nfor i, imp in enumerate(rf.feature_importances_):\n    print(f\"Feature {i} Importance: {imp:.3f}\")"
-                }
-            ]
+          "language": "python",
+          "description": "Recursive Feature Elimination (RFE) Simulation",
+          "content": "from sklearn.feature_selection import RFE\nfrom sklearn.linear_model import LogisticRegression\nimport numpy as np\n\nX = np.random.rand(10, 5) # 5 potential features\ny = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]\n\nmodel = LogisticRegression()\nrfe = RFE(model, n_features_to_select=2)\nfit = rfe.fit(X, y)\nprint(f\"Selected Features: {fit.support_}\")"
         }
-    ],
-    "quiz": [
+      ],
+      "slug": "wrapper-methods-forward-backward"
+    },
+    {
+      "title": "Embedded Methods (Lasso & Trees)",
+      "theory": [
+        "Embedded methods perform feature selection as part of the model training process itself. They combine the advantages of Filter and Wrapper methods.",
+        "Examples include LASSO regression (which uses L1 regularization to shrink unimportant feature weights to zero) and Decision Trees/Random Forests (which naturally rank features by how much they reduce impurity)."
+      ],
+      "visualIntuition": [
+        "Imagine a filter that is built directly into a water pipe. You don't filter the water before it enters or check it after it leaves; the pipe itself captures the sediment as the water flows through it."
+      ],
+      "visualSuggestions": [
+        "Lasso coefficient paths showing weights dropping to zero as regularization increases.",
+        "Random Forest 'Feature Importance' bar chart."
+      ],
+      "code": [
         {
-            "id": "q1",
-            "question": "What is the purpose of a train-validation-test split?",
-            "options": [
-                "To use less data",
-                "Train for learning, validation for hyperparameter tuning, test for final unbiased evaluation",
-                "To make training faster",
-                "All three are used for training"
-            ],
-            "correctAnswer": 1,
-            "explanation": "The train set fits the model. The validation set tunes hyperparameters without touching test data. The test set provides a final, unbiased performance estimate. Using test data for tuning invalidates your evaluation."
-        },
-        {
-            "id": "q2",
-            "question": "Why is stratified splitting important for imbalanced datasets?",
-            "options": [
-                "It's faster",
-                "It preserves the class distribution in each split, preventing folds with no minority class samples",
-                "It only matters for regression",
-                "It increases dataset size"
-            ],
-            "correctAnswer": 1,
-            "explanation": "With 5% positive class, a random split might create folds with 0% or 10% positives. Stratified splitting ensures each fold has ~5% positives, giving reliable performance estimates for minority classes."
-        },
-        {
-            "id": "q3",
-            "question": "What is time-series cross-validation and when is it needed?",
-            "options": [
-                "Standard k-fold on time data",
-                "A forward-walking split where training only uses past data, respecting temporal order",
-                "It's the same as random splitting",
-                "Only for stock prediction"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Time series data has temporal dependencies. Standard k-fold would use future data to predict past (leakage). Time-series CV uses expanding or sliding windows: train on past, validate on future, mimicking real deployment."
+          "language": "python",
+          "description": "Feature importance from a Random Forest",
+          "content": "from sklearn.ensemble import RandomForestClassifier\nimport numpy as np\n\nX = np.random.rand(100, 3) # 3 features: A, B, C\ny = (X[:, 0] > 0.5).astype(int) # Only A is actually related to target\n\nrf = RandomForestClassifier().fit(X, y)\nfor i, imp in enumerate(rf.feature_importances_):\n    print(f\"Feature {i} Importance: {imp:.3f}\")"
         }
-    ],
-    "references": [
-        {
-            "label": "Scikit-Learn User Guide - Feature Selection",
-            "url": "https://scikit-learn.org/stable/modules/feature_selection.html"
-        },
-        {
-            "label": "Machine Learning Mastery - Filter vs Wrapper vs Embedded",
-            "url": "https://machinelearningmastery.com/feature-selection-with-real-and-categorical-data/"
-        },
-        {
-            "label": "Introduction to Statistical Learning (ISLR) - Stepwise Selection",
-            "url": "https://www.statlearning.com/"
-        }
-    ],
-    "_contentWarnings": []
+      ],
+      "slug": "embedded-methods-lasso-trees"
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is the purpose of a train-validation-test split?",
+      "options": [
+        "To use less data",
+        "Train for learning, validation for hyperparameter tuning, test for final unbiased evaluation",
+        "To make training faster",
+        "All three are used for training"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The train set fits the model. The validation set tunes hyperparameters without touching test data. The test set provides a final, unbiased performance estimate. Using test data for tuning invalidates your evaluation."
+    },
+    {
+      "id": "q2",
+      "question": "Why is stratified splitting important for imbalanced datasets?",
+      "options": [
+        "It's faster",
+        "It preserves the class distribution in each split, preventing folds with no minority class samples",
+        "It only matters for regression",
+        "It increases dataset size"
+      ],
+      "correctAnswer": 1,
+      "explanation": "With 5% positive class, a random split might create folds with 0% or 10% positives. Stratified splitting ensures each fold has ~5% positives, giving reliable performance estimates for minority classes."
+    },
+    {
+      "id": "q3",
+      "question": "What is time-series cross-validation and when is it needed?",
+      "options": [
+        "Standard k-fold on time data",
+        "A forward-walking split where training only uses past data, respecting temporal order",
+        "It's the same as random splitting",
+        "Only for stock prediction"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Time series data has temporal dependencies. Standard k-fold would use future data to predict past (leakage). Time-series CV uses expanding or sliding windows: train on past, validate on future, mimicking real deployment."
+    }
+  ],
+  "references": [
+    {
+      "label": "Scikit-Learn User Guide - Feature Selection",
+      "url": "https://scikit-learn.org/stable/modules/feature_selection.html"
+    },
+    {
+      "label": "Machine Learning Mastery - Filter vs Wrapper vs Embedded",
+      "url": "https://machinelearningmastery.com/feature-selection-with-real-and-categorical-data/"
+    },
+    {
+      "label": "Introduction to Statistical Learning (ISLR) - Stepwise Selection",
+      "url": "https://www.statlearning.com/"
+    }
+  ],
+  "_contentWarnings": []
 }

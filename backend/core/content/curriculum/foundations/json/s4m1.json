@@ -13,9 +13,9 @@
     {
       "title": "Linear Regression",
       "theory": [
-        "Linear regression fits a straight line through data by optimizing coefficients. The prediction is ŷ = θ₀ + θ₁x₁ + ... + θₙxₙ, where θ₀ is the intercept (bias term) and θ₁...θₙ are the feature weights.",
-        "The parameters are typically found by the least squares solution: θ = (XᵀX)⁻¹Xᵀy, or via iterative methods like gradient descent.",
-        "After training, we evaluate performance using metrics like Mean Squared Error (MSE) or R². The coefficient of determination R² measures the proportion of variance in y explained by the model, while RMSE (root MSE) is on the same scale as the target."
+        "Linear regression fits a straight line through data by optimizing coefficients. The prediction is \u0177 = \u03b8\u2080 + \u03b8\u2081x\u2081 + ... + \u03b8\u2099x\u2099, where \u03b8\u2080 is the intercept (bias term) and \u03b8\u2081...\u03b8\u2099 are the feature weights.",
+        "The parameters are typically found by the least squares solution: \u03b8 = (X\u1d40X)\u207b\u00b9X\u1d40y, or via iterative methods like gradient descent.",
+        "After training, we evaluate performance using metrics like Mean Squared Error (MSE) or R\u00b2. The coefficient of determination R\u00b2 measures the proportion of variance in y explained by the model, while RMSE (root MSE) is on the same scale as the target."
       ],
       "visualIntuition": [
         "Scatter plot displaying data points with an overlaid regression line. As model parameters update, the line animates to show the fitting process. Residual lines between points and the prediction line visualize error magnitude."
@@ -30,12 +30,13 @@
           "description": "Linear regression on the diabetes dataset",
           "content": "import numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.datasets import load_diabetes\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LinearRegression\n\n# Load diabetes data; use only BMI feature for simplicity\nX_full, y = load_diabetes(return_X_y=True)\nX = X_full[:, np.newaxis, 2]  # feature index 2 = BMI\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)\n\nmodel = LinearRegression()\nmodel.fit(X_train, y_train)\n\nprint(\"Coefficient (slope):\", model.coef_[0])\nprint(\"Intercept:\", model.intercept_)\n\ny_pred = model.predict(X_test)\nplt.scatter(X_test, y_test, color='skyblue', label='Data')\nplt.plot(X_test, y_pred, color='orange', linewidth=2, label='Fit')\nplt.xlabel(\"BMI (normalized)\")\nplt.ylabel(\"Disease Progression\")\nplt.title(\"Linear Regression Fit\")\nplt.legend()\nplt.show()"
         }
-      ]
+      ],
+      "slug": "linear-regression"
     },
     {
       "title": "Polynomial Regression",
       "theory": [
-        "When data relationships are non-linear, polynomial regression extends linear models by including higher-degree terms. For example, a degree-2 model is y = b₀ + b₁x + b₂x².",
+        "When data relationships are non-linear, polynomial regression extends linear models by including higher-degree terms. For example, a degree-2 model is y = b\u2080 + b\u2081x + b\u2082x\u00b2.",
         "Adding polynomial features increases model flexibility, allowing it to fit curved trends. However, higher-degree polynomials can easily overfit the data (high variance) by chasing noise.",
         "We typically control the degree with a hyperparameter. The tradeoff is underfitting (too simple) vs overfitting (too complex)."
       ],
@@ -52,18 +53,19 @@
           "description": "Polynomial regression with degree 2 on synthetic data",
           "content": "import numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.linear_model import LinearRegression\n\n# Generate synthetic data with quadratic trend\nnp.random.seed(0)\nX = np.linspace(-3, 3, 50)\ny = 0.5*X**2 + X + 2 + np.random.randn(50)*3\n\n# Prepare polynomial features\npoly = PolynomialFeatures(degree=2, include_bias=False)\nX_poly = poly.fit_transform(X.reshape(-1, 1))\n\nmodel = LinearRegression()\nmodel.fit(X_poly, y)\ny_pred = model.predict(X_poly)\n\nplt.scatter(X, y, color='lightgreen', label='Data')\nplt.plot(X, y_pred, color='red', linewidth=2, label='Degree 2 Fit')\nplt.xlabel(\"X\")\nplt.ylabel(\"y\")\nplt.title(\"Polynomial Regression\")\nplt.legend()\nplt.show()"
         }
-      ]
+      ],
+      "slug": "polynomial-regression"
     },
     {
       "title": "Regularization (Ridge & Lasso)",
       "theory": [
         "Complex models (high-degree polynomials or many features) can overfit. Regularization adds a penalty to discourage large coefficients.",
-        "Ridge regression (L2) adds λΣwᵢ² to the loss, shrinking weights evenly toward zero but never exactly to zero. This helps with multicollinearity.",
-        "Lasso regression (L1) adds λΣ|wᵢ|, which can set some weights exactly to zero, performing automatic feature selection.",
-        "The regularization strength λ is a hyperparameter: λ=0 yields ordinary regression, very large λ over-penalizes and underfits."
+        "Ridge regression (L2) adds \u03bb\u03a3w\u1d62\u00b2 to the loss, shrinking weights evenly toward zero but never exactly to zero. This helps with multicollinearity.",
+        "Lasso regression (L1) adds \u03bb\u03a3|w\u1d62|, which can set some weights exactly to zero, performing automatic feature selection.",
+        "The regularization strength \u03bb is a hyperparameter: \u03bb=0 yields ordinary regression, very large \u03bb over-penalizes and underfits."
       ],
       "visualIntuition": [
-        "A feature-coefficient chart showing bars for each weight. As regularization strength α increases, observe weights shrinking. With Lasso, some weights snap to exactly zero."
+        "A feature-coefficient chart showing bars for each weight. As regularization strength \u03b1 increases, observe weights shrinking. With Lasso, some weights snap to exactly zero."
       ],
       "visualSuggestions": [
         "Coefficient bar chart that animates as regularization slider moves",
@@ -76,16 +78,17 @@
           "content": "from sklearn.linear_model import Ridge, Lasso\nfrom sklearn.datasets import load_diabetes\nfrom sklearn.model_selection import train_test_split\n\nX, y = load_diabetes(return_X_y=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)\n\nridge = Ridge(alpha=10.0)\nlasso = Lasso(alpha=10.0)\n\nridge.fit(X_train, y_train)\nlasso.fit(X_train, y_train)\n\nprint(\"Ridge coefficients:\", ridge.coef_)\nprint(\"Lasso coefficients:\", lasso.coef_)\nprint(\"\\nNotice Lasso has some coefficients exactly zero!\")"
         },
         {
-          "title": "GridSearchCV for Ridge Regression",
           "language": "python",
-          "code": "from sklearn.datasets import fetch_california_housing\nfrom sklearn.model_selection import GridSearchCV, RandomizedSearchCV, train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import Ridge\nfrom sklearn.metrics import r2_score, mean_squared_error\nimport numpy as np\nimport scipy.stats as st\n\nX, y = fetch_california_housing(return_X_y=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\npipe = Pipeline([('scaler', StandardScaler()), ('ridge', Ridge())])\n\nparam_grid = {\n    'ridge__alpha': [0.001, 0.01, 0.1, 1.0, 10, 100, 1000],\n    'ridge__fit_intercept': [True, False]\n}\n\ngs = GridSearchCV(pipe, param_grid, cv=5,\n    scoring='neg_mean_squared_error', n_jobs=-1, refit=True)\ngs.fit(X_train, y_train)\n\nprint(f'Best params: {gs.best_params_}')\nprint(f'Best CV RMSE: {np.sqrt(-gs.best_score_):.4f}')\n\n# Test evaluation\ny_pred = gs.best_estimator_.predict(X_test)\nrmse = np.sqrt(mean_squared_error(y_test, y_pred))\nprint(f'Test RMSE: {rmse:.3f}')\nprint(f'Test R²: {r2_score(y_test, y_pred):.3f}')\n\n# RandomizedSearchCV (faster for large spaces)\nparam_dist = {'ridge__alpha': st.loguniform(1e-4, 1e4)}\nrs = RandomizedSearchCV(pipe, param_dist, n_iter=100, cv=5,\n    scoring='r2', n_jobs=-1, random_state=42)\nrs.fit(X_train, y_train)\nprint(f'RandomSearch best alpha: {rs.best_params_[\"ridge__alpha\"]:.4f}')"
+          "description": "GridSearchCV for Ridge Regression",
+          "content": "from sklearn.datasets import fetch_california_housing\nfrom sklearn.model_selection import GridSearchCV, RandomizedSearchCV, train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import Ridge\nfrom sklearn.metrics import r2_score, mean_squared_error\nimport numpy as np\nimport scipy.stats as st\n\nX, y = fetch_california_housing(return_X_y=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\npipe = Pipeline([('scaler', StandardScaler()), ('ridge', Ridge())])\n\nparam_grid = {\n    'ridge__alpha': [0.001, 0.01, 0.1, 1.0, 10, 100, 1000],\n    'ridge__fit_intercept': [True, False]\n}\n\ngs = GridSearchCV(pipe, param_grid, cv=5,\n    scoring='neg_mean_squared_error', n_jobs=-1, refit=True)\ngs.fit(X_train, y_train)\n\nprint(f'Best params: {gs.best_params_}')\nprint(f'Best CV RMSE: {np.sqrt(-gs.best_score_):.4f}')\n\n# Test evaluation\ny_pred = gs.best_estimator_.predict(X_test)\nrmse = np.sqrt(mean_squared_error(y_test, y_pred))\nprint(f'Test RMSE: {rmse:.3f}')\nprint(f'Test R^2: {r2_score(y_test, y_pred):.3f}')\n\n# RandomizedSearchCV (faster for large spaces)\nparam_dist = {'ridge__alpha': st.loguniform(1e-4, 1e4)}\nrs = RandomizedSearchCV(pipe, param_dist, n_iter=100, cv=5,\n    scoring='r2', n_jobs=-1, random_state=42)\nrs.fit(X_train, y_train)\nprint(f'RandomSearch best alpha: {rs.best_params_[\"ridge__alpha\"]:.4f}')"
         }
-      ]
+      ],
+      "slug": "regularization-ridge-lasso"
     },
     {
       "title": "Elastic Net Regression",
       "theory": [
-        "Elastic Net combines L1 (Lasso) and L2 (Ridge) penalties: Loss = MSE + λ₁Σ|wᵢ| + λ₂Σwᵢ².",
+        "Elastic Net combines L1 (Lasso) and L2 (Ridge) penalties: Loss = MSE + \u03bb\u2081\u03a3|w\u1d62| + \u03bb\u2082\u03a3w\u1d62\u00b2.",
         "Why it exists: Lasso fails with correlated features (picks one arbitrarily), Ridge keeps all features. Elastic Net balances both approaches.",
         "Used heavily in high-dimensional data domains like genomics, text analysis, and finance."
       ],
@@ -102,7 +105,8 @@
           "description": "Elastic Net regression with tunable L1/L2 ratio",
           "content": "from sklearn.linear_model import ElasticNet\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(\n    n_samples=100,\n    n_features=10,\n    noise=10,\n    random_state=42\n)\n\nmodel = ElasticNet(alpha=0.1, l1_ratio=0.5)\nmodel.fit(X, y)\n\nprint(\"Coefficients:\", model.coef_)\nprint(\"\\nl1_ratio=0.5 balances L1 and L2 penalties\")"
         }
-      ]
+      ],
+      "slug": "elastic-net-regression"
     },
     {
       "title": "Decision Tree Regression",
@@ -124,7 +128,8 @@
           "description": "Decision tree regression with depth control",
           "content": "from sklearn.tree import DecisionTreeRegressor\nfrom sklearn.datasets import make_regression\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\ntree = DecisionTreeRegressor(max_depth=3)\ntree.fit(X, y)\ny_pred = tree.predict(X)\n\n# Sort for plotting\nsorted_idx = X.flatten().argsort()\nplt.scatter(X, y, alpha=0.5, label='Data')\nplt.plot(X[sorted_idx], y_pred[sorted_idx], color='red', linewidth=2, label='Tree Prediction')\nplt.xlabel(\"X\")\nplt.ylabel(\"y\")\nplt.title(\"Decision Tree Regression (max_depth=3)\")\nplt.legend()\nplt.show()"
         }
-      ]
+      ],
+      "slug": "decision-tree-regression"
     },
     {
       "title": "Random Forest Regression",
@@ -144,9 +149,10 @@
         {
           "language": "python",
           "description": "Random forest regression with multiple trees",
-          "content": "from sklearn.ensemble import RandomForestRegressor\nfrom sklearn.datasets import make_regression\nimport numpy as np\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\nrf = RandomForestRegressor(\n    n_estimators=100,\n    max_depth=5,\n    random_state=42\n)\nrf.fit(X, y)\n\ny_pred = rf.predict(X)\nprint(\"Random Forest R² score:\", rf.score(X, y))"
+          "content": "from sklearn.ensemble import RandomForestRegressor\nfrom sklearn.datasets import make_regression\nimport numpy as np\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\nrf = RandomForestRegressor(\n    n_estimators=100,\n    max_depth=5,\n    random_state=42\n)\nrf.fit(X, y)\n\ny_pred = rf.predict(X)\nprint(\"Random Forest R^2 score:\", rf.score(X, y))"
         }
-      ]
+      ],
+      "slug": "random-forest-regression"
     },
     {
       "title": "Gradient Boosting Regression",
@@ -166,19 +172,20 @@
         {
           "language": "python",
           "description": "Gradient boosting regression with configurable parameters",
-          "content": "from sklearn.ensemble import GradientBoostingRegressor\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\ngbr = GradientBoostingRegressor(\n    n_estimators=100,\n    learning_rate=0.1,\n    max_depth=3\n)\ngbr.fit(X, y)\n\ny_pred = gbr.predict(X)\nprint(\"Gradient Boosting R² score:\", gbr.score(X, y))"
+          "content": "from sklearn.ensemble import GradientBoostingRegressor\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(n_samples=200, n_features=1, noise=20, random_state=42)\n\ngbr = GradientBoostingRegressor(\n    n_estimators=100,\n    learning_rate=0.1,\n    max_depth=3\n)\ngbr.fit(X, y)\n\ny_pred = gbr.predict(X)\nprint(\"Gradient Boosting R^2 score:\", gbr.score(X, y))"
         }
-      ]
+      ],
+      "slug": "gradient-boosting-regression"
     },
     {
       "title": "Support Vector Regression (SVR)",
       "theory": [
-        "SVR fits a function inside an ε-insensitive tube. Errors inside ε are ignored—only points outside the tube matter (support vectors).",
-        "Key ideas: Margin (controlled by C), ε-tube width (controlled by epsilon), kernel trick for non-linear relationships.",
+        "SVR fits a function inside an \u03b5-insensitive tube. Errors inside \u03b5 are ignored\u2014only points outside the tube matter (support vectors).",
+        "Key ideas: Margin (controlled by C), \u03b5-tube width (controlled by epsilon), kernel trick for non-linear relationships.",
         "Different kernels: linear, polynomial, RBF (Gaussian). RBF is most common for non-linear data."
       ],
       "visualIntuition": [
-        "Prediction curve with shaded ε-tube around it. Support vectors (points touching or outside the tube) are highlighted. As ε increases, the tube widens and fewer points become support vectors."
+        "Prediction curve with shaded \u03b5-tube around it. Support vectors (points touching or outside the tube) are highlighted. As \u03b5 increases, the tube widens and fewer points become support vectors."
       ],
       "visualSuggestions": [
         "Animated tube width as epsilon slider changes",
@@ -188,9 +195,10 @@
         {
           "language": "python",
           "description": "Support vector regression with RBF kernel",
-          "content": "from sklearn.svm import SVR\nfrom sklearn.datasets import make_regression\nimport numpy as np\n\nX, y = make_regression(n_samples=100, n_features=1, noise=10, random_state=42)\n\nsvr = SVR(kernel=\"rbf\", C=10, epsilon=0.1)\nsvr.fit(X, y)\n\ny_pred = svr.predict(X)\nprint(\"Number of support vectors:\", len(svr.support_))\nprint(\"SVR R² score:\", svr.score(X, y))"
+          "content": "from sklearn.svm import SVR\nfrom sklearn.datasets import make_regression\nimport numpy as np\n\nX, y = make_regression(n_samples=100, n_features=1, noise=10, random_state=42)\n\nsvr = SVR(kernel=\"rbf\", C=10, epsilon=0.1)\nsvr.fit(X, y)\n\ny_pred = svr.predict(X)\nprint(\"Number of support vectors:\", len(svr.support_))\nprint(\"SVR R^2 score:\", svr.score(X, y))"
         }
-      ]
+      ],
+      "slug": "support-vector-regression-svr"
     },
     {
       "title": "K-Nearest Neighbors (KNN) Regression",
@@ -210,19 +218,20 @@
         {
           "language": "python",
           "description": "KNN regression with configurable neighbors",
-          "content": "from sklearn.neighbors import KNeighborsRegressor\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(n_samples=100, n_features=1, noise=10, random_state=42)\n\nknn = KNeighborsRegressor(n_neighbors=5)\nknn.fit(X, y)\n\ny_pred = knn.predict(X)\nprint(\"KNN R² score:\", knn.score(X, y))"
+          "content": "from sklearn.neighbors import KNeighborsRegressor\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(n_samples=100, n_features=1, noise=10, random_state=42)\n\nknn = KNeighborsRegressor(n_neighbors=5)\nknn.fit(X, y)\n\ny_pred = knn.predict(X)\nprint(\"KNN R^2 score:\", knn.score(X, y))"
         }
-      ]
+      ],
+      "slug": "k-nearest-neighbors-knn-regression"
     },
     {
       "title": "Gaussian Process Regression (GPR)",
       "theory": [
         "GPR is probabilistic regression: it learns a distribution over functions, not a single function. Outputs include both mean prediction and uncertainty (standard deviation).",
-        "The kernel defines smoothness and correlation structure. Common kernels: RBF, Matérn, periodic.",
+        "The kernel defines smoothness and correlation structure. Common kernels: RBF, Mat\u00e9rn, periodic.",
         "Used when: data is small, uncertainty quantification matters, need confidence intervals on predictions."
       ],
       "visualIntuition": [
-        "Mean prediction curve with shaded confidence band (±2σ). The band widens in regions with sparse data and narrows near observed points."
+        "Mean prediction curve with shaded confidence band (\u00b12\u03c3). The band widens in regions with sparse data and narrows near observed points."
       ],
       "visualSuggestions": [
         "Uncertainty band that updates as data points are added/removed",
@@ -232,16 +241,17 @@
         {
           "language": "python",
           "description": "Gaussian process regression with uncertainty estimation",
-          "content": "from sklearn.gaussian_process import GaussianProcessRegressor\nfrom sklearn.gaussian_process.kernels import RBF\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Small dataset for GPR\nX = np.array([1, 3, 5, 6, 7]).reshape(-1, 1)\ny = np.array([1, 2, 3, 2.5, 2])\n\nkernel = RBF(length_scale=1.0)\ngpr = GaussianProcessRegressor(kernel=kernel, alpha=0.1)\ngpr.fit(X, y)\n\nX_test = np.linspace(0, 8, 100).reshape(-1, 1)\ny_mean, y_std = gpr.predict(X_test, return_std=True)\n\nplt.scatter(X, y, color='black', zorder=5, label='Training Data')\nplt.plot(X_test, y_mean, color='blue', label='Mean Prediction')\nplt.fill_between(X_test.flatten(), y_mean - 2*y_std, y_mean + 2*y_std, alpha=0.2, label='Uncertainty (±2σ)')\nplt.legend()\nplt.title(\"Gaussian Process Regression\")\nplt.show()"
+          "content": "from sklearn.gaussian_process import GaussianProcessRegressor\nfrom sklearn.gaussian_process.kernels import RBF\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Small dataset for GPR\nX = np.array([1, 3, 5, 6, 7]).reshape(-1, 1)\ny = np.array([1, 2, 3, 2.5, 2])\n\nkernel = RBF(length_scale=1.0)\ngpr = GaussianProcessRegressor(kernel=kernel, alpha=0.1)\ngpr.fit(X, y)\n\nX_test = np.linspace(0, 8, 100).reshape(-1, 1)\ny_mean, y_std = gpr.predict(X_test, return_std=True)\n\nplt.scatter(X, y, color='black', zorder=5, label='Training Data')\nplt.plot(X_test, y_mean, color='blue', label='Mean Prediction')\nplt.fill_between(X_test.flatten(), y_mean - 2*y_std, y_mean + 2*y_std, alpha=0.2, label='Uncertainty (\u00b12sigma)')\nplt.legend()\nplt.title(\"Gaussian Process Regression\")\nplt.show()"
         }
-      ]
+      ],
+      "slug": "gaussian-process-regression-gpr"
     },
     {
       "title": "Evaluation Metrics",
       "theory": [
         "Mean Squared Error (MSE) is the average of squared residuals. It penalizes large errors heavily due to squaring.",
         "Root MSE (RMSE) is the square root of MSE, putting the error on the same scale as the target variable.",
-        "R-squared (R²) is the proportion of variance in the target explained by the model. R² = 1 indicates perfect fit, R² = 0 means the model is no better than predicting the mean.",
+        "R-squared (R\u00b2) is the proportion of variance in the target explained by the model. R\u00b2 = 1 indicates perfect fit, R\u00b2 = 0 means the model is no better than predicting the mean.",
         "Additional metrics: Mean Absolute Error (MAE) for robustness to outliers, Mean Absolute Percentage Error (MAPE) for relative error."
       ],
       "visualIntuition": [
@@ -255,9 +265,10 @@
         {
           "language": "python",
           "description": "Computing regression evaluation metrics",
-          "content": "from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error\nimport numpy as np\n\ny_true = np.array([3, -0.5, 2, 7])\ny_pred = np.array([2.5, 0.0, 2, 8])\n\nmse = mean_squared_error(y_true, y_pred)\nrmse = np.sqrt(mse)\nmae = mean_absolute_error(y_true, y_pred)\nr2 = r2_score(y_true, y_pred)\n\nprint(f\"MSE:  {mse:.4f}\")\nprint(f\"RMSE: {rmse:.4f}\")\nprint(f\"MAE:  {mae:.4f}\")\nprint(f\"R²:   {r2:.4f}\")"
+          "content": "from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error\nimport numpy as np\n\ny_true = np.array([3, -0.5, 2, 7])\ny_pred = np.array([2.5, 0.0, 2, 8])\n\nmse = mean_squared_error(y_true, y_pred)\nrmse = np.sqrt(mse)\nmae = mean_absolute_error(y_true, y_pred)\nr2 = r2_score(y_true, y_pred)\n\nprint(f\"MSE:  {mse:.4f}\")\nprint(f\"RMSE: {rmse:.4f}\")\nprint(f\"MAE:  {mae:.4f}\")\nprint(f\"R^2:   {r2:.4f}\")"
         }
-      ]
+      ],
+      "slug": "evaluation-metrics"
     }
   ],
   "quiz": [
@@ -271,7 +282,7 @@
         "It only applies to linear models"
       ],
       "correctAnswer": 1,
-      "explanation": "Bias measures systematic error (model too simple). Variance measures sensitivity to training data (model too complex). The optimal model minimizes total error = bias² + variance + irreducible noise."
+      "explanation": "Bias measures systematic error (model too simple). Variance measures sensitivity to training data (model too complex). The optimal model minimizes total error = bias\u00b2 + variance + irreducible noise."
     },
     {
       "id": "q2",

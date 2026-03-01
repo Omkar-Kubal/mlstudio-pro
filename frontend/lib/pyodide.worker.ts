@@ -7,7 +7,7 @@ async function initPyodide() {
   if (pyodide) return pyodide;
 
   // Use the official Pyodide CDN
-  const indexURL = "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/";
+  const indexURL = "https://cdn.jsdelivr.net/pyodide/v0.29.3/full/";
   pyodide = await loadPyodide({ indexURL });
 
   // Load common data science packages
@@ -68,11 +68,11 @@ self.onmessage = async (event) => {
       const result = await pyodide.runPythonAsync(code);
       const plot = await pyodide.runPythonAsync("get_plot()");
 
-      self.postMessage({ 
-        type: "success", 
+      self.postMessage({
+        type: "success",
         id,
-        content: result, 
-        image: plot 
+        content: result,
+        image: plot
       });
     } catch (error) {
       self.postMessage({ type: "error", content: String(error), id });

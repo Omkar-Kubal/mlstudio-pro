@@ -37,12 +37,12 @@ interface Trial {
 }
 
 const COLORS = [
-    "hsl(var(--primary))",
-    "hsl(var(--secondary))",
-    "hsl(var(--accent))",
-    "hsl(var(--emerald-500))",
-    "hsl(var(--amber-500))",
-    "hsl(var(--rose-500))"
+    "#D4D4D4",
+    "#A3A3A3",
+    "#525252",
+    "#10B981",
+    "#F59E0B",
+    "#F43F5E"
 ];
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -171,13 +171,13 @@ export default function LawOfLargeNumbersPrimitive() {
         // TRUE VALUE LINE
         const muY = toY(mu);
         ctx.setLineDash([5, 5]);
-        ctx.strokeStyle = "hsla(var(--emerald-500), 0.6)";
+        ctx.strokeStyle = "rgba(16, 185, 129, 0.6)";
         ctx.lineWidth = 2;
         ctx.beginPath(); ctx.moveTo(M.left, muY); ctx.lineTo(M.left + CW, muY); ctx.stroke();
         ctx.setLineDash([]);
 
         // Label for mu
-        ctx.fillStyle = "hsl(var(--emerald-500))";
+        ctx.fillStyle = "#10B981";
         ctx.font = "bold 10px var(--font-jetbrains)";
         ctx.textAlign = "left";
         ctx.fillText(`μ = ${mu}`, M.left + CW + 10, muY + 3);

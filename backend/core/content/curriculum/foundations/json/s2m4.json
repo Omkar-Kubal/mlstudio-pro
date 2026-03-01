@@ -6,8 +6,8 @@
     "estimatedHours": 4
   },
   "overview": [
-    "Visualization is not about making charts look good — it is about thinking. Visualization is a cognitive tool, not an output artifact. It reveals what statistics cannot surface immediately, what models may hide, and what metrics may average away.",
-    "This module covers why visualization matters, Matplotlib basics, Seaborn statistical plots, and visualizing model results — essential skills for data exploration and model diagnosis."
+    "Visualization is not about making charts look good \u2014 it is about thinking. Visualization is a cognitive tool, not an output artifact. It reveals what statistics cannot surface immediately, what models may hide, and what metrics may average away.",
+    "This module covers why visualization matters, Matplotlib basics, Seaborn statistical plots, and visualizing model results \u2014 essential skills for data exploration and model diagnosis."
   ],
   "topics": [
     {
@@ -31,14 +31,15 @@
           "description": "Basic visualization workflow",
           "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\n# Always visualize before modeling\ndata = np.random.randn(1000)\n\nplt.hist(data, bins=30)\nplt.title(\"Distribution Check\")\nplt.show()"
         }
-      ]
+      ],
+      "slug": "why-visualization-matters"
     },
     {
       "title": "Matplotlib Basics",
       "theory": [
-        "Matplotlib is fundamental because it is primitive — it gives full control over every visual element. Higher-level libraries (Seaborn, Plotly) sit on top of it and abstract decisions away.",
-        "Matplotlib follows a hierarchical model: Figure (canvas) → Axes (coordinate system) → Plot elements. Most confusion comes from mixing Figure and Axes concepts.",
-        "Pyplot interface (plt.plot()) is state-based — good for exploration but limited for complex layouts. Object-oriented interface (fig, ax = plt.subplots()) provides explicit control and is preferred for production.",
+        "Matplotlib is fundamental because it is primitive \u2014 it gives full control over every visual element. Higher-level libraries (Seaborn, Plotly) sit on top of it and abstract decisions away.",
+        "Matplotlib follows a hierarchical model: Figure (canvas) \u2192 Axes (coordinate system) \u2192 Plot elements. Most confusion comes from mixing Figure and Axes concepts.",
+        "Pyplot interface (plt.plot()) is state-based \u2014 good for exploration but limited for complex layouts. Object-oriented interface (fig, ax = plt.subplots()) provides explicit control and is preferred for production.",
         "Basic plot types serve different purposes: Line plots for trends/time series, scatter plots for relationships, bar plots for categorical comparison, histograms for distributions. Choose plot based on what question you're answering."
       ],
       "visualIntuition": [
@@ -59,7 +60,8 @@
           "description": "Common plot types",
           "content": "import matplotlib.pyplot as plt\nimport numpy as np\n\nfig, axs = plt.subplots(2, 2, figsize=(10, 8))\n\n# Line plot\naxs[0, 0].plot([1, 2, 3, 4], [1, 4, 2, 3])\naxs[0, 0].set_title(\"Line Plot\")\n\n# Scatter plot\naxs[0, 1].scatter(np.random.randn(50), np.random.randn(50))\naxs[0, 1].set_title(\"Scatter Plot\")\n\n# Bar plot\naxs[1, 0].bar(['A', 'B', 'C'], [3, 7, 5])\naxs[1, 0].set_title(\"Bar Plot\")\n\n# Histogram\naxs[1, 1].hist(np.random.randn(1000), bins=30)\naxs[1, 1].set_title(\"Histogram\")\n\nplt.tight_layout()\nplt.show()"
         }
-      ]
+      ],
+      "slug": "matplotlib-basics"
     },
     {
       "title": "Seaborn Statistical Plots",
@@ -67,7 +69,7 @@
         "Matplotlib shows how to draw; Seaborn shows what to draw. Seaborn is built for statistical thinking and dataset-aware visualization. It encodes statistical defaults so users focus on meaning, not mechanics.",
         "Seaborn expects a DataFrame with column names and semantic roles (x, y, hue). Visualization becomes declarative: what varies, what is compared, what is grouped.",
         "Distribution plots (histplot, boxplot, violinplot) reveal spread, skewness, multimodality. Relationship plots (regplot, pairplot) show dependency and correlation. Categorical plots (countplot, barplot) compare groups.",
-        "Heatmaps compress large matrices into pattern perception — used for correlation analysis, confusion matrices, feature interactions. Faceting (FacetGrid) enables comparison across subsets without overplotting."
+        "Heatmaps compress large matrices into pattern perception \u2014 used for correlation analysis, confusion matrices, feature interactions. Faceting (FacetGrid) enables comparison across subsets without overplotting."
       ],
       "visualIntuition": [
         "Seaborn's data-centric model: DataFrame columns map directly to visual properties (x, y, hue, size)."
@@ -87,7 +89,8 @@
           "description": "Heatmap and pairplot",
           "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\n\ndf = sns.load_dataset('iris')\n\n# Correlation heatmap\ncorr = df.corr()\nsns.heatmap(corr, annot=True, cmap='coolwarm')\nplt.title(\"Feature Correlations\")\nplt.show()\n\n# Pairplot for EDA\nsns.pairplot(df, hue='species')\nplt.show()"
         }
-      ]
+      ],
+      "slug": "seaborn-statistical-plots"
     },
     {
       "title": "Visualizing Model Results",
@@ -115,16 +118,19 @@
           "description": "Classification result visualization",
           "content": "import seaborn as sns\nimport matplotlib.pyplot as plt\nfrom sklearn.metrics import confusion_matrix\nimport numpy as np\n\ny_true = np.array([0, 0, 1, 1, 1, 0])\ny_pred = np.array([0, 1, 1, 1, 0, 0])\n\ncm = confusion_matrix(y_true, y_pred)\nsns.heatmap(cm, annot=True, fmt='d', cmap='Blues')\nplt.xlabel(\"Predicted\")\nplt.ylabel(\"Actual\")\nplt.title(\"Confusion Matrix\")\nplt.show()"
         }
-      ]
+      ],
+      "slug": "visualizing-model-results"
     },
     {
-      "title": "Plotly Express — Interactive Charts",
-      "theory": "Plotly Express is a high-level API for creating interactive charts with minimal code. It supports scatter, bar, line, histogram, box, heatmap, and 3D plots with built-in tooltips, zooming, and panning.\n\n**Key features:** Color-coding by category, bubble charts (size parameter), log scales, hover data, and automatic legends. Templates like `plotly_white` and `plotly_dark` provide instant styling.\n\n**Chart types:** `px.scatter` (relationship), `px.bar` (comparison), `px.line` (trends), `px.histogram` (distribution), `px.box` (spread), `px.imshow` (heatmaps), `px.scatter_3d` (3D exploration).",
+      "title": "Plotly Express \u2014 Interactive Charts",
+      "theory": [
+        "Plotly Express is a high-level API for creating interactive charts with minimal code. It supports scatter, bar, line, histogram, box, heatmap, and 3D plots with built-in tooltips, zooming, and panning.\n\n**Key features:** Color-coding by category, bubble charts (size parameter), log scales, hover data, and automatic legends. Templates like `plotly_white` and `plotly_dark` provide instant styling.\n\n**Chart types:** `px.scatter` (relationship), `px.bar` (comparison), `px.line` (trends), `px.histogram` (distribution), `px.box` (spread), `px.imshow` (heatmaps), `px.scatter_3d` (3D exploration)."
+      ],
       "code": [
         {
-          "title": "Plotly Express — Scatter, Bar, Histogram, Heatmap",
           "language": "python",
-          "code": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\ndf = pd.DataFrame({\n    'x': np.random.randn(200),\n    'y': np.random.randn(200),\n    'category': np.random.choice(['A','B','C'], 200),\n    'size': np.random.uniform(5, 50, 200)\n})\n\n# Scatter with color and size\nfig = px.scatter(df, x='x', y='y', color='category',\n    size='size', hover_data=['category'],\n    title='Interactive Scatter Plot')\nfig.show()\n\n# Histogram with marginal rug\nfig = px.histogram(df, x='x', color='category',\n    marginal='rug', barmode='overlay', opacity=0.7)\nfig.show()\n\n# Correlation heatmap\ncorr = df[['x','y','size']].corr()\nfig = px.imshow(corr, color_continuous_scale='RdBu_r',\n    zmin=-1, zmax=1, text_auto='.2f')\nfig.show()"
+          "description": "Plotly Express - Scatter, Bar, Histogram, Heatmap",
+          "content": "import plotly.express as px\nimport pandas as pd\nimport numpy as np\n\nnp.random.seed(42)\ndf = pd.DataFrame({\n    'x': np.random.randn(200),\n    'y': np.random.randn(200),\n    'category': np.random.choice(['A','B','C'], 200),\n    'size': np.random.uniform(5, 50, 200)\n})\n\n# Scatter with color and size\nfig = px.scatter(df, x='x', y='y', color='category',\n    size='size', hover_data=['category'],\n    title='Interactive Scatter Plot')\nfig.show()\n\n# Histogram with marginal rug\nfig = px.histogram(df, x='x', color='category',\n    marginal='rug', barmode='overlay', opacity=0.7)\nfig.show()\n\n# Correlation heatmap\ncorr = df[['x','y','size']].corr()\nfig = px.imshow(corr, color_continuous_scale='RdBu_r',\n    zmin=-1, zmax=1, text_auto='.2f')\nfig.show()"
         }
       ],
       "visualSuggestions": [
@@ -132,42 +138,49 @@
         "Chart type selector showing the same data in different plot types"
       ],
       "visualIntuition": [
-        "Plotly Express is like Instagram filters for data — one line of code transforms raw numbers into an interactive, zoomable, tooltipped chart."
-      ]
+        "Plotly Express is like Instagram filters for data \u2014 one line of code transforms raw numbers into an interactive, zoomable, tooltipped chart."
+      ],
+      "slug": "plotly-express-interactive-charts"
     },
     {
       "title": "Subplots and Layout Customisation",
-      "theory": "Plotly's `make_subplots` creates multi-panel figures with shared axes, mixed chart types, and precise layout control.\n\n**Key parameters:** `rows`/`cols` for grid, `shared_xaxes`/`shared_yaxes` for linked axes, `specs` for mixed types.\n\n**Layout features:** `hovermode='x unified'` links tooltips across subplots, `dragmode` controls interaction (zoom/pan/select/lasso), `template` sets visual theme.\n\n**Annotations & shapes:** `add_vline`, `add_hline`, `add_annotation` for marking important points, thresholds, or events.",
+      "theory": [
+        "Plotly's `make_subplots` creates multi-panel figures with shared axes, mixed chart types, and precise layout control.\n\n**Key parameters:** `rows`/`cols` for grid, `shared_xaxes`/`shared_yaxes` for linked axes, `specs` for mixed types.\n\n**Layout features:** `hovermode='x unified'` links tooltips across subplots, `dragmode` controls interaction (zoom/pan/select/lasso), `template` sets visual theme.\n\n**Annotations & shapes:** `add_vline`, `add_hline`, `add_annotation` for marking important points, thresholds, or events."
+      ],
       "code": [
         {
-          "title": "Multi-panel Subplots with Shared Axes",
           "language": "python",
-          "code": "from plotly.subplots import make_subplots\nimport plotly.graph_objects as go\nimport numpy as np\n\nx = np.arange(12)\ny1 = np.random.randint(100, 500, 12)\ny2 = np.random.randint(20, 100, 12)\n\nfig = make_subplots(rows=2, cols=1,\n    subplot_titles=['Revenue', 'Units Sold'],\n    shared_xaxes=True, vertical_spacing=0.12)\n\nfig.add_trace(go.Bar(x=x, y=y1, name='Revenue'), row=1, col=1)\nfig.add_trace(go.Scatter(x=x, y=y2, name='Units', fill='tozeroy'), row=2, col=1)\n\nfig.update_layout(title='Sales Dashboard',\n    hovermode='x unified', template='plotly_white', height=500)\nfig.add_hline(y=300, line_dash='dash', line_color='red',\n    annotation_text='Target', row=1, col=1)\nfig.show()"
+          "description": "Multi-panel Subplots with Shared Axes",
+          "content": "from plotly.subplots import make_subplots\nimport plotly.graph_objects as go\nimport numpy as np\n\nx = np.arange(12)\ny1 = np.random.randint(100, 500, 12)\ny2 = np.random.randint(20, 100, 12)\n\nfig = make_subplots(rows=2, cols=1,\n    subplot_titles=['Revenue', 'Units Sold'],\n    shared_xaxes=True, vertical_spacing=0.12)\n\nfig.add_trace(go.Bar(x=x, y=y1, name='Revenue'), row=1, col=1)\nfig.add_trace(go.Scatter(x=x, y=y2, name='Units', fill='tozeroy'), row=2, col=1)\n\nfig.update_layout(title='Sales Dashboard',\n    hovermode='x unified', template='plotly_white', height=500)\nfig.add_hline(y=300, line_dash='dash', line_color='red',\n    annotation_text='Target', row=1, col=1)\nfig.show()"
         }
       ],
       "visualSuggestions": [
         "Dashboard mockup with multiple linked panels"
       ],
       "visualIntuition": [
-        "Subplots are like a newspaper layout — each panel tells a different aspect of the same story. Shared axes link them together."
-      ]
+        "Subplots are like a newspaper layout \u2014 each panel tells a different aspect of the same story. Shared axes link them together."
+      ],
+      "slug": "subplots-and-layout-customisation"
     },
     {
       "title": "Interactive Controls and Export",
-      "theory": "Plotly supports buttons, dropdowns, range sliders, and range selectors for building dashboard-like interactivity without a web framework.\n\n**Range slider:** Essential for time series — `rangeslider_visible=True` adds a zoomable overview bar.\n\n**Update buttons:** `method='update'` changes trace visibility; `method='relayout'` changes axis properties (e.g., linear vs log scale).\n\n**Export:** `.write_html()` for interactive HTML, `.write_image()` for static PNG/PDF/SVG (requires kaleido).",
+      "theory": [
+        "Plotly supports buttons, dropdowns, range sliders, and range selectors for building dashboard-like interactivity without a web framework.\n\n**Range slider:** Essential for time series \u2014 `rangeslider_visible=True` adds a zoomable overview bar.\n\n**Update buttons:** `method='update'` changes trace visibility; `method='relayout'` changes axis properties (e.g., linear vs log scale).\n\n**Export:** `.write_html()` for interactive HTML, `.write_image()` for static PNG/PDF/SVG (requires kaleido)."
+      ],
       "code": [
         {
-          "title": "Range Selectors, Dropdowns, and Export",
           "language": "python",
-          "code": "import plotly.graph_objects as go\nimport numpy as np\nimport pandas as pd\n\ndates = pd.date_range('2023-01-01', periods=365, freq='D')\nvalues = np.cumsum(np.random.randn(365)) + 100\n\nfig = go.Figure(go.Scatter(x=dates, y=values, name='Price'))\n\nfig.update_xaxes(\n    rangeslider_visible=True,\n    rangeselector=dict(buttons=[\n        dict(count=7, label='1W', step='day', stepmode='backward'),\n        dict(count=1, label='1M', step='month', stepmode='backward'),\n        dict(count=3, label='3M', step='month', stepmode='backward'),\n        dict(step='all', label='All')\n    ]))\n\nfig.update_layout(\n    updatemenus=[dict(buttons=[\n        dict(label='Linear', method='relayout', args=[{'yaxis.type': 'linear'}]),\n        dict(label='Log', method='relayout', args=[{'yaxis.type': 'log'}])\n    ])],\n    title='Interactive Time Series', template='plotly_white')\nfig.show()"
+          "description": "Range Selectors, Dropdowns, and Export",
+          "content": "import plotly.graph_objects as go\nimport numpy as np\nimport pandas as pd\n\ndates = pd.date_range('2023-01-01', periods=365, freq='D')\nvalues = np.cumsum(np.random.randn(365)) + 100\n\nfig = go.Figure(go.Scatter(x=dates, y=values, name='Price'))\n\nfig.update_xaxes(\n    rangeslider_visible=True,\n    rangeselector=dict(buttons=[\n        dict(count=7, label='1W', step='day', stepmode='backward'),\n        dict(count=1, label='1M', step='month', stepmode='backward'),\n        dict(count=3, label='3M', step='month', stepmode='backward'),\n        dict(step='all', label='All')\n    ]))\n\nfig.update_layout(\n    updatemenus=[dict(buttons=[\n        dict(label='Linear', method='relayout', args=[{'yaxis.type': 'linear'}]),\n        dict(label='Log', method='relayout', args=[{'yaxis.type': 'log'}])\n    ])],\n    title='Interactive Time Series', template='plotly_white')\nfig.show()"
         }
       ],
       "visualSuggestions": [
         "Time series with working range slider and scale toggle"
       ],
       "visualIntuition": [
-        "Interactive controls turn a static chart into a data exploration tool. The range slider is like a telescope — you control the zoom level and focal point."
-      ]
+        "Interactive controls turn a static chart into a data exploration tool. The range slider is like a telescope \u2014 you control the zoom level and focal point."
+      ],
+      "slug": "interactive-controls-and-export"
     }
   ],
   "quiz": [
@@ -188,7 +201,7 @@
       "question": "When should you use Seaborn over Matplotlib?",
       "options": [
         "Always",
-        "When you need statistical plots with less code — Seaborn provides higher-level abstractions for common patterns",
+        "When you need statistical plots with less code \u2014 Seaborn provides higher-level abstractions for common patterns",
         "Seaborn is faster",
         "Only for 3D plots"
       ],
@@ -200,12 +213,12 @@
       "question": "What does a correlation heatmap reveal?",
       "options": [
         "Causation between features",
-        "Pairwise linear relationships between features — useful for identifying redundancy and multicollinearity",
+        "Pairwise linear relationships between features \u2014 useful for identifying redundancy and multicollinearity",
         "The importance of each feature",
         "Non-linear relationships"
       ],
       "correctAnswer": 1,
-      "explanation": "Correlation heatmaps show Pearson or Spearman coefficients between all feature pairs. High correlation indicates redundancy (potentially drop one). But correlation ≠ causation, and it only captures linear relationships."
+      "explanation": "Correlation heatmaps show Pearson or Spearman coefficients between all feature pairs. High correlation indicates redundancy (potentially drop one). But correlation \u2260 causation, and it only captures linear relationships."
     },
     {
       "id": "q4",

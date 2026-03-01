@@ -32,17 +32,32 @@ class CurriculumLoader:
             return None
 
     def load_module_by_id(self, lesson_id: str) -> Optional[LearningModule]:
-        # lesson_id expected in format "s1m1"
-        if not lesson_id.startswith("s") or "m" not in lesson_id:
-            return None
+        """Load module by sXmY ID or by its slug name."""
+        # Try s1m1 format first
+        if lesson_id.startswith("s") and "m" in lesson_id:
+            try:
+                parts = lesson_id[1:].split("m")
+                subject_idx = int(parts[0])
+                module_idx = int(parts[1])
+                return self.load_module(subject_idx, module_idx)
+            except (ValueError, IndexError):
+                pass
         
-        try:
-            parts = lesson_id[1:].split("m")
-            subject_idx = int(parts[0])
-            module_idx = int(parts[1])
-            return self.load_module(subject_idx, module_idx)
-        except (ValueError, IndexError):
-            return None
+        # Fallback: search by slug in all module files
+        all_ids = self.list_all_modules()
+        for mid in all_ids:
+            module = self.load_module_by_id(mid) if mid != lesson_id else None # avoid recursion
+            if not module:
+                # Need to manually load to avoid infinite recursion
+                try:
+                    parts = mid[1:].split("m")
+                    module = self.load_module(int(parts[0]), int(parts[1]))
+                except: continue
+                
+            if module and module.meta.module.lower() == lesson_id.lower():
+                return module
+        
+        return None
 
     def list_all_modules(self) -> List[str]:
         modules = []

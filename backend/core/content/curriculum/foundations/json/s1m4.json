@@ -1,143 +1,146 @@
 {
-    "meta": {
-        "subject": "foundations",
-        "module": "optimization",
-        "level": "beginner",
-        "estimatedHours": 3
+  "meta": {
+    "subject": "foundations",
+    "module": "optimization",
+    "level": "beginner",
+    "estimatedHours": 3
+  },
+  "overview": [
+    "Optimization is the heart of machine learning. Almost every ML algorithm works by defining a 'loss function' that measures error and then minimizing that function to find the best possible model parameters.",
+    "In this module, we explore how mathematical optimization transforms data into intelligence through iterative refinement using gradients."
+  ],
+  "topics": [
+    {
+      "title": "The Objective Function",
+      "theory": [
+        "An objective function (or loss function) is a mathematical formula that quantifies how 'bad' or 'good' a model is performing on a given task. In supervised learning, this is typically the distance between the model's prediction and the actual ground truth.",
+        "Common examples include Mean Squared Error (MSE) for regression and Cross-Entropy Loss for classification. The goal of any learning process is to find parameters that minimize this objective function."
+      ],
+      "visualIntuition": [
+        "Imagine a landscape of hills and valleys where the height represents the 'error'. Your goal is to find the lowest point in the landscape\u2014this point corresponds to the minimum error."
+      ],
+      "visualSuggestions": [
+        "optimization",
+        "3D topographic map showing a convex bowl with a red dot representing current parameters.",
+        "1D parabola showing the relationship between a single parameter and the resulting loss."
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Simple Mean Squared Error calculation",
+          "content": "import numpy as np\n\ndef mse_loss(y_true, y_pred):\n    return np.mean((y_true - y_pred)**2)\n\ny_true = np.array([3, -0.5, 2, 7])\ny_pred = np.array([2.5, 0.0, 2, 8])\nprint(f\"MSE Loss: {mse_loss(y_true, y_pred)}\")"
+        }
+      ],
+      "slug": "the-objective-function"
     },
-    "overview": [
-        "Optimization is the heart of machine learning. Almost every ML algorithm works by defining a 'loss function' that measures error and then minimizing that function to find the best possible model parameters.",
-        "In this module, we explore how mathematical optimization transforms data into intelligence through iterative refinement using gradients."
-    ],
-    "topics": [
+    {
+      "title": "Gradients and the Chain Rule",
+      "theory": [
+        "The gradient is a vector that points in the direction of steepest increase of a function. In optimization, we care about its opposite: the direction of steepest descent.",
+        "Mathematically, the gradient is the collection of partial derivatives with respect to each parameter. For deep neural networks, these gradients are calculated efficiently using 'Backpropagation', which is just a systematic application of the calculus Chain Rule."
+      ],
+      "visualIntuition": [
+        "If you are standing on a hill in the fog, the gradient tells you which way is up. To go down, you simply take a step in the exactly opposite direction of where the slope is steepest."
+      ],
+      "visualSuggestions": [
+        "Vector field visualization showing arrows pointing toward the local minimum.",
+        "Animation of a tangent line moving along a curve to show the derivative at different points."
+      ],
+      "code": [
         {
-            "title": "The Objective Function",
-            "theory": [
-                "An objective function (or loss function) is a mathematical formula that quantifies how 'bad' or 'good' a model is performing on a given task. In supervised learning, this is typically the distance between the model's prediction and the actual ground truth.",
-                "Common examples include Mean Squared Error (MSE) for regression and Cross-Entropy Loss for classification. The goal of any learning process is to find parameters that minimize this objective function."
-            ],
-            "visualIntuition": [
-                "Imagine a landscape of hills and valleys where the height represents the 'error'. Your goal is to find the lowest point in the landscape—this point corresponds to the minimum error."
-            ],
-            "visualSuggestions": [
-                "optimization",
-                "3D topographic map showing a convex bowl with a red dot representing current parameters.",
-                "1D parabola showing the relationship between a single parameter and the resulting loss."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Simple Mean Squared Error calculation",
-                    "content": "import numpy as np\n\ndef mse_loss(y_true, y_pred):\n    return np.mean((y_true - y_pred)**2)\n\ny_true = np.array([3, -0.5, 2, 7])\ny_pred = np.array([2.5, 0.0, 2, 8])\nprint(f\"MSE Loss: {mse_loss(y_true, y_pred)}\")"
-                }
-            ]
-        },
-        {
-            "title": "Gradients and the Chain Rule",
-            "theory": [
-                "The gradient is a vector that points in the direction of steepest increase of a function. In optimization, we care about its opposite: the direction of steepest descent.",
-                "Mathematically, the gradient is the collection of partial derivatives with respect to each parameter. For deep neural networks, these gradients are calculated efficiently using 'Backpropagation', which is just a systematic application of the calculus Chain Rule."
-            ],
-            "visualIntuition": [
-                "If you are standing on a hill in the fog, the gradient tells you which way is up. To go down, you simply take a step in the exactly opposite direction of where the slope is steepest."
-            ],
-            "visualSuggestions": [
-                "Vector field visualization showing arrows pointing toward the local minimum.",
-                "Animation of a tangent line moving along a curve to show the derivative at different points."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Calculating a simple gradient for f(x) = x^2",
-                    "content": "def func(x):\n    return x**2\n\ndef gradient(x):\n    return 2*x\n\nx_current = 5\nprint(f\"Value at {x_current}: {func(x_current)}\")\nprint(f\"Gradient at {x_current}: {gradient(x_current)}\")"
-                }
-            ]
-        },
-        {
-            "title": "Gradient Descent Algorithms",
-            "theory": [
-                "Gradient Descent is an iterative algorithm that updates parameters by moving them in the direction that reduces the loss: θ_new = θ_old - η * ∇L.",
-                "The 'Learning Rate' (η) controls the size of the steps. If it's too large, you might overshot the minimum; if it's too small, the training will be painfully slow. Variants like Stochastic Gradient Descent (SGD) and Adam are used to speed up convergence on massive datasets."
-            ],
-            "visualIntuition": [
-                "Think of a ball rolling down a bowl. Gravity pulls it toward the bottom (the minimum). The learning rate is like the speed of the ball—too much velocity and it might fly out of the bowl entirely!"
-            ],
-            "visualSuggestions": [
-                "Animation showing different learning rates: one converging smoothly, one oscillating, and one diverging.",
-                "Comparison of Batch vs Stochastic paths on a contour plot."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Implementing Basic Gradient Descent",
-                    "content": "import numpy as np\n\ndef gradient_descent(start_x, learning_rate, epochs):\n    x = start_x\n    for i in range(epochs):\n        grad = 2 * x  # derivative of x^2\n        x = x - learning_rate * grad\n        if i % 5 == 0:\n            print(f\"Epoch {i}: x = {x:.4f}, loss = {x**2:.4f}\")\n    return x\n\nfinal_min = gradient_descent(start_x=10, learning_rate=0.1, epochs=25)"
-                }
-            ]
+          "language": "python",
+          "description": "Calculating a simple gradient for f(x) = x^2",
+          "content": "def func(x):\n    return x**2\n\ndef gradient(x):\n    return 2*x\n\nx_current = 5\nprint(f\"Value at {x_current}: {func(x_current)}\")\nprint(f\"Gradient at {x_current}: {gradient(x_current)}\")"
         }
-    ],
-    "quiz": [
+      ],
+      "slug": "gradients-and-the-chain-rule"
+    },
+    {
+      "title": "Gradient Descent Algorithms",
+      "theory": [
+        "Gradient Descent is an iterative algorithm that updates parameters by moving them in the direction that reduces the loss: \u03b8_new = \u03b8_old - \u03b7 * \u2207L.",
+        "The 'Learning Rate' (\u03b7) controls the size of the steps. If it's too large, you might overshot the minimum; if it's too small, the training will be painfully slow. Variants like Stochastic Gradient Descent (SGD) and Adam are used to speed up convergence on massive datasets."
+      ],
+      "visualIntuition": [
+        "Think of a ball rolling down a bowl. Gravity pulls it toward the bottom (the minimum). The learning rate is like the speed of the ball\u2014too much velocity and it might fly out of the bowl entirely!"
+      ],
+      "visualSuggestions": [
+        "Animation showing different learning rates: one converging smoothly, one oscillating, and one diverging.",
+        "Comparison of Batch vs Stochastic paths on a contour plot."
+      ],
+      "code": [
         {
-            "id": "q1",
-            "question": "What does the gradient vector represent in the context of an objective function?",
-            "options": [
-                "The minimum value of the function",
-                "The direction of steepest increase and its magnitude",
-                "The second derivative",
-                "The learning rate"
-            ],
-            "correctAnswer": 1,
-            "explanation": "The gradient is a vector of partial derivatives pointing in the direction of steepest ascent. Its magnitude indicates how steep the slope is. Gradient descent moves in the opposite direction to minimize the loss."
-        },
-        {
-            "id": "q2",
-            "question": "Why is selecting an appropriate learning rate critical for model training?",
-            "options": [
-                "It only affects training speed",
-                "Too high → overshooting minima; too low → extremely slow convergence or getting stuck",
-                "It determines the model architecture",
-                "Learning rate doesn't affect convergence"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Learning rate controls step size. Too large: steps overshoot the minimum, causing divergence. Too small: training takes forever or gets trapped in shallow local minima. Adaptive methods (Adam) help but don't eliminate the need for tuning."
-        },
-        {
-            "id": "q3",
-            "question": "What is the difference between Gradient Descent and Stochastic Gradient Descent?",
-            "options": [
-                "They are identical",
-                "GD uses the full dataset per update; SGD uses one sample, trading accuracy for speed and noise",
-                "SGD is always better",
-                "GD is faster"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Full-batch GD computes exact gradients (stable but slow). SGD uses single samples (fast, noisy). The noise in SGD can actually help escape local minima. Mini-batch SGD is the practical compromise."
-        },
-        {
-            "id": "q4",
-            "question": "How is the Chain Rule used in backpropagation?",
-            "options": [
-                "To compute the loss function",
-                "To decompose gradients of composed functions, propagating error from output back through each layer",
-                "To initialize weights",
-                "To regularize parameters"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Neural networks are compositions of functions (layers). The chain rule breaks dL/dw into a product of local derivatives: dL/dy × dy/dz × dz/dw, enabling efficient gradient computation through the entire network."
+          "language": "python",
+          "description": "Implementing Basic Gradient Descent",
+          "content": "import numpy as np\n\ndef gradient_descent(start_x, learning_rate, epochs):\n    x = start_x\n    for i in range(epochs):\n        grad = 2 * x  # derivative of x^2\n        x = x - learning_rate * grad\n        if i % 5 == 0:\n            print(f\"Epoch {i}: x = {x:.4f}, loss = {x**2:.4f}\")\n    return x\n\nfinal_min = gradient_descent(start_x=10, learning_rate=0.1, epochs=25)"
         }
-    ],
-    "references": [
-        {
-            "label": "Deep Learning Book - Optimization (Chapter 8)",
-            "url": "https://www.deeplearningbook.org/contents/optimization.html"
-        },
-        {
-            "label": "Khan Academy - Multivariable Calculus (Gradients)",
-            "url": "https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives/gradient-and-directional-derivatives/v/the-gradient"
-        },
-        {
-            "label": "Distill.pub - Why Momentum Really Works",
-            "url": "https://distill.pub/2017/momentum/"
-        }
-    ],
-    "_contentWarnings": []
+      ],
+      "slug": "gradient-descent-algorithms"
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What does the gradient vector represent in the context of an objective function?",
+      "options": [
+        "The minimum value of the function",
+        "The direction of steepest increase and its magnitude",
+        "The second derivative",
+        "The learning rate"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The gradient is a vector of partial derivatives pointing in the direction of steepest ascent. Its magnitude indicates how steep the slope is. Gradient descent moves in the opposite direction to minimize the loss."
+    },
+    {
+      "id": "q2",
+      "question": "Why is selecting an appropriate learning rate critical for model training?",
+      "options": [
+        "It only affects training speed",
+        "Too high \u2192 overshooting minima; too low \u2192 extremely slow convergence or getting stuck",
+        "It determines the model architecture",
+        "Learning rate doesn't affect convergence"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Learning rate controls step size. Too large: steps overshoot the minimum, causing divergence. Too small: training takes forever or gets trapped in shallow local minima. Adaptive methods (Adam) help but don't eliminate the need for tuning."
+    },
+    {
+      "id": "q3",
+      "question": "What is the difference between Gradient Descent and Stochastic Gradient Descent?",
+      "options": [
+        "They are identical",
+        "GD uses the full dataset per update; SGD uses one sample, trading accuracy for speed and noise",
+        "SGD is always better",
+        "GD is faster"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Full-batch GD computes exact gradients (stable but slow). SGD uses single samples (fast, noisy). The noise in SGD can actually help escape local minima. Mini-batch SGD is the practical compromise."
+    },
+    {
+      "id": "q4",
+      "question": "How is the Chain Rule used in backpropagation?",
+      "options": [
+        "To compute the loss function",
+        "To decompose gradients of composed functions, propagating error from output back through each layer",
+        "To initialize weights",
+        "To regularize parameters"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Neural networks are compositions of functions (layers). The chain rule breaks dL/dw into a product of local derivatives: dL/dy \u00d7 dy/dz \u00d7 dz/dw, enabling efficient gradient computation through the entire network."
+    }
+  ],
+  "references": [
+    {
+      "label": "Deep Learning Book - Optimization (Chapter 8)",
+      "url": "https://www.deeplearningbook.org/contents/optimization.html"
+    },
+    {
+      "label": "Khan Academy - Multivariable Calculus (Gradients)",
+      "url": "https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives/gradient-and-directional-derivatives/v/the-gradient"
+    },
+    {
+      "label": "Distill.pub - Why Momentum Really Works",
+      "url": "https://distill.pub/2017/momentum/"
+    }
+  ],
+  "_contentWarnings": []
 }

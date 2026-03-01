@@ -1,130 +1,133 @@
 {
-    "meta": {
-        "subject": "applied-domains",
-        "module": "nlp",
-        "level": "intermediate",
-        "estimatedHours": 4
+  "meta": {
+    "subject": "applied-domains",
+    "module": "nlp",
+    "level": "intermediate",
+    "estimatedHours": 4
+  },
+  "overview": [
+    "Natural Language Processing (NLP) is the multidisciplinary field focused on the interaction between computers and human language. It combines linguistics, computer science, and machine learning to enable machines to understand, interpret, and generate text.",
+    "From simple sentiment analysis to complex LLMs like GPT-4, NLP is the technology behind the conversational interfaces and translation tools we use every day."
+  ],
+  "topics": [
+    {
+      "title": "Text Preprocessing & Tokenization",
+      "theory": [
+        "Before a computer can process text, it must be broken down into smaller units called 'tokens'. Tokenizers can operate at the word level, character level, or sub-word level (like BPE used in modern LLMs).",
+        "Preprocessing also involves 'Normalization'\u2014removing stop words (common words like 'the' or 'is'), lowercasing, and 'Lemmatization' (reducing words to their base dictionary form)."
+      ],
+      "visualIntuition": [
+        "Think of a sentence as a Lego castle. Tokenization is the process of breaking the castle down into its individual bricks so you can count them, categorize them, and store them in buckets."
+      ],
+      "visualSuggestions": [
+        "Side-by-side comparison of 'raw text' vs 'cleaned tokens'.",
+        "Visualization of a Word-Level vs Sub-word level split for a word like 'unhappiness'."
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Simple NLTK Tokenization (Simulation)",
+          "content": "text = \"Machine learning is fascinating!\"\ntokens = text.lower().split()\nprint(f\"Raw: {text}\")\nprint(f\"Tokens: {tokens}\")"
+        }
+      ],
+      "slug": "text-preprocessing-tokenization"
     },
-    "overview": [
-        "Natural Language Processing (NLP) is the multidisciplinary field focused on the interaction between computers and human language. It combines linguistics, computer science, and machine learning to enable machines to understand, interpret, and generate text.",
-        "From simple sentiment analysis to complex LLMs like GPT-4, NLP is the technology behind the conversational interfaces and translation tools we use every day."
-    ],
-    "topics": [
+    {
+      "title": "Word Embeddings (Word2Vec & GloVe)",
+      "theory": [
+        "Computers cannot understand raw words; they need numbers. Word embeddings are a way of representing words as dense vectors in high-dimensional space.",
+        "In this vector space, words with similar meanings (like 'king' and 'queen') are placed close together. This allows models to capture semantic relationships: 'King - Man + Woman \u2248 Queen'."
+      ],
+      "visualIntuition": [
+        "Imagine a massive map where every word is a city. Cities that produce similar goods (have similar meanings) are built near each other. You can calculate the distance between 'Apple' and 'Fruit' to see how related they are."
+      ],
+      "visualSuggestions": [
+        "3D scatter plot showing clusters of related words (e.g., animals, sports, technology).",
+        "Interactive vector math demonstration showing the 'King-Man+Woman' relationship."
+      ],
+      "code": [
         {
-            "title": "Text Preprocessing & Tokenization",
-            "theory": [
-                "Before a computer can process text, it must be broken down into smaller units called 'tokens'. Tokenizers can operate at the word level, character level, or sub-word level (like BPE used in modern LLMs).",
-                "Preprocessing also involves 'Normalization'—removing stop words (common words like 'the' or 'is'), lowercasing, and 'Lemmatization' (reducing words to their base dictionary form)."
-            ],
-            "visualIntuition": [
-                "Think of a sentence as a Lego castle. Tokenization is the process of breaking the castle down into its individual bricks so you can count them, categorize them, and store them in buckets."
-            ],
-            "visualSuggestions": [
-                "Side-by-side comparison of 'raw text' vs 'cleaned tokens'.",
-                "Visualization of a Word-Level vs Sub-word level split for a word like 'unhappiness'."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Simple NLTK Tokenization (Simulation)",
-                    "content": "text = \"Machine learning is fascinating!\"\ntokens = text.lower().split()\nprint(f\"Raw: {text}\")\nprint(f\"Tokens: {tokens}\")"
-                }
-            ]
-        },
-        {
-            "title": "Word Embeddings (Word2Vec & GloVe)",
-            "theory": [
-                "Computers cannot understand raw words; they need numbers. Word embeddings are a way of representing words as dense vectors in high-dimensional space.",
-                "In this vector space, words with similar meanings (like 'king' and 'queen') are placed close together. This allows models to capture semantic relationships: 'King - Man + Woman ≈ Queen'."
-            ],
-            "visualIntuition": [
-                "Imagine a massive map where every word is a city. Cities that produce similar goods (have similar meanings) are built near each other. You can calculate the distance between 'Apple' and 'Fruit' to see how related they are."
-            ],
-            "visualSuggestions": [
-                "3D scatter plot showing clusters of related words (e.g., animals, sports, technology).",
-                "Interactive vector math demonstration showing the 'King-Man+Woman' relationship."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Simulating a 2D Word Embedding space",
-                    "content": "embeddings = {\n    'king': [0.9, 0.1],\n    'man': [0.8, 0.0],\n    'queen': [0.9, 0.8],\n    'woman': [0.8, 0.9]\n}\ndef cosine_similarity(v1, v2):\n    return sum(a*b for a,b in zip(v1,v2)) / (sum(a*a for a in v1)**0.5 * sum(b*b for b in v2)**0.5)\n\nprint(f\"Similarity (king, queen): {cosine_similarity(embeddings['king'], embeddings['queen']):.3f}\")"
-                }
-            ]
-        },
-        {
-            "title": "The Transformer Architecture",
-            "theory": [
-                "Transformers revolutionized NLP by introducing 'Attention'. Unlike older models (RNNs) that read text sequentially from left to right, Transformers look at the entire sentence at once.",
-                "The 'Self-Attention' mechanism allows the model to determine which words are most relevant to each other, regardless of their distance. For example, in 'The bank of the river', attention helps the model know that 'bank' refers to land, not money."
-            ],
-            "visualIntuition": [
-                "Imagine you are in a crowded room. Even though everyone is talking, you 'attend' to the one person speaking your name. Transformers do this for every word in a sentence simultaneously."
-            ],
-            "visualSuggestions": [
-                "Attention mask visualization showing links between related words in a sentence.",
-                "Comparison of Sequential (RNN) vs Parallel (Transformer) processing flow."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Simplified Self-Attention Calculation",
-                    "content": "import numpy as np\n\ndef softmax(x):\n    e_x = np.exp(x - np.max(x))\n    return e_x / e_x.sum(axis=-1)\n\n# Query, Key, Value vectors for 3 words\nQ = np.array([[1, 0, 1], [0, 1, 0], [1, 1, 0]])\nK = np.array([[1, 0, 1], [0, 1, 0], [1, 1, 0]])\n\nscores = Q @ K.T\nweights = softmax(scores)\nprint(\"Attention Weights:\\n\", weights)"
-                }
-            ]
+          "language": "python",
+          "description": "Simulating a 2D Word Embedding space",
+          "content": "embeddings = {\n    'king': [0.9, 0.1],\n    'man': [0.8, 0.0],\n    'queen': [0.9, 0.8],\n    'woman': [0.8, 0.9]\n}\ndef cosine_similarity(v1, v2):\n    return sum(a*b for a,b in zip(v1,v2)) / (sum(a*a for a in v1)**0.5 * sum(b*b for b in v2)**0.5)\n\nprint(f\"Similarity (king, queen): {cosine_similarity(embeddings['king'], embeddings['queen']):.3f}\")"
         }
-    ],
-    "quiz": [
+      ],
+      "slug": "word-embeddings-wordvec-glove"
+    },
+    {
+      "title": "The Transformer Architecture",
+      "theory": [
+        "Transformers revolutionized NLP by introducing 'Attention'. Unlike older models (RNNs) that read text sequentially from left to right, Transformers look at the entire sentence at once.",
+        "The 'Self-Attention' mechanism allows the model to determine which words are most relevant to each other, regardless of their distance. For example, in 'The bank of the river', attention helps the model know that 'bank' refers to land, not money."
+      ],
+      "visualIntuition": [
+        "Imagine you are in a crowded room. Even though everyone is talking, you 'attend' to the one person speaking your name. Transformers do this for every word in a sentence simultaneously."
+      ],
+      "visualSuggestions": [
+        "Attention mask visualization showing links between related words in a sentence.",
+        "Comparison of Sequential (RNN) vs Parallel (Transformer) processing flow."
+      ],
+      "code": [
         {
-            "id": "q1",
-            "question": "What is differential privacy?",
-            "options": [
-                "Encrypting model weights",
-                "A mathematical guarantee that individual data points cannot be identified from model outputs",
-                "Anonymizing names in datasets",
-                "Using private cloud servers"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Differential privacy adds calibrated noise to computations, providing mathematical guarantees that the output of an analysis is essentially the same whether or not any individual's data is included."
-        },
-        {
-            "id": "q2",
-            "question": "What is federated learning?",
-            "options": [
-                "Training one large model",
-                "Training models on decentralized data without sharing raw data — models travel to data, not data to models",
-                "Using multiple GPUs",
-                "A type of transfer learning"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Federated learning trains models across multiple devices/organizations. Each participant trains locally and shares only model updates (gradients), keeping raw data private. Used by Google Keyboard, Apple Siri."
-        },
-        {
-            "id": "q3",
-            "question": "Why is data anonymization insufficient for privacy?",
-            "options": [
-                "It's too complex to implement",
-                "Re-identification attacks can combine 'anonymous' datasets with external data to identify individuals",
-                "It removes too much useful data",
-                "It's always sufficient"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Research shows that 87% of Americans can be uniquely identified by ZIP code, birth date, and gender alone. Anonymized datasets can be cross-referenced with public data for re-identification."
+          "language": "python",
+          "description": "Simplified Self-Attention Calculation",
+          "content": "import numpy as np\n\ndef softmax(x):\n    e_x = np.exp(x - np.max(x))\n    return e_x / e_x.sum(axis=-1)\n\n# Query, Key, Value vectors for 3 words\nQ = np.array([[1, 0, 1], [0, 1, 0], [1, 1, 0]])\nK = np.array([[1, 0, 1], [0, 1, 0], [1, 1, 0]])\n\nscores = Q @ K.T\nweights = softmax(scores)\nprint(\"Attention Weights:\\n\", weights)"
         }
-    ],
-    "references": [
-        {
-            "label": "Attention Is All You Need (Original Paper)",
-            "url": "https://arxiv.org/abs/1706.03762"
-        },
-        {
-            "label": "Jay Alammar - The Illustrated Transformer",
-            "url": "http://jalammar.github.io/illustrated-transformer/"
-        },
-        {
-            "label": "Stanford CS224N: Natural Language Processing with Deep Learning",
-            "url": "web.stanford.edu/class/cs224n/"
-        }
-    ],
-    "_contentWarnings": []
+      ],
+      "slug": "the-transformer-architecture"
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is differential privacy?",
+      "options": [
+        "Encrypting model weights",
+        "A mathematical guarantee that individual data points cannot be identified from model outputs",
+        "Anonymizing names in datasets",
+        "Using private cloud servers"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Differential privacy adds calibrated noise to computations, providing mathematical guarantees that the output of an analysis is essentially the same whether or not any individual's data is included."
+    },
+    {
+      "id": "q2",
+      "question": "What is federated learning?",
+      "options": [
+        "Training one large model",
+        "Training models on decentralized data without sharing raw data \u2014 models travel to data, not data to models",
+        "Using multiple GPUs",
+        "A type of transfer learning"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Federated learning trains models across multiple devices/organizations. Each participant trains locally and shares only model updates (gradients), keeping raw data private. Used by Google Keyboard, Apple Siri."
+    },
+    {
+      "id": "q3",
+      "question": "Why is data anonymization insufficient for privacy?",
+      "options": [
+        "It's too complex to implement",
+        "Re-identification attacks can combine 'anonymous' datasets with external data to identify individuals",
+        "It removes too much useful data",
+        "It's always sufficient"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Research shows that 87% of Americans can be uniquely identified by ZIP code, birth date, and gender alone. Anonymized datasets can be cross-referenced with public data for re-identification."
+    }
+  ],
+  "references": [
+    {
+      "label": "Attention Is All You Need (Original Paper)",
+      "url": "https://arxiv.org/abs/1706.03762"
+    },
+    {
+      "label": "Jay Alammar - The Illustrated Transformer",
+      "url": "http://jalammar.github.io/illustrated-transformer/"
+    },
+    {
+      "label": "Stanford CS224N: Natural Language Processing with Deep Learning",
+      "url": "web.stanford.edu/class/cs224n/"
+    }
+  ],
+  "_contentWarnings": []
 }

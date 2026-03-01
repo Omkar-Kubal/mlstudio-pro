@@ -93,10 +93,10 @@ export default function PopulationSamplePrimitive() {
             ctx.arc(cx, cy, inSample ? 3.5 : 1.5, 0, Math.PI * 2);
 
             if (inSample) {
-                ctx.fillStyle = "hsl(var(--primary))";
+                ctx.fillStyle = "#D4D4D4";
                 ctx.globalAlpha = 1;
                 ctx.shadowBlur = 4;
-                ctx.shadowColor = "hsl(var(--primary))";
+                ctx.shadowColor = "#D4D4D4";
             } else {
                 ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
                 ctx.globalAlpha = 0.3;
@@ -164,7 +164,7 @@ export default function PopulationSamplePrimitive() {
                 const x = PAD.left + i * barW;
                 const y = PAD.top + pH - bH;
 
-                ctx.fillStyle = "hsl(var(--primary))";
+                ctx.fillStyle = "#D4D4D4";
                 ctx.globalAlpha = 0.8;
                 ctx.beginPath();
                 if (ctx.roundRect) ctx.roundRect(x + 1, y, barW - 2, bH, [2, 2, 0, 0]);
@@ -203,7 +203,7 @@ export default function PopulationSamplePrimitive() {
             ctx.font = "10px var(--font-jetbrains)";
             ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
             ctx.fillText(`Pop μ: ${popMean}`, PAD.left + pW - 10, PAD.top + 15);
-            ctx.fillStyle = "hsl(var(--primary))";
+            ctx.fillStyle = "#D4D4D4";
             ctx.fillText(`Sample μ: ${samMean}`, PAD.left + pW - 10, PAD.top + 30);
             ctx.fillStyle = isClose ? "#10b981" : "#f43f5e"; // emerald-500 : rose-500
             ctx.fillText(`Error: ${diff}`, PAD.left + pW - 10, PAD.top + 45);

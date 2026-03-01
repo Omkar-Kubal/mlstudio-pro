@@ -20,21 +20,21 @@ interface SurfaceDef {
 const SURFACES: Record<string, SurfaceDef> = {
     convex: {
         label: "Convex",
-        color: "hsl(var(--emerald-400))",
+        color: "#34d399", // emerald-400
         fn: (x) => 0.8 * (x - 2) ** 2 + 1,
         desc: "One global minimum — gradient descent will always find the optimal solution.",
         start: -2.0
     },
     nonconvex: {
         label: "Non-Convex",
-        color: "hsl(var(--rose-400))",
+        color: "#fb7185", // rose-400
         fn: (x) => 0.3 * Math.sin(3 * x) * Math.exp(-0.15 * x) + 0.25 * (x - 1) ** 2 + 1.2,
         desc: "Multiple local minima — dangerous terrain where training can get stuck.",
         start: -2.5
     },
     saddle: {
         label: "Saddle Point",
-        color: "hsl(var(--primary))",
+        color: "#3b82f6", // blue-500
         fn: (x) => 0.05 * x ** 3 - 0.4 * x + 2.5,
         desc: "Flat regions (plateaus) can slow convergence to a crawl.",
         start: -0.5
@@ -131,7 +131,8 @@ export default function ObjectiveFunctionPrimitive({ config: _config }: Props) {
         if (!ctx) return;
 
         ctx.clearRect(0, 0, W, H);
-        ctx.fillStyle = "hsl(var(--surface))";
+        // Using a dark transparent background instead of hsl(var(--surface))
+        ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
         ctx.fillRect(0, 0, W, H);
 
         // Grid
@@ -204,11 +205,11 @@ export default function ObjectiveFunctionPrimitive({ config: _config }: Props) {
         const aX2 = toCanvasX(bx + arrowDir * arrowLen);
 
         if (Math.abs(g) > 0.05) {
-            ctx.strokeStyle = arrowDir > 0 ? "hsl(var(--emerald-400))" : "hsl(var(--rose-400))";
+            ctx.strokeStyle = arrowDir > 0 ? "#34d399" : "#fb7185";
             ctx.lineWidth = 2;
             ctx.beginPath(); ctx.moveTo(aX1, aY1); ctx.lineTo(aX2, aY1); ctx.stroke();
             // Head
-            ctx.fillStyle = arrowDir > 0 ? "hsl(var(--emerald-400))" : "hsl(var(--rose-400))";
+            ctx.fillStyle = arrowDir > 0 ? "#34d399" : "#fb7185";
             ctx.beginPath();
             ctx.moveTo(aX2, aY1);
             ctx.lineTo(aX2 - arrowDir * 8, aY1 - 4);

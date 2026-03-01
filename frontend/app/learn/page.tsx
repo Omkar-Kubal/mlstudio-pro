@@ -5,6 +5,7 @@ import Link from "next/link";
 import { subjects, subjectMeta } from "@/adapters/subjects";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { apiFetch } from "@/adapters/api";
+import { useAuth } from "@/context/AuthContext";
 
 // Progress Ring component
 function ProgressRing({ progress, size = 40 }: { progress: number; size?: number }) {
@@ -73,13 +74,16 @@ const difficultyColors: Record<string, string> = {
 
 
 export default function LearnPage() {
+    const { user } = useAuth();
     const [progressData, setProgressData] = useState<{ unlocked_subjects?: number[] } | null>(null);
 
     useEffect(() => {
+        if (!user) return; // Don't fetch if not logged in
+
         apiFetch<{ unlocked_subjects?: number[] }>("/curriculum/progress")
             .then(data => setProgressData(data))
             .catch(err => console.error("Failed to fetch progress", err));
-    }, []);
+    }, [user]);
 
     // Sort subjects by order
     const sortedSubjects = [...subjects].sort((a, b) => a.order - b.order);

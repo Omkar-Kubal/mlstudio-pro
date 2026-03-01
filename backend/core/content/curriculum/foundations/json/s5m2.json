@@ -14,7 +14,7 @@
       "title": "Holdout Validation",
       "theory": [
         "Holdout validation is the simplest form: split dataset into training set (to train) and testing set (to evaluate generalization). Typical splits are 70/30 or 80/20.",
-        "Fast and easy, but gives high variance estimates — performance depends heavily on the specific split. Good for quick experiments, not for final evaluation."
+        "Fast and easy, but gives high variance estimates \u2014 performance depends heavily on the specific split. Good for quick experiments, not for final evaluation."
       ],
       "visualIntuition": [
         "Pie chart animation of dataset splitting into training and testing portions. Show performance metrics changing with different random splits."
@@ -30,7 +30,8 @@
           "description": "Holdout validation",
           "content": "from sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import accuracy_score\nfrom sklearn.datasets import load_iris\n\nX, y = load_iris(return_X_y=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)\n\nmodel = LogisticRegression()\nmodel.fit(X_train, y_train)\npredictions = model.predict(X_test)\n\nprint(\"Accuracy:\", accuracy_score(y_test, predictions))"
         }
-      ]
+      ],
+      "slug": "holdout-validation"
     },
     {
       "title": "Cross-Validation",
@@ -51,13 +52,14 @@
           "description": "K-fold cross-validation",
           "content": "from sklearn.model_selection import cross_val_score\nfrom sklearn.ensemble import RandomForestClassifier\n\nmodel = RandomForestClassifier()\nscores = cross_val_score(model, X, y, cv=5)\n\nprint(\"Cross-Validation Scores:\", scores)\nprint(f\"Average Accuracy: {scores.mean():.3f} (+/- {scores.std():.3f})\")"
         }
-      ]
+      ],
+      "slug": "cross-validation"
     },
     {
       "title": "K-Fold vs Stratified K-Fold",
       "theory": [
         "K-Fold: random equal-sized splits. May not preserve class distribution, especially with imbalanced data.",
-        "Stratified K-Fold: preserves class distribution in each fold. Critical for classification with imbalanced classes — ensures each fold is representative.",
+        "Stratified K-Fold: preserves class distribution in each fold. Critical for classification with imbalanced classes \u2014 ensures each fold is representative.",
         "Always use Stratified K-Fold for classification unless you have a specific reason not to."
       ],
       "visualIntuition": [
@@ -73,7 +75,8 @@
           "description": "Comparing K-Fold and Stratified K-Fold",
           "content": "from sklearn.model_selection import StratifiedKFold, KFold\nimport numpy as np\n\nkf = KFold(n_splits=5, shuffle=True, random_state=1)\nskf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)\n\nprint(\"Stratified K-Fold - Class distribution per test fold:\")\nfor fold, (train_idx, test_idx) in enumerate(skf.split(X, y)):\n    unique, counts = np.unique(y[test_idx], return_counts=True)\n    print(f\"  Fold {fold+1}: {dict(zip(unique, counts))}\")"
         }
-      ]
+      ],
+      "slug": "k-fold-vs-stratified-k-fold"
     },
     {
       "title": "Hyperparameter Tuning",
@@ -83,7 +86,7 @@
         "Always tune using cross-validation, not test set, to avoid overfitting to test data. Keep test set truly held out."
       ],
       "visualIntuition": [
-        "Accuracy curve vs hyperparameter value (e.g., depth 1-10) showing underfitting→optimal→overfitting pattern."
+        "Accuracy curve vs hyperparameter value (e.g., depth 1-10) showing underfitting\u2192optimal\u2192overfitting pattern."
       ],
       "visualSuggestions": [
         "Hyperparameter slider with live accuracy update",
@@ -95,13 +98,14 @@
           "description": "Hyperparameter tuning with cross-validation",
           "content": "from sklearn.model_selection import cross_val_score\nfrom sklearn.ensemble import RandomForestClassifier\n\nprint(\"Testing different max_depth values:\")\nfor depth in range(1, 11):\n    model = RandomForestClassifier(max_depth=depth, random_state=0)\n    scores = cross_val_score(model, X, y, cv=5)\n    print(f\"  Depth {depth}: Accuracy = {scores.mean():.3f} (+/- {scores.std():.3f})\")"
         }
-      ]
+      ],
+      "slug": "hyperparameter-tuning"
     },
     {
       "title": "Grid Search vs Random Search",
       "theory": [
         "Grid Search: exhaustive search over all specified parameter combinations. Full coverage but slow, especially with many parameters.",
-        "Random Search: randomly sample parameter combinations. More efficient in high dimensions — often finds good results with fewer evaluations.",
+        "Random Search: randomly sample parameter combinations. More efficient in high dimensions \u2014 often finds good results with fewer evaluations.",
         "Trade-off: Grid = thorough but expensive. Random = faster, approximate. Random search is often preferred when parameter space is large."
       ],
       "visualIntuition": [
@@ -117,16 +121,19 @@
           "description": "Grid Search and Random Search",
           "content": "from sklearn.model_selection import GridSearchCV, RandomizedSearchCV\nfrom sklearn.ensemble import RandomForestClassifier\nfrom scipy.stats import randint\n\n# Grid Search\nparam_grid = {'n_estimators': [10, 50, 100], 'max_depth': [2, 4, 6]}\ngrid = GridSearchCV(RandomForestClassifier(), param_grid, cv=3)\ngrid.fit(X, y)\nprint(\"Best Grid Params:\", grid.best_params_)\nprint(f\"Best Score: {grid.best_score_:.3f}\")\n\n# Random Search\nparam_dist = {'n_estimators': randint(10, 200), 'max_depth': randint(1, 10)}\nrandom_search = RandomizedSearchCV(\n    RandomForestClassifier(), param_distributions=param_dist,\n    n_iter=10, cv=3, random_state=0\n)\nrandom_search.fit(X, y)\nprint(\"\\nBest Random Params:\", random_search.best_params_)\nprint(f\"Best Score: {random_search.best_score_:.3f}\")"
         }
-      ]
+      ],
+      "slug": "grid-search-vs-random-search"
     },
     {
       "title": "Leave-One-Out & Time Series Cross-Validation",
-      "theory": "**LOOCV (Leave-One-Out CV):** Uses N folds where each fold leaves out exactly one sample. Equivalent to N-fold CV.\n- **Pros:** Maximum use of data, no randomness in splits\n- **Cons:** N model fits (slow for large datasets), high variance in estimate\n- **Use when:** Dataset is very small (<100 samples)\n\n**Time Series CV:** Standard K-Fold shuffles data randomly — this leaks future information in time series! Time Series CV preserves temporal order.\n\n**TimeSeriesSplit:** Each fold grows the training set while the test set moves forward:\n- Fold 1: Train [0:100], Test [100:200]\n- Fold 2: Train [0:200], Test [200:300]\n- Fold 3: Train [0:300], Test [300:400]\n\nRules: never use future data to predict the past, always use a gap between train and test to prevent data leakage.",
+      "theory": [
+        "**LOOCV (Leave-One-Out CV):** Uses N folds where each fold leaves out exactly one sample. Equivalent to N-fold CV.\n- **Pros:** Maximum use of data, no randomness in splits\n- **Cons:** N model fits (slow for large datasets), high variance in estimate\n- **Use when:** Dataset is very small (<100 samples)\n\n**Time Series CV:** Standard K-Fold shuffles data randomly \u2014 this leaks future information in time series! Time Series CV preserves temporal order.\n\n**TimeSeriesSplit:** Each fold grows the training set while the test set moves forward:\n- Fold 1: Train [0:100], Test [100:200]\n- Fold 2: Train [0:200], Test [200:300]\n- Fold 3: Train [0:300], Test [300:400]\n\nRules: never use future data to predict the past, always use a gap between train and test to prevent data leakage."
+      ],
       "code": [
         {
-          "title": "LOOCV and TimeSeriesSplit",
           "language": "python",
-          "code": "from sklearn.model_selection import LeaveOneOut, TimeSeriesSplit, cross_val_score\nfrom sklearn.linear_model import Ridge, LinearRegression\nfrom sklearn.datasets import make_regression\nimport numpy as np\n\n# LOOCV (small dataset)\nnp.random.seed(42)\nX_small = np.random.randn(30, 3)\ny_small = X_small @ [3, -1, 2] + np.random.randn(30) * 0.5\n\nloo = LeaveOneOut()\nscores = cross_val_score(Ridge(), X_small, y_small, cv=loo, scoring='r2')\nprint(f'LOOCV R²: {scores.mean():.4f} ± {scores.std():.4f}  ({len(scores)} folds)')\n\n# Time Series Cross-Validation\nX, y = make_regression(n_samples=500, n_features=5, noise=10, random_state=42)\n\ntscv = TimeSeriesSplit(n_splits=5)\nfor i, (train_idx, test_idx) in enumerate(tscv.split(X)):\n    print(f'Fold {i+1}: Train {train_idx[:3]}..{train_idx[-1]} ({len(train_idx)} samples)  |  Test {test_idx[0]}..{test_idx[-1]} ({len(test_idx)} samples)')\n\nscores = cross_val_score(Ridge(), X, y, cv=tscv, scoring='r2')\nprint(f'TS-CV R²: {scores.mean():.4f} ± {scores.std():.4f}')"
+          "description": "LOOCV and TimeSeriesSplit",
+          "content": "from sklearn.model_selection import LeaveOneOut, TimeSeriesSplit, cross_val_score\nfrom sklearn.linear_model import Ridge, LinearRegression\nfrom sklearn.datasets import make_regression\nimport numpy as np\n\n# LOOCV (small dataset)\nnp.random.seed(42)\nX_small = np.random.randn(30, 3)\ny_small = X_small @ [3, -1, 2] + np.random.randn(30) * 0.5\n\nloo = LeaveOneOut()\nscores = cross_val_score(Ridge(), X_small, y_small, cv=loo, scoring='r2')\nprint(f'LOOCV R^2: {scores.mean():.4f} \u00b1 {scores.std():.4f}  ({len(scores)} folds)')\n\n# Time Series Cross-Validation\nX, y = make_regression(n_samples=500, n_features=5, noise=10, random_state=42)\n\ntscv = TimeSeriesSplit(n_splits=5)\nfor i, (train_idx, test_idx) in enumerate(tscv.split(X)):\n    print(f'Fold {i+1}: Train {train_idx[:3]}..{train_idx[-1]} ({len(train_idx)} samples)  |  Test {test_idx[0]}..{test_idx[-1]} ({len(test_idx)} samples)')\n\nscores = cross_val_score(Ridge(), X, y, cv=tscv, scoring='r2')\nprint(f'TS-CV R^2: {scores.mean():.4f} \u00b1 {scores.std():.4f}')"
         }
       ],
       "visualSuggestions": [
@@ -135,16 +142,19 @@
       ],
       "visualIntuition": [
         "Time Series CV is like a weather forecaster who only uses past data to predict tomorrow. They'd never peek at tomorrow's weather to adjust today's model. The training window grows like a snowball rolling forward in time."
-      ]
+      ],
+      "slug": "leave-one-out-time-series-cross-validation"
     },
     {
       "title": "Bayesian Optimisation with Optuna",
-      "theory": "**Bayesian optimisation** uses a probabilistic model (surrogate function) to intelligently navigate the hyperparameter space, focusing on promising regions and avoiding wasteful exploration.\n\n**Optuna** is a modern hyperparameter optimisation framework that uses TPE (Tree-structured Parzen Estimator) as its default sampler.\n\n**Advantages over Grid/Random:**\n- Learns from previous trials (informed sampling)\n- Handles conditional hyperparameters (e.g., layer count depends on architecture type)\n- Built-in pruning: stops unpromising trials early\n- n_trials controls budget, not grid size\n\n**Key concepts:**\n- `study`: the optimisation session\n- `trial`: one set of hyperparameter values\n- `suggest_*`: tells Optuna the hyperparameter type and range\n- `MedianPruner`: stops trials performing below the median at each step",
+      "theory": [
+        "**Bayesian optimisation** uses a probabilistic model (surrogate function) to intelligently navigate the hyperparameter space, focusing on promising regions and avoiding wasteful exploration.\n\n**Optuna** is a modern hyperparameter optimisation framework that uses TPE (Tree-structured Parzen Estimator) as its default sampler.\n\n**Advantages over Grid/Random:**\n- Learns from previous trials (informed sampling)\n- Handles conditional hyperparameters (e.g., layer count depends on architecture type)\n- Built-in pruning: stops unpromising trials early\n- n_trials controls budget, not grid size\n\n**Key concepts:**\n- `study`: the optimisation session\n- `trial`: one set of hyperparameter values\n- `suggest_*`: tells Optuna the hyperparameter type and range\n- `MedianPruner`: stops trials performing below the median at each step"
+      ],
       "code": [
         {
-          "title": "Optuna Hyperparameter Optimisation",
           "language": "python",
-          "code": "import optuna\nfrom sklearn.datasets import make_classification\nfrom sklearn.model_selection import cross_val_score\nfrom sklearn.ensemble import GradientBoostingClassifier\nfrom sklearn.svm import SVC\nimport numpy as np\n\noptuna.logging.set_verbosity(optuna.logging.WARNING)\n\nX, y = make_classification(n_samples=500, n_features=10, random_state=42)\n\ndef objective(trial):\n    # Choose model type\n    model_name = trial.suggest_categorical('model', ['SVM', 'GBM'])\n    \n    if model_name == 'SVM':\n        C = trial.suggest_float('svm_C', 0.01, 100, log=True)\n        kernel = trial.suggest_categorical('kernel', ['rbf', 'linear'])\n        clf = SVC(C=C, kernel=kernel)\n    else:\n        n_est = trial.suggest_int('n_estimators', 50, 300)\n        lr = trial.suggest_float('learning_rate', 0.01, 0.3, log=True)\n        depth = trial.suggest_int('max_depth', 2, 8)\n        clf = GradientBoostingClassifier(\n            n_estimators=n_est, learning_rate=lr,\n            max_depth=depth, random_state=42)\n    \n    score = cross_val_score(clf, X, y, cv=5, scoring='f1_macro').mean()\n    return score\n\nstudy = optuna.create_study(direction='maximize', sampler=optuna.samplers.TPESampler(seed=42))\nstudy.optimize(objective, n_trials=50)\n\nprint(f'Best F1: {study.best_value:.4f}')\nprint(f'Best params: {study.best_params}')\nprint(f'Number of trials: {len(study.trials)}')\n\n# Most important hyperparameters\nimportances = optuna.importance.get_param_importances(study)\nfor name, imp in importances.items():\n    print(f'  {name}: {imp:.3f}')"
+          "description": "Optuna Hyperparameter Optimisation",
+          "content": "import optuna\nfrom sklearn.datasets import make_classification\nfrom sklearn.model_selection import cross_val_score\nfrom sklearn.ensemble import GradientBoostingClassifier\nfrom sklearn.svm import SVC\nimport numpy as np\n\noptuna.logging.set_verbosity(optuna.logging.WARNING)\n\nX, y = make_classification(n_samples=500, n_features=10, random_state=42)\n\ndef objective(trial):\n    # Choose model type\n    model_name = trial.suggest_categorical('model', ['SVM', 'GBM'])\n    \n    if model_name == 'SVM':\n        C = trial.suggest_float('svm_C', 0.01, 100, log=True)\n        kernel = trial.suggest_categorical('kernel', ['rbf', 'linear'])\n        clf = SVC(C=C, kernel=kernel)\n    else:\n        n_est = trial.suggest_int('n_estimators', 50, 300)\n        lr = trial.suggest_float('learning_rate', 0.01, 0.3, log=True)\n        depth = trial.suggest_int('max_depth', 2, 8)\n        clf = GradientBoostingClassifier(\n            n_estimators=n_est, learning_rate=lr,\n            max_depth=depth, random_state=42)\n    \n    score = cross_val_score(clf, X, y, cv=5, scoring='f1_macro').mean()\n    return score\n\nstudy = optuna.create_study(direction='maximize', sampler=optuna.samplers.TPESampler(seed=42))\nstudy.optimize(objective, n_trials=50)\n\nprint(f'Best F1: {study.best_value:.4f}')\nprint(f'Best params: {study.best_params}')\nprint(f'Number of trials: {len(study.trials)}')\n\n# Most important hyperparameters\nimportances = optuna.importance.get_param_importances(study)\nfor name, imp in importances.items():\n    print(f'  {name}: {imp:.3f}')"
         }
       ],
       "visualSuggestions": [
@@ -152,8 +162,9 @@
         "Hyperparameter importance bar chart from Optuna"
       ],
       "visualIntuition": [
-        "Grid search is like searching for a treasure by digging at every point on a grid. Random search throws darts randomly. Bayesian optimisation is like a smart treasure hunter — after each dig, they update their map of where treasure is likely buried and dig in the most promising spots next."
-      ]
+        "Grid search is like searching for a treasure by digging at every point on a grid. Random search throws darts randomly. Bayesian optimisation is like a smart treasure hunter \u2014 after each dig, they update their map of where treasure is likely buried and dig in the most promising spots next."
+      ],
+      "slug": "bayesian-optimisation-with-optuna"
     }
   ],
   "quiz": [
@@ -179,7 +190,7 @@
         "It adds more parameters"
       ],
       "correctAnswer": 1,
-      "explanation": "Dropout forces the network to learn redundant representations — no single neuron can be relied upon. This acts like training an ensemble of sub-networks, reducing overfitting."
+      "explanation": "Dropout forces the network to learn redundant representations \u2014 no single neuron can be relied upon. This acts like training an ensemble of sub-networks, reducing overfitting."
     },
     {
       "id": "q3",
@@ -191,7 +202,7 @@
         "It only occurs with ReLU"
       ],
       "correctAnswer": 1,
-      "explanation": "With activations like sigmoid (gradient ≤ 0.25), gradients multiply through layers: 0.25^10 ≈ 0.000001. Early layers receive negligible updates. ReLU and residual connections help mitigate this."
+      "explanation": "With activations like sigmoid (gradient \u2264 0.25), gradients multiply through layers: 0.25^10 \u2248 0.000001. Early layers receive negligible updates. ReLU and residual connections help mitigate this."
     },
     {
       "id": "q4",

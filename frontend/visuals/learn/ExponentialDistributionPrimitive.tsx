@@ -53,7 +53,7 @@ export default function ExponentialDistributionPrimitive() {
         const tlCtx = timelineRef.current?.getContext("2d");
         if (tlCtx) {
             tlCtx.clearRect(0, 0, TW, TH);
-            tlCtx.fillStyle = "hsl(var(--surface))";
+            tlCtx.fillStyle = "#121212";
             tlCtx.fillRect(0, 0, TW, TH);
 
             const PAD_L = 60, PAD_R = 60;
@@ -75,7 +75,7 @@ export default function ExponentialDistributionPrimitive() {
                 const prevX = i === 0 ? PAD_L : PAD_L + events[i - 1].time * drawW;
 
                 // Wait Segment
-                tlCtx.strokeStyle = "hsla(var(--primary), 0.4)";
+                tlCtx.strokeStyle = "rgba(212, 212, 212, 0.4)";
                 tlCtx.lineWidth = 2;
                 tlCtx.beginPath();
                 tlCtx.moveTo(prevX, midY - 15);
@@ -92,7 +92,7 @@ export default function ExponentialDistributionPrimitive() {
                 // Event Dot
                 tlCtx.beginPath();
                 tlCtx.arc(ex, midY, 6, 0, Math.PI * 2);
-                tlCtx.fillStyle = "hsl(var(--amber-500))";
+                tlCtx.fillStyle = "#F59E0B";
                 tlCtx.fill();
 
                 // Glow
@@ -138,7 +138,7 @@ export default function ExponentialDistributionPrimitive() {
 
             // Curve
             pdfCtx.beginPath();
-            pdfCtx.strokeStyle = "hsl(var(--primary))";
+            pdfCtx.strokeStyle = "#D4D4D4";
             pdfCtx.lineWidth = 3;
             for (let i = 0; i <= 100; i++) {
                 const x = (i / 100) * xMax;
@@ -153,7 +153,7 @@ export default function ExponentialDistributionPrimitive() {
             pdfCtx.lineTo(m.l + cw, m.t + ch);
             pdfCtx.lineTo(m.l, m.t + ch);
             const grad = pdfCtx.createLinearGradient(0, m.t, 0, m.t + ch);
-            grad.addColorStop(0, "hsla(var(--primary), 0.2)");
+            grad.addColorStop(0, "rgba(212, 212, 212, 0.2)");
             grad.addColorStop(1, "transparent");
             pdfCtx.fillStyle = grad;
             pdfCtx.fill();
@@ -176,7 +176,7 @@ export default function ExponentialDistributionPrimitive() {
 
             // Curve
             cdfCtx.beginPath();
-            cdfCtx.strokeStyle = "hsl(var(--blue-500))";
+            cdfCtx.strokeStyle = "#3B82F6";
             cdfCtx.lineWidth = 3;
             for (let i = 0; i <= 100; i++) {
                 const x = (i / 100) * xMax;

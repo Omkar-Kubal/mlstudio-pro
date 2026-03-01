@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { apiFetch } from "@/adapters/api";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { topics } from "@/adapters/topics";
 
@@ -18,11 +19,14 @@ interface Profile {
 }
 
 export default function DashboardPage() {
+    const { user } = useAuth();
     const [stats, setStats] = useState<ProgressStats | null>(null);
     const [profile, setProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!user) return;
+
         const fetchData = async () => {
             try {
                 const [progressData, profileData] = await Promise.all([

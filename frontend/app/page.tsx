@@ -18,13 +18,6 @@ export default function HomePage() {
     const [progress, setProgress] = useState(0);
     const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
-    // Redirect to dashboard if logged in
-    useEffect(() => {
-        if (!loading && user) {
-            router.push("/dashboard");
-        }
-    }, [user, loading, router]);
-
     // Single scroll progress source for the entire scroll section
     const { scrollYProgress } = useScroll({
         target: scrollContainerRef,

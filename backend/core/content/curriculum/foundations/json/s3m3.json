@@ -1,130 +1,133 @@
 {
-    "meta": {
-        "subject": "data-handling",
-        "module": "data-splitting",
-        "level": "beginner",
-        "estimatedHours": 2
+  "meta": {
+    "subject": "data-handling",
+    "module": "data-splitting",
+    "level": "beginner",
+    "estimatedHours": 2
+  },
+  "overview": [
+    "How do you know if your model is actually learning, or just memorizing? Data splitting is the fundamental practice of dividing your data into sets for training, validation, and testing.",
+    "Proper splitting techniques prevent 'overfitting' and ensure that your model will perform well on new, unseen data in the real world."
+  ],
+  "topics": [
+    {
+      "title": "Train, Validation, and Test Sets",
+      "theory": [
+        "Data is typically split into three sets: Training (to learn patterns), Validation (to tune hyperparameters), and Testing (the final 'gold standard' evaluation).",
+        "A common split ratio is 70/15/15. Crucially, the model must never 'see' the test set during training; otherwise, its performance will be deceptively optimistic\u2014a phenomenon known as 'Data Leakage'."
+      ],
+      "visualIntuition": [
+        "Imagine you're studying for an exam. The training set is your textbook. The validation set is a practice quiz you take to see which chapters you need to re-read. The test set is the actual final exam you've never seen before."
+      ],
+      "visualSuggestions": [
+        "Horizontal bar showing the 70/15/15 split color-coded.",
+        "Iconography showing the 'wall' between training and testing to represent no leakage."
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Standard split using Scikit-Learn",
+          "content": "from sklearn.model_selection import train_test_split\nimport numpy as np\n\nX, y = np.arange(20).reshape((10, 2)), range(10)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\nprint(f\"Training samples: {len(X_train)}\")\nprint(f\"Test samples: {len(X_test)}\")"
+        }
+      ],
+      "slug": "train-validation-and-test-sets"
     },
-    "overview": [
-        "How do you know if your model is actually learning, or just memorizing? Data splitting is the fundamental practice of dividing your data into sets for training, validation, and testing.",
-        "Proper splitting techniques prevent 'overfitting' and ensure that your model will perform well on new, unseen data in the real world."
-    ],
-    "topics": [
+    {
+      "title": "Cross-Validation (K-Fold)",
+      "theory": [
+        "If your dataset is small, a single split might be too sensitive to noise. Cross-validation involves splitting the data into 'K' folds. The model is trained K times, each time using a different fold as the validation set.",
+        "This provides a more robust estimate of model performance because it ensures every sample has a chance to be in the validation set exactly once."
+      ],
+      "visualIntuition": [
+        "Think of a relay race where a different person sits out for each lap. By the end of the race, everyone has had a turn to rest (be the validation set) and everyone has had a turn to run (be the training set)."
+      ],
+      "visualSuggestions": [
+        "Grid visualization showing K squares, with a different square highlighted as 'Val' in each row.",
+        "Graph showing variance in performance across different folds."
+      ],
+      "code": [
         {
-            "title": "Train, Validation, and Test Sets",
-            "theory": [
-                "Data is typically split into three sets: Training (to learn patterns), Validation (to tune hyperparameters), and Testing (the final 'gold standard' evaluation).",
-                "A common split ratio is 70/15/15. Crucially, the model must never 'see' the test set during training; otherwise, its performance will be deceptively optimistic—a phenomenon known as 'Data Leakage'."
-            ],
-            "visualIntuition": [
-                "Imagine you're studying for an exam. The training set is your textbook. The validation set is a practice quiz you take to see which chapters you need to re-read. The test set is the actual final exam you've never seen before."
-            ],
-            "visualSuggestions": [
-                "Horizontal bar showing the 70/15/15 split color-coded.",
-                "Iconography showing the 'wall' between training and testing to represent no leakage."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Standard split using Scikit-Learn",
-                    "content": "from sklearn.model_selection import train_test_split\nimport numpy as np\n\nX, y = np.arange(20).reshape((10, 2)), range(10)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\nprint(f\"Training samples: {len(X_train)}\")\nprint(f\"Test samples: {len(X_test)}\")"
-                }
-            ]
-        },
-        {
-            "title": "Cross-Validation (K-Fold)",
-            "theory": [
-                "If your dataset is small, a single split might be too sensitive to noise. Cross-validation involves splitting the data into 'K' folds. The model is trained K times, each time using a different fold as the validation set.",
-                "This provides a more robust estimate of model performance because it ensures every sample has a chance to be in the validation set exactly once."
-            ],
-            "visualIntuition": [
-                "Think of a relay race where a different person sits out for each lap. By the end of the race, everyone has had a turn to rest (be the validation set) and everyone has had a turn to run (be the training set)."
-            ],
-            "visualSuggestions": [
-                "Grid visualization showing K squares, with a different square highlighted as 'Val' in each row.",
-                "Graph showing variance in performance across different folds."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Performing K-Fold Cross-Validation",
-                    "content": "from sklearn.model_selection import KFold\nimport numpy as np\n\ndata = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])\nkf = KFold(n_splits=5)\n\nfor i, (train_idx, test_idx) in enumerate(kf.split(data)):\n    print(f\"Fold {i}: Train={train_idx}, Val={test_idx}\")"
-                }
-            ]
-        },
-        {
-            "title": "Stratified Splitting",
-            "theory": [
-                "In classification tasks where one class is much rarer than others (imbalanced data), a random split might result in one set having zero examples of the rare class.",
-                "Stratified splitting ensures that the percentage of each class is preserved in both the training and test sets, preventing bias and ensuring fair representation."
-            ],
-            "visualIntuition": [
-                "If you're conducting a survey in a city that is 60% women and 40% men, you want your small sample (the split) to also be 60% women and 40% men to accurately reflect the population."
-            ],
-            "visualSuggestions": [
-                "Pie chart comparison showing how a random split can distort class ratios vs how stratified preserves them.",
-                "Visualization of 'shuffling' within class groups before splitting."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Stratified split for imbalanced classes",
-                    "content": "from sklearn.model_selection import train_test_split\ny = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1] # Imbalanced\nX = range(10)\n\n# Without stratification, test might get no '1's\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, stratify=y)\nprint(f\"Class ratio in test: {sum(y_test)/len(y_test):.2f}\")"
-                }
-            ]
+          "language": "python",
+          "description": "Performing K-Fold Cross-Validation",
+          "content": "from sklearn.model_selection import KFold\nimport numpy as np\n\ndata = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])\nkf = KFold(n_splits=5)\n\nfor i, (train_idx, test_idx) in enumerate(kf.split(data)):\n    print(f\"Fold {i}: Train={train_idx}, Val={test_idx}\")"
         }
-    ],
-    "quiz": [
+      ],
+      "slug": "cross-validation-k-fold"
+    },
+    {
+      "title": "Stratified Splitting",
+      "theory": [
+        "In classification tasks where one class is much rarer than others (imbalanced data), a random split might result in one set having zero examples of the rare class.",
+        "Stratified splitting ensures that the percentage of each class is preserved in both the training and test sets, preventing bias and ensuring fair representation."
+      ],
+      "visualIntuition": [
+        "If you're conducting a survey in a city that is 60% women and 40% men, you want your small sample (the split) to also be 60% women and 40% men to accurately reflect the population."
+      ],
+      "visualSuggestions": [
+        "Pie chart comparison showing how a random split can distort class ratios vs how stratified preserves them.",
+        "Visualization of 'shuffling' within class groups before splitting."
+      ],
+      "code": [
         {
-            "id": "q1",
-            "question": "What is exploratory data analysis (EDA) and why does it precede modeling?",
-            "options": [
-                "It's optional",
-                "EDA reveals data quality issues, distributions, and relationships before you waste time on a model that will fail",
-                "It replaces modeling",
-                "It's the same as feature engineering"
-            ],
-            "correctAnswer": 1,
-            "explanation": "EDA discovers the data's story: Are there outliers? Skewed distributions? Correlated features? Missing patterns? These findings directly inform preprocessing decisions and model choices."
-        },
-        {
-            "id": "q2",
-            "question": "When should you use Spearman over Pearson correlation?",
-            "options": [
-                "Always",
-                "When relationships are monotonic but not necessarily linear, or data contains outliers",
-                "Only for categorical data",
-                "Pearson is always better"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Pearson measures linear correlation and is sensitive to outliers. Spearman measures monotonic rank correlation — it captures 'as X increases, Y increases' regardless of linearity and is robust to outliers."
-        },
-        {
-            "id": "q3",
-            "question": "What does a box plot reveal that a histogram might miss?",
-            "options": [
-                "The exact data values",
-                "Quartiles, median, and outliers in a compact format — making it easy to compare distributions across groups",
-                "The distribution shape",
-                "Nothing different"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Box plots show the median, IQR, and outliers compactly. They excel at comparing distributions across groups (side-by-side boxes). Histograms show shape better but are harder to compare across many groups."
+          "language": "python",
+          "description": "Stratified split for imbalanced classes",
+          "content": "from sklearn.model_selection import train_test_split\ny = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1] # Imbalanced\nX = range(10)\n\n# Without stratification, test might get no '1's\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, stratify=y)\nprint(f\"Class ratio in test: {sum(y_test)/len(y_test):.2f}\")"
         }
-    ],
-    "references": [
-        {
-            "label": "Scikit-Learn User Guide - Cross-validation",
-            "url": "https://scikit-learn.org/stable/modules/cross_validation.html"
-        },
-        {
-            "label": "StatQuest: K-fold Cross Validation",
-            "url": "https://www.youtube.com/watch?v=fSytzGwwBVw"
-        },
-        {
-            "label": "Towards Data Science - Data Leakage in Machine Learning",
-            "url": "https://towardsdatascience.com/data-leakage-in-machine-learning-10bdd3a833ad"
-        }
-    ],
-    "_contentWarnings": []
+      ],
+      "slug": "stratified-splitting"
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is exploratory data analysis (EDA) and why does it precede modeling?",
+      "options": [
+        "It's optional",
+        "EDA reveals data quality issues, distributions, and relationships before you waste time on a model that will fail",
+        "It replaces modeling",
+        "It's the same as feature engineering"
+      ],
+      "correctAnswer": 1,
+      "explanation": "EDA discovers the data's story: Are there outliers? Skewed distributions? Correlated features? Missing patterns? These findings directly inform preprocessing decisions and model choices."
+    },
+    {
+      "id": "q2",
+      "question": "When should you use Spearman over Pearson correlation?",
+      "options": [
+        "Always",
+        "When relationships are monotonic but not necessarily linear, or data contains outliers",
+        "Only for categorical data",
+        "Pearson is always better"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Pearson measures linear correlation and is sensitive to outliers. Spearman measures monotonic rank correlation \u2014 it captures 'as X increases, Y increases' regardless of linearity and is robust to outliers."
+    },
+    {
+      "id": "q3",
+      "question": "What does a box plot reveal that a histogram might miss?",
+      "options": [
+        "The exact data values",
+        "Quartiles, median, and outliers in a compact format \u2014 making it easy to compare distributions across groups",
+        "The distribution shape",
+        "Nothing different"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Box plots show the median, IQR, and outliers compactly. They excel at comparing distributions across groups (side-by-side boxes). Histograms show shape better but are harder to compare across many groups."
+    }
+  ],
+  "references": [
+    {
+      "label": "Scikit-Learn User Guide - Cross-validation",
+      "url": "https://scikit-learn.org/stable/modules/cross_validation.html"
+    },
+    {
+      "label": "StatQuest: K-fold Cross Validation",
+      "url": "https://www.youtube.com/watch?v=fSytzGwwBVw"
+    },
+    {
+      "label": "Towards Data Science - Data Leakage in Machine Learning",
+      "url": "https://towardsdatascience.com/data-leakage-in-machine-learning-10bdd3a833ad"
+    }
+  ],
+  "_contentWarnings": []
 }

@@ -1,130 +1,133 @@
 {
-    "meta": {
-        "subject": "programming",
-        "module": "advanced-python",
-        "level": "intermediate",
-        "estimatedHours": 3
+  "meta": {
+    "subject": "programming",
+    "module": "advanced-python",
+    "level": "intermediate",
+    "estimatedHours": 3
+  },
+  "overview": [
+    "Python's simplicity hides powerful features that allow for highly efficient and expressive code. This module covers advanced concepts like decorators, generators, and context managers.",
+    "Mastering these tools allows you to write 'Pythonic' code that is more modular, memory-efficient, and professional."
+  ],
+  "topics": [
+    {
+      "title": "Decorators & Functional Wrappers",
+      "theory": [
+        "A decorator is a function that takes another function as an argument and extends its behavior without explicitly modifying it. They are typically used for cross-cutting concerns like logging, timing, and access control.",
+        "Syntax-wise, they are applied using the '@' symbol above a function definition. Under the hood, they leverage Python's property that functions are first-class objects."
+      ],
+      "visualIntuition": [
+        "Think of a decorator like a gift-wrap around a preset box. You can add a bow (logging) or a card (validation) to the outside of the box without opening or changing the gift inside."
+      ],
+      "visualSuggestions": [
+        "Flowchart showing a function call entering a wrapper, being modified, and then the original function executing.",
+        "Comparison of code with and without the @decorator syntax."
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Implementing a simple timing decorator",
+          "content": "import time\n\ndef timer(func):\n    def wrapper(*args, **kwargs):\n        start = time.time()\n        result = func(*args, **kwargs)\n        print(f\"{func.__name__} took {time.time() - start:.4f}s\")\n        return result\n    return wrapper\n\n@timer\ndef slow_task():\n    time.sleep(1)\n\nslow_task()"
+        }
+      ],
+      "slug": "decorators-functional-wrappers"
     },
-    "overview": [
-        "Python's simplicity hides powerful features that allow for highly efficient and expressive code. This module covers advanced concepts like decorators, generators, and context managers.",
-        "Mastering these tools allows you to write 'Pythonic' code that is more modular, memory-efficient, and professional."
-    ],
-    "topics": [
+    {
+      "title": "Generators & Iterators",
+      "theory": [
+        "Generators are a simple way to create iterators using the 'yield' statement. Unlike regular functions that return a list and store it in memory, generators produce values one-at-a-time on demand.",
+        "This 'lazy evaluation' makes generators extremely memory-efficient when dealing with massive datasets or infinite sequences."
+      ],
+      "visualIntuition": [
+        "Imagine a PEZ dispenser. Instead of giving you the whole bag of candy (a list), it gives you one piece at a time whenever you click it (next()). Once a piece is gone, it's gone for good!"
+      ],
+      "visualSuggestions": [
+        "Memory usage graph comparing a large list vs a generator.",
+        "Animation of a loop 'requesting' values from a generator one by one."
+      ],
+      "code": [
         {
-            "title": "Decorators & Functional Wrappers",
-            "theory": [
-                "A decorator is a function that takes another function as an argument and extends its behavior without explicitly modifying it. They are typically used for cross-cutting concerns like logging, timing, and access control.",
-                "Syntax-wise, they are applied using the '@' symbol above a function definition. Under the hood, they leverage Python's property that functions are first-class objects."
-            ],
-            "visualIntuition": [
-                "Think of a decorator like a gift-wrap around a preset box. You can add a bow (logging) or a card (validation) to the outside of the box without opening or changing the gift inside."
-            ],
-            "visualSuggestions": [
-                "Flowchart showing a function call entering a wrapper, being modified, and then the original function executing.",
-                "Comparison of code with and without the @decorator syntax."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Implementing a simple timing decorator",
-                    "content": "import time\n\ndef timer(func):\n    def wrapper(*args, **kwargs):\n        start = time.time()\n        result = func(*args, **kwargs)\n        print(f\"{func.__name__} took {time.time() - start:.4f}s\")\n        return result\n    return wrapper\n\n@timer\ndef slow_task():\n    time.sleep(1)\n\nslow_task()"
-                }
-            ]
-        },
-        {
-            "title": "Generators & Iterators",
-            "theory": [
-                "Generators are a simple way to create iterators using the 'yield' statement. Unlike regular functions that return a list and store it in memory, generators produce values one-at-a-time on demand.",
-                "This 'lazy evaluation' makes generators extremely memory-efficient when dealing with massive datasets or infinite sequences."
-            ],
-            "visualIntuition": [
-                "Imagine a PEZ dispenser. Instead of giving you the whole bag of candy (a list), it gives you one piece at a time whenever you click it (next()). Once a piece is gone, it's gone for good!"
-            ],
-            "visualSuggestions": [
-                "Memory usage graph comparing a large list vs a generator.",
-                "Animation of a loop 'requesting' values from a generator one by one."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Generator for Fibonacci sequence",
-                    "content": "def fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        yield a\n        a, b = b, a + b\n\nfor val in fibonacci(5):\n    print(val)"
-                }
-            ]
-        },
-        {
-            "title": "Context Managers (with statement)",
-            "theory": [
-                "Context managers ensure that resources like file handles or database connections are properly opened and, more importantly, closed—even if an error occurs.",
-                "The 'with' statement simplifies resource management and prevents leaks. You can create custom context managers using the '__enter__' and '__exit__' magic methods or the 'contextlib' module."
-            ],
-            "visualIntuition": [
-                "Think of a doctor's surgery. A context manager is like the surgical assistant who ensures all tools are sterilized and counted before the surgery (enter) and that everything is cleaned and put away correctly afterwards (exit)."
-            ],
-            "visualSuggestions": [
-                "State diagram showing setup -> execution -> cleanup.",
-                "Code diff showing traditional try-finally vs the with statement."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Safe file handling with context manager",
-                    "content": "with open('example.txt', 'w') as f:\n    f.write('Safe writing!')\n# File is automatically closed here"
-                }
-            ]
+          "language": "python",
+          "description": "Generator for Fibonacci sequence",
+          "content": "def fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        yield a\n        a, b = b, a + b\n\nfor val in fibonacci(5):\n    print(val)"
         }
-    ],
-    "quiz": [
+      ],
+      "slug": "generators-iterators"
+    },
+    {
+      "title": "Context Managers (with statement)",
+      "theory": [
+        "Context managers ensure that resources like file handles or database connections are properly opened and, more importantly, closed\u2014even if an error occurs.",
+        "The 'with' statement simplifies resource management and prevents leaks. You can create custom context managers using the '__enter__' and '__exit__' magic methods or the 'contextlib' module."
+      ],
+      "visualIntuition": [
+        "Think of a doctor's surgery. A context manager is like the surgical assistant who ensures all tools are sterilized and counted before the surgery (enter) and that everything is cleaned and put away correctly afterwards (exit)."
+      ],
+      "visualSuggestions": [
+        "State diagram showing setup -> execution -> cleanup.",
+        "Code diff showing traditional try-finally vs the with statement."
+      ],
+      "code": [
         {
-            "id": "q1",
-            "question": "What is the purpose of a machine learning pipeline?",
-            "options": [
-                "To visualize data",
-                "To chain preprocessing, feature engineering, and model training into a reproducible, automated workflow",
-                "To deploy models",
-                "To store data"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Pipelines ensure that the same transformations applied during training are applied during prediction. They prevent data leakage, ensure reproducibility, and simplify deployment by bundling the entire workflow."
-        },
-        {
-            "id": "q2",
-            "question": "Why is reproducibility important in ML experiments?",
-            "options": [
-                "It's not important",
-                "Without reproducibility, you can't verify results, debug failures, or satisfy regulatory requirements",
-                "It only matters for research papers",
-                "It slows development"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Reproducibility means getting the same results with the same data and code. Without it, you can't distinguish real improvements from random variation, debug regressions, or explain decisions to stakeholders."
-        },
-        {
-            "id": "q3",
-            "question": "What is the role of a requirements.txt or environment file?",
-            "options": [
-                "It lists project features",
-                "It pins exact package versions to ensure consistent environments across development, testing, and production",
-                "It's optional documentation",
-                "It speeds up installation"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Package version differences cause subtle bugs. A requirements.txt with pinned versions (numpy==1.24.0) ensures everyone runs identical code. Docker further guarantees OS-level consistency."
+          "language": "python",
+          "description": "Safe file handling with context manager",
+          "content": "with open('example.txt', 'w') as f:\n    f.write('Safe writing!')\n# File is automatically closed here"
         }
-    ],
-    "references": [
-        {
-            "label": "Python Docs - Generators & Iterators",
-            "url": "https://docs.python.org/3/howto/functional.html#generators"
-        },
-        {
-            "label": "Real Python - Primer on Python Decorators",
-            "url": "https://realpython.com/primer-on-python-decorators/"
-        },
-        {
-            "label": "Fluent Python (Luciano Ramalho)",
-            "url": "https://www.oreilly.com/library/view/fluent-python/9781491946237/"
-        }
-    ],
-    "_contentWarnings": []
+      ],
+      "slug": "context-managers-with-statement"
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What is the purpose of a machine learning pipeline?",
+      "options": [
+        "To visualize data",
+        "To chain preprocessing, feature engineering, and model training into a reproducible, automated workflow",
+        "To deploy models",
+        "To store data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Pipelines ensure that the same transformations applied during training are applied during prediction. They prevent data leakage, ensure reproducibility, and simplify deployment by bundling the entire workflow."
+    },
+    {
+      "id": "q2",
+      "question": "Why is reproducibility important in ML experiments?",
+      "options": [
+        "It's not important",
+        "Without reproducibility, you can't verify results, debug failures, or satisfy regulatory requirements",
+        "It only matters for research papers",
+        "It slows development"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Reproducibility means getting the same results with the same data and code. Without it, you can't distinguish real improvements from random variation, debug regressions, or explain decisions to stakeholders."
+    },
+    {
+      "id": "q3",
+      "question": "What is the role of a requirements.txt or environment file?",
+      "options": [
+        "It lists project features",
+        "It pins exact package versions to ensure consistent environments across development, testing, and production",
+        "It's optional documentation",
+        "It speeds up installation"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Package version differences cause subtle bugs. A requirements.txt with pinned versions (numpy==1.24.0) ensures everyone runs identical code. Docker further guarantees OS-level consistency."
+    }
+  ],
+  "references": [
+    {
+      "label": "Python Docs - Generators & Iterators",
+      "url": "https://docs.python.org/3/howto/functional.html#generators"
+    },
+    {
+      "label": "Real Python - Primer on Python Decorators",
+      "url": "https://realpython.com/primer-on-python-decorators/"
+    },
+    {
+      "label": "Fluent Python (Luciano Ramalho)",
+      "url": "https://www.oreilly.com/library/view/fluent-python/9781491946237/"
+    }
+  ],
+  "_contentWarnings": []
 }

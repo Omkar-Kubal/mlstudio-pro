@@ -12,10 +12,10 @@ const CH = H - M.top - M.bottom;
 type DistType = 'normal' | 'binomial' | 'poisson' | 'uniform';
 
 const COLORS: Record<DistType, string> = {
-    normal: "hsl(var(--primary))",
-    binomial: "hsl(var(--secondary))",
+    normal: "#D4D4D4",
+    binomial: "#A3A3A3",
     poisson: "#10b981", // Emerald
-    uniform: "hsl(var(--accent))",
+    uniform: "#525252",
 };
 
 // ─── Math Helpers ──────────────────────────────────────────────────────────

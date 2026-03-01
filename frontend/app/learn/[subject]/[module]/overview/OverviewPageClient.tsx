@@ -1,0 +1,125 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import type { LearningModule } from "@/adapters/content-types";
+import ModuleContent from "@/visuals/learn/ModuleContent";
+import { loadModuleBySlug } from "@/adapters/content-json";
+
+interface OverviewPageClientProps {
+    subjectSlug: string;
+    moduleSlug: string;
+}
+
+export default function OverviewPageClient({ subjectSlug, moduleSlug }: OverviewPageClientProps) {
+    const [learningModule, setLearningModule] = useState<LearningModule | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const loadData = async () => {
+            setLoading(true);
+            try {
+                const data = await loadModuleBySlug(subjectSlug, moduleSlug);
+                if (data) {
+                    setLearningModule(data);
+                } else {
+                    throw new Error("Content not found");
+                }
+            } catch (err) {
+                setError(err instanceof Error ? err.message : "Failed to load content");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadData();
+    }, [subjectSlug, moduleSlug]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-background flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4" />
+                    <p className="text-muted">Loading content...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (error || !learningModule) {
+        return (
+            <div className="min-h-screen bg-background flex items-center justify-center">
+                <div className="text-center">
+                    <p className="text-red-400 mb-4">{error || "Content not available"}</p>
+                    <Link
+                        href={`/learn/${subjectSlug}/${moduleSlug}`}
+                        className="text-primary hover:underline"
+                    >
+                        ← Back to module
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <main className="min-h-screen bg-background">
+            {/* Header */}
+            <header className="border-b border-border bg-surface/30">
+                <div className="max-w-4xl mx-auto px-6 py-6">
+                    {/* Breadcrumb */}
+                    <nav className="flex items-center gap-2 text-sm mb-4">
+                        <Link
+                            href="/learn"
+                            className="text-muted hover:text-foreground transition-colors"
+                        >
+                            Learn
+                        </Link>
+                        <span className="text-muted/50">/</span>
+                        <Link
+                            href={`/learn/${subjectSlug}`}
+                            className="text-muted hover:text-foreground transition-colors capitalize"
+                        >
+                            {subjectSlug.replace(/-/g, " ")}
+                        </Link>
+                        <span className="text-muted/50">/</span>
+                        <Link
+                            href={`/learn/${subjectSlug}/${moduleSlug}`}
+                            className="text-muted hover:text-foreground transition-colors capitalize"
+                        >
+                            {moduleSlug.replace(/-/g, " ")}
+                        </Link>
+                        <span className="text-muted/50">/</span>
+                        <span className="text-foreground capitalize">
+                            Overview
+                        </span>
+                    </nav>
+
+                    {/* Title */}
+                    <h1 className="text-3xl md:text-4xl font-bold text-foreground capitalize tracking-tight">
+                        {learningModule.meta.module.replace(/-/g, " ")}
+                    </h1>
+                </div>
+            </header>
+
+            {/* Content */}
+            <div className="max-w-4xl mx-auto px-6 py-12">
+                <ModuleContent module={learningModule} subjectSlug={subjectSlug} />
+            </div>
+
+            {/* Footer */}
+            <footer className="border-t border-border py-8 text-center">
+                <div className="max-w-4xl mx-auto px-6">
+                    <Link
+                        href={`/learn/${subjectSlug}/${moduleSlug}`}
+                        className="text-sm text-muted hover:text-primary transition-colors inline-flex items-center gap-2"
+                    >
+                        <span className="material-symbols-outlined text-sm">arrow_back</span>
+                        Back to module
+                    </Link>
+                </div>
+            </footer>
+        </main>
+    );
+}

@@ -1,142 +1,145 @@
 {
-    "meta": {
-        "subject": "applied-domains",
-        "module": "end-to-end-systems",
-        "level": "advanced",
-        "estimatedHours": 3
+  "meta": {
+    "subject": "applied-domains",
+    "module": "end-to-end-systems",
+    "level": "advanced",
+    "estimatedHours": 3
+  },
+  "overview": [
+    "A machine learning model by itself is just a file. An end-to-end system is a living machine that consumes data, trains models, monitors performance, and continuously improves.",
+    "In this module, we explore the 'MLOps' paradigm: building robust pipelines that take raw data from the world and turn it into reliable automated decisions."
+  ],
+  "topics": [
+    {
+      "title": "Data Pipelines & ETL",
+      "theory": [
+        "Extract, Transform, Load (ETL) is the process of gathering raw data from various sources, cleaning it to meet model requirements, and storing it in a format ready for training.",
+        "Modern systems use tools like Apache Airflow or Prefect to automate these pipelines, ensuring that models are always trained on the freshest possible data."
+      ],
+      "visualIntuition": [
+        "Imagine a water treatment plant. Raw water (dirty data) enters through pipes, goes through various filters (cleaning/transforming), and is finally stored in a clean tank (feature store) ready for the city to drink."
+      ],
+      "visualSuggestions": [
+        "Pipeline diagram showing Data Source -> Cleaning -> Feature Store -> Training.",
+        "Comparison of manual data prep vs an automated 'DAG' (Directed Acyclic Graph)."
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Simple Data Transformation Pipeline",
+          "content": "def extract(): return [\" $100 \", \"$200\", \"  50 \"]\ndef transform(data): return [float(x.strip().replace('$', '')) for x in data]\ndef load(data): print(f\"Data loaded to DB: {data}\")\n\nraw = extract()\ncleaned = transform(raw)\nload(cleaned)"
+        }
+      ],
+      "slug": "data-pipelines-etl"
     },
-    "overview": [
-        "A machine learning model by itself is just a file. An end-to-end system is a living machine that consumes data, trains models, monitors performance, and continuously improves.",
-        "In this module, we explore the 'MLOps' paradigm: building robust pipelines that take raw data from the world and turn it into reliable automated decisions."
-    ],
-    "topics": [
+    {
+      "title": "Model Training & Versioning",
+      "theory": [
+        "In software, we version code. In ML, we must version code, data, and models. If a model's performance drops, you need to be able to 'roll back' to the exact data and parameters used for a previous version.",
+        "Tools like DVC (Data Version Control) and MLflow track experiments, allowing teams to compare hundreds of model runs and select the best one for deployment."
+      ],
+      "visualIntuition": [
+        "Think of a laboratory notebook. Every time you run an experiment, you record the ingredients (data), the temperature (parameters), and the result (accuracy). This lets you repeat any successful experiment exactly."
+      ],
+      "visualSuggestions": [
+        "Table comparing multiple model experiments (Experiment A vs B vs C).",
+        "Tree diagram showing model versions branching out from a common base."
+      ],
+      "code": [
         {
-            "title": "Data Pipelines & ETL",
-            "theory": [
-                "Extract, Transform, Load (ETL) is the process of gathering raw data from various sources, cleaning it to meet model requirements, and storing it in a format ready for training.",
-                "Modern systems use tools like Apache Airflow or Prefect to automate these pipelines, ensuring that models are always trained on the freshest possible data."
-            ],
-            "visualIntuition": [
-                "Imagine a water treatment plant. Raw water (dirty data) enters through pipes, goes through various filters (cleaning/transforming), and is finally stored in a clean tank (feature store) ready for the city to drink."
-            ],
-            "visualSuggestions": [
-                "Pipeline diagram showing Data Source -> Cleaning -> Feature Store -> Training.",
-                "Comparison of manual data prep vs an automated 'DAG' (Directed Acyclic Graph)."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Simple Data Transformation Pipeline",
-                    "content": "def extract(): return [\" $100 \", \"$200\", \"  50 \"]\ndef transform(data): return [float(x.strip().replace('$', '')) for x in data]\ndef load(data): print(f\"Data loaded to DB: {data}\")\n\nraw = extract()\ncleaned = transform(raw)\nload(cleaned)"
-                }
-            ]
-        },
-        {
-            "title": "Model Training & Versioning",
-            "theory": [
-                "In software, we version code. In ML, we must version code, data, and models. If a model's performance drops, you need to be able to 'roll back' to the exact data and parameters used for a previous version.",
-                "Tools like DVC (Data Version Control) and MLflow track experiments, allowing teams to compare hundreds of model runs and select the best one for deployment."
-            ],
-            "visualIntuition": [
-                "Think of a laboratory notebook. Every time you run an experiment, you record the ingredients (data), the temperature (parameters), and the result (accuracy). This lets you repeat any successful experiment exactly."
-            ],
-            "visualSuggestions": [
-                "Table comparing multiple model experiments (Experiment A vs B vs C).",
-                "Tree diagram showing model versions branching out from a common base."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Simulating Experiment Tracking login",
-                    "content": "def log_experiment(params, metrics, version):\n    print(f\"--- Version {version} ---\")\n    print(f\"Params: {params}\")\n    print(f\"Accuracy: {metrics:.2%}\")\n\nlog_experiment({'lr': 0.01}, 0.85, 'v1.0')\nlog_experiment({'lr': 0.001}, 0.92, 'v1.1')"
-                }
-            ]
-        },
-        {
-            "title": "Monitoring & Concept Drift",
-            "theory": [
-                "The world changes, and models eventually fail. 'Concept Drift' occurs when the relationship between inputs and outputs changes over time (e.g., shopping patterns change after a pandemic).",
-                "Continuous monitoring systems track the statistical properties of incoming data. If they detect a significant shift (Model Decay), they trigger an alert or an automatic retraining pipeline."
-            ],
-            "visualIntuition": [
-                "Imagine a model trained to predict the price of a house. If the city's popularity suddenly skyrockets, the old prices become irrelevant. The model's 'intelligence' drifts away from reality like a boat drifting from a pier."
-            ],
-            "visualSuggestions": [
-                "Time-series graph showing Model Accuracy slowly declining as 'Drift' increases.",
-                "Alert notification UI showing 'Statistical Anomaly Detected in Input Data'."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Simple Drift Detection Logic",
-                    "content": "def check_drift(old_mean, new_mean, threshold=0.1):\n    diff = abs(old_mean - new_mean) / old_mean\n    if diff > threshold:\n        print(f\"Warning: Drift detected! Shift = {diff:.1%}\")\n        return True\n    return False\n\ncheck_drift(100.0, 115.0) # 15% shift"
-                }
-            ]
+          "language": "python",
+          "description": "Simulating Experiment Tracking login",
+          "content": "def log_experiment(params, metrics, version):\n    print(f\"--- Version {version} ---\")\n    print(f\"Params: {params}\")\n    print(f\"Accuracy: {metrics:.2%}\")\n\nlog_experiment({'lr': 0.01}, 0.85, 'v1.0')\nlog_experiment({'lr': 0.001}, 0.92, 'v1.1')"
         }
-    ],
-    "quiz": [
+      ],
+      "slug": "model-training-versioning"
+    },
+    {
+      "title": "Monitoring & Concept Drift",
+      "theory": [
+        "The world changes, and models eventually fail. 'Concept Drift' occurs when the relationship between inputs and outputs changes over time (e.g., shopping patterns change after a pandemic).",
+        "Continuous monitoring systems track the statistical properties of incoming data. If they detect a significant shift (Model Decay), they trigger an alert or an automatic retraining pipeline."
+      ],
+      "visualIntuition": [
+        "Imagine a model trained to predict the price of a house. If the city's popularity suddenly skyrockets, the old prices become irrelevant. The model's 'intelligence' drifts away from reality like a boat drifting from a pier."
+      ],
+      "visualSuggestions": [
+        "Time-series graph showing Model Accuracy slowly declining as 'Drift' increases.",
+        "Alert notification UI showing 'Statistical Anomaly Detected in Input Data'."
+      ],
+      "code": [
         {
-            "id": "q1",
-            "question": "Why is model versioning more complex than traditional software versioning?",
-            "options": [
-                "It's not more complex",
-                "Models depend on code, data, hyperparameters, and environment — changing any one produces a different model",
-                "Models don't need versioning",
-                "Only the code matters"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Software versions depend on code. Model versions depend on code + training data + hyperparameters + random seeds + framework versions. Reproducibility requires tracking all these dimensions, not just code commits."
-        },
-        {
-            "id": "q2",
-            "question": "What is Concept Drift and how can it be detected?",
-            "options": [
-                "Model getting slow",
-                "The statistical relationship between features and target changes over time — detected via monitoring prediction distributions and performance metrics",
-                "Bugs in the code",
-                "It can't be detected"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Concept drift means the rules change: what predicted churn last year may not predict it now. Detection methods include monitoring prediction distributions, tracking performance metrics over time, and statistical tests on incoming data."
-        },
-        {
-            "id": "q3",
-            "question": "What is the purpose of an ETL pipeline in a machine learning system?",
-            "options": [
-                "To train models",
-                "To Extract data from sources, Transform it into usable format, and Load it into the feature store or training pipeline",
-                "To serve predictions",
-                "To monitor models"
-            ],
-            "correctAnswer": 1,
-            "explanation": "ETL pipelines automate data ingestion: extracting from databases/APIs, transforming (cleaning, joining, feature engineering), and loading into storage ready for training. They ensure consistent, fresh, clean data flows to models."
-        },
-        {
-            "id": "q4",
-            "question": "Why are Feature Stores valuable in large-scale ML systems?",
-            "options": [
-                "They store model weights",
-                "They provide a centralized, versioned repository of curated features reusable across teams and models",
-                "They replace databases",
-                "They are only for real-time systems"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Feature Stores (Feast, Tecton) solve feature reuse: compute once, use everywhere. They ensure training and serving use identical features (avoiding skew), provide versioning, and handle both batch and real-time feature serving."
+          "language": "python",
+          "description": "Simple Drift Detection Logic",
+          "content": "def check_drift(old_mean, new_mean, threshold=0.1):\n    diff = abs(old_mean - new_mean) / old_mean\n    if diff > threshold:\n        print(f\"Warning: Drift detected! Shift = {diff:.1%}\")\n        return True\n    return False\n\ncheck_drift(100.0, 115.0) # 15% shift"
         }
-    ],
-    "references": [
-        {
-            "label": "Google Cloud - MLOps: Continuous delivery in ML",
-            "url": "https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning"
-        },
-        {
-            "label": "MLflow Documentation",
-            "url": "https://mlflow.org/docs/latest/index.html"
-        },
-        {
-            "label": "DVC - Data Version Control Guide",
-            "url": "https://dvc.org/doc/start"
-        }
-    ],
-    "_contentWarnings": []
+      ],
+      "slug": "monitoring-concept-drift"
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "Why is model versioning more complex than traditional software versioning?",
+      "options": [
+        "It's not more complex",
+        "Models depend on code, data, hyperparameters, and environment \u2014 changing any one produces a different model",
+        "Models don't need versioning",
+        "Only the code matters"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Software versions depend on code. Model versions depend on code + training data + hyperparameters + random seeds + framework versions. Reproducibility requires tracking all these dimensions, not just code commits."
+    },
+    {
+      "id": "q2",
+      "question": "What is Concept Drift and how can it be detected?",
+      "options": [
+        "Model getting slow",
+        "The statistical relationship between features and target changes over time \u2014 detected via monitoring prediction distributions and performance metrics",
+        "Bugs in the code",
+        "It can't be detected"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Concept drift means the rules change: what predicted churn last year may not predict it now. Detection methods include monitoring prediction distributions, tracking performance metrics over time, and statistical tests on incoming data."
+    },
+    {
+      "id": "q3",
+      "question": "What is the purpose of an ETL pipeline in a machine learning system?",
+      "options": [
+        "To train models",
+        "To Extract data from sources, Transform it into usable format, and Load it into the feature store or training pipeline",
+        "To serve predictions",
+        "To monitor models"
+      ],
+      "correctAnswer": 1,
+      "explanation": "ETL pipelines automate data ingestion: extracting from databases/APIs, transforming (cleaning, joining, feature engineering), and loading into storage ready for training. They ensure consistent, fresh, clean data flows to models."
+    },
+    {
+      "id": "q4",
+      "question": "Why are Feature Stores valuable in large-scale ML systems?",
+      "options": [
+        "They store model weights",
+        "They provide a centralized, versioned repository of curated features reusable across teams and models",
+        "They replace databases",
+        "They are only for real-time systems"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Feature Stores (Feast, Tecton) solve feature reuse: compute once, use everywhere. They ensure training and serving use identical features (avoiding skew), provide versioning, and handle both batch and real-time feature serving."
+    }
+  ],
+  "references": [
+    {
+      "label": "Google Cloud - MLOps: Continuous delivery in ML",
+      "url": "https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning"
+    },
+    {
+      "label": "MLflow Documentation",
+      "url": "https://mlflow.org/docs/latest/index.html"
+    },
+    {
+      "label": "DVC - Data Version Control Guide",
+      "url": "https://dvc.org/doc/start"
+    }
+  ],
+  "_contentWarnings": []
 }

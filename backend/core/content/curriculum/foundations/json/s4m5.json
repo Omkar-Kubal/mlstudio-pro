@@ -1,130 +1,133 @@
 {
-    "meta": {
-        "subject": "machine-learning",
-        "module": "dimensionality-reduction",
-        "level": "intermediate",
-        "estimatedHours": 4
+  "meta": {
+    "subject": "machine-learning",
+    "module": "dimensionality-reduction",
+    "level": "intermediate",
+    "estimatedHours": 4
+  },
+  "overview": [
+    "Dimensionality reduction is the process of reducing the number of input variables in a dataset while preserving as much meaningful information as possible.",
+    "In this module, we explore how to combat the 'Curse of Dimensionality' using projection techniques like PCA and manifold learning techniques like t-SNE and UMAP."
+  ],
+  "topics": [
+    {
+      "title": "Principal Component Analysis (PCA)",
+      "theory": [
+        "PCA is a linear technique that rotates the data into a new coordinate system where the first axis (First Principal Component) captures the maximum possible variance. Subsequent components capture the remaining variance in orthogonal directions.",
+        "By dropping the components with low variance, we can reduce the dimensionality of the data while losing very little information. It's essentially 'squashing' the data into fewer dimensions."
+      ],
+      "visualIntuition": [
+        "Imagine a cloud of points shaped like a football. PCA identifies the long axis of the football and the cross-section. Instead of recording 3D coordinates, you just record the position along those 2-3 main axes."
+      ],
+      "visualSuggestions": [
+        "3D point cloud being projected onto a 2D plane with lines showing the principal axes.",
+        "Scree plot showing 'Explained Variance' vs Number of Components."
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Applying PCA with Scikit-Learn",
+          "content": "from sklearn.decomposition import PCA\nimport numpy as np\n\nX = np.random.rand(10, 5) # 5 features\npca = PCA(n_components=2)\nX_reduced = pca.fit_transform(X)\nprint(f\"Original shape: {X.shape}\")\nprint(f\"Reduced shape: {X_reduced.shape}\")\nprint(f\"Explained variance: {sum(pca.explained_variance_ratio_):.2f}\")"
+        }
+      ],
+      "slug": "principal-component-analysis-pca"
     },
-    "overview": [
-        "Dimensionality reduction is the process of reducing the number of input variables in a dataset while preserving as much meaningful information as possible.",
-        "In this module, we explore how to combat the 'Curse of Dimensionality' using projection techniques like PCA and manifold learning techniques like t-SNE and UMAP."
-    ],
-    "topics": [
+    {
+      "title": "t-SNE and Manifold Learning",
+      "theory": [
+        "Unlike PCA, t-SNE is a non-linear technique designed specifically for visualization. it attempts to preserve local relationships\u2014points that are close together in high-dimensional space remain close in 2D or 3D.",
+        "t-SNE works by converting distances into probabilities and then minimizing the difference between those probabilities in the lower-dimensional space. It is excellent for identifying clusters in complex data."
+      ],
+      "visualIntuition": [
+        "Imagine trying to flatten a world globe into a map. PCA is like taking a photo from above (linear projection), while t-SNE is like peeling the globe and stretching it carefully so that neighboring countries stay neighbors."
+      ],
+      "visualSuggestions": [
+        "Animated 'evolution' of t-SNE as clusters form over iterations.",
+        "Comparison of PCA vs t-SNE on the MNIST digits dataset."
+      ],
+      "code": [
         {
-            "title": "Principal Component Analysis (PCA)",
-            "theory": [
-                "PCA is a linear technique that rotates the data into a new coordinate system where the first axis (First Principal Component) captures the maximum possible variance. Subsequent components capture the remaining variance in orthogonal directions.",
-                "By dropping the components with low variance, we can reduce the dimensionality of the data while losing very little information. It's essentially 'squashing' the data into fewer dimensions."
-            ],
-            "visualIntuition": [
-                "Imagine a cloud of points shaped like a football. PCA identifies the long axis of the football and the cross-section. Instead of recording 3D coordinates, you just record the position along those 2-3 main axes."
-            ],
-            "visualSuggestions": [
-                "3D point cloud being projected onto a 2D plane with lines showing the principal axes.",
-                "Scree plot showing 'Explained Variance' vs Number of Components."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Applying PCA with Scikit-Learn",
-                    "content": "from sklearn.decomposition import PCA\nimport numpy as np\n\nX = np.random.rand(10, 5) # 5 features\npca = PCA(n_components=2)\nX_reduced = pca.fit_transform(X)\nprint(f\"Original shape: {X.shape}\")\nprint(f\"Reduced shape: {X_reduced.shape}\")\nprint(f\"Explained variance: {sum(pca.explained_variance_ratio_):.2f}\")"
-                }
-            ]
-        },
-        {
-            "title": "t-SNE and Manifold Learning",
-            "theory": [
-                "Unlike PCA, t-SNE is a non-linear technique designed specifically for visualization. it attempts to preserve local relationships—points that are close together in high-dimensional space remain close in 2D or 3D.",
-                "t-SNE works by converting distances into probabilities and then minimizing the difference between those probabilities in the lower-dimensional space. It is excellent for identifying clusters in complex data."
-            ],
-            "visualIntuition": [
-                "Imagine trying to flatten a world globe into a map. PCA is like taking a photo from above (linear projection), while t-SNE is like peeling the globe and stretching it carefully so that neighboring countries stay neighbors."
-            ],
-            "visualSuggestions": [
-                "Animated 'evolution' of t-SNE as clusters form over iterations.",
-                "Comparison of PCA vs t-SNE on the MNIST digits dataset."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "t-SNE visualization (Simulation)",
-                    "content": "from sklearn.manifold import TSNE\nimport numpy as np\n\nX = np.random.rand(50, 10)\ntsne = TSNE(n_components=2, perplexity=5)\nX_vis = tsne.fit_transform(X)\nprint(\"t-SNE complete. Points mapped to 2D for visualization.\")"
-                }
-            ]
-        },
-        {
-            "title": "UMAP (Uniform Manifold Approximation)",
-            "theory": [
-                "UMAP is a modern alternative to t-SNE that is faster and often preserves more of the 'global' structure of the data. It uses concepts from algebraic topology to model the manifold structure.",
-                "UMAP is increasingly preferred for large-scale single-cell biology and NLP datasets because it scales better to millions of points than t-SNE."
-            ],
-            "visualIntuition": [
-                "Think of a social network. t-SNE is great at showing your immediate friend group (local), but UMAP is better at showing how your entire neighborhood relates to the whole city (global structure)."
-            ],
-            "visualSuggestions": [
-                "Side-by-side comparison of t-SNE vs UMAP on a complex 'Swiss Roll' dataset.",
-                "Scalability benchmark graph showing runtime vs number of points."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "UMAP usage (Concept)",
-                    "content": "# Note: Requires 'pip install umap-learn'\n# import umap\n# reducer = umap.UMAP()\n# embedding = reducer.fit_transform(X)\nprint(\"UMAP is used similarly to Scikit-Learn's fit_transform API.\")"
-                }
-            ]
+          "language": "python",
+          "description": "t-SNE visualization (Simulation)",
+          "content": "from sklearn.manifold import TSNE\nimport numpy as np\n\nX = np.random.rand(50, 10)\ntsne = TSNE(n_components=2, perplexity=5)\nX_vis = tsne.fit_transform(X)\nprint(\"t-SNE complete. Points mapped to 2D for visualization.\")"
         }
-    ],
-    "quiz": [
+      ],
+      "slug": "t-sne-and-manifold-learning"
+    },
+    {
+      "title": "UMAP (Uniform Manifold Approximation)",
+      "theory": [
+        "UMAP is a modern alternative to t-SNE that is faster and often preserves more of the 'global' structure of the data. It uses concepts from algebraic topology to model the manifold structure.",
+        "UMAP is increasingly preferred for large-scale single-cell biology and NLP datasets because it scales better to millions of points than t-SNE."
+      ],
+      "visualIntuition": [
+        "Think of a social network. t-SNE is great at showing your immediate friend group (local), but UMAP is better at showing how your entire neighborhood relates to the whole city (global structure)."
+      ],
+      "visualSuggestions": [
+        "Side-by-side comparison of t-SNE vs UMAP on a complex 'Swiss Roll' dataset.",
+        "Scalability benchmark graph showing runtime vs number of points."
+      ],
+      "code": [
         {
-            "id": "q1",
-            "question": "What does dimensionality reduction preserve?",
-            "options": [
-                "All original features",
-                "The most important variance or structure in fewer dimensions",
-                "The exact data values",
-                "The number of data points"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Dimensionality reduction (PCA, t-SNE) projects data into fewer dimensions while preserving the most important patterns — variance for PCA, local neighborhood structure for t-SNE."
-        },
-        {
-            "id": "q2",
-            "question": "When should you use PCA vs t-SNE?",
-            "options": [
-                "Always use t-SNE",
-                "PCA for linear relationships and preprocessing; t-SNE for visualization of non-linear structure",
-                "They are interchangeable",
-                "PCA for small datasets, t-SNE for large"
-            ],
-            "correctAnswer": 1,
-            "explanation": "PCA finds linear projections maximizing variance — good for preprocessing and feature reduction. t-SNE preserves local non-linear structure — excellent for 2D visualization but not for preprocessing."
-        },
-        {
-            "id": "q3",
-            "question": "Why can't t-SNE be used for feature engineering in production?",
-            "options": [
-                "It's too slow",
-                "It's non-deterministic, non-parametric, and can't transform new data points",
-                "It only works with images",
-                "It requires too much memory"
-            ],
-            "correctAnswer": 1,
-            "explanation": "t-SNE is a visualization tool, not a feature reducer. It has no parametric mapping (can't transform new points), results change between runs, and the axes have no interpretable meaning."
+          "language": "python",
+          "description": "UMAP usage (Concept)",
+          "content": "# Note: Requires 'pip install umap-learn'\n# import umap\n# reducer = umap.UMAP()\n# embedding = reducer.fit_transform(X)\nprint(\"UMAP is used similarly to Scikit-Learn's fit_transform API.\")"
         }
-    ],
-    "references": [
-        {
-            "label": "Original t-SNE Paper (van der Maaten & Hinton)",
-            "url": "https://www.jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf"
-        },
-        {
-            "label": "StatQuest: Principal Component Analysis (PCA)",
-            "url": "https://www.youtube.com/watch?v=FgakZw6K1QQ"
-        },
-        {
-            "label": "UMAP Documentation - How UMAP Works",
-            "url": "https://umap-learn.readthedocs.io/en/latest/how_umap_works.html"
-        }
-    ],
-    "_contentWarnings": []
+      ],
+      "slug": "umap-uniform-manifold-approximation"
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "What does dimensionality reduction preserve?",
+      "options": [
+        "All original features",
+        "The most important variance or structure in fewer dimensions",
+        "The exact data values",
+        "The number of data points"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Dimensionality reduction (PCA, t-SNE) projects data into fewer dimensions while preserving the most important patterns \u2014 variance for PCA, local neighborhood structure for t-SNE."
+    },
+    {
+      "id": "q2",
+      "question": "When should you use PCA vs t-SNE?",
+      "options": [
+        "Always use t-SNE",
+        "PCA for linear relationships and preprocessing; t-SNE for visualization of non-linear structure",
+        "They are interchangeable",
+        "PCA for small datasets, t-SNE for large"
+      ],
+      "correctAnswer": 1,
+      "explanation": "PCA finds linear projections maximizing variance \u2014 good for preprocessing and feature reduction. t-SNE preserves local non-linear structure \u2014 excellent for 2D visualization but not for preprocessing."
+    },
+    {
+      "id": "q3",
+      "question": "Why can't t-SNE be used for feature engineering in production?",
+      "options": [
+        "It's too slow",
+        "It's non-deterministic, non-parametric, and can't transform new data points",
+        "It only works with images",
+        "It requires too much memory"
+      ],
+      "correctAnswer": 1,
+      "explanation": "t-SNE is a visualization tool, not a feature reducer. It has no parametric mapping (can't transform new points), results change between runs, and the axes have no interpretable meaning."
+    }
+  ],
+  "references": [
+    {
+      "label": "Original t-SNE Paper (van der Maaten & Hinton)",
+      "url": "https://www.jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf"
+    },
+    {
+      "label": "StatQuest: Principal Component Analysis (PCA)",
+      "url": "https://www.youtube.com/watch?v=FgakZw6K1QQ"
+    },
+    {
+      "label": "UMAP Documentation - How UMAP Works",
+      "url": "https://umap-learn.readthedocs.io/en/latest/how_umap_works.html"
+    }
+  ],
+  "_contentWarnings": []
 }

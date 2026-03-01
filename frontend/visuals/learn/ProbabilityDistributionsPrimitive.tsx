@@ -188,10 +188,10 @@ export default function ProbabilityDistributionsPrimitive() {
                 const bh = (count / maxBin) * (BIN_H - 20);
                 const by = H - 10 - bh;
 
-                ctx.fillStyle = "hsla(var(--primary), 0.4)";
+                ctx.fillStyle = "rgba(212, 212, 212, 0.4)";
                 ctx.fillRect(bx + 2, by, PEG_SPACING_X - 4, bh);
 
-                ctx.fillStyle = "hsl(var(--primary))";
+                ctx.fillStyle = "#D4D4D4";
                 ctx.font = "bold 9px var(--font-jetbrains)";
                 ctx.textAlign = "center";
                 ctx.fillText(count.toString(), bx + PEG_SPACING_X / 2, by - 5);
@@ -203,7 +203,7 @@ export default function ProbabilityDistributionsPrimitive() {
             const mean = (COLS - 1) / 2;
             const sigma = Math.sqrt(ROWS * 0.25);
             ctx.beginPath();
-            ctx.strokeStyle = "hsla(var(--accent), 0.8)";
+            ctx.strokeStyle = "rgba(82, 82, 82, 0.8)";
             ctx.lineWidth = 2;
             ctx.setLineDash([4, 4]);
 
@@ -229,17 +229,17 @@ export default function ProbabilityDistributionsPrimitive() {
                 b.trail.forEach((t, idx) => {
                     ctx.beginPath();
                     ctx.arc(t.x, t.y, BALL_RADIUS * (idx / b.trail.length), 0, Math.PI * 2);
-                    ctx.fillStyle = `hsla(var(--primary), ${0.1 + (idx / b.trail.length) * 0.2})`;
+                    ctx.fillStyle = `rgba(212, 212, 212, ${0.1 + (idx / b.trail.length) * 0.2})`;
                     ctx.fill();
                 });
 
                 // Ball
                 ctx.save();
                 ctx.shadowBlur = 8;
-                ctx.shadowColor = "hsl(var(--primary))";
+                ctx.shadowColor = "#D4D4D4";
                 ctx.beginPath();
                 ctx.arc(b.x, b.y, BALL_RADIUS, 0, Math.PI * 2);
-                ctx.fillStyle = "hsl(var(--primary))";
+                ctx.fillStyle = "#D4D4D4";
                 ctx.fill();
                 ctx.restore();
             } else if (b.flash > 0) {
@@ -247,7 +247,7 @@ export default function ProbabilityDistributionsPrimitive() {
                 const fb = leftWall + (b.bin + 0.5) * PEG_SPACING_X;
                 ctx.beginPath();
                 ctx.arc(fb, BIN_Y, 15, 0, Math.PI * 2);
-                ctx.fillStyle = `hsla(var(--primary), ${b.flash * 0.3})`;
+                ctx.fillStyle = `rgba(212, 212, 212, ${b.flash * 0.3})`;
                 ctx.fill();
             }
         });

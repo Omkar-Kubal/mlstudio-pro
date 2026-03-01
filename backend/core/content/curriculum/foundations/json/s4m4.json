@@ -15,7 +15,7 @@
       "theory": [
         "A decision tree is a flowchart-like model that recursively splits data based on feature values. At each node, the algorithm chooses the feature and threshold that best separates the target (using Gini impurity or MSE).",
         "Trees create hierarchical decision rules: 'If feature x < 5, go left; else go right.' Each leaf outputs a prediction. Easy to interpret and naturally handle mixed data types.",
-        "Unconstrained trees overfit — they can create one leaf per training instance. Deep trees have low bias (model complex patterns) but high variance (small data changes yield very different trees).",
+        "Unconstrained trees overfit \u2014 they can create one leaf per training instance. Deep trees have low bias (model complex patterns) but high variance (small data changes yield very different trees).",
         "Shallow trees are robust (low variance) but may miss complex structure (high bias). We limit trees via max_depth, pruning, or min_samples_leaf to balance bias and variance."
       ],
       "visualIntuition": [
@@ -31,7 +31,8 @@
           "description": "Decision tree classification and regression",
           "content": "from sklearn.datasets import make_classification\nfrom sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor\nimport numpy as np\n\n# Classification\nX, y = make_classification(n_samples=100, n_features=2, n_redundant=0, random_state=1)\ntree_clf = DecisionTreeClassifier(max_depth=5, random_state=1)\ntree_clf.fit(X, y)\n\n# Regression\nrng = np.random.RandomState(42)\nX_reg = rng.uniform(-3, 3, 100).reshape(-1, 1)\ny_reg = X_reg.ravel()**2 + rng.normal(0, 2, 100)\ntree_reg = DecisionTreeRegressor(max_depth=4, random_state=42)\ntree_reg.fit(X_reg, y_reg)\n\nprint(\"Classification accuracy:\", tree_clf.score(X, y))"
         }
-      ]
+      ],
+      "slug": "decision-trees-and-bias-variance"
     },
     {
       "title": "Bagging and Random Forests",
@@ -39,7 +40,7 @@
         "Bagging (Bootstrap Aggregation) reduces variance by building many models in parallel on different random subsets (bootstrap samples) and averaging predictions.",
         "Each bootstrapped dataset includes ~63% of original points. Since each tree overfits its own sample (low bias, high variance), averaging yields lower variance with similar bias.",
         "Random Forests extend bagging by adding extra randomness: only a random subset of features is considered at each split. This decorrelates trees for stronger variance reduction.",
-        "Random Forests use full-grown trees but limit feature choice (√d features by default). Final prediction is majority vote (classification) or average (regression). Works well out-of-the-box with few hyperparameters."
+        "Random Forests use full-grown trees but limit feature choice (\u221ad features by default). Final prediction is majority vote (classification) or average (regression). Works well out-of-the-box with few hyperparameters."
       ],
       "visualIntuition": [
         "Multiple tree boundaries (translucent) on same data, then averaged ensemble boundary (solid). As more trees vote, ensemble boundary stabilizes."
@@ -54,7 +55,8 @@
           "description": "Bagging and Random Forest",
           "content": "from sklearn.ensemble import BaggingClassifier, RandomForestClassifier\nfrom sklearn.tree import DecisionTreeClassifier\nfrom sklearn.model_selection import train_test_split\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)\n\n# Bagging\nbag = BaggingClassifier(\n    estimator=DecisionTreeClassifier(max_depth=None),\n    n_estimators=50, random_state=0\n)\nbag.fit(X_train, y_train)\nprint(\"Bagging Accuracy:\", bag.score(X_test, y_test))\n\n# Random Forest\nrf = RandomForestClassifier(n_estimators=100, max_features='sqrt', random_state=42)\nrf.fit(X_train, y_train)\nprint(\"Random Forest Accuracy:\", rf.score(X_test, y_test))\nprint(\"Feature importances:\", rf.feature_importances_)"
         }
-      ]
+      ],
+      "slug": "bagging-and-random-forests"
     },
     {
       "title": "Boosting and Gradient Boosting",
@@ -75,9 +77,10 @@
         {
           "language": "python",
           "description": "AdaBoost and Gradient Boosting",
-          "content": "from sklearn.ensemble import AdaBoostClassifier, GradientBoostingRegressor\nfrom sklearn.datasets import make_regression\n\n# AdaBoost\nada = AdaBoostClassifier(\n    estimator=DecisionTreeClassifier(max_depth=1),\n    n_estimators=50, learning_rate=1.0, random_state=0\n)\nada.fit(X_train, y_train)\nprint(\"AdaBoost Accuracy:\", ada.score(X_test, y_test))\n\n# Gradient Boosting (regression)\nX_reg2, y_reg2 = make_regression(n_samples=150, n_features=1, noise=20.0, random_state=42)\ngbr = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)\ngbr.fit(X_reg2, y_reg2)\nprint(\"Gradient Boosting R²:\", gbr.score(X_reg2, y_reg2))"
+          "content": "from sklearn.ensemble import AdaBoostClassifier, GradientBoostingRegressor\nfrom sklearn.datasets import make_regression\n\n# AdaBoost\nada = AdaBoostClassifier(\n    estimator=DecisionTreeClassifier(max_depth=1),\n    n_estimators=50, learning_rate=1.0, random_state=0\n)\nada.fit(X_train, y_train)\nprint(\"AdaBoost Accuracy:\", ada.score(X_test, y_test))\n\n# Gradient Boosting (regression)\nX_reg2, y_reg2 = make_regression(n_samples=150, n_features=1, noise=20.0, random_state=42)\ngbr = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)\ngbr.fit(X_reg2, y_reg2)\nprint(\"Gradient Boosting R^2:\", gbr.score(X_reg2, y_reg2))"
         }
-      ]
+      ],
+      "slug": "boosting-and-gradient-boosting"
     },
     {
       "title": "XGBoost, LightGBM & CatBoost",
@@ -172,7 +175,7 @@
         "l",
         "y",
         " ",
-        "—",
+        "\u2014",
         " ",
         "n",
         "o",
@@ -327,7 +330,7 @@
         "o",
         "n",
         " ",
-        "—",
+        "\u2014",
         " ",
         "O",
         "r",
@@ -509,7 +512,7 @@
         "n",
         "s",
         " ",
-        "—",
+        "\u2014",
         " ",
         "e",
         "a",
@@ -919,11 +922,12 @@
           "content": "import xgboost as xgb\nimport lightgbm as lgb\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.datasets import make_classification\n\nX_clf, y_clf = make_classification(n_samples=200, n_features=5, n_informative=3, random_state=0)\nX_tr, X_te, y_tr, y_te = train_test_split(X_clf, y_clf, test_size=0.3, random_state=0)\n\n# XGBoost\nxgb_clf = xgb.XGBClassifier(\n    n_estimators=50, max_depth=4, learning_rate=0.1,\n    use_label_encoder=False, eval_metric='logloss', random_state=42\n)\nxgb_clf.fit(X_tr, y_tr)\nprint(\"XGBoost Accuracy:\", xgb_clf.score(X_te, y_te))\n\n# LightGBM\nlgb_clf = lgb.LGBMClassifier(n_estimators=50, max_depth=4, learning_rate=0.1, random_state=42)\nlgb_clf.fit(X_tr, y_tr)\nprint(\"LightGBM Accuracy:\", lgb_clf.score(X_te, y_te))"
         },
         {
-          "title": "CatBoost with Native Categorical Features",
           "language": "python",
-          "code": "from catboost import CatBoostClassifier, Pool\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import classification_report\nimport numpy as np\nimport pandas as pd\n\n# Demo with categorical features\nnp.random.seed(42)\ndf = pd.DataFrame({\n    'color': np.random.choice(['red','blue','green'], 500),\n    'size': np.random.choice(['S','M','L','XL'], 500),\n    'weight': np.random.randn(500),\n    'price': np.random.randn(500) * 50 + 100,\n    'target': np.random.randint(0, 2, 500)\n})\n\ncat_features = ['color', 'size']  # indices or names\nX = df.drop('target', axis=1)\ny = df['target']\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# CatBoost handles categoricals natively\nmodel = CatBoostClassifier(\n    iterations=200, depth=6, learning_rate=0.1,\n    cat_features=cat_features,\n    verbose=0, random_seed=42)\n\n# Pool objects for efficient data handling\ntrain_pool = Pool(X_train, y_train, cat_features=cat_features)\ntest_pool = Pool(X_test, y_test, cat_features=cat_features)\n\nmodel.fit(train_pool)\nprint(classification_report(y_test, model.predict(test_pool)))\n\n# Feature importance\nfor name, imp in zip(X.columns, model.feature_importances_):\n    print(f'{name:12s}: {imp:.2f}')"
+          "description": "CatBoost with Native Categorical Features",
+          "content": "from catboost import CatBoostClassifier, Pool\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import classification_report\nimport numpy as np\nimport pandas as pd\n\n# Demo with categorical features\nnp.random.seed(42)\ndf = pd.DataFrame({\n    'color': np.random.choice(['red','blue','green'], 500),\n    'size': np.random.choice(['S','M','L','XL'], 500),\n    'weight': np.random.randn(500),\n    'price': np.random.randn(500) * 50 + 100,\n    'target': np.random.randint(0, 2, 500)\n})\n\ncat_features = ['color', 'size']  # indices or names\nX = df.drop('target', axis=1)\ny = df['target']\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# CatBoost handles categoricals natively\nmodel = CatBoostClassifier(\n    iterations=200, depth=6, learning_rate=0.1,\n    cat_features=cat_features,\n    verbose=0, random_seed=42)\n\n# Pool objects for efficient data handling\ntrain_pool = Pool(X_train, y_train, cat_features=cat_features)\ntest_pool = Pool(X_test, y_test, cat_features=cat_features)\n\nmodel.fit(train_pool)\nprint(classification_report(y_test, model.predict(test_pool)))\n\n# Feature importance\nfor name, imp in zip(X.columns, model.feature_importances_):\n    print(f'{name:12s}: {imp:.2f}')"
         }
-      ]
+      ],
+      "slug": "xgboost-lightgbm-catboost"
     }
   ],
   "quiz": [
@@ -937,14 +941,14 @@
         "They use the same algorithms"
       ],
       "correctAnswer": 1,
-      "explanation": "Classification requires labeled training data and learns to predict known categories. Clustering finds natural groupings in unlabeled data — the groups are discovered, not predefined."
+      "explanation": "Classification requires labeled training data and learns to predict known categories. Clustering finds natural groupings in unlabeled data \u2014 the groups are discovered, not predefined."
     },
     {
       "id": "q2",
       "question": "Why is choosing K in K-Means difficult?",
       "options": [
         "K must always be 3",
-        "The optimal K depends on data structure and there's no single correct answer — use elbow method or silhouette analysis",
+        "The optimal K depends on data structure and there's no single correct answer \u2014 use elbow method or silhouette analysis",
         "K is automatically determined",
         "K doesn't affect results"
       ],
@@ -973,7 +977,7 @@
         "It removes categorical columns"
       ],
       "correctAnswer": 1,
-      "explanation": "CatBoost uses Ordered Target Statistics — a technique that encodes categorical features using target statistics computed only on preceding samples (via random permutations), preventing target leakage while handling categories natively."
+      "explanation": "CatBoost uses Ordered Target Statistics \u2014 a technique that encodes categorical features using target statistics computed only on preceding samples (via random permutations), preventing target leakage while handling categories natively."
     }
   ],
   "references": [

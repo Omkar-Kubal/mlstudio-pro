@@ -17,17 +17,17 @@ async def get_user_progress(user = Depends(get_current_user)):
     """Get the current user's progress and unlocked items."""
     return progress_manager.get_progress(user.id)
 
-@router.post("/progress/{module_id}/{topic_slug}")
-async def update_progress(module_id: str, topic_slug: str, user = Depends(get_current_user)):
-    """Mark a topic as completed and update progress."""
-    progress_manager.update_topic_completion(user.id, module_id, topic_slug)
-    return {"status": "success", "module_id": module_id, "topic_slug": topic_slug}
-
 @router.post("/progress/{module_id}/complete")
 async def finish_module(module_id: str, user = Depends(get_current_user)):
     """Mark an entire module as completed."""
     progress_manager.complete_module(user.id, module_id)
     return {"status": "success", "module_id": module_id}
+
+@router.post("/progress/{module_id}/{topic_slug}")
+async def update_progress(module_id: str, topic_slug: str, user = Depends(get_current_user)):
+    """Mark a topic as completed and update progress."""
+    progress_manager.update_topic_completion(user.id, module_id, topic_slug)
+    return {"status": "success", "module_id": module_id, "topic_slug": topic_slug}
 
 @router.get("/{lesson_id}", response_model=LearningModule)
 async def get_module(lesson_id: str):

@@ -119,7 +119,7 @@ export default function PoissonDistributionPrimitive() {
         const tlCtx = timelineRef.current?.getContext("2d");
         if (tlCtx) {
             tlCtx.clearRect(0, 0, TW, TH);
-            tlCtx.fillStyle = "hsl(var(--surface))";
+            tlCtx.fillStyle = "#121212";
             tlCtx.fillRect(0, 0, TW, TH);
 
             const intervalW = (TW - 120) / LANE_COUNT;
@@ -213,8 +213,8 @@ export default function PoissonDistributionPrimitive() {
                 const by = m.t + ch - bh;
 
                 const grad = pmfCtx.createLinearGradient(0, by, 0, by + bh);
-                grad.addColorStop(0, "hsl(var(--primary))");
-                grad.addColorStop(1, "hsla(var(--primary), 0.2)");
+                grad.addColorStop(0, "#D4D4D4");
+                grad.addColorStop(1, "rgba(212, 212, 212, 0.2)");
                 pmfCtx.fillStyle = grad;
                 pmfCtx.fillRect(bx + 2, by, barW, bh);
             });
@@ -235,7 +235,7 @@ export default function PoissonDistributionPrimitive() {
                 const bx = m.l + k * (cw / (maxK + 1));
                 const bh = (count / maxCount) * ch;
                 const by = m.t + ch - bh;
-                histCtx.fillStyle = "hsla(var(--emerald-500), 0.6)";
+                histCtx.fillStyle = "rgba(16, 185, 129, 0.6)";
                 histCtx.fillRect(bx + 2, by, barW, bh);
 
                 // Theoretical Line Highlight

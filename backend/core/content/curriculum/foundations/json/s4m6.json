@@ -1,130 +1,133 @@
 {
-    "meta": {
-        "subject": "machine-learning",
-        "module": "probabilistic-models",
-        "level": "intermediate",
-        "estimatedHours": 3
+  "meta": {
+    "subject": "machine-learning",
+    "module": "probabilistic-models",
+    "level": "intermediate",
+    "estimatedHours": 3
+  },
+  "overview": [
+    "Probabilistic models use the laws of probability to predict outcomes and manage uncertainty. Unlike 'black-box' models, they provide a clear mathematical framework for how likely a specific prediction is.",
+    "In this module, we cover Bayesian inference, the Naive Bayes classifier, and how to use hidden structures to model complex data."
+  ],
+  "topics": [
+    {
+      "title": "Bayes Theorem & Conditional Probability",
+      "theory": [
+        "Bayes' Theorem is the mathematical formula for updating the probability of a hypothesis (Prior) in light of new evidence (Likelihood). P(A|B) = [P(B|A) * P(A)] / P(B).",
+        "It is the foundation of 'Bayesian' statistics, which views probability as a degree of belief that evolves as more data is collected."
+      ],
+      "visualIntuition": [
+        "Imagine you hear a siren. Before seeing anything, you suspect it's an ambulance (Prior). Then you see a ladder (Evidence). Bayes' Theorem is the mental math you do to update your belief: it's now highly likely to be a fire truck (Posterior)."
+      ],
+      "visualSuggestions": [
+        "Area diagram (Venn style) showing how the intersection of events determines conditional probability.",
+        "Bayesian network graph showing dependencies between simple events (e.g., Rain -> Wet Grass)."
+      ],
+      "code": [
+        {
+          "language": "python",
+          "description": "Simple Bayesian Update Calculation",
+          "content": "def update_belief(prior, likelihood, total_prob_evidence):\n    return (likelihood * prior) / total_prob_evidence\n\n# P(Disease) = 1%, P(Positive|Disease) = 99%, P(Positive) = 5%\nprior = 0.01\nlikelihood = 0.99\nevidence = 0.05\n\nposterior = update_belief(prior, likelihood, evidence)\nprint(f\"Probability of disease given positive test: {posterior:.2%}\")"
+        }
+      ],
+      "slug": "bayes-theorem-conditional-probability"
     },
-    "overview": [
-        "Probabilistic models use the laws of probability to predict outcomes and manage uncertainty. Unlike 'black-box' models, they provide a clear mathematical framework for how likely a specific prediction is.",
-        "In this module, we cover Bayesian inference, the Naive Bayes classifier, and how to use hidden structures to model complex data."
-    ],
-    "topics": [
+    {
+      "title": "Naive Bayes Classification",
+      "theory": [
+        "Naive Bayes is a simple probabilistic classifier based on Bayes' Theorem with a 'naive' assumption: that every feature is completely independent of every other feature.",
+        "Despite this unrealistic assumption, Naive Bayes is incredibly effective for text classification (Spam detection) and sentiment analysis because it is extremely fast and requires very little training data."
+      ],
+      "visualIntuition": [
+        "Imagine trying to identify a fruit. Naive Bayes looks at 'Round', 'Red', and 'Sweet' independently. It calculates the probability of being an Apple based on each trait and then multiplies them together to get the final score."
+      ],
+      "visualSuggestions": [
+        "Table showing word counts in 'Spam' vs 'Not Spam' emails.",
+        "Visualization showing how probabilities are combined (multiplied) for final classification."
+      ],
+      "code": [
         {
-            "title": "Bayes Theorem & Conditional Probability",
-            "theory": [
-                "Bayes' Theorem is the mathematical formula for updating the probability of a hypothesis (Prior) in light of new evidence (Likelihood). P(A|B) = [P(B|A) * P(A)] / P(B).",
-                "It is the foundation of 'Bayesian' statistics, which views probability as a degree of belief that evolves as more data is collected."
-            ],
-            "visualIntuition": [
-                "Imagine you hear a siren. Before seeing anything, you suspect it's an ambulance (Prior). Then you see a ladder (Evidence). Bayes' Theorem is the mental math you do to update your belief: it's now highly likely to be a fire truck (Posterior)."
-            ],
-            "visualSuggestions": [
-                "Area diagram (Venn style) showing how the intersection of events determines conditional probability.",
-                "Bayesian network graph showing dependencies between simple events (e.g., Rain -> Wet Grass)."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Simple Bayesian Update Calculation",
-                    "content": "def update_belief(prior, likelihood, total_prob_evidence):\n    return (likelihood * prior) / total_prob_evidence\n\n# P(Disease) = 1%, P(Positive|Disease) = 99%, P(Positive) = 5%\nprior = 0.01\nlikelihood = 0.99\nevidence = 0.05\n\nposterior = update_belief(prior, likelihood, evidence)\nprint(f\"Probability of disease given positive test: {posterior:.2%}\")"
-                }
-            ]
-        },
-        {
-            "title": "Naive Bayes Classification",
-            "theory": [
-                "Naive Bayes is a simple probabilistic classifier based on Bayes' Theorem with a 'naive' assumption: that every feature is completely independent of every other feature.",
-                "Despite this unrealistic assumption, Naive Bayes is incredibly effective for text classification (Spam detection) and sentiment analysis because it is extremely fast and requires very little training data."
-            ],
-            "visualIntuition": [
-                "Imagine trying to identify a fruit. Naive Bayes looks at 'Round', 'Red', and 'Sweet' independently. It calculates the probability of being an Apple based on each trait and then multiplies them together to get the final score."
-            ],
-            "visualSuggestions": [
-                "Table showing word counts in 'Spam' vs 'Not Spam' emails.",
-                "Visualization showing how probabilities are combined (multiplied) for final classification."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Multinomial Naive Bayes using Scikit-Learn",
-                    "content": "from sklearn.naive_bayes import MultinomialNB\nimport numpy as np\n\n# Features: [word1_count, word2_count]\nX = np.array([[2, 1], [0, 5], [3, 0], [1, 4]])\ny = np.array(['spam', 'ham', 'spam', 'ham'])\n\nmodel = MultinomialNB().fit(X, y)\nprint(f\"Prediction for [2, 0]: {model.predict([[2, 0]])[0]}\")"
-                }
-            ]
-        },
-        {
-            "title": "Probabilistic Graphical Models",
-            "theory": [
-                "Graphical models use graphs to represent conditional dependencies between variables. Bayesian Networks (Directed) and Markov Random Fields (Undirected) are the two primary types.",
-                "These models are used in genetics, computer vision, and speech recognition to represent complex systems where things are linked together in a web of probabilities."
-            ],
-            "visualIntuition": [
-                "Think of a family tree where your traits are influenced by your parents. A graphical model maps out these influences so we can predict your traits even if we only know about your grandparents."
-            ],
-            "visualSuggestions": [
-                "Directed Acyclic Graph (DAG) showing a medical diagnosis system (Symptoms -> Diseases).",
-                "Comparison of Directed (Bayes) vs Undirected (Markov) links."
-            ],
-            "code": [
-                {
-                    "language": "python",
-                    "description": "Using independent probabilities to model a joint event",
-                    "content": "p_rain = 0.2\np_sprinkler_on_if_no_rain = 0.4\np_wet_if_rain = 0.9\n\n# P(No Rain AND Sprinkler On)\np_dry_sprinkler = (1-p_rain) * p_sprinkler_on_if_no_rain\nprint(f\"P(No Rain, Sprinkler On): {p_dry_sprinkler:.2%}\")"
-                }
-            ]
+          "language": "python",
+          "description": "Multinomial Naive Bayes using Scikit-Learn",
+          "content": "from sklearn.naive_bayes import MultinomialNB\nimport numpy as np\n\n# Features: [word1_count, word2_count]\nX = np.array([[2, 1], [0, 5], [3, 0], [1, 4]])\ny = np.array(['spam', 'ham', 'spam', 'ham'])\n\nmodel = MultinomialNB().fit(X, y)\nprint(f\"Prediction for [2, 0]: {model.predict([[2, 0]])[0]}\")"
         }
-    ],
-    "quiz": [
+      ],
+      "slug": "naive-bayes-classification"
+    },
+    {
+      "title": "Probabilistic Graphical Models",
+      "theory": [
+        "Graphical models use graphs to represent conditional dependencies between variables. Bayesian Networks (Directed) and Markov Random Fields (Undirected) are the two primary types.",
+        "These models are used in genetics, computer vision, and speech recognition to represent complex systems where things are linked together in a web of probabilities."
+      ],
+      "visualIntuition": [
+        "Think of a family tree where your traits are influenced by your parents. A graphical model maps out these influences so we can predict your traits even if we only know about your grandparents."
+      ],
+      "visualSuggestions": [
+        "Directed Acyclic Graph (DAG) showing a medical diagnosis system (Symptoms -> Diseases).",
+        "Comparison of Directed (Bayes) vs Undirected (Markov) links."
+      ],
+      "code": [
         {
-            "id": "q1",
-            "question": "How does Bayes' Theorem update beliefs with evidence?",
-            "options": [
-                "It replaces the prior with the likelihood",
-                "Posterior = (Likelihood × Prior) / Evidence — new data updates prior belief to posterior",
-                "It ignores prior beliefs",
-                "It only works with normal distributions"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Bayes' Theorem provides a mathematical framework for belief updating. The prior (initial belief) is multiplied by the likelihood (how well evidence fits the hypothesis) and normalized by the evidence."
-        },
-        {
-            "id": "q2",
-            "question": "Why is Naive Bayes 'naive'?",
-            "options": [
-                "It's a simple algorithm",
-                "It assumes all features are conditionally independent given the class label",
-                "It ignores the training data",
-                "It can't handle categorical data"
-            ],
-            "correctAnswer": 1,
-            "explanation": "The 'naive' assumption is that features are independent given the class. While rarely true in practice, this simplification makes computation tractable and the classifier often performs surprisingly well."
-        },
-        {
-            "id": "q3",
-            "question": "What are hidden variables in probabilistic models?",
-            "options": [
-                "Variables that are deleted",
-                "Unobserved variables that influence the observed data and must be inferred",
-                "Variables with missing values",
-                "Variables not included in the model"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Hidden (latent) variables represent unobserved states that generate the data we see. Examples: topic distributions in LDA, cluster assignments in GMMs, hidden states in HMMs."
+          "language": "python",
+          "description": "Using independent probabilities to model a joint event",
+          "content": "p_rain = 0.2\np_sprinkler_on_if_no_rain = 0.4\np_wet_if_rain = 0.9\n\n# P(No Rain AND Sprinkler On)\np_dry_sprinkler = (1-p_rain) * p_sprinkler_on_if_no_rain\nprint(f\"P(No Rain, Sprinkler On): {p_dry_sprinkler:.2%}\")"
         }
-    ],
-    "references": [
-        {
-            "label": "Better Explained - An Intuitive Guide to Bayes' Theorem",
-            "url": "https://betterexplained.com/articles/an-intuitive-and-short-explanation-of-bayes-theorem/"
-        },
-        {
-            "label": "Scikit-Learn User Guide - Naive Bayes",
-            "url": "https://scikit-learn.org/stable/modules/naive_bayes.html"
-        },
-        {
-            "label": "Probabilistic Graphical Models (Coursera - Daphne Koller)",
-            "url": "https://www.coursera.org/specializations/probabilistic-graphical-models"
-        }
-    ],
-    "_contentWarnings": []
+      ],
+      "slug": "probabilistic-graphical-models"
+    }
+  ],
+  "quiz": [
+    {
+      "id": "q1",
+      "question": "How does Bayes' Theorem update beliefs with evidence?",
+      "options": [
+        "It replaces the prior with the likelihood",
+        "Posterior = (Likelihood \u00d7 Prior) / Evidence \u2014 new data updates prior belief to posterior",
+        "It ignores prior beliefs",
+        "It only works with normal distributions"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Bayes' Theorem provides a mathematical framework for belief updating. The prior (initial belief) is multiplied by the likelihood (how well evidence fits the hypothesis) and normalized by the evidence."
+    },
+    {
+      "id": "q2",
+      "question": "Why is Naive Bayes 'naive'?",
+      "options": [
+        "It's a simple algorithm",
+        "It assumes all features are conditionally independent given the class label",
+        "It ignores the training data",
+        "It can't handle categorical data"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The 'naive' assumption is that features are independent given the class. While rarely true in practice, this simplification makes computation tractable and the classifier often performs surprisingly well."
+    },
+    {
+      "id": "q3",
+      "question": "What are hidden variables in probabilistic models?",
+      "options": [
+        "Variables that are deleted",
+        "Unobserved variables that influence the observed data and must be inferred",
+        "Variables with missing values",
+        "Variables not included in the model"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Hidden (latent) variables represent unobserved states that generate the data we see. Examples: topic distributions in LDA, cluster assignments in GMMs, hidden states in HMMs."
+    }
+  ],
+  "references": [
+    {
+      "label": "Better Explained - An Intuitive Guide to Bayes' Theorem",
+      "url": "https://betterexplained.com/articles/an-intuitive-and-short-explanation-of-bayes-theorem/"
+    },
+    {
+      "label": "Scikit-Learn User Guide - Naive Bayes",
+      "url": "https://scikit-learn.org/stable/modules/naive_bayes.html"
+    },
+    {
+      "label": "Probabilistic Graphical Models (Coursera - Daphne Koller)",
+      "url": "https://www.coursera.org/specializations/probabilistic-graphical-models"
+    }
+  ],
+  "_contentWarnings": []
 }

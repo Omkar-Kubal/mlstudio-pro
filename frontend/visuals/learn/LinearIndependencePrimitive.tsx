@@ -90,7 +90,7 @@ export default function LinearIndependencePrimitive() {
         ctx.save();
         if (isIndependent) {
             ctx.globalAlpha = 0.2;
-            ctx.fillStyle = "hsl(var(--primary))";
+            ctx.fillStyle = "#D4D4D4";
 
             // Draw a large parallelogram representing the span coverage
             const range = 5;
@@ -105,7 +105,7 @@ export default function LinearIndependencePrimitive() {
             ctx.closePath();
             ctx.fill();
         } else {
-            ctx.strokeStyle = "hsla(var(--rose-400), 0.4)";
+            ctx.strokeStyle = "rgba(244, 63, 94, 0.4)";
             ctx.lineWidth = 5;
             const angle = Math.atan2(v1.y, v1.x);
             const range = 10;
@@ -122,13 +122,13 @@ export default function LinearIndependencePrimitive() {
         if (!ctx) return;
 
         ctx.clearRect(0, 0, CW, CH);
-        ctx.fillStyle = "hsl(var(--surface))";
+        ctx.fillStyle = "#121212";
         ctx.fillRect(0, 0, CW, CH);
 
         drawGrid(ctx);
         drawSpan(ctx);
-        drawVector(ctx, v1, "hsl(var(--rose-400))", "v1");
-        drawVector(ctx, v2, "hsl(var(--emerald-400))", "v2");
+        drawVector(ctx, v1, "#FB7185", "v1");
+        drawVector(ctx, v2, "#34D399", "v2");
 
         // Det Parallel
         if (isIndependent) {

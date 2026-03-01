@@ -107,7 +107,7 @@
         {
           "language": "python",
           "description": "Visualizing Spread",
-          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Same mean (0), different standard deviations (1 vs 3)\nd1 = np.random.normal(0, 1, 1000)\nd2 = np.random.normal(0, 3, 1000)\n\nplt.hist(d1, bins=30, alpha=0.5, label='High Precision (Low $\\sigma$)', color='blue')\nplt.hist(d2, bins=30, alpha=0.5, label='High Spread (High $\\sigma$)', color='orange')\nplt.title(\"Comparison of Dispersion ($$\\sigma$$)\")\nplt.legend()\nplt.show()"
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Same mean (0), different standard deviations (1 vs 3)\nd1 = np.random.normal(0, 1, 1000)\nd2 = np.random.normal(0, 3, 1000)\n\nplt.hist(d1, bins=30, alpha=0.5, label='High Precision (Low $\\sigma$)', color='blue')\nplt.hist(d2, bins=30, alpha=0.5, label='High Spread (High $\\sigma$)', color='orange')\nplt.title(\"Comparison of Dispersion ($\\sigma$)\")\nplt.legend()\nplt.show()"
         }
       ]
     },
@@ -130,7 +130,7 @@
         {
           "language": "python",
           "description": "Demonstrating Convergence (LLN)",
-          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Simulate 5000 fair die rolls (mean should be 3.5)\nrolls = np.random.randint(1, 7, size=5000)\nrunning_means = np.cumsum(rolls) / np.arange(1, 5001)\n\nplt.plot(running_means, color='emerald')\nplt.axhline(y=3.5, color='red', linestyle='--', label='Expected Value (3.5)')\nplt.title(\"Convergence of Sample Mean (LLN)\")\nplt.xlabel(\"Number of Trials\")\nplt.ylabel(\"Running Mean\")\nplt.legend()\nplt.show()"
+          "content": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Simulate 5000 fair die rolls (mean should be 3.5)\nrolls = np.random.randint(1, 7, size=5000)\nrunning_means = np.cumsum(rolls) / np.arange(1, 5001)\n\nplt.plot(running_means, color='#10b981')\nplt.axhline(y=3.5, color='red', linestyle='--', label='Expected Value (3.5)')\nplt.title(\"Convergence of Sample Mean (LLN)\")\nplt.xlabel(\"Number of Trials\")\nplt.ylabel(\"Running Mean\")\nplt.legend()\nplt.show()"
         }
       ]
     }

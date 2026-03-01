@@ -11,9 +11,9 @@ function normalPDF(x: number, std: number) {
 }
 
 const BANDS = [
-    { sigma: 1, color: "hsl(var(--primary))", label: "68.2%", alpha: 0.25 },
-    { sigma: 2, color: "hsl(var(--secondary))", label: "95.4%", alpha: 0.15 },
-    { sigma: 3, color: "hsl(var(--accent))", label: "99.7%", alpha: 0.1 },
+    { sigma: 1, color: "#D4D4D4", label: "68.2%", alpha: 0.25 },
+    { sigma: 2, color: "#A3A3A3", label: "95.4%", alpha: 0.15 },
+    { sigma: 3, color: "#525252", label: "99.7%", alpha: 0.1 },
 ];
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -99,7 +99,7 @@ export default function DispersionPrimitive() {
 
         // Main Curve
         ctx.beginPath();
-        ctx.strokeStyle = "hsl(var(--primary))";
+        ctx.strokeStyle = "#D4D4D4";
         ctx.lineWidth = 2.5;
         ctx.lineJoin = "round";
 
@@ -110,7 +110,7 @@ export default function DispersionPrimitive() {
         }
         ctx.save();
         ctx.shadowBlur = 10;
-        ctx.shadowColor = "hsl(var(--primary))";
+        ctx.shadowColor = "#D4D4D4";
         ctx.stroke();
         ctx.restore();
 

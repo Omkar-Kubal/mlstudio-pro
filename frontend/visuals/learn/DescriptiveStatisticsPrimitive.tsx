@@ -118,9 +118,9 @@ export default function DescriptiveStatisticsPrimitive() {
         if (showCurve) {
             ctx.save();
             ctx.beginPath();
-            ctx.strokeStyle = "hsl(var(--primary))";
+            ctx.strokeStyle = "#D4D4D4";
             ctx.lineWidth = 2.5;
-            ctx.shadowColor = "hsl(var(--primary))";
+            ctx.shadowColor = "#D4D4D4";
             ctx.shadowBlur = 8;
 
             for (let i = 0; i <= 150; i++) {

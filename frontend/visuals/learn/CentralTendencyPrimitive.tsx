@@ -101,10 +101,10 @@ export default function CentralTendencyPrimitive() {
         const ocx = toCanvas(outlier);
         ctx.save();
         ctx.shadowBlur = 15;
-        ctx.shadowColor = "hsl(var(--accent))";
+        ctx.shadowColor = "#525252";
         ctx.beginPath();
         ctx.arc(ocx, Y_MID, 8, 0, Math.PI * 2);
-        ctx.fillStyle = "hsl(var(--accent))";
+        ctx.fillStyle = "#525252";
         ctx.fill();
         ctx.restore();
 
@@ -115,8 +115,8 @@ export default function CentralTendencyPrimitive() {
 
         // Indicators Data
         const indicators = [
-            { val: stats.mean, color: "hsl(var(--primary))", label: "Mean", yOff: -55 },
-            { val: stats.median, color: "hsl(var(--secondary))", label: "Median", yOff: -38 },
+            { val: stats.mean, color: "#D4D4D4", label: "Mean", yOff: -55 },
+            { val: stats.median, color: "#A3A3A3", label: "Median", yOff: -38 },
             { val: stats.mode, color: "#10b981", label: "Mode", yOff: -21 },
         ];
 

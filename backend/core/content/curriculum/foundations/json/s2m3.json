@@ -7,13 +7,13 @@
   },
   "overview": [
     "Pandas is the workhorse of data manipulation in Python. This module covers the essential operations: reading data, indexing and filtering, grouping and aggregation, merging datasets, and handling missing data.",
-    "Pandas builds on NumPy arrays to provide labeled, flexible data structures. DataFrames and Series make data manipulation intuitive, readable, and efficient — essential skills for every data scientist."
+    "Pandas builds on NumPy arrays to provide labeled, flexible data structures. DataFrames and Series make data manipulation intuitive, readable, and efficient \u2014 essential skills for every data scientist."
   ],
   "topics": [
     {
       "title": "Reading & Writing Data",
       "theory": [
-        "How datasets enter your workflow matters. Formats (CSV, Excel, JSON, Parquet) are not equivalent — they influence structure and types differently.",
+        "How datasets enter your workflow matters. Formats (CSV, Excel, JSON, Parquet) are not equivalent \u2014 they influence structure and types differently.",
         "Schema inference can be wrong. Explicit dtypes prevent downstream bugs. If data is wrong at load time, everything after is compromised.",
         "This topic teaches how formats influence structure, how data integrity can be lost at ingestion, and why explicit type specification matters.",
         "\n",
@@ -120,7 +120,7 @@
         "-",
         "1",
         "0",
-        "×",
+        "\u00d7",
         " ",
         "s",
         "m",
@@ -168,7 +168,7 @@
         "-",
         "5",
         "0",
-        "×",
+        "\u00d7",
         " ",
         "f",
         "a",
@@ -289,7 +289,7 @@
         "|"
       ],
       "visualIntuition": [
-        "Pipeline view: Raw Files → Read & Validate → Select & Filter → Group & Summarize → Merge Context → Handle Missingness → Clean Dataset → ML/Visualization"
+        "Pipeline view: Raw Files \u2192 Read & Validate \u2192 Select & Filter \u2192 Group & Summarize \u2192 Merge Context \u2192 Handle Missingness \u2192 Clean Dataset \u2192 ML/Visualization"
       ],
       "visualSuggestions": [
         "Format comparison showing same data in CSV vs JSON vs Parquet",
@@ -302,17 +302,18 @@
           "content": "import pandas as pd\n\n# Read with explicit dtypes\ndf = pd.read_csv('data.csv', dtype={'age': 'int32', 'income': 'float64'})\n\n# Specify date parsing\ndf = pd.read_csv('data.csv', parse_dates=['date_column'])"
         },
         {
-          "title": "Parquet and JSON File I/O",
           "language": "python",
-          "code": "import pandas as pd\n\n# Reading Parquet (columnar, fast, compressed)\ndf = pd.read_parquet('data.parquet',\n    engine='pyarrow',\n    columns=['name', 'score'],           # push-down projection\n    filters=[('score', '>', 80)])        # push-down predicate\n\ndf.to_parquet('output.parquet',\n    engine='pyarrow',\n    compression='snappy',\n    partition_cols=['year', 'month'])     # Hive-style partitioning\n\n# Reading/Writing JSON\ndf = pd.read_json('data.json', orient='records', lines=True)\ndf.to_json('output.json', orient='records', indent=2)\n\n# Chunked CSV reading for large files\nchunk_size = 50_000\nresults = []\nfor chunk in pd.read_csv('big.csv', chunksize=chunk_size):\n    results.append(chunk[chunk['score'] > 80])\ndf = pd.concat(results, ignore_index=True)\n\n# SQL\nimport sqlite3\nconn = sqlite3.connect('database.db')\ndf = pd.read_sql('SELECT * FROM users WHERE score > 80', conn)\ndf.to_sql('results', conn, if_exists='replace', index=False)"
+          "description": "Parquet and JSON File I/O",
+          "content": "import pandas as pd\n\n# Reading Parquet (columnar, fast, compressed)\ndf = pd.read_parquet('data.parquet',\n    engine='pyarrow',\n    columns=['name', 'score'],           # push-down projection\n    filters=[('score', '>', 80)])        # push-down predicate\n\ndf.to_parquet('output.parquet',\n    engine='pyarrow',\n    compression='snappy',\n    partition_cols=['year', 'month'])     # Hive-style partitioning\n\n# Reading/Writing JSON\ndf = pd.read_json('data.json', orient='records', lines=True)\ndf.to_json('output.json', orient='records', indent=2)\n\n# Chunked CSV reading for large files\nchunk_size = 50_000\nresults = []\nfor chunk in pd.read_csv('big.csv', chunksize=chunk_size):\n    results.append(chunk[chunk['score'] > 80])\ndf = pd.concat(results, ignore_index=True)\n\n# SQL\nimport sqlite3\nconn = sqlite3.connect('database.db')\ndf = pd.read_sql('SELECT * FROM users WHERE score > 80', conn)\ndf.to_sql('results', conn, if_exists='replace', index=False)"
         }
-      ]
+      ],
+      "slug": "reading-writing-data"
     },
     {
       "title": "Indexing & Filtering",
       "theory": [
         "Difference between label-based (loc) and position-based (iloc) access is critical. Pandas forces explicit intent to prevent silent mistakes.",
-        "Boolean masks provide vectorized filtering — replacing loops with declarative expressions. Index alignment is more important than row numbers.",
+        "Boolean masks provide vectorized filtering \u2014 replacing loops with declarative expressions. Index alignment is more important than row numbers.",
         "Selection is a semantic operation, not a positional one. This mindset prevents many common bugs."
       ],
       "visualIntuition": [
@@ -328,12 +329,13 @@
           "description": "Label vs position-based indexing",
           "content": "import pandas as pd\n\ndf = pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]}, index=['x', 'y', 'z'])\n\n# Label-based (use column names and index labels)\nprint(df.loc['x', 'A'])\n\n# Position-based (use integer positions)\nprint(df.iloc[0, 0])\n\n# Boolean filtering\nfiltered = df[df['A'] > 1]\nprint(filtered)"
         }
-      ]
+      ],
+      "slug": "indexing-filtering"
     },
     {
       "title": "GroupBy & Aggregation",
       "theory": [
-        "Split → Apply → Combine pattern is the heart of analytics. Groups define context, aggregations define questions, results define insight.",
+        "Split \u2192 Apply \u2192 Combine pattern is the heart of analytics. Groups define context, aggregations define questions, results define insight.",
         "GroupBy is asking the same question repeatedly for different slices of data. This turns rows into insights."
       ],
       "visualIntuition": [
@@ -349,12 +351,13 @@
           "description": "GroupBy and aggregation",
           "content": "import pandas as pd\n\ndf = pd.DataFrame({\n    'category': ['A', 'A', 'B', 'B'],\n    'value': [10, 20, 30, 40]\n})\n\n# Basic groupby\nprint(df.groupby('category')['value'].mean())\n\n# Multiple aggregations\nprint(df.groupby('category')['value'].agg(['mean', 'sum', 'count']))"
         }
-      ]
+      ],
+      "slug": "groupby-aggregation"
     },
     {
       "title": "Merging & Joining",
       "theory": [
-        "Reconstructing reality from fragmented data requires understanding how relational data combines. Keys matter more than rows — wrong join = wrong dataset.",
+        "Reconstructing reality from fragmented data requires understanding how relational data combines. Keys matter more than rows \u2014 wrong join = wrong dataset.",
         "A join is a claim about how two datasets relate. Cardinality awareness is critical to avoid duplication and data leakage.",
         "Join types: inner (matching only), left (keep all left), right (keep all right), outer (keep all)."
       ],
@@ -371,17 +374,18 @@
           "description": "Merging DataFrames",
           "content": "import pandas as pd\n\ndf1 = pd.DataFrame({'key': ['A', 'B', 'C'], 'value1': [1, 2, 3]})\ndf2 = pd.DataFrame({'key': ['A', 'B', 'D'], 'value2': [4, 5, 6]})\n\n# Inner join (matching keys only)\ninner = pd.merge(df1, df2, on='key', how='inner')\n\n# Left join (keep all from left)\nleft = pd.merge(df1, df2, on='key', how='left')\n\nprint(\"Inner:\\n\", inner)\nprint(\"Left:\\n\", left)"
         }
-      ]
+      ],
+      "slug": "merging-joining"
     },
     {
       "title": "Handling Missing Data",
       "theory": [
-        "Missingness is information, not error. Missing ≠ zero, missing ≠ bug. How you handle missing data encodes assumptions.",
+        "Missingness is information, not error. Missing \u2260 zero, missing \u2260 bug. How you handle missing data encodes assumptions.",
         "Dropping vs imputing has consequences. NaNs propagate intentionally in Pandas. Imputation strategy depends on whether data is MCAR, MAR, or MNAR.",
         "Common anti-patterns: chaining operations without inspecting output, relying on default behavior, ignoring index alignment, joining without checking row counts, dropping NaNs blindly."
       ],
       "visualIntuition": [
-        "Distribution comparison: original data vs after dropping missing vs after mean imputation — showing how imputation shrinks variance."
+        "Distribution comparison: original data vs after dropping missing vs after mean imputation \u2014 showing how imputation shrinks variance."
       ],
       "visualSuggestions": [
         "Missing pattern visualization (matrix of NaN locations)",
@@ -393,21 +397,24 @@
           "description": "Handling missing data",
           "content": "import pandas as pd\nimport numpy as np\n\ndf = pd.DataFrame({'A': [1, np.nan, 3], 'B': [4, 5, np.nan]})\n\n# Check for missing\nprint(df.isna().sum())\n\n# Drop rows with any missing\nprint(df.dropna())\n\n# Fill with median\nprint(df.fillna(df.median()))\n\n# Create missingness indicator\ndf['A_missing'] = df['A'].isna().astype(int)"
         }
-      ]
+      ],
+      "slug": "handling-missing-data"
     },
     {
       "title": "Time Series Handling",
-      "theory": "Pandas provides powerful tools for time series data: datetime parsing, resampling, rolling windows, and exponentially weighted moving averages.\n\n**Datetime Parsing:** Use `pd.to_datetime()` with explicit format strings for speed. Set datetime as index and always sort.\n\n**Resampling:** Change frequency — `resample('ME')` for monthly, `'D'` for daily. Use `.sum()`, `.mean()`, `.ohlc()` for aggregation.\n\n**Rolling Windows:** `.rolling(7).mean()` for 7-day moving average. Use `min_periods=1` to avoid NaN at start.\n\n**EWM (Exponentially Weighted):** `.ewm(span=7).mean()` gives more weight to recent observations. Higher alpha = more recency bias.\n\n**Key operations:** `shift(1)` for lag, `diff(1)` for day-over-day change, `pct_change()` for percentage change.",
+      "theory": [
+        "Pandas provides powerful tools for time series data: datetime parsing, resampling, rolling windows, and exponentially weighted moving averages.\n\n**Datetime Parsing:** Use `pd.to_datetime()` with explicit format strings for speed. Set datetime as index and always sort.\n\n**Resampling:** Change frequency \u2014 `resample('ME')` for monthly, `'D'` for daily. Use `.sum()`, `.mean()`, `.ohlc()` for aggregation.\n\n**Rolling Windows:** `.rolling(7).mean()` for 7-day moving average. Use `min_periods=1` to avoid NaN at start.\n\n**EWM (Exponentially Weighted):** `.ewm(span=7).mean()` gives more weight to recent observations. Higher alpha = more recency bias.\n\n**Key operations:** `shift(1)` for lag, `diff(1)` for day-over-day change, `pct_change()` for percentage change."
+      ],
       "code": [
         {
-          "title": "Datetime Parsing and Component Extraction",
           "language": "python",
-          "code": "import pandas as pd\nimport numpy as np\n\n# Create sample time series\ndates = pd.date_range('2024-01-01', periods=365, freq='D')\ndf = pd.DataFrame({'date': dates, 'sales': np.random.randint(50, 200, 365)})\ndf['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')\ndf = df.set_index('date').sort_index()\n\n# Extract date components\ndf['year'] = df.index.year\ndf['month'] = df.index.month\ndf['dayofweek'] = df.index.dayofweek  # 0=Monday\ndf['quarter'] = df.index.quarter\n\n# Date arithmetic\ndf['lag_1d'] = df['sales'].shift(1)       # 1-day lag\ndf['diff_1d'] = df['sales'].diff(1)       # day-over-day change\ndf['pct_chg'] = df['sales'].pct_change()  # percentage change\nprint(df.head())"
+          "description": "Datetime Parsing and Component Extraction",
+          "content": "import pandas as pd\nimport numpy as np\n\n# Create sample time series\ndates = pd.date_range('2024-01-01', periods=365, freq='D')\ndf = pd.DataFrame({'date': dates, 'sales': np.random.randint(50, 200, 365)})\ndf['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')\ndf = df.set_index('date').sort_index()\n\n# Extract date components\ndf['year'] = df.index.year\ndf['month'] = df.index.month\ndf['dayofweek'] = df.index.dayofweek  # 0=Monday\ndf['quarter'] = df.index.quarter\n\n# Date arithmetic\ndf['lag_1d'] = df['sales'].shift(1)       # 1-day lag\ndf['diff_1d'] = df['sales'].diff(1)       # day-over-day change\ndf['pct_chg'] = df['sales'].pct_change()  # percentage change\nprint(df.head())"
         },
         {
-          "title": "Resampling, Rolling Windows, and EWM",
           "language": "python",
-          "code": "import pandas as pd\nimport numpy as np\n\ndates = pd.date_range('2024-01-01', periods=365, freq='D')\ndf = pd.DataFrame({'sales': np.random.randint(50, 200, 365)}, index=dates)\n\n# Resample: daily -> monthly\nmonthly = df['sales'].resample('ME').agg(['sum', 'mean', 'min', 'max'])\nprint(monthly.head())\n\n# Rolling windows\ndf['ma_7'] = df['sales'].rolling(7).mean()       # 7-day moving average\ndf['ma_30'] = df['sales'].rolling(30).mean()      # 30-day MA\ndf['std_7'] = df['sales'].rolling(7).std()        # rolling std dev\ndf['ma_safe'] = df['sales'].rolling(7, min_periods=1).mean()  # avoid NaN\n\n# Exponentially Weighted Moving Average\ndf['ema_7'] = df['sales'].ewm(span=7).mean()      # span-based\ndf['ema_alpha'] = df['sales'].ewm(alpha=0.3).mean()  # alpha directly\n\n# Expanding (cumulative) window\ndf['cum_mean'] = df['sales'].expanding().mean()\n\nprint(df[['sales', 'ma_7', 'ema_7', 'cum_mean']].tail(10))"
+          "description": "Resampling, Rolling Windows, and EWM",
+          "content": "import pandas as pd\nimport numpy as np\n\ndates = pd.date_range('2024-01-01', periods=365, freq='D')\ndf = pd.DataFrame({'sales': np.random.randint(50, 200, 365)}, index=dates)\n\n# Resample: daily -> monthly\nmonthly = df['sales'].resample('ME').agg(['sum', 'mean', 'min', 'max'])\nprint(monthly.head())\n\n# Rolling windows\ndf['ma_7'] = df['sales'].rolling(7).mean()       # 7-day moving average\ndf['ma_30'] = df['sales'].rolling(30).mean()      # 30-day MA\ndf['std_7'] = df['sales'].rolling(7).std()        # rolling std dev\ndf['ma_safe'] = df['sales'].rolling(7, min_periods=1).mean()  # avoid NaN\n\n# Exponentially Weighted Moving Average\ndf['ema_7'] = df['sales'].ewm(span=7).mean()      # span-based\ndf['ema_alpha'] = df['sales'].ewm(alpha=0.3).mean()  # alpha directly\n\n# Expanding (cumulative) window\ndf['cum_mean'] = df['sales'].expanding().mean()\n\nprint(df[['sales', 'ma_7', 'ema_7', 'cum_mean']].tail(10))"
         }
       ],
       "visualSuggestions": [
@@ -415,8 +422,9 @@
         "Resampling animation: daily bars collapsing into monthly aggregates"
       ],
       "visualIntuition": [
-        "A rolling window is like looking at data through a moving magnifying glass. As the window slides forward in time, old data drops out and new data enters. The EWM is like a magnifying glass that gets weaker for older data — recent observations are always sharper."
-      ]
+        "A rolling window is like looking at data through a moving magnifying glass. As the window slides forward in time, old data drops out and new data enters. The EWM is like a magnifying glass that gets weaker for older data \u2014 recent observations are always sharper."
+      ],
+      "slug": "time-series-handling"
     }
   ],
   "quiz": [
@@ -482,7 +490,7 @@
     },
     {
       "id": "q6",
-      "question": "Why is Parquet typically 10-50× faster to read than CSV?",
+      "question": "Why is Parquet typically 10-50\u00d7 faster to read than CSV?",
       "options": [
         "Parquet files are always smaller",
         "Parquet uses columnar storage with push-down projection and predicate filtering",
