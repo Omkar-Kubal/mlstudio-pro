@@ -147,8 +147,10 @@ export function PrimitiveWrapper({ children, primitiveName, caption, description
     return (
         <PrimitiveErrorBoundary fallback={<StaticFallback primitiveName={primitiveName} caption={caption} />}>
             <MotionPreferenceProvider>
-                <div className="flex flex-col gap-4">
-                    {children}
+                <div className="flex flex-col gap-4 w-full">
+                    <div className="w-full overflow-x-auto primitive-canvas-wrapper">
+                        {children}
+                    </div>
                     {(caption || description) && (
                         <div className="bg-surface/30 border border-border p-4 rounded-xl space-y-2 backdrop-blur-sm shadow-sm">
                             {caption && (

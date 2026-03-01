@@ -626,37 +626,37 @@ export const visualConfigs: VisualConfigRegistry = {
     // Programming - Python Basics
     "Python Syntax for Data Science": {
         id: "python-syntax-ds",
-        primitiveType: "python-basics",
-        caption: "Readability over brevity, explicit over implicit. Indentation defines logic.",
+        primitiveType: "decorators",
+        caption: "Python syntax wraps logic in clean layers — just like decorators wrap functions.",
         description: "Python's clear syntax makes it the lingua franca of data science. Its interactive nature matches the experimental workflow: Observe -> Modify -> Test -> Reason -> Repeat."
     },
     "Data Types and Data Structures": {
         id: "python-data-structures",
-        primitiveType: "python-basics",
+        primitiveType: "numpy-arrays",
         caption: "int, float, bool, str vs list, tuple, dict, set. Mutability matters.",
         description: "Understanding types prevents data bugs. Lists are flexible, while NumPy arrays (learned later) are mathematical objects. Knowing what is mutable versus immutable is key to predictable code."
     },
     "Control Flow": {
         id: "python-control-flow",
-        primitiveType: "python-control-flow",
+        primitiveType: "groupby",
         caption: "If/Else for logic, For/While for iteration. The engine of data filtering.",
         description: "Control flow allows code to make decisions based on data. Loops process datasets step-by-step, while conditionals apply thresholds and handle edge cases."
     },
     "Functions and Modules": {
         id: "python-functions",
-        primitiveType: "python-basics",
-        caption: "Encapsulate logic. Prevent repetition. Re-run experiments reliably.",
+        primitiveType: "generators",
+        caption: "Functions encapsulate reusable logic. Modules group related functions into packages.",
         description: "Functions turn repetitive scripts into testable, modular tools. Modules organize these functions into logical units of responsibility like preprocessing, training, and metrics."
     },
     "Error Handling": {
         id: "python-error-handling",
-        primitiveType: "python-error-handling",
+        primitiveType: "data-validation",
         caption: "Exceptions are signals. Fail safely, not silently.",
         description: "Real data is messy. Error handling allows pipelines to survive broken assumptions by providing controlled failure paths rather than crashing without explanation."
     },
     "Writing Clean, Maintainable Code": {
         id: "python-clean-code",
-        primitiveType: "python-basics",
+        primitiveType: "context-managers",
         caption: "Clarity beats cleverness. If you can't trust the code, you can't trust the results.",
         description: "Clean code is about trust and reproducibility. Meaningful variable names and modular pipelines ensure experiments can be revisited and audited months later."
     },
@@ -675,7 +675,7 @@ export const visualConfigs: VisualConfigRegistry = {
     },
     "Numerical Stability": {
         id: "numerical-stability-lab",
-        primitiveType: "numerical-stability",
+        primitiveType: "broadcasting",
         caption: "Floating-point numbers are approximations. log-probs and stable-softmax prevent nan/inf.",
         description: "Computers use finite precision. In ML, tiny errors can accumulate into infinities (overflow) or zeros (underflow). Stability techniques like log-transforms protect model training."
     },
@@ -700,25 +700,25 @@ export const visualConfigs: VisualConfigRegistry = {
     // Programming - Pandas
     "Reading & Writing Data": {
         id: "pandas-io-lab",
-        primitiveType: "pandas-usage",
+        primitiveType: "groupby",
         caption: "CSV, Parquet, SQL. Don't let schema inference break your pipeline.",
         description: "Data ingestion is the start of the integrity chain. Formats like Parquet are faster and preserve types, while CSVs are flexible but require explicit schema checks."
     },
     "Indexing & Filtering": {
         id: "pandas-indexing-lab",
-        primitiveType: "pandas-usage",
+        primitiveType: "groupby",
         caption: "loc (label) vs iloc (position). Index alignment is more important than row numbers.",
         description: "Pandas selection is semantic. Boolean masks provide vectorized filtering, allowing you to query billion-row tables with simple declarative expressions."
     },
     "GroupBy & Aggregation": {
-        id: "groupby-lab",
+        id: "groupby-agg-lab",
         primitiveType: "groupby",
         caption: "Split data by key, apply stats per group, combine into summary. The heart of analytics.",
         description: "GroupBy is the Swiss Army knife of data analysis. It turns raw rows into aggregated insights—counting users by region, calculating averages by category, or finding trends over time."
     },
     "Merging & Joining": {
         id: "pandas-merge-lab",
-        primitiveType: "pandas-usage",
+        primitiveType: "groupby",
         caption: "Inner, Left, Right, Outer. Cardinals matter: avoid unintentional row multiplication.",
         description: "Relational joins reconstruct reality from fragmented data. Understanding how keys align prevents data duplication and metrics distortion."
     },
@@ -730,7 +730,7 @@ export const visualConfigs: VisualConfigRegistry = {
     },
     "Time Series Handling": {
         id: "timeseries-lab",
-        primitiveType: "time-series",
+        primitiveType: "rolling-average",
         caption: "Datetimes as indices. Resample frequencies. Smooth noise with rolling windows.",
         description: "Time series data requires special care. Moving windows (rolling) and exponential smoothing reveal long-term trends by filtering out daily or hourly fluctuations."
     },
@@ -1034,6 +1034,7 @@ export const visualConfigs: VisualConfigRegistry = {
 export function getVisualConfig(topicTitle: string): VisualConfig | null {
     return visualConfigs[topicTitle] || null;
 }
+
 
 
 

@@ -211,14 +211,16 @@ export default function TopicRenderer({ topic, topicIndex, totalTopics }: TopicR
                     </h3>
 
                     {/* Config-driven animation OR placeholder */}
-                    {visualConfig ? (
-                        <VisualIntuitionWithAnimation
-                            topic={topic}
-                            config={visualConfig}
-                        />
-                    ) : (
-                        <VisualIntuitionPlaceholder topic={topic} />
-                    )}
+                    <div className="w-full overflow-x-auto primitive-canvas-wrapper">
+                        {visualConfig ? (
+                            <VisualIntuitionWithAnimation
+                                topic={topic}
+                                config={visualConfig}
+                            />
+                        ) : (
+                            <VisualIntuitionPlaceholder topic={topic} />
+                        )}
+                    </div>
                 </section>
             )}
 

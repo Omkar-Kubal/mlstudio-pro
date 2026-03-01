@@ -29,7 +29,7 @@ export default function TopicPageClient({ subjectSlug, moduleSlug, topicSlug }: 
     const [isAnswerChecked, setIsAnswerChecked] = useState(false);
     const [quizIndex, setQuizIndex] = useState(0);
 
-    const moduleTopics = getTopicsByModule(moduleSlug);
+    const moduleTopics = getTopicsByModule(moduleSlug, subjectSlug);
     const currentTopicIndex = moduleTopics.findIndex((t: { slug: string }) => t.slug === topicSlug);
     const nextTopic = moduleTopics[currentTopicIndex + 1];
 
@@ -189,9 +189,9 @@ export default function TopicPageClient({ subjectSlug, moduleSlug, topicSlug }: 
                             <span className="text-xs font-bold uppercase tracking-widest text-muted">Interactive Visualizer</span>
                             <span className="size-2 bg-primary rounded-full animate-pulse" />
                         </div>
-                        <div className="bg-background rounded-xl border border-border shadow-2xl shadow-black relative overflow-hidden group aspect-square lg:aspect-[4/3] flex items-center justify-center">
+                        <div className="bg-background rounded-xl border border-border shadow-2xl shadow-black relative overflow-hidden group h-[480px]">
                             <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" />
-                            <div className="w-full h-full p-2 flex flex-col items-center justify-center gap-4">
+                            <div className="relative w-full h-full overflow-auto">
                                 <Visualizer module={moduleSlug} topicTitle={content.title} />
                             </div>
                         </div>

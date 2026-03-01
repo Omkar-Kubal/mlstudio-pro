@@ -64,7 +64,7 @@ export default function SubjectPageClient({ subjectSlug }: { subjectSlug: string
                     const lessonId = getLessonId(subjectSlug, m.slug);
                     if (lessonId) {
                         const completed = stats.completed_topics[lessonId]?.length || 0;
-                        const totalTopics = getTopicsByModule(m.slug).length || 4;
+                        const totalTopics = getTopicsByModule(m.slug, subjectSlug).length || 4;
                         pMap[m.slug] = Math.min(100, Math.round((completed / totalTopics) * 100));
                     }
                 }
@@ -89,7 +89,7 @@ export default function SubjectPageClient({ subjectSlug }: { subjectSlug: string
     const completedModules = modules.filter(m => (progressMap[m.slug] || 0) === 100).length;
 
     // Calculate total topics in subject
-    const totalTopicsInSubject = modules.reduce((acc, m) => acc + getTopicsByModule(m.slug).length, 0);
+    const totalTopicsInSubject = modules.reduce((acc, m) => acc + getTopicsByModule(m.slug, subjectSlug).length, 0);
     const totalCompletedTopics = Object.values(progressStats?.completed_topics || {}).reduce((acc, topics) => acc + topics.length, 0);
 
     const currentModule = modules.find(m => {

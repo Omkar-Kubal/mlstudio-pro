@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { MLPipelinesConfig } from "@/adapters/visual-types";
 
 // ─── Canvas dims ───────────────────────────────────────────────────────────────
@@ -28,7 +28,10 @@ export default function MLPipelinesPrimitive({ config: _config }: Props) {
     const rafRef = useRef<number>(0);
     const particles = useRef<Particle[]>([]);
 
-    const stepXs = STEPS.map((_el, i) => PAD.left + i * (W - PAD.left - PAD.right) / (STEPS.length - 1));
+    const stepXs = useMemo(
+        () => STEPS.map((_el, i) => PAD.left + i * (W - PAD.left - PAD.right) / (STEPS.length - 1)),
+        []
+    );
 
     const draw = useCallback((pts: Particle[], si: number) => {
         const canvas = canvasRef.current;

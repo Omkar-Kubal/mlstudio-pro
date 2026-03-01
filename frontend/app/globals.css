@@ -240,3 +240,11 @@ input[type=range]::-webkit-slider-runnable-track {
   width: 100vw;
   height: 100vh;
 }
+
+/* Ensure all canvas and svg elements in visual primitives are contained */
+.primitive-canvas-wrapper canvas,
+.primitive-canvas-wrapper svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}

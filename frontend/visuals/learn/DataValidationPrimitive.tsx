@@ -147,14 +147,18 @@ export default function DataValidationPrimitive() {
                         <div className="bg-black/60 border border-border rounded-xl p-3 min-h-[100px] space-y-2">
                             {rejected.length === 0
                                 ? <div className="text-[10px] text-muted/30 italic">No errors yet…</div>
-                                : rejected.map(i => (
-                                    <div key={i} className="p-2 rounded-lg" style={{ border: `1px solid ${FAIL_COLOR}22`, background: FAIL_COLOR + "08" }}>
-                                        <div className="text-[10px] font-bold mb-1" style={{ color: FAIL_COLOR }}>Row {i + 1}</div>
-                                        {VALIDATED[i]._errors.map((e, ei) => (
-                                            <div key={ei} className="text-[9px] text-muted/50">· {e}</div>
-                                        ))}
-                                    </div>
-                                ))
+                                : rejected.map(i => {
+                                    const entry = VALIDATED[i];
+                                    if (!entry) return null;
+                                    return (
+                                        <div key={i} className="p-2 rounded-lg" style={{ border: `1px solid ${FAIL_COLOR}22`, background: FAIL_COLOR + "08" }}>
+                                            <div className="text-[10px] font-bold mb-1" style={{ color: FAIL_COLOR }}>Row {i + 1}</div>
+                                            {entry._errors.map((e, ei) => (
+                                                <div key={ei} className="text-[9px] text-muted/50">· {e}</div>
+                                            ))}
+                                        </div>
+                                    );
+                                })
                             }
                         </div>
                     </div>

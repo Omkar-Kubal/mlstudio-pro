@@ -16,7 +16,7 @@ export default function CurriculumManagerPage() {
 
     const totalTopics = subjects.reduce((acc, s) => {
         const mods = allModules.filter(m => m.subjectSlug === s.slug);
-        return acc + mods.reduce((a, m) => a + getTopicsByModule(m.slug).length, 0);
+        return acc + mods.reduce((a, m) => a + getTopicsByModule(m.slug, m.subjectSlug).length, 0);
     }, 0);
 
     if (!user?.isAdmin) return null;
@@ -43,7 +43,7 @@ export default function CurriculumManagerPage() {
                     <div className="space-y-3">
                         {subjects.map(subject => {
                             const mods = allModules.filter(m => m.subjectSlug === subject.slug);
-                            const topicCount = mods.reduce((a, m) => a + getTopicsByModule(m.slug).length, 0);
+                            const topicCount = mods.reduce((a, m) => a + getTopicsByModule(m.slug, m.subjectSlug).length, 0);
                             const isOpen = expanded[subject.slug];
 
                             return (
@@ -77,7 +77,7 @@ export default function CurriculumManagerPage() {
                                     {isOpen && (
                                         <div className="border-t border-[#1a1a1a]">
                                             {mods.map((mod, i) => {
-                                                const topics = getTopicsByModule(mod.slug);
+                                                const topics = getTopicsByModule(mod.slug, mod.subjectSlug);
                                                 return (
                                                     <div key={mod.id} className={`px-6 py-4 ${i < mods.length - 1 ? "border-b border-[#111]" : ""}`}>
                                                         <div className="flex items-center gap-3 mb-3">

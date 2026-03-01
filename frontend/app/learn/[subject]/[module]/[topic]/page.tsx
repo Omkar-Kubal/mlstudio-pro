@@ -8,7 +8,7 @@ export function generateStaticParams() {
     const params: { subject: string; module: string; topic: string }[] = [];
     for (const s of subjects) {
         for (const mod of allModules.filter(mod => mod.subjectSlug === s.slug)) {
-            for (const t of getTopicsByModule(mod.slug)) {
+            for (const t of getTopicsByModule(mod.slug, s.slug)) {
                 params.push({ subject: s.slug, module: mod.slug, topic: t.slug });
             }
         }
