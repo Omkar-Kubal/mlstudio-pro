@@ -9,15 +9,8 @@ from fastapi.middleware.cors import CORSMiddleware
 # Initialize Firebase FIRST, before any services that depend on it
 from . import firebase_init  # noqa: F401
 from .api import curriculum, labs_paths, runner, profile, admin, sessions
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
 
-# Global Rate Limiter
-limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(title="MLStudio Pro Backend", version="1.0.0")
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # FIX H-2: Validate CORS configuration at startup.
 # The HTTP spec forbids credentials (cookies, auth headers) with wildcard origins.

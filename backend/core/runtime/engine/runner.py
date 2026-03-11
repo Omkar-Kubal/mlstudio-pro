@@ -147,10 +147,15 @@ class NotebookRunner:
                         error_tb = '\n'.join(output.get('traceback', []))
                         
                         # Create synthetic exception for classification
+                        # FIX H-5: Never call eval() on data from notebook outputs.
+                        # Use getattr on the builtins module for a safe, type-checked lookup.
+                        import builtins as _builtins
+                        exc_class = getattr(_builtins, error_name, None)
+                        if not (isinstance(exc_class, type) and issubclass(exc_class, BaseException)):
+                            exc_class = Exception
                         try:
-                            exc_class = eval(error_name) if error_name in dir(__builtins__) else Exception
                             exc = exc_class(error_value)
-                        except:
+                        except Exception:
                             exc = Exception(error_value)
                         
                         error = ExecutionException(

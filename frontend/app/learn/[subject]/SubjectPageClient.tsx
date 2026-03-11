@@ -88,9 +88,13 @@ export default function SubjectPageClient({ subjectSlug }: { subjectSlug: string
 
     const completedModules = modules.filter(m => (progressMap[m.slug] || 0) === 100).length;
 
-    // Calculate total topics in subject
+    // FIX L-2.1: Count only topics that belong to modules in the current subject.
     const totalTopicsInSubject = modules.reduce((acc, m) => acc + getTopicsByModule(m.slug, subjectSlug).length, 0);
-    const totalCompletedTopics = Object.values(progressStats?.completed_topics || {}).reduce((acc, topics) => acc + topics.length, 0);
+    const totalCompletedTopics = modules.reduce((acc, m) => {
+        const lessonId = getLessonId(subjectSlug, m.slug);
+        const completedCount = lessonId ? (progressStats?.completed_topics[lessonId]?.length || 0) : 0;
+        return acc + completedCount;
+    }, 0);
 
     const currentModule = modules.find(m => {
         const progress = progressMap[m.slug] || 0;

@@ -13,3 +13,4 @@ lightgbm
 firebase-admin
 PyJWT
 python-dotenv
+slowapi

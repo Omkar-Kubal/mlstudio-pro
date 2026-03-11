@@ -2,6 +2,7 @@ import { subjects } from "@/adapters/subjects";
 import { modules as allModules } from "@/adapters/modules";
 import { getTopicsByModule } from "@/adapters/topics";
 import TopicPageClient from "./TopicPageClient";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 // Required for next build with output: 'export'
 export function generateStaticParams() {
@@ -23,5 +24,9 @@ export default async function TopicPage({
 }) {
     const { subject, module, topic } = await params;
 
-    return <TopicPageClient subjectSlug={subject} moduleSlug={module} topicSlug={topic} />;
+    return (
+        <ProtectedRoute>
+            <TopicPageClient subjectSlug={subject} moduleSlug={module} topicSlug={topic} />
+        </ProtectedRoute>
+    );
 }

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { apiFetch } from "@/adapters/api";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Profile {
     id: string;
@@ -100,8 +101,13 @@ export default function ProfilePage() {
                                                 : 'border-border hover:border-white/20 bg-surface'
                                                 }`}
                                         >
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src={url} alt="Avatar" className="w-full h-full" />
+                                            <Image
+                                                src={url}
+                                                alt="Avatar"
+                                                width={64}
+                                                height={64}
+                                                className="w-full h-full"
+                                            />
                                         </button>
                                     ))}
                                 </div>

@@ -43,8 +43,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (firebaseUser) {
                 // Get ID Token Result to check for custom 'admin' claim
                 const idTokenResult = await firebaseUser.getIdTokenResult();
-                const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-                const isAdmin = !!idTokenResult.claims.admin || (adminEmail && firebaseUser.email === adminEmail);
+                // FIX V-2.3: Re-verify admin status EXCLUSIVELY via custom claims.
+                // Fallback to email matching is insecure and should be avoided in production.
+                const isAdmin = !!idTokenResult.claims.admin;
 
                 // Map Firebase User to our App User interface
                 setUser({

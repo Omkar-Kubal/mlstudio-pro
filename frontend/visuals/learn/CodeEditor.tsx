@@ -2,6 +2,7 @@
 
 import { useState/*, useEffect*/ } from "react";
 import { Highlight, themes } from "prism-react-renderer";
+import Image from "next/image";
 
 interface CodeEditorProps {
     code: string;
@@ -172,10 +173,11 @@ export default function CodeEditor({
                     {/* Image Output */}
                     {result.image && (
                         <div className="p-4 bg-white rounded-b-lg flex justify-center">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                            <Image
                                 src={`data:image/png;base64,${result.image}`}
                                 alt="Generated Plot"
+                                width={800}
+                                height={600}
                                 className="max-w-full h-auto rounded shadow-sm"
                             />
                         </div>

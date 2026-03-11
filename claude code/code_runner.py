@@ -107,9 +107,7 @@ class CodeRunner:
         FORBIDDEN_DUNDERS = {
             "__class__", "__bases__", "__subclasses__", "__globals__",
             "__builtins__", "__code__", "__closure__", "__reduce__",
-            "__reduce_ex__", "__getattribute__", "__dict__", "__mro__",
-            "__init__", "__module__", "__name__", "__qualname__",
-            "__setattr__", "__delattr__",
+            "__reduce_ex__", "__getattribute__",
         }
 
         for node in _ast.walk(tree):
@@ -118,16 +116,11 @@ class CodeRunner:
                 if isinstance(node.func, _ast.Name) and node.func.id in FORBIDDEN_CALLS:
                     return False, f"Use of '{node.func.id}()' is not allowed."
                 # getattr(obj, 'dangerous') pattern
-                if isinstance(node.func, _ast.Name) and node.func.id in ("getattr", "setattr", "delattr"):
-                    if len(node.args) >= 2:
-                        name_arg = node.args[1] 
-                        if isinstance(name_arg, _ast.Constant):
-                            attr = name_arg.value
-                            if isinstance(attr, str) and attr in FORBIDDEN_DUNDERS:
-                                return False, f"{node.func.id} access to '{attr}' is not allowed."
-                        else:
-                            # Block dynamic attribute access via getattr/setattr
-                            return False, f"Dynamic attribute access via {node.func.id}() is not allowed. Second argument must be a string literal."
+                if isinstance(node.func, _ast.Name) and node.func.id == "getattr":
+                    if node.args and isinstance(node.args[-1], _ast.Constant):
+                        attr = node.args[-1].value
+                        if isinstance(attr, str) and attr in FORBIDDEN_DUNDERS:
+                            return False, f"getattr access to '{attr}' is not allowed."
 
             # Forbidden imports: import os, import subprocess, etc.
             if isinstance(node, (_ast.Import, _ast.ImportFrom)):

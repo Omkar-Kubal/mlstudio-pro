@@ -30,8 +30,24 @@ async def update_progress(module_id: str, topic_slug: str, user = Depends(get_cu
     return {"status": "success", "module_id": module_id, "topic_slug": topic_slug}
 
 @router.get("/{lesson_id}", response_model=LearningModule)
-async def get_module(lesson_id: str):
-    """Get a specific learning module by ID (e.g., s1m1)."""
+async def get_module(lesson_id: str, user = Depends(get_current_user)):
+    """Get a specific learning module by ID (e.g., s1m1).
+    
+    FIX M-7: Enforce authentication and progress-based gating.
+    Users can only access modules they have unlocked.
+    """
+    # 1. Fetch user progress
+    up = progress_manager.get_progress(user.id)
+    unlocked = up.get("unlocked_modules", [])
+    
+    # 2. Check gating (skip check for admins if desired, but here we enforce for all for consistency)
+    if lesson_id not in unlocked:
+        raise HTTPException(
+            status_code=403, 
+            detail=f"Module {lesson_id} is locked. Complete previous modules to unlock."
+        )
+
+    # 3. Load content
     module = curriculum_loader.load_module_by_id(lesson_id)
     if not module:
         raise HTTPException(status_code=404, detail=f"Module {lesson_id} not found")

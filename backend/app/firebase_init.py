@@ -34,7 +34,12 @@ if not use_mock_auth:
             firebase_initialized = True
             print("LOG: Firebase Admin SDK initialized successfully.")
     except Exception as e:
-        print(f"WARNING: Firebase Admin SDK failed to initialize: {e}. Falling back to Mock mode.")
-        use_mock_auth = True
+        if os.getenv("USE_MOCK_AUTH", "false").lower() == "true":
+            print(f"WARNING: Firebase Admin SDK failed to initialize: {e}. Falling back to Mock mode.")
+            use_mock_auth = True
+        else:
+            # In production/non-mock environments, initialization failure MUST be fatal.
+            raise RuntimeError(f"CRITICAL: Firebase Admin SDK failed to initialize: {e}. "
+                             "Check FIREBASE_SERVICE_ACCOUNT_JSON or Application Default Credentials.") from e
 else:
     print("LOG: Firebase Admin SDK skipped — USE_MOCK_AUTH=true.")

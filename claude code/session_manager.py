@@ -199,19 +199,21 @@ class SessionManager:
                     if page:
                         page_counts[page] = page_counts.get(page, 0) + 1
 
-        # FIX L-1.1: Use batched 'IN' queries (max 30 per query) to check for returning users.
-        # This reduces N queries to ceil(N/30) queries.
+        # FIX M-4: Compute returning users only among users active today, using a
+        # targeted per-user count query instead of a full collection scan.
         returning = 0
-        uids = [u for u in unique_users_today if u]
-        for i in range(0, len(uids), 30):
-            batch = uids[i : i + 30]
-            # A user is 'returning' if they have a session that started BEFORE today.
-            # However, checking every user's history is still a bit heavy.
-            # For now, we use the 'count' aggregation which is metadata-only.
-            for uid in batch:
-                count_query = self.db.collection("sessions").where("user_id", "==", uid).count()
-                if count_query.get()[0][0].value > 1:
-                    returning += 1
+        for uid in unique_users_today:
+            if uid is None:
+                continue
+            user_sessions = (
+                self.db.collection("sessions")
+                .where("user_id", "==", uid)
+                .limit(2)   # We only need to know if count > 1
+                .stream()
+            )
+            count = sum(1 for _ in user_sessions)
+            if count > 1:
+                returning += 1
 
         avg_dur = int(sum(durations) / len(durations)) if durations else 0
 

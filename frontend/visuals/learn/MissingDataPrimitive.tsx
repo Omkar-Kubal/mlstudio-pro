@@ -40,7 +40,7 @@ export default function MissingDataPrimitive() {
         return SEED.map(d => d.missing ? { ...d, y: +knn(d, observed.map(o => ({ ...o }))).toFixed(2), imputed: true } : { ...d, imputed: false });
     };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     useEffect(() => {
         setStep(0); if (animRef.current) clearInterval(animRef.current);
         const pts = getPts(); let i = 0;

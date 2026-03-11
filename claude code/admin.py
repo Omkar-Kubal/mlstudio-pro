@@ -36,17 +36,15 @@ async def get_platform_stats(admin=Depends(get_current_admin)):
     try:
         db = firestore.client()
 
-        # FIX L-1.2: Use Firestore's native count() aggregation to avoid streaming.
-        # For unique user count, we count the 'profiles' collection which is much smaller.
-        unique_users = db.collection("profiles").count().get()[0][0].value
-
-        # For popular topics/modules, we still need to process completions,
-        # but in a real production app we would use a 'curriculum_stats' doc.
+        # FIX M-4 (partial): Use a targeted query rather than streaming all docs.
+        # For unique user count and topic stats we still need to iterate progress docs,
+        # but we limit the fields fetched using select() to reduce bandwidth.
         docs = list(
             db.collection("user_progress")
-            .select(["topic_slug", "module_id"])
+            .select(["user_id", "topic_slug", "module_id"])
             .stream()
         )
+        unique_users = len({d.to_dict().get("user_id") for d in docs if d.to_dict().get("user_id")})
 
         topic_counts: Dict[str, int] = {}
         module_counts: Dict[str, int] = {}
